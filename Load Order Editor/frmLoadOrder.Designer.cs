@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmLoadOrder));
             dataGridView1 = new System.Windows.Forms.DataGridView();
             Index = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -205,6 +205,7 @@
             toolStripSeparator15 = new System.Windows.Forms.ToolStripSeparator();
             vortexToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             mO2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            starUIConfiguratorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             creationKitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator26 = new System.Windows.Forms.ToolStripSeparator();
             openAllActiveModWebPagesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -334,8 +335,8 @@
             // Version
             // 
             Version.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            dataGridViewCellStyle1.NullValue = null;
-            Version.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.NullValue = null;
+            Version.DefaultCellStyle = dataGridViewCellStyle2;
             Version.HeaderText = "Date";
             Version.MinimumWidth = 10;
             Version.Name = "Version";
@@ -1378,7 +1379,7 @@
             // 
             // toolStripMenuMods
             // 
-            toolStripMenuMods.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuEnableAll, toolStripMenuDisableAll, enableAchievementSafeOnlyToolStripMenuItem, toolStripSeparator6, toolStripMenuDelete, toolStripSeparator8, toolStripMenuAutoClean, toolStripMenuScanMods, toolStripMenuCleanup, removeDuplicatesToolStripMenuItem, toolStripSeparator7, toolStripMenuInstall, toolStripMenuUninstall, toolStripSeparator9, toolStripMenuLoot, toolStripMenuLootSort, toolStripSeparator15, vortexToolStripMenuItem, mO2ToolStripMenuItem, creationKitToolStripMenuItem, toolStripSeparator26, openAllActiveModWebPagesToolStripMenuItem, toolStripSeparator29, looseFilesDisabledToolStripMenuItem, toolStripSeparator28, prepareForCreationsUpdateToolStripMenuItem });
+            toolStripMenuMods.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuEnableAll, toolStripMenuDisableAll, enableAchievementSafeOnlyToolStripMenuItem, toolStripSeparator6, toolStripMenuDelete, toolStripSeparator8, toolStripMenuAutoClean, toolStripMenuScanMods, toolStripMenuCleanup, removeDuplicatesToolStripMenuItem, toolStripSeparator7, toolStripMenuInstall, toolStripMenuUninstall, toolStripSeparator9, toolStripMenuLoot, toolStripMenuLootSort, toolStripSeparator15, vortexToolStripMenuItem, mO2ToolStripMenuItem, starUIConfiguratorToolStripMenuItem, creationKitToolStripMenuItem, toolStripSeparator26, openAllActiveModWebPagesToolStripMenuItem, toolStripSeparator29, looseFilesDisabledToolStripMenuItem, toolStripSeparator28, prepareForCreationsUpdateToolStripMenuItem });
             toolStripMenuMods.Name = "toolStripMenuMods";
             toolStripMenuMods.Size = new System.Drawing.Size(94, 38);
             toolStripMenuMods.Text = "Mods";
@@ -1510,6 +1511,14 @@
             mO2ToolStripMenuItem.Size = new System.Drawing.Size(498, 44);
             mO2ToolStripMenuItem.Text = "MO2";
             mO2ToolStripMenuItem.Click += mO2ToolStripMenuItem_Click;
+            // 
+            // starUIConfiguratorToolStripMenuItem
+            // 
+            starUIConfiguratorToolStripMenuItem.Name = "starUIConfiguratorToolStripMenuItem";
+            starUIConfiguratorToolStripMenuItem.Size = new System.Drawing.Size(498, 44);
+            starUIConfiguratorToolStripMenuItem.Text = "StarUI Configurator";
+            starUIConfiguratorToolStripMenuItem.Visible = false;
+            starUIConfiguratorToolStripMenuItem.Click += starUIConfiguratorToolStripMenuItem_Click;
             // 
             // creationKitToolStripMenuItem
             // 
@@ -2187,5 +2196,6 @@
         private System.Windows.Forms.ToolStripMenuItem updateArchivedModsToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator36;
         private System.Windows.Forms.ToolStripMenuItem deleteLooseFileFoldersToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem starUIConfiguratorToolStripMenuItem;
     }
 }

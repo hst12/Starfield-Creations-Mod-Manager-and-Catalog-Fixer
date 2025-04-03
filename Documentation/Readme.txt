@@ -28,6 +28,8 @@ scripts
 sound
 materials <- This folder will be kept, but its contents will be deleted
 
+Renamed and re-arranged several of the context menu options.
+
 Multi select mods with Ctrl+Click or Shift+Click to perform actions on multiple mods at once.
 Drag drop mod zip or other archive formats onto grid to install. Supports multiple files.
 

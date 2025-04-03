@@ -115,6 +115,10 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
             if (!File.Exists(StarfieldGamePath + "\\CreationKit.exe")) // Hide option to launch CK if not found
                 creationKitToolStripMenuItem.Visible = false;
 
+            // Unhide Star UI Configurator menu if found
+            if (File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\My Games\Starfield\Data\StarUI Configurator.bat"))
+                starUIConfiguratorToolStripMenuItem.Visible = true;
+
             if (Properties.Settings.Default.AutoDelccc)
             {
                 toolStripMenuAutoDelccc.Checked = true;
@@ -1924,7 +1928,7 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
                 {
                     Properties.Settings.Default.LOOTPath = openFileDialog1.FileName;
                     Properties.Settings.Default.Save();
-                    MessageBox.Show("LOOT path set to " + openFileDialog1.FileName,"Restart the app for changes to take effect");    
+                    MessageBox.Show("LOOT path set to " + openFileDialog1.FileName, "Restart the app for changes to take effect");
                     return true;
                 }
                 else return false;
@@ -2287,7 +2291,7 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
         private bool GameSwitchWarning()
         {
             return (Tools.ConfirmAction("Do you want to proceed?", "Switching to a no mods profile is suggested before proceeding",
-                MessageBoxButtons.YesNo,MessageBoxIcon.Question,true) == DialogResult.Yes);
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question, true) == DialogResult.Yes);
         }
         private void toolStripMenuSteam_Click(object sender, EventArgs e)
         {
@@ -3549,7 +3553,9 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
                 }
                 catch (Exception ex)
                 {
-                    //MessageBox.Show(ex.Message);
+#if DEBUG
+                    MessageBox.Show(ex.Message);
+#endif
                 }
             }
         }
@@ -3601,7 +3607,7 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
                 return;
             }
             if (Tools.ConfirmAction("Are you sure you want to delete loose files folders including their contents?", "Warning, this will delete any loose file mods",
-                MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation,true) == DialogResult.No)
+                MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, true) == DialogResult.No) // Always show warning
                 return;
 
             // Delete these folders
@@ -3648,10 +3654,42 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred: {ex.Message}");
+#if DEBUG
+                
+                MessageBox.Show(ex.Message);
+#endif
             }
 
             MessageBox.Show(Text = deleteCount + " Folder(s) deleted");
+        }
+
+        private void starUIConfiguratorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string workingDirectory= Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\My Games\Starfield\Data\";
+            string StarUI =workingDirectory + @"StarUI Configurator.bat";
+            if (!String.IsNullOrEmpty(StarUI))
+            {
+                try
+                {
+                    ProcessStartInfo startInfo = new ProcessStartInfo
+                    {
+                        FileName = StarUI, 
+                        WorkingDirectory = workingDirectory,
+                        UseShellExecute = true // Ensure this is true for WorkingDirectory to work
+                    };
+
+                    Process process = Process.Start(startInfo);
+                    //process.WaitForExit(); // Optional: Wait for the process to exit
+
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+            else
+                MessageBox.Show("StarUI Configurator doesn't seem to be installed correctly.");
         }
     }
 }
