@@ -45,9 +45,9 @@ namespace Starfield_Tools
 
             Tools.CheckGame(); // Exit if Starfield appdata folder not found
 
-            foreach (var arg in Environment.GetCommandLineArgs())
+            foreach (var arg in Environment.GetCommandLineArgs()) // Handle command line arguments
             {
-                if (String.Equals(arg, "-noauto", StringComparison.OrdinalIgnoreCase))
+                if (arg.ToLowerInvariant() == "-noauto")
                 {
                     ChangeSettings(false); // Disable auto settings
                     sbar3("Auto Settings Disabled");
@@ -268,6 +268,16 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
                 MessageBox.Show(tempstr + "\nAuto Restore turned on\n\nYou can now play the game normally until the next time you want to update\n\n" +
                     "Remember to choose the Prepare for Creations Update option again before you update or add new mods", "Creations update complete");
             }
+
+            foreach (var arg in Environment.GetCommandLineArgs()) // Handle command line arguments
+            {
+                if (arg.ToLowerInvariant() == "-run")
+                {
+                    RunGame();
+                    Application.Exit(); 
+                }
+            }
+
         }
 
         private void SetupColumns()
