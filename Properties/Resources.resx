@@ -127,7 +127,4 @@
   <data name="Loot" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Loot.png;System.Byte[]</value>
   </data>
-  <data name="Photo_2024-07-26-095212" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Photo_2024-07-26-0952121.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
 </root>

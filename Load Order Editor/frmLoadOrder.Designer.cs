@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmLoadOrder));
             dataGridView1 = new System.Windows.Forms.DataGridView();
             Index = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -118,6 +118,8 @@
             undoVortexChangesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator34 = new System.Windows.Forms.ToolStripSeparator();
             checkArchivesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripSeparator37 = new System.Windows.Forms.ToolStripSeparator();
+            restoreStarfieldiniToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator17 = new System.Windows.Forms.ToolStripSeparator();
             exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -335,8 +337,8 @@
             // Version
             // 
             Version.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            dataGridViewCellStyle2.NullValue = null;
-            Version.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.NullValue = null;
+            Version.DefaultCellStyle = dataGridViewCellStyle1;
             Version.HeaderText = "Date";
             Version.MinimumWidth = 10;
             Version.Name = "Version";
@@ -833,7 +835,7 @@
             // 
             // resetDeleteFilesToolStripMenuItem
             // 
-            resetDeleteFilesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuDeleteCCC, toolStripMenuItemDeletePlugins, deleteLooseFileFoldersToolStripMenuItem, toolStripSeparator33, compareStarfieldCustominiToBackupToolStripMenuItem, resetStarfieldCustominiToolStripMenuItem, resetToVanillaStarfieldSettingsToolStripMenuItem, toolStripMenuResetWindow, toolStripSeparator35, undoVortexChangesToolStripMenuItem, toolStripSeparator34, checkArchivesToolStripMenuItem });
+            resetDeleteFilesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuDeleteCCC, toolStripMenuItemDeletePlugins, deleteLooseFileFoldersToolStripMenuItem, toolStripSeparator33, compareStarfieldCustominiToBackupToolStripMenuItem, resetStarfieldCustominiToolStripMenuItem, resetToVanillaStarfieldSettingsToolStripMenuItem, toolStripMenuResetWindow, toolStripSeparator35, undoVortexChangesToolStripMenuItem, toolStripSeparator34, checkArchivesToolStripMenuItem, toolStripSeparator37, restoreStarfieldiniToolStripMenuItem });
             resetDeleteFilesToolStripMenuItem.Name = "resetDeleteFilesToolStripMenuItem";
             resetDeleteFilesToolStripMenuItem.Size = new System.Drawing.Size(504, 44);
             resetDeleteFilesToolStripMenuItem.Text = "Reset/Delete Files";
@@ -915,6 +917,18 @@
             checkArchivesToolStripMenuItem.Size = new System.Drawing.Size(564, 44);
             checkArchivesToolStripMenuItem.Text = "Check for Orphaned Archives";
             checkArchivesToolStripMenuItem.Click += checkArchivesToolStripMenuItem_Click;
+            // 
+            // toolStripSeparator37
+            // 
+            toolStripSeparator37.Name = "toolStripSeparator37";
+            toolStripSeparator37.Size = new System.Drawing.Size(561, 6);
+            // 
+            // restoreStarfieldiniToolStripMenuItem
+            // 
+            restoreStarfieldiniToolStripMenuItem.Name = "restoreStarfieldiniToolStripMenuItem";
+            restoreStarfieldiniToolStripMenuItem.Size = new System.Drawing.Size(564, 44);
+            restoreStarfieldiniToolStripMenuItem.Text = "Restore Starfield.ini";
+            restoreStarfieldiniToolStripMenuItem.Click += restoreStarfieldiniToolStripMenuItem_Click;
             // 
             // toolStripSeparator17
             // 
@@ -1877,6 +1891,7 @@
             btnCatalog.Size = new System.Drawing.Size(105, 42);
             btnCatalog.TabIndex = 4;
             btnCatalog.Text = "Catalog";
+            toolTip1.SetToolTip(btnCatalog, "Catalog Check Tools");
             btnCatalog.UseVisualStyleBackColor = true;
             btnCatalog.Click += btnCatalog_Click;
             // 
@@ -2197,5 +2212,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator36;
         private System.Windows.Forms.ToolStripMenuItem deleteLooseFileFoldersToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem starUIConfiguratorToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator37;
+        private System.Windows.Forms.ToolStripMenuItem restoreStarfieldiniToolStripMenuItem;
     }
 }

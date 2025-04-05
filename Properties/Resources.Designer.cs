@@ -81,16 +81,6 @@ namespace Starfield_Tools.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        public static System.Drawing.Bitmap Photo_2024_07_26_095212 {
-            get {
-                object obj = ResourceManager.GetObject("Photo_2024-07-26-095212", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         public static System.Drawing.Icon Vortex {

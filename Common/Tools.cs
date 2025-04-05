@@ -22,7 +22,6 @@ namespace Starfield_Tools.Common // Various functions used by the app
         public string StarfieldGamePath { get; set; }
         public string StarfieldGamePathMS { get; set; }
         public List<string> BethFiles { get; set; }
-        //public List<string> BlockedMods { get; set; }
         public static string CatalogVersion { get; set; }
         public static string StarfieldAppData { get; set; }
         public List<string> PluginList { get; set; }
@@ -43,20 +42,6 @@ namespace Starfield_Tools.Common // Various functions used by the app
                 MessageBox.Show(ex.Message, "BGS Exclude file missing. Repair or re-install the app", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 Environment.Exit(1);
             }
-
-            /*try
-            {
-                if (!File.Exists(LocalAppDataPath + "BlockedMods.txt"))
-                {
-                    File.Create(LocalAppDataPath + "BlockedMods.txt");
-                }
-                BlockedMods = new(File.ReadAllLines(LocalAppDataPath + "BlockedMods.txt")); // Don't enable these mods
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "BlockedMods file missing. Repair or re-install the app", MessageBoxButtons.OK, MessageBoxIcon.Stop);
-            }*/
-
 
             try
             {
@@ -95,7 +80,9 @@ namespace Starfield_Tools.Common // Various functions used by the app
             }
             catch (Exception ex)
             {
-                //MessageBox.Show(ex.Message, "BlockedMods file missing. Repair or re-install the app", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+#if DEBUG
+                MessageBox.Show(ex.Message, "BlockedMods file missing. Repair or re-install the app", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+#endif
                 return null;
             }
 #pragma warning restore CS0168 // Variable is declared but never used

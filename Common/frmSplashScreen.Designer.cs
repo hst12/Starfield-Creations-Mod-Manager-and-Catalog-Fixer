@@ -30,6 +30,7 @@ namespace Starfield_Tools
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmSplashScreen));
             SuspendLayout();
             // 
             // frmSplashScreen
@@ -37,7 +38,7 @@ namespace Starfield_Tools
             AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             AutoSize = true;
-            BackgroundImage = Resources.Photo_2024_07_26_095212;
+            BackgroundImage = (System.Drawing.Image)resources.GetObject("$this.BackgroundImage");
             BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             ClientSize = new System.Drawing.Size(1339, 754);
             DoubleBuffered = true;

@@ -42,9 +42,17 @@ namespace Starfield_Tools
             InitializeComponent();
 
             this.KeyPreview = true; // Ensure the form captures key presses
-            //this.KeyDown += frmLoadOrder_KeyDown; // Subscribe to KeyDown event
 
             Tools.CheckGame(); // Exit if Starfield appdata folder not found
+
+            foreach (var arg in Environment.GetCommandLineArgs())
+            {
+                if (String.Equals(arg, "-noauto", StringComparison.OrdinalIgnoreCase))
+                {
+                    ChangeSettings(false); // Disable auto settings
+                    sbar3("Auto Settings Disabled");
+                }
+            }
 
             string PluginsPath = Tools.StarfieldAppData + "\\Plugins.txt";
             bool BackupStatus = false;
@@ -264,18 +272,26 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
 
         private void SetupColumns()
         {
-            SetColumnVisibility(Properties.Settings.Default.TimeStamp, timeStampToolStripMenuItem, dataGridView1.Columns["TimeStamp"]);
-            SetColumnVisibility(Properties.Settings.Default.Achievements, toolStripMenuAchievements, dataGridView1.Columns["Achievements"]);
-            SetColumnVisibility(Properties.Settings.Default.CreationsID, toolStripMenuCreationsID, dataGridView1.Columns["CreationsID"]);
-            SetColumnVisibility(Properties.Settings.Default.Files, toolStripMenuFiles, dataGridView1.Columns["Files"]);
-            SetColumnVisibility(Properties.Settings.Default.Group, toolStripMenuGroup, dataGridView1.Columns["Group"]);
-            SetColumnVisibility(Properties.Settings.Default.Index, toolStripMenuIndex, dataGridView1.Columns["Index"]);
-            SetColumnVisibility(Properties.Settings.Default.FileSize, toolStripMenuFileSize, dataGridView1.Columns["FileSize"]);
-            SetColumnVisibility(Properties.Settings.Default.URL, uRLToolStripMenuItem, dataGridView1.Columns["URL"]);
-            SetColumnVisibility(Properties.Settings.Default.Version, toolStripMenuVersion, dataGridView1.Columns["Version"]);
-            SetColumnVisibility(Properties.Settings.Default.AuthorVersion, toolStripMenuAuthorVersion, dataGridView1.Columns["AuthorVersion"]);
-            SetColumnVisibility(Properties.Settings.Default.Description, toolStripMenuDescription, dataGridView1.Columns["Description"]);
-            SetColumnVisibility(Properties.Settings.Default.Blocked, blockedToolStripMenuItem, dataGridView1.Columns["Blocked"]);
+            var columnSettings = new (bool setting, ToolStripMenuItem menuItem, DataGridViewColumn column)[]
+            {
+                (Properties.Settings.Default.TimeStamp, timeStampToolStripMenuItem, dataGridView1.Columns["TimeStamp"]),
+                (Properties.Settings.Default.Achievements, toolStripMenuAchievements, dataGridView1.Columns["Achievements"]),
+                (Properties.Settings.Default.CreationsID, toolStripMenuCreationsID, dataGridView1.Columns["CreationsID"]),
+                (Properties.Settings.Default.Files, toolStripMenuFiles, dataGridView1.Columns["Files"]),
+                (Properties.Settings.Default.Group, toolStripMenuGroup, dataGridView1.Columns["Group"]),
+                (Properties.Settings.Default.Index, toolStripMenuIndex, dataGridView1.Columns["Index"]),
+                (Properties.Settings.Default.FileSize, toolStripMenuFileSize, dataGridView1.Columns["FileSize"]),
+                (Properties.Settings.Default.URL, uRLToolStripMenuItem, dataGridView1.Columns["URL"]),
+                (Properties.Settings.Default.Version, toolStripMenuVersion, dataGridView1.Columns["Version"]),
+                (Properties.Settings.Default.AuthorVersion, toolStripMenuAuthorVersion, dataGridView1.Columns["AuthorVersion"]),
+                (Properties.Settings.Default.Description, toolStripMenuDescription, dataGridView1.Columns["Description"]),
+                (Properties.Settings.Default.Blocked, blockedToolStripMenuItem, dataGridView1.Columns["Blocked"])
+            };
+
+            foreach (var (setting, menuItem, column) in columnSettings)
+            {
+                SetColumnVisibility(setting, menuItem, column);
+            }
         }
         private void SetMenus()
         {
@@ -2023,6 +2039,7 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
                 }
                 else
                 {
+                    sbar3("Starfield.ccc not found");
                     return false;
                 }
             }
@@ -3192,7 +3209,7 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
                     files.Clear();
 
                 }
-                sbar3(modsArchived + " Mods archived");
+                sbar3(modsArchived + " Mod(s) archived");
             }
         }
         private void checkArchivesToolStripMenuItem_Click(object sender, EventArgs e)
@@ -3665,23 +3682,20 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
 
         private void starUIConfiguratorToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string workingDirectory= Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\My Games\Starfield\Data\";
-            string StarUI =workingDirectory + @"StarUI Configurator.bat";
+            string workingDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\My Games\Starfield\Data\";
+            string StarUI = workingDirectory + @"StarUI Configurator.bat";
             if (!String.IsNullOrEmpty(StarUI))
             {
                 try
                 {
                     ProcessStartInfo startInfo = new ProcessStartInfo
                     {
-                        FileName = StarUI, 
+                        FileName = StarUI,
                         WorkingDirectory = workingDirectory,
                         UseShellExecute = true // Ensure this is true for WorkingDirectory to work
                     };
 
                     Process process = Process.Start(startInfo);
-                    //process.WaitForExit(); // Optional: Wait for the process to exit
-
-
                 }
                 catch (Exception ex)
                 {
@@ -3690,6 +3704,38 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
             }
             else
                 MessageBox.Show("StarUI Configurator doesn't seem to be installed correctly.");
+        }
+
+        private void restoreStarfieldiniToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string StarfieldiniPath = StarfieldGamePath + "\\Starfield.ini";
+            string StarfieldINI = @"[General]
+uExterior Cell Buffer=36
+sGPUDefaultQualitySettingsJSON=DefaultGlobalGraphicsSettings.json
+
+[Display]
+uiUpscaleTech=3
+
+[Wwise]
+iDefaultExternalCodecID=4
+
+[Archive]
+sResourceDataDirsFinal=STRINGS\
+SResourceArchiveList=Starfield - Animations.ba2, Starfield - DensityMaps.ba2, Starfield - FaceAnimation01.ba2, Starfield - FaceAnimation02.ba2, Starfield - FaceAnimation03.ba2, Starfield - FaceAnimation04.ba2, Starfield - FaceAnimationPatch.ba2, Starfield - FaceMeshes.ba2, Starfield - GeneratedTextures.ba2, Starfield - LODMeshes.ba2, Starfield - LODMeshesPatch.ba2, Starfield - Materials.ba2, Starfield - Meshes01.ba2, Starfield - Meshes02.ba2, Starfield - MeshesPatch.ba2, Starfield - Misc.ba2, Starfield - Particles.ba2, Starfield - PlanetData.ba2, Starfield - Terrain01.ba2, Starfield - Terrain02.ba2, Starfield - Terrain03.ba2, Starfield - Terrain04.ba2, Starfield - TerrainPatch.ba2
+sResourceIndexFileList=Starfield - LODTextures01.ba2, Starfield - LODTextures02.ba2, Starfield - Textures01.ba2, Starfield - Textures02.ba2, Starfield - Textures03.ba2, Starfield - Textures04.ba2, Starfield - Textures05.ba2, Starfield - Textures06.ba2, Starfield - Textures07.ba2, Starfield - Textures08.ba2, Starfield - Textures09.ba2, Starfield - Textures10.ba2, Starfield - Textures11.ba2, Starfield - TexturesPatch.ba2
+SResourceArchiveMemoryCacheList=Starfield - Interface.ba2, Starfield - Misc.ba2
+sResourceStartUpArchiveList=Starfield - Interface.ba2, Starfield - Localization.ba2, Starfield - Shaders.ba2, Starfield - ShadersBeta.ba2, Starfield - WwiseSounds01.ba2, Starfield - WwiseSounds02.ba2, Starfield - WwiseSounds03.ba2, Starfield - WwiseSounds04.ba2, Starfield - WwiseSounds05.ba2, Starfield - WwiseSoundsPatch.ba2, BlueprintShips-Starfield - Localization.ba2
+sResourceEnglishVoiceList=Starfield - Voices01.ba2, Starfield - Voices02.ba2, Starfield - VoicesPatch.ba2
+";
+            try
+            {
+                File.WriteAllLines(StarfieldiniPath, StarfieldINI.Split(new[] { Environment.NewLine }, StringSplitOptions.None));
+                sbar3("Starfield.ini restored");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }
