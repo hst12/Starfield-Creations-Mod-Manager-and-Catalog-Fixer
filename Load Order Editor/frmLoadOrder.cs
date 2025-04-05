@@ -3266,15 +3266,19 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
 
             foreach (var item in orphaned)
             {
-                tempstr = Path.Combine(StarfieldGamePath, "Data", item);
-
+                tempstr = Path.GetFileNameWithoutExtension(item);
                 foreach (var suffix in suffixes)
                 {
-                    var filePath = tempstr + suffix;
+                    var filePath = StarfieldGamePath + @"\Data\" + tempstr + suffix;
                     if (File.Exists(filePath))
                         toDelete.Add(filePath);
                 }
             }
+
+            /*foreach (var item in orphaned)
+            {
+              toDelete.Add(StarfieldGamePath+@"\Data\"+item);
+            }*/
 
             if (toDelete.Count > 0)
             {

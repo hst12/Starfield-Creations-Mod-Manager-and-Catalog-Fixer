@@ -112,10 +112,10 @@
             toolStripSeparator33 = new System.Windows.Forms.ToolStripSeparator();
             compareStarfieldCustominiToBackupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             resetStarfieldCustominiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            resetToVanillaStarfieldSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuResetWindow = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator35 = new System.Windows.Forms.ToolStripSeparator();
             undoVortexChangesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            resetToVanillaStarfieldSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator34 = new System.Windows.Forms.ToolStripSeparator();
             checkArchivesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator37 = new System.Windows.Forms.ToolStripSeparator();
@@ -837,7 +837,7 @@
             // 
             // resetDeleteFilesToolStripMenuItem
             // 
-            resetDeleteFilesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuDeleteCCC, toolStripMenuItemDeletePlugins, deleteLooseFileFoldersToolStripMenuItem, toolStripSeparator33, compareStarfieldCustominiToBackupToolStripMenuItem, resetStarfieldCustominiToolStripMenuItem, resetToVanillaStarfieldSettingsToolStripMenuItem, toolStripMenuResetWindow, toolStripSeparator35, undoVortexChangesToolStripMenuItem, toolStripSeparator34, checkArchivesToolStripMenuItem, toolStripSeparator37, restoreStarfieldiniToolStripMenuItem, toolStripSeparator38, resetEverythingToolStripMenuItem });
+            resetDeleteFilesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuDeleteCCC, toolStripMenuItemDeletePlugins, deleteLooseFileFoldersToolStripMenuItem, toolStripSeparator33, compareStarfieldCustominiToBackupToolStripMenuItem, resetStarfieldCustominiToolStripMenuItem, toolStripMenuResetWindow, toolStripSeparator35, undoVortexChangesToolStripMenuItem, resetToVanillaStarfieldSettingsToolStripMenuItem, toolStripSeparator34, checkArchivesToolStripMenuItem, toolStripSeparator37, restoreStarfieldiniToolStripMenuItem, toolStripSeparator38, resetEverythingToolStripMenuItem });
             resetDeleteFilesToolStripMenuItem.Name = "resetDeleteFilesToolStripMenuItem";
             resetDeleteFilesToolStripMenuItem.Size = new System.Drawing.Size(504, 44);
             resetDeleteFilesToolStripMenuItem.Text = "Reset/Delete Files";
@@ -845,102 +845,102 @@
             // toolStripMenuDeleteCCC
             // 
             toolStripMenuDeleteCCC.Name = "toolStripMenuDeleteCCC";
-            toolStripMenuDeleteCCC.Size = new System.Drawing.Size(564, 44);
+            toolStripMenuDeleteCCC.Size = new System.Drawing.Size(888, 44);
             toolStripMenuDeleteCCC.Text = "Delete Starfield.ccc";
             toolStripMenuDeleteCCC.Click += toolStripMenuDeleteCCC_Click;
             // 
             // toolStripMenuItemDeletePlugins
             // 
             toolStripMenuItemDeletePlugins.Name = "toolStripMenuItemDeletePlugins";
-            toolStripMenuItemDeletePlugins.Size = new System.Drawing.Size(564, 44);
+            toolStripMenuItemDeletePlugins.Size = new System.Drawing.Size(888, 44);
             toolStripMenuItemDeletePlugins.Text = "Delete Plugins.txt";
             toolStripMenuItemDeletePlugins.Click += toolStripMenuItemDeletePlugins_Click;
             // 
             // deleteLooseFileFoldersToolStripMenuItem
             // 
             deleteLooseFileFoldersToolStripMenuItem.Name = "deleteLooseFileFoldersToolStripMenuItem";
-            deleteLooseFileFoldersToolStripMenuItem.Size = new System.Drawing.Size(564, 44);
+            deleteLooseFileFoldersToolStripMenuItem.Size = new System.Drawing.Size(888, 44);
             deleteLooseFileFoldersToolStripMenuItem.Text = "Delete Loose File Folders";
             deleteLooseFileFoldersToolStripMenuItem.Click += deleteLooseFileFoldersToolStripMenuItem_Click;
             // 
             // toolStripSeparator33
             // 
             toolStripSeparator33.Name = "toolStripSeparator33";
-            toolStripSeparator33.Size = new System.Drawing.Size(561, 6);
+            toolStripSeparator33.Size = new System.Drawing.Size(885, 6);
             // 
             // compareStarfieldCustominiToBackupToolStripMenuItem
             // 
             compareStarfieldCustominiToBackupToolStripMenuItem.Name = "compareStarfieldCustominiToBackupToolStripMenuItem";
-            compareStarfieldCustominiToBackupToolStripMenuItem.Size = new System.Drawing.Size(564, 44);
+            compareStarfieldCustominiToBackupToolStripMenuItem.Size = new System.Drawing.Size(888, 44);
             compareStarfieldCustominiToBackupToolStripMenuItem.Text = "Compare StarfieldCustom.ini to backup";
             compareStarfieldCustominiToBackupToolStripMenuItem.Click += compareStarfieldCustominiToBackupToolStripMenuItem_Click;
             // 
             // resetStarfieldCustominiToolStripMenuItem
             // 
             resetStarfieldCustominiToolStripMenuItem.Name = "resetStarfieldCustominiToolStripMenuItem";
-            resetStarfieldCustominiToolStripMenuItem.Size = new System.Drawing.Size(564, 44);
+            resetStarfieldCustominiToolStripMenuItem.Size = new System.Drawing.Size(888, 44);
             resetStarfieldCustominiToolStripMenuItem.Text = "Reset StarfieldCustom.ini";
             resetStarfieldCustominiToolStripMenuItem.Click += toolStripMenuResetStarfieldCustom_Click;
-            // 
-            // resetToVanillaStarfieldSettingsToolStripMenuItem
-            // 
-            resetToVanillaStarfieldSettingsToolStripMenuItem.Name = "resetToVanillaStarfieldSettingsToolStripMenuItem";
-            resetToVanillaStarfieldSettingsToolStripMenuItem.Size = new System.Drawing.Size(564, 44);
-            resetToVanillaStarfieldSettingsToolStripMenuItem.Text = "Reset to Recommended Settings";
-            resetToVanillaStarfieldSettingsToolStripMenuItem.Click += resetToVanillaStarfieldSettingsToolStripMenuItem_Click;
             // 
             // toolStripMenuResetWindow
             // 
             toolStripMenuResetWindow.Name = "toolStripMenuResetWindow";
-            toolStripMenuResetWindow.Size = new System.Drawing.Size(564, 44);
+            toolStripMenuResetWindow.Size = new System.Drawing.Size(888, 44);
             toolStripMenuResetWindow.Text = "Reset Window Size";
             toolStripMenuResetWindow.Click += toolStripMenuResetWindow_Click;
             // 
             // toolStripSeparator35
             // 
             toolStripSeparator35.Name = "toolStripSeparator35";
-            toolStripSeparator35.Size = new System.Drawing.Size(561, 6);
+            toolStripSeparator35.Size = new System.Drawing.Size(885, 6);
             // 
             // undoVortexChangesToolStripMenuItem
             // 
             undoVortexChangesToolStripMenuItem.Name = "undoVortexChangesToolStripMenuItem";
-            undoVortexChangesToolStripMenuItem.Size = new System.Drawing.Size(564, 44);
+            undoVortexChangesToolStripMenuItem.Size = new System.Drawing.Size(888, 44);
             undoVortexChangesToolStripMenuItem.Text = "Undo Vortex changes";
             undoVortexChangesToolStripMenuItem.Click += undoVortexChangesToolStripMenuItem_Click;
+            // 
+            // resetToVanillaStarfieldSettingsToolStripMenuItem
+            // 
+            resetToVanillaStarfieldSettingsToolStripMenuItem.Name = "resetToVanillaStarfieldSettingsToolStripMenuItem";
+            resetToVanillaStarfieldSettingsToolStripMenuItem.Size = new System.Drawing.Size(888, 44);
+            resetToVanillaStarfieldSettingsToolStripMenuItem.Text = "Disable Vortex Changes, Delete Starfield.ccc, Reset StarfieldCustom.ini";
+            resetToVanillaStarfieldSettingsToolStripMenuItem.Click += resetToVanillaStarfieldSettingsToolStripMenuItem_Click;
             // 
             // toolStripSeparator34
             // 
             toolStripSeparator34.Name = "toolStripSeparator34";
-            toolStripSeparator34.Size = new System.Drawing.Size(561, 6);
+            toolStripSeparator34.Size = new System.Drawing.Size(885, 6);
             // 
             // checkArchivesToolStripMenuItem
             // 
             checkArchivesToolStripMenuItem.Name = "checkArchivesToolStripMenuItem";
-            checkArchivesToolStripMenuItem.Size = new System.Drawing.Size(564, 44);
+            checkArchivesToolStripMenuItem.Size = new System.Drawing.Size(888, 44);
             checkArchivesToolStripMenuItem.Text = "Check for Orphaned Archives";
             checkArchivesToolStripMenuItem.Click += checkArchivesToolStripMenuItem_Click;
             // 
             // toolStripSeparator37
             // 
             toolStripSeparator37.Name = "toolStripSeparator37";
-            toolStripSeparator37.Size = new System.Drawing.Size(561, 6);
+            toolStripSeparator37.Size = new System.Drawing.Size(885, 6);
             // 
             // restoreStarfieldiniToolStripMenuItem
             // 
             restoreStarfieldiniToolStripMenuItem.Name = "restoreStarfieldiniToolStripMenuItem";
-            restoreStarfieldiniToolStripMenuItem.Size = new System.Drawing.Size(564, 44);
+            restoreStarfieldiniToolStripMenuItem.Size = new System.Drawing.Size(888, 44);
             restoreStarfieldiniToolStripMenuItem.Text = "Restore Starfield.ini";
             restoreStarfieldiniToolStripMenuItem.Click += restoreStarfieldiniToolStripMenuItem_Click;
             // 
             // toolStripSeparator38
             // 
             toolStripSeparator38.Name = "toolStripSeparator38";
-            toolStripSeparator38.Size = new System.Drawing.Size(561, 6);
+            toolStripSeparator38.Size = new System.Drawing.Size(885, 6);
             // 
             // resetEverythingToolStripMenuItem
             // 
             resetEverythingToolStripMenuItem.Name = "resetEverythingToolStripMenuItem";
-            resetEverythingToolStripMenuItem.Size = new System.Drawing.Size(564, 44);
+            resetEverythingToolStripMenuItem.Size = new System.Drawing.Size(888, 44);
             resetEverythingToolStripMenuItem.Text = "Reset Everything";
             resetEverythingToolStripMenuItem.Click += resetEverythingToolStripMenuItem_Click;
             // 

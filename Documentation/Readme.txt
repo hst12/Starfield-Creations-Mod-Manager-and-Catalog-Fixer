@@ -6,6 +6,16 @@ Running Vortex after using this tool will likely mess up your load order.
 TLDR; See the Help->Shortcuts and Quick Help menu
 
 New Feature
+
+File->Reset/Reset Everything
+Restores Starfield.ini to default
+Disables loose files
+Deletes commonly used loose file folders
+Restores StarfieldCustom.ini
+Checks for and optionally deletes archive files (ba2) that have no corresponding .esm file
+Resets changes made to Starfield Documents folder by Vortex
+Deletes Starfield.ccc
+
 File->Reset/Delete Files->Delete Loose File Folders - Don't use this option if you have loose file mods installed that you want to keep!
 It will delete the mod files from the game data folder and remove diretories that don't exist in the vanilla game.
 SFSE files and folders will be left untouched.
