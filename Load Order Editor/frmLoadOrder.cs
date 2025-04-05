@@ -274,7 +274,7 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
                 if (arg.ToLowerInvariant() == "-run")
                 {
                     RunGame();
-                    Application.Exit(); 
+                    Application.Exit();
                 }
             }
 
@@ -461,7 +461,7 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
 #if DEBUG
                     MessageBox.Show(ex.Message, "Yaml decoding error\nLOOT userlist.yaml possibly corrupt", MessageBoxButtons.OK, MessageBoxIcon.Stop);
 #endif
-                    sbar(ex.Message);
+                    sbar3(ex.Message);
                 }
             }
 
@@ -2782,7 +2782,7 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
 
         }
 
-        private void ResetDefaults()
+        private int ResetDefaults()
         {
             string LooseFilesDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\My Games\\Starfield\\", // Check if loose files are enabled
         filePath = LooseFilesDir + "StarfieldCustom.ini";
@@ -2808,6 +2808,7 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
                     sbar3(ChangeCount.ToString() + " Change(s) made to ini files");
             }
             sbar5("Auto Reset");
+            return ChangeCount;
         }
         private void autoResetToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -3222,7 +3223,8 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
                 sbar3(modsArchived + " Mod(s) archived");
             }
         }
-        private void checkArchivesToolStripMenuItem_Click(object sender, EventArgs e)
+
+        private int CheckArchives()
         {
             List<string> BGSArchives = [];
             List<string> archives = [];
@@ -3232,7 +3234,7 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
             List<string> suffixes = new List<string> { " - main.ba2", " - textures.ba2", " - textures_xbox.ba2", " - voices_en.ba2", ".ba2" };
 
             if (StarfieldGamePath == "")
-                return;
+                return 0;
 
             using (StreamReader sr = new StreamReader(Tools.CommonFolder + "BGS Archives.txt")) // Read a list of standard game archives. Will need updating for future DLC
             {
@@ -3278,10 +3280,18 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
             {
                 Form Orphaned = new frmOrphaned(toDelete);
                 Orphaned.Show();
+                return toDelete.Count;
             }
             else
-                MessageBox.Show("No orphaned archives found");
+            {
+                sbar3("No orphaned archives found");
+                return 0;
+            }
 
+        }
+        private void checkArchivesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CheckArchives();
         }
 
         private void activateNewModsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -3625,17 +3635,18 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
             }
             return true;
         }
-        private void deleteLooseFileFoldersToolStripMenuItem_Click(object sender, EventArgs e)
+
+        private int DeleteLooseFileFolders()
         {
             int deleteCount = 0;
             if (string.IsNullOrEmpty(StarfieldGamePath))
             {
                 MessageBox.Show("Game path not set");
-                return;
+                return 0;
             }
             if (Tools.ConfirmAction("Are you sure you want to delete loose files folders including their contents?", "Warning, this will delete any loose file mods",
                 MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, true) == DialogResult.No) // Always show warning
-                return;
+                return 0;
 
             // Delete these folders
             var foldersToDelete = new[]
@@ -3686,8 +3697,22 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
                 MessageBox.Show(ex.Message);
 #endif
             }
+            if (deleteCount > 0)
+            {
+                MessageBox.Show(Text = deleteCount + " Folder(s) deleted");
+                return deleteCount;
+            }
+            else
+            {
+                sbar3("No folders deleted");
+                return 0;
+            }
+        }
 
-            MessageBox.Show(Text = deleteCount + " Folder(s) deleted");
+        
+        private void deleteLooseFileFoldersToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DeleteLooseFileFolders();
         }
 
         private void starUIConfiguratorToolStripMenuItem_Click(object sender, EventArgs e)
@@ -3716,7 +3741,7 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
                 MessageBox.Show("StarUI Configurator doesn't seem to be installed correctly.");
         }
 
-        private void restoreStarfieldiniToolStripMenuItem_Click(object sender, EventArgs e)
+        private int RestoreStarfieldINI()
         {
             string StarfieldiniPath = StarfieldGamePath + "\\Starfield.ini";
             string StarfieldINI = @"[General]
@@ -3741,11 +3766,32 @@ sResourceEnglishVoiceList=Starfield - Voices01.ba2, Starfield - Voices02.ba2, St
             {
                 File.WriteAllLines(StarfieldiniPath, StarfieldINI.Split(new[] { Environment.NewLine }, StringSplitOptions.None));
                 sbar3("Starfield.ini restored");
+                return 1;
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+                return 0;
             }
+        }
+
+        private void restoreStarfieldiniToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            RestoreStarfieldINI();
+        }
+
+        private void resetEverythingToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int actionCount = 0;
+
+            if (Tools.ConfirmAction("This will reset all settings and delete all loose files folders", "Are you sure?", MessageBoxButtons.YesNo,
+                MessageBoxIcon.Exclamation, true) == DialogResult.No)
+                return;
+            actionCount+=RestoreStarfieldINI();
+            actionCount += DeleteLooseFileFolders();
+            actionCount += ResetDefaults();
+            actionCount += CheckArchives();
+            sbar3(actionCount.ToString() + " Change(s) made");
         }
     }
 }

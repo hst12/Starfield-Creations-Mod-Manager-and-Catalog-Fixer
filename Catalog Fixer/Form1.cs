@@ -37,13 +37,12 @@ namespace Starfield_Tools
             ForceClean = Properties.Settings.Default.ForceClean;
             SetAutoCheckBoxes();
 
-            //bool cmdLineLO = false;
             bool cmdLineRunSteam = false;
             bool cmdLineRunMS = false;
             bool cmdlineRunSFSE = false;
             richTextBox2.Text = "";
 
-            foreach (var arg in Environment.GetCommandLineArgs())
+            /*foreach (var arg in Environment.GetCommandLineArgs())
             {
                 if (String.Equals(arg, "-runSteam", StringComparison.OrdinalIgnoreCase))
                     cmdLineRunSteam = true;
@@ -73,7 +72,7 @@ namespace Starfield_Tools
                     SaveSettings();
                     SetAutoCheckBoxes();
                 }
-            }
+            }*/
 
             if (AutoCheck) // Check catalog status if enabled
             {
