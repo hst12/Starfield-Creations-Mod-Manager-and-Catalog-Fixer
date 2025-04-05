@@ -3709,7 +3709,6 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
             }
         }
 
-        
         private void deleteLooseFileFoldersToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DeleteLooseFileFolders();
@@ -3743,34 +3742,25 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
 
         private int RestoreStarfieldINI()
         {
-            string StarfieldiniPath = StarfieldGamePath + "\\Starfield.ini";
-            string StarfieldINI = @"[General]
-uExterior Cell Buffer=36
-sGPUDefaultQualitySettingsJSON=DefaultGlobalGraphicsSettings.json
+            string StarfieldiniPath = StarfieldGamePath + "\\Data\\Starfield.ini";
 
-[Display]
-uiUpscaleTech=3
-
-[Wwise]
-iDefaultExternalCodecID=4
-
-[Archive]
-sResourceDataDirsFinal=STRINGS\
-SResourceArchiveList=Starfield - Animations.ba2, Starfield - DensityMaps.ba2, Starfield - FaceAnimation01.ba2, Starfield - FaceAnimation02.ba2, Starfield - FaceAnimation03.ba2, Starfield - FaceAnimation04.ba2, Starfield - FaceAnimationPatch.ba2, Starfield - FaceMeshes.ba2, Starfield - GeneratedTextures.ba2, Starfield - LODMeshes.ba2, Starfield - LODMeshesPatch.ba2, Starfield - Materials.ba2, Starfield - Meshes01.ba2, Starfield - Meshes02.ba2, Starfield - MeshesPatch.ba2, Starfield - Misc.ba2, Starfield - Particles.ba2, Starfield - PlanetData.ba2, Starfield - Terrain01.ba2, Starfield - Terrain02.ba2, Starfield - Terrain03.ba2, Starfield - Terrain04.ba2, Starfield - TerrainPatch.ba2
-sResourceIndexFileList=Starfield - LODTextures01.ba2, Starfield - LODTextures02.ba2, Starfield - Textures01.ba2, Starfield - Textures02.ba2, Starfield - Textures03.ba2, Starfield - Textures04.ba2, Starfield - Textures05.ba2, Starfield - Textures06.ba2, Starfield - Textures07.ba2, Starfield - Textures08.ba2, Starfield - Textures09.ba2, Starfield - Textures10.ba2, Starfield - Textures11.ba2, Starfield - TexturesPatch.ba2
-SResourceArchiveMemoryCacheList=Starfield - Interface.ba2, Starfield - Misc.ba2
-sResourceStartUpArchiveList=Starfield - Interface.ba2, Starfield - Localization.ba2, Starfield - Shaders.ba2, Starfield - ShadersBeta.ba2, Starfield - WwiseSounds01.ba2, Starfield - WwiseSounds02.ba2, Starfield - WwiseSounds03.ba2, Starfield - WwiseSounds04.ba2, Starfield - WwiseSounds05.ba2, Starfield - WwiseSoundsPatch.ba2, BlueprintShips-Starfield - Localization.ba2
-sResourceEnglishVoiceList=Starfield - Voices01.ba2, Starfield - Voices02.ba2, Starfield - VoicesPatch.ba2
-";
-            try
+            if (!Tools.FileCompare(StarfieldiniPath, Tools.CommonFolder + "Starfield.ini"))
             {
-                File.WriteAllLines(StarfieldiniPath, StarfieldINI.Split(new[] { Environment.NewLine }, StringSplitOptions.None));
-                sbar3("Starfield.ini restored");
-                return 1;
+                try
+                {
+                    File.Copy(Tools.CommonFolder + "Starfield.ini", @StarfieldGamePath+@"\Data\Starfield.ini", true); // Restore Starfield.ini
+                    sbar3("Starfield.ini restored");
+                    return 1;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    return 0;
+                }
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show(ex.Message);
+                sbar3("Starfield.ini Matches Default");
                 return 0;
             }
         }
@@ -3787,7 +3777,7 @@ sResourceEnglishVoiceList=Starfield - Voices01.ba2, Starfield - Voices02.ba2, St
             if (Tools.ConfirmAction("This will reset all settings and delete all loose files folders", "Are you sure?", MessageBoxButtons.YesNo,
                 MessageBoxIcon.Exclamation, true) == DialogResult.No)
                 return;
-            actionCount+=RestoreStarfieldINI();
+            actionCount += RestoreStarfieldINI();
             actionCount += DeleteLooseFileFolders();
             actionCount += ResetDefaults();
             actionCount += CheckArchives();
