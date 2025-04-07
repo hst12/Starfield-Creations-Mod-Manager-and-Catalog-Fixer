@@ -14,6 +14,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.Design;
 using YamlDotNet.Serialization;
 using File = System.IO.File;
 
@@ -3645,6 +3646,8 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
         private int DeleteLooseFileFolders()
         {
             int deleteCount = 0;
+            List<string> DeletedFiles = new();
+
             if (string.IsNullOrEmpty(StarfieldGamePath))
             {
                 MessageBox.Show("Game path not set");
@@ -3675,7 +3678,10 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
             foreach (var item in foldersToDelete)
             {
                 if (CleanFolder(item))
+                {
+                    DeletedFiles.Add(item);
                     deleteCount++;
+                }
             }
 
             // Clear the Materials folder but leave it in place
@@ -3686,12 +3692,14 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
                 foreach (string file in Directory.GetFiles(folderPath))
                 {
                     File.Delete(file);
+                    DeletedFiles.Add(file);
                 }
 
                 // Delete all subdirectories and their contents
                 foreach (string directory in Directory.GetDirectories(folderPath))
                 {
                     Directory.Delete(directory, true); // 'true' ensures recursive deletion
+                    DeletedFiles.Add(directory);
                     deleteCount++;
                 }
 
@@ -3705,7 +3713,14 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
             }
             if (deleteCount > 0)
             {
-                MessageBox.Show(Text = deleteCount + " Folder(s) deleted");
+
+                frmGenericTextList fgt = new frmGenericTextList(DeletedFiles) // Show deleted items
+                {
+                    StartPosition = FormStartPosition.CenterScreen, // Centers the form on the screen
+                    Text = "Deleted files and/or folders" // Set the title of the form
+                };
+                fgt.Show();
+                sbar3("Item(s) deleted "+deleteCount);
                 return deleteCount;
             }
             else
