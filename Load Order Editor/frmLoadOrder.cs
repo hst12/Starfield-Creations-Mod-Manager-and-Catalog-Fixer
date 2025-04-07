@@ -52,6 +52,8 @@ namespace Starfield_Tools
                     ChangeSettings(false); // Disable auto settings
                     sbar3("Auto Settings Disabled");
                 }
+                if (arg.ToLowerInvariant() == "-reset")
+                    ResetPreferences();
             }
 
             string PluginsPath = Tools.StarfieldAppData + "\\Plugins.txt";
@@ -3752,7 +3754,7 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
             {
                 try
                 {
-                    File.Copy(Tools.CommonFolder + "Starfield.ini", @StarfieldGamePath+@"\Data\Starfield.ini", true); // Restore Starfield.ini
+                    File.Copy(Tools.CommonFolder + "Starfield.ini", @StarfieldGamePath + @"\Data\Starfield.ini", true); // Restore Starfield.ini
                     sbar3("Starfield.ini restored");
                     return 1;
                 }
@@ -3786,6 +3788,32 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
             actionCount += ResetDefaults();
             actionCount += CheckArchives();
             sbar3(actionCount.ToString() + " Change(s) made");
+        }
+
+        public static void ResetPreferences()
+        {
+            string localAppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            string appPreferencesPath = Path.Combine(localAppDataPath, "Starfield_Tools");
+
+            if (Tools.ConfirmAction("Are you sure you want to reset user preferences?", "This will delete all user settings and preferences", MessageBoxButtons.YesNo,
+                MessageBoxIcon.Exclamation, true) == DialogResult.No)
+                return;
+
+            if (Directory.Exists(appPreferencesPath))
+            {
+                Directory.Delete(appPreferencesPath, true); // true to delete subdirectories and files
+                MessageBox.Show("Restart the app", "User preferences reset successfully.");
+                Environment.Exit(0); // Close the application
+            }
+            else
+            {
+                MessageBox.Show("No preferences found to reset.");
+            }
+        }
+
+        private void resetAppPreferencesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ResetPreferences();
         }
     }
 }
