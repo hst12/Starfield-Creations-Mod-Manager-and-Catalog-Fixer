@@ -212,9 +212,9 @@ The tool will close a few seconds after launching the game.
 You can also launch the game from within the Load Order Editor. Set the game version in the Tools menu first - it defaults to Steam.
 
 Command line options - not case sensitive:
--noauto Clears all the auto check boxes. This will stop any auto repair functions from running automatically when the tool starts.
--auto Sets recommended auto check boxes.
--runSteam or -runMS Starts the tool with whatever auto settings were used last then launches the game.
+-noauto Clears all the auto settings
+-run runs the game
+-reset Clears app preferences
 
 Example: "Starfield Tools.exe" -auto -runSteam will run auto checks and launch Starfield Steam version.
 
