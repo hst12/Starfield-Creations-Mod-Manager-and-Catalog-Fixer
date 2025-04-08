@@ -39,7 +39,7 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="Achievements" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="CreationsID" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
@@ -114,7 +114,7 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="Showtime" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="ActivateNew" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>

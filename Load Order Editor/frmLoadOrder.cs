@@ -3477,7 +3477,8 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
     ("Group", toolStripMenuGroup),
     ("Version", toolStripMenuVersion),
     ("AuthorVersion", toolStripMenuAuthorVersion),
-    ("Description", toolStripMenuDescription)
+    ("Description", toolStripMenuDescription),
+    ("Blocked", toolStripMenuDescription)
 };
 
             foreach (var (columnName, menuItem) in items)
@@ -3720,7 +3721,7 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
                     Text = "Deleted files and/or folders" // Set the title of the form
                 };
                 fgt.Show();
-                sbar3("Item(s) deleted "+deleteCount);
+                sbar3("Item(s) deleted " + deleteCount);
                 return deleteCount;
             }
             else
@@ -3811,7 +3812,7 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
             string appPreferencesPath = Path.Combine(localAppDataPath, "Starfield_Tools");
 
             if (Tools.ConfirmAction("Are you sure you want to reset user preferences?", "This will delete all user settings and preferences", MessageBoxButtons.YesNo,
-                MessageBoxIcon.Exclamation, true) == DialogResult.No)
+                MessageBoxIcon.Exclamation, true) == DialogResult.No) // Override Nowarn
                 return;
 
             if (Directory.Exists(appPreferencesPath))
