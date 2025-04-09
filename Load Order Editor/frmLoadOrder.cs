@@ -2325,8 +2325,10 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
         }
         private void toolStripMenuSteam_Click(object sender, EventArgs e)
         {
-            if (!GameSwitchWarning())
-                return;
+            if (GameVersion == MS)
+                if (!GameSwitchWarning())
+                    return;
+
             toolStripMenuSteam.Checked = !toolStripMenuSteam.Checked;
             if (toolStripMenuSteam.Checked)
             {
@@ -2537,8 +2539,9 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
 
         private void gameVersionSFSEToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!GameSwitchWarning())
-                return;
+            if (GameVersion == MS)
+                if (GameSwitchWarning())
+                    return;
 
             if (File.Exists(StarfieldGamePath + "\\sfse_loader.exe"))
             {
@@ -2942,8 +2945,10 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
             if (GameVersion != MS)
                 StarfieldGamePath = Properties.Settings.Default.StarfieldGamePath;
             else
+            {
                 StarfieldGamePath = Properties.Settings.Default.GamePathMS;
-            RefreshDataGrid();
+                RefreshDataGrid();
+            }
             sbar2("Game version set to " + gameVersion);
         }
 
