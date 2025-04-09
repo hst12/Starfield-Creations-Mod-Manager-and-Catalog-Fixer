@@ -577,8 +577,8 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
                                 {
                                     Description = CreationsTitle[i]; // Add Content Catalog description if available
                                     ModVersion = CreationsVersion[i];
-                                    AuthorVersion = ModVersion[(ModVersion.IndexOf('.') + 1)..];
-                                    ModVersion = start.AddSeconds(double.Parse(ModVersion[..ModVersion.IndexOf('.')])).Date.ToString("yyyy-MM-dd");
+                                    AuthorVersion = ModVersion[(ModVersion.IndexOf('.') + 1)..]; // Author supplied version no. Might be bogus
+                                    ModVersion = start.AddSeconds(double.Parse(ModVersion[..ModVersion.IndexOf('.')])).Date.ToString("yyyy-MM-dd"); // Upload date
 
                                     ModFiles = CreationsFiles[i];
                                     ASafe = AchievementSafe[i] ? "Yes" : "";
@@ -593,7 +593,6 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
                             row = dataGridView1.Rows[dataGridView1.Rows.Add()];
 
                             // Populate datagrid from LOOT groups
-
                             if (!string.IsNullOrEmpty(LOOTPath) && Groups.groups != null && dataGridView1.Columns["Group"].Visible)
                             {
                                 var group = Groups.plugins.FirstOrDefault(p => p.name == PluginName);
@@ -673,7 +672,12 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
                         StatText += ", esp files: " + espCount;
 
                     if (dataGridView1.RowCount - CreationsPlugin.Count < 0)
-                        sbar4("Catalog/Plugins mismatch - Run game to solve");
+                    {
+                        sbar4(@"Catalog/Plugins mismatch - Run game to solve");
+#if DEBUG
+                        MessageBox.Show(@"Catalog/Plugins mismatch - Run game to solve");
+#endif
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -1765,9 +1769,11 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
             Properties.Settings.Default.GameVersion = GameVersion;
             SaveSettings();
             Form SS = new frmSplashScreen();
+
+            sbar("Starting game...");
             if (GameVersion == Steam)
                 SS.Show();
-
+            
             if (isModified)
                 SavePlugins();
 
@@ -3283,11 +3289,6 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
                 }
             }
 
-            /*foreach (var item in orphaned)
-            {
-              toDelete.Add(StarfieldGamePath+@"\Data\"+item);
-            }*/
-
             if (toDelete.Count > 0)
             {
                 Form Orphaned = new frmOrphaned(toDelete);
@@ -3815,12 +3816,12 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
 
         private void resetEverythingToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            int actionCount = 0;
+            int actionCount;
 
             if (Tools.ConfirmAction("This will reset all settings and delete all loose files folders", "Are you sure?", MessageBoxButtons.YesNo,
                 MessageBoxIcon.Exclamation, true) == DialogResult.No)
                 return;
-            actionCount += RestoreStarfieldINI();
+            actionCount = RestoreStarfieldINI();
             actionCount += DeleteLooseFileFolders();
             actionCount += ResetDefaults();
             actionCount += CheckArchives();
