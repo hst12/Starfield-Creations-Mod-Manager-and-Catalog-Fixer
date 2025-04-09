@@ -3314,8 +3314,18 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
 
         private void GetSteamGamePath()
         {
-            SteamGameLocator steamGameLocator = new SteamGameLocator();
-            StarfieldGamePath = steamGameLocator.getGameInfoByFolder("Starfield").steamGameLocation;
+            try
+            {
+                SteamGameLocator steamGameLocator = new SteamGameLocator();
+                StarfieldGamePath = steamGameLocator.getGameInfoByFolder("Starfield").steamGameLocation;
+            }
+            catch (Exception ex)
+            {
+#if DEBUG
+                MessageBox.Show(ex.Message);
+#endif
+            }
+            
         }
 
         private void toolStripMenuItemDeletePlugins_Click(object sender, EventArgs e)
