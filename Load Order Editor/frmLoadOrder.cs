@@ -3354,8 +3354,14 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
 
             try
             {
-                frmAddModToProfile addMod = new(profiles, dataGridView1.CurrentRow.Cells["PluginName"].Value.ToString());
-                addMod.Show(cmbProfile);
+                foreach (DataGridViewRow selectedRow in dataGridView1.SelectedRows)
+                {
+                    if (selectedRow.Cells["PluginName"].Value != null) // Ensure the cell value is not null
+                    {
+                        frmAddModToProfile addMod = new(profiles, selectedRow.Cells["PluginName"].Value.ToString());
+                        addMod.Show(cmbProfile);
+                    }
+                }
             }
             catch (Exception ex)
             {
