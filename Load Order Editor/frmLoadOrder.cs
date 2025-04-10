@@ -111,9 +111,11 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
                 {
                     GetSteamGamePath(); // Detect Steam path
                     if (StarfieldGamePath == "")
+                    {
                         StarfieldGamePath = tools.SetStarfieldGamePath();
-                    Properties.Settings.Default.StarfieldGamePath = StarfieldGamePath;
-                    Properties.Settings.Default.Save();
+                        Properties.Settings.Default.StarfieldGamePath = StarfieldGamePath;
+                        Properties.Settings.Default.Save();
+                    }
                 }
             }
             else
@@ -831,7 +833,7 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
 
             if (isModified)
             {
-                MessageBox.Show("Plugins have been modified\nClick Ok to save first or Cancel to revert", "Backup not done");
+                MessageBox.Show("Plugins have been modified\nClick Save to save changes", "Backup not done");
                 return;
             }
 
@@ -1773,7 +1775,7 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
             sbar("Starting game...");
             if (GameVersion == Steam)
                 SS.Show();
-            
+
             if (isModified)
                 SavePlugins();
 
@@ -2210,7 +2212,7 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
             if (toolStripMenuCustom.Checked)
             {
                 GameVersion = Custom;
-                UpdateGameVersion("Custom");
+                UpdateGameVersion();
                 toolStripMenuSteam.Checked = false;
                 toolStripMenuMS.Checked = false;
                 gameVersionSFSEToolStripMenuItem.Checked = false;
@@ -2335,30 +2337,24 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
                 if (!GameSwitchWarning())
                     return;
 
-            toolStripMenuSteam.Checked = !toolStripMenuSteam.Checked;
-            if (toolStripMenuSteam.Checked)
-            {
-                toolStripMenuMS.Checked = false;
-                toolStripMenuCustom.Checked = false;
-                gameVersionSFSEToolStripMenuItem.Checked = false;
-                GameVersion = Steam;
-                UpdateGameVersion("Steam");
-            }
+            toolStripMenuSteam.Checked = true;
+            toolStripMenuMS.Checked = false;
+            toolStripMenuCustom.Checked = false;
+            gameVersionSFSEToolStripMenuItem.Checked = false;
+            GameVersion = Steam;
+            UpdateGameVersion();
         }
 
         private void toolStripMenuMS_Click(object sender, EventArgs e)
         {
             if (!GameSwitchWarning())
                 return;
-            toolStripMenuMS.Checked = !toolStripMenuMS.Checked;
-            if (toolStripMenuMS.Checked)
-            {
-                toolStripMenuSteam.Checked = false;
-                toolStripMenuCustom.Checked = false;
-                gameVersionSFSEToolStripMenuItem.Checked = false;
-                GameVersion = MS;
-                UpdateGameVersion("MS");
-            }
+            toolStripMenuMS.Checked = true;
+            toolStripMenuSteam.Checked = false;
+            toolStripMenuCustom.Checked = false;
+            gameVersionSFSEToolStripMenuItem.Checked = false;
+            GameVersion = MS;
+            UpdateGameVersion();
         }
 
         private void toolStripMenuFileSize_Click(object sender, EventArgs e)
@@ -2551,16 +2547,13 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
 
             if (File.Exists(StarfieldGamePath + "\\sfse_loader.exe"))
             {
-                gameVersionSFSEToolStripMenuItem.Checked = !gameVersionSFSEToolStripMenuItem.Checked;
-                if (gameVersionSFSEToolStripMenuItem.Checked)
-                {
-                    toolStripMenuSteam.Checked = false;
-                    toolStripMenuMS.Checked = false;
-                    toolStripMenuCustom.Checked = false;
+                gameVersionSFSEToolStripMenuItem.Checked = true;
+                toolStripMenuSteam.Checked = false;
+                toolStripMenuMS.Checked = false;
+                toolStripMenuCustom.Checked = false;
+                GameVersion = SFSE;
+                UpdateGameVersion();
 
-                    GameVersion = SFSE;
-                    UpdateGameVersion("SFSE");
-                }
             }
             else
             {
@@ -2944,9 +2937,22 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
             looseFilesDisabledToolStripMenuItem.Checked = LooseFiles;
         }
 
-        private void UpdateGameVersion(string gameVersion) // Display game version
+        private void UpdateGameVersion() // Display game version
         {
             Properties.Settings.Default.GameVersion = GameVersion;
+            if (Properties.Settings.Default.StarfieldGamePath == "" || Properties.Settings.Default.GamePathMS == "")
+            {
+                StarfieldGamePath=tools.SetStarfieldGamePath();
+                if (GameVersion != MS)
+                {
+                    Properties.Settings.Default.StarfieldGamePath = StarfieldGamePath;
+                }
+                else
+                {
+                    Properties.Settings.Default.GamePathMS = StarfieldGamePath;
+                }
+            }
+
             SaveSettings();
             if (GameVersion != MS)
                 StarfieldGamePath = Properties.Settings.Default.StarfieldGamePath;
@@ -2955,7 +2961,7 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
                 StarfieldGamePath = Properties.Settings.Default.GamePathMS;
                 RefreshDataGrid();
             }
-            sbar2("Game version set to " + gameVersion);
+            GameVersionDisplay();
         }
 
         private void toolStripMenuVersion_Click(object sender, EventArgs e) // View version column
@@ -3326,7 +3332,7 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
                 MessageBox.Show(ex.Message);
 #endif
             }
-            
+
         }
 
         private void toolStripMenuItemDeletePlugins_Click(object sender, EventArgs e)
