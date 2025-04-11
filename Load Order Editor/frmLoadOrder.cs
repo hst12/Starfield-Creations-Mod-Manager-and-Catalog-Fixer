@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
 using YamlDotNet.Serialization;
+using static Starfield_Tools.Common.Tools;
 using File = System.IO.File;
 
 namespace Starfield_Tools
@@ -659,16 +660,59 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
 #pragma warning disable CS0168 // Variable is declared but never used
                 try
                 {
+                    List<string> BGSArchives = new();
+                    List<string> archives = [];
+
+                    foreach (string file in Directory.EnumerateFiles(StarfieldGamePath + "\\Data", "*.ba2", SearchOption.TopDirectoryOnly)) // Build a list of all archives
+                    {
+                        archives.Add(Path.GetFileName(file).ToLower());
+                    }
+
+                    using (StreamReader sr = new StreamReader(Tools.CommonFolder + "BGS Archives.txt")) // Read a list of standard game archives. Will need updating for future DLC
+                    {
+                        string line;
+                        while ((line = sr.ReadLine()) != null)
+                        {
+                            BGSArchives.Add(line[..^4]); // Strip extension
+                        }
+                    }
+
+                    // Build a list of all plugins excluding base game files
+                    List<string> plugins = new List<string>(File.ReadAllLines(Tools.StarfieldAppData + "\\Plugins.txt"));
+                    plugins = plugins.Select(s => s.ToLower()).Where(s => s.StartsWith("*") && !BGSArchives.Contains(s)).Select(s => s[1..^4]).ToList(); // Strip out 1st and last 4 chars
+
+                    List<string> suffixes = new List<string> { " - main.ba2", " - textures.ba2", " - textures_xbox.ba2", " - voices_en.ba2", ".ba2" };
+
+                    List<string> modArchives = archives.Except(BGSArchives) // Get the archive base names excluding BGS Archives
+                        .Select(s => s.ToLower()
+                        .Replace(" - main.ba2", string.Empty)
+                        .Replace(" - textures.ba2", string.Empty)
+                        .Replace(" - textures_xbox.ba2", string.Empty)
+                        .Replace(" - voices_en.ba2", string.Empty)
+                        .Replace(".ba2",string.Empty))
+                        .ToList();
+
+                    ba2Count = 0;
+
+                    foreach (var mod in modArchives)
+                    {
+                        if (plugins.Contains(mod))
+                        {
+                            ba2Count++;
+                            Debug.WriteLine(mod);
+                        }
+                    }
+
                     directory = StarfieldGamePath + @"\Data";
 
                     esmCount = Directory.EnumerateFiles(directory, "*.esm", SearchOption.TopDirectoryOnly).Count();
                     espCount = Directory.EnumerateFiles(directory, "*.esp", SearchOption.TopDirectoryOnly).Count();
-                    ba2Count = Directory.EnumerateFiles(directory, "*.ba2", SearchOption.TopDirectoryOnly).Count();
+                    //ba2Count = Directory.EnumerateFiles(directory, "*.ba2", SearchOption.TopDirectoryOnly).Count();
                     mainCount = Directory.EnumerateFiles(directory, "* - main*.ba2", SearchOption.TopDirectoryOnly).Count();
 
                     StatText = "Total Mods: " + dataGridView1.RowCount + ", Creations: " + CreationsPlugin.Count + ", Other: " +
                         (dataGridView1.RowCount - CreationsPlugin.Count) + ", Enabled: " + EnabledCount + ", esm: " +
-                        esmCount + ", Archives: " + ba2Count + ", Main archives: " + mainCount;
+                        esmCount + ", Archives - Active: " + ba2Count + ", Main: " + mainCount;
 
                     if (espCount > 0)
                         StatText += ", esp files: " + espCount;
@@ -2926,8 +2970,11 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
                     }
                 }
             }
-            catch
+            catch (Exception ex)
             {
+#if DEBUG
+                MessageBox.Show(ex.Message);
+#endif
 
             }
             if (LooseFiles)
@@ -2942,7 +2989,7 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
             Properties.Settings.Default.GameVersion = GameVersion;
             if (Properties.Settings.Default.StarfieldGamePath == "" || Properties.Settings.Default.GamePathMS == "")
             {
-                StarfieldGamePath=tools.SetStarfieldGamePath();
+                StarfieldGamePath = tools.SetStarfieldGamePath();
                 if (GameVersion != MS)
                 {
                     Properties.Settings.Default.StarfieldGamePath = StarfieldGamePath;
@@ -3278,7 +3325,8 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
                 .Replace(" - main.ba2", string.Empty)
                 .Replace(" - textures.ba2", string.Empty)
                 .Replace(" - textures_xbox.ba2", string.Empty)
-                .Replace(" - voices_en.ba2", string.Empty))
+                .Replace(" - voices_en.ba2", string.Empty)
+                .Replace(".ba2", string.Empty))
                 .ToList();
 
             // Build a list of archives to delete with full path
@@ -3736,7 +3784,7 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
             catch (Exception ex)
             {
 #if DEBUG
-                
+
                 MessageBox.Show(ex.Message);
 #endif
             }
