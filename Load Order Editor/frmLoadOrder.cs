@@ -42,6 +42,9 @@ namespace Starfield_Tools
         public frmLoadOrder(string parameter)
         {
             InitializeComponent();
+#if DEBUG
+            this.Text = Application.ProductName + " " + File.ReadAllText(Tools.CommonFolder + "\\App Version.txt");
+#endif
 
             this.KeyPreview = true; // Ensure the form captures key presses
 
@@ -551,7 +554,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 }
 
                 if (ModEnabled)
-                    esmCount++;
+                    EnabledCount++;
 
                 row.Cells["Group"].Value = PluginName.StartsWith("sfbgs")
                     ? (row.Cells["Group"].Value ?? "Bethesda Game Studios Creations") + " (Bethesda)"
@@ -1245,11 +1248,12 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 isModified = true;
             }
 
+            if (dataGridView1.RowCount > 0)
+                dataGridView1.CurrentCell = dataGridView1.Rows[0].Cells["PluginName"]; // Select top row of datagrid
+
             if (activeStatus)
                 ActiveOnlyToggle();
 
-            if (dataGridView1.RowCount > 0)
-                dataGridView1.CurrentCell = dataGridView1.Rows[0].Cells["PluginName"]; // Select top row of datagrid
             return AddedFiles;
         }
 

@@ -5,7 +5,41 @@ Running Vortex after using this tool will likely mess up your load order.
 
 TLDR; See the Help->Shortcuts and Quick Help menu
 
-New Features
+New Feature
+
+File->Reset/Reset Everything
+Restores Starfield.ini to default
+Disables loose files
+Deletes commonly used loose file folders
+Restores StarfieldCustom.ini
+Checks for and optionally deletes archive files (ba2) that have no corresponding .esm file
+Resets changes made to Starfield Documents folder by Vortex
+Deletes Starfield.ccc
+
+File->Reset/Delete Files->Delete Loose File Folders - Don't use this option if you have loose file mods installed that you want to keep!
+It will delete the mod files from the game data folder and remove diretories that don't exist in the vanilla game.
+SFSE files and folders will be left untouched.
+This function is meant to serve as a cleanup tool for mods that have been uninstalled but have left files behind.
+The following folders and their contents will be deleted if you choose this menu option:
+meshes
+interface
+textures\actors
+textures\architecture
+textures\common
+textures\decals
+textures\effects
+textures\interface
+textures\items
+textures\Motd_Media
+textures\setdressing
+textures\ships
+geometries
+scripts
+sound
+materials <- This folder will be kept, but its contents will be deleted
+
+Renamed and re-arranged several of the context menu options.
+
 Multi select mods with Ctrl+Click or Shift+Click to perform actions on multiple mods at once.
 Drag drop mod zip or other archive formats onto grid to install. Supports multiple files.
 
@@ -178,9 +212,9 @@ The tool will close a few seconds after launching the game.
 You can also launch the game from within the Load Order Editor. Set the game version in the Tools menu first - it defaults to Steam.
 
 Command line options - not case sensitive:
--noauto Clears all the auto check boxes. This will stop any auto repair functions from running automatically when the tool starts.
--auto Sets recommended auto check boxes.
--runSteam or -runMS Starts the tool with whatever auto settings were used last then launches the game.
+-noauto Clears all the auto settings
+-run runs the game
+-reset Clears app preferences
 
 Example: "Starfield Tools.exe" -auto -runSteam will run auto checks and launch Starfield Steam version.
 
@@ -210,16 +244,3 @@ Profile switching is always off by default until the checkbox next to Profiles i
 
 When launching a game from the Load Order Editor a load screen is displayed for a few seconds while the game loads.
 A custom load screen picture can be set in the Tools menu.
-
-<div align="left">
-    <img src="/Screenshot2.png" align="left"</img> 
-</div>
-
-<div align="left">
-    <img src="/Screenshot.png" align="left"</img> 
-</div>
-<p></p>
-
-<div align="left">
-    <img src="/Screenshot3.png" align="left"</img> 
-</div>
