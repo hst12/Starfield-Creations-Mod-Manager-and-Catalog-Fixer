@@ -420,7 +420,8 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
             string json = File.ReadAllText(Tools.GetCatalogPath());
             Tools.Configuration Groups = new();
 
-            if (toolStripMenuGroup.Checked && !string.IsNullOrEmpty(LOOTPath) && dataGridView1.Columns["Group"].Visible)
+            //if (toolStripMenuGroup.Checked && !string.IsNullOrEmpty(LOOTPath) && dataGridView1.Columns["Group"].Visible)
+            if (!string.IsNullOrEmpty(LOOTPath) && dataGridView1.Columns["Group"].Visible)
             {
                 try
                 {
@@ -549,6 +550,9 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                     row.Cells["Blocked"].Value = true;
                 }
 
+                if (ModEnabled)
+                    esmCount++;
+
                 row.Cells["Group"].Value = PluginName.StartsWith("sfbgs")
                     ? (row.Cells["Group"].Value ?? "Bethesda Game Studios Creations") + " (Bethesda)"
                     : row.Cells["Group"].Value;
@@ -580,12 +584,11 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 row.Cells["URL"].Value = URL;
             }
 
-            SetupColumns();
-            /*SetColumnVisibility(true, toolStripMenuCreationsID, dataGridView1.Columns["CreationsID"]);
-            SetColumnVisibility(true, uRLToolStripMenuItem, dataGridView1.Columns["URL"]);*/
+            SetColumnVisibility(Properties.Settings.Default.CreationsID, toolStripMenuCreationsID, dataGridView1.Columns["CreationsID"]);
+            SetColumnVisibility(Properties.Settings.Default.URL, uRLToolStripMenuItem, dataGridView1.Columns["URL"]);
 
             // Show stats
-            if (!string.IsNullOrEmpty(StarfieldGamePath)  && Properties.Settings.Default.ModStats)
+            if (!string.IsNullOrEmpty(StarfieldGamePath) && Properties.Settings.Default.ModStats)
             {
                 try
                 {
@@ -613,7 +616,8 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                     espCount = Directory.EnumerateFiles(directory, "*.esp", SearchOption.TopDirectoryOnly).Count();
                     mainCount = Directory.EnumerateFiles(directory, "* - main*.ba2", SearchOption.TopDirectoryOnly).Count();
 
-                    StatText = $"Total Mods: {dataGridView1.RowCount}, Creations: {CreationsPlugin.Count}, Other: {dataGridView1.RowCount - CreationsPlugin.Count}, Enabled: {EnabledCount}, esm: {esmCount}, Archives - Active: {ba2Count}, Main: {mainCount}";
+                    StatText = $"Total Mods: {dataGridView1.RowCount}, Creations: {CreationsPlugin.Count}, Other: {dataGridView1.RowCount - CreationsPlugin.Count}, " +
+                        $"Enabled: {EnabledCount}, esm: {esmCount}, Archives - Active: {ba2Count}, Main: {mainCount}";
 
                     if (espCount > 0)
                         StatText += $", esp files: {espCount}";
@@ -1240,7 +1244,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 AddedFiles++;
                 isModified = true;
             }
-
 
             if (activeStatus)
                 ActiveOnlyToggle();
@@ -2561,13 +2564,16 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 for (int i = 0; i < dataGridView1.RowCount; i++)
                     dataGridView1.Rows[i].Visible = true;
                 sbar4("All mods shown");
+                btnActiveOnly.Font = btnActiveOnly.Font = new Font(btnActiveOnly.Font.FontFamily, btnActiveOnly.Font.Size, FontStyle.Regular);
             }
             else
             {
                 for (int i = 0; i < dataGridView1.RowCount; i++)
-                    if ((bool)dataGridView1.Rows[i].Cells["ModEnabled"].Value == false && dataGridView1.RowCount > 0)
+                    if (dataGridView1.Rows[i].Cells["ModEnabled"].Value != null && (bool)dataGridView1.Rows[i].Cells["ModEnabled"].Value == false && dataGridView1.RowCount > 0)
                         dataGridView1.Rows[i].Visible = false;
+
                 sbar4("Active mods only");
+                btnActiveOnly.Font = btnActiveOnly.Font = new Font(btnActiveOnly.Font.FontFamily, btnActiveOnly.Font.Size, FontStyle.Bold);
             }
         }
         private void activeOnlyToolStripMenuItem_Click(object sender, EventArgs e)
@@ -3820,6 +3826,16 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
             Properties.Settings.Default.ModStats = modStatsToolStripMenuItem.Checked;
             if (modStatsToolStripMenuItem.Checked)
                 RefreshDataGrid();
+        }
+
+        private void backupProfilesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void restoreProfilesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
