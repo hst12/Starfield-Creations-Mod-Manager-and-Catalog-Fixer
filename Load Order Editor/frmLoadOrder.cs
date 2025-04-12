@@ -3834,12 +3834,54 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
 
         private void backupProfilesToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (Properties.Settings.Default.ProfileFolder == "")
+            {
+                MessageBox.Show("No profile folder set");
+                return;
+            }
 
+            if (!Directory.Exists(Path.Combine(Properties.Settings.Default.ProfileFolder, "Backup")))
+            {
+                Directory.CreateDirectory(Path.Combine(Properties.Settings.Default.ProfileFolder, "Backup"));
+            }
+
+            foreach (var item in Directory.EnumerateFiles(Properties.Settings.Default.ProfileFolder, "*.txt", SearchOption.TopDirectoryOnly))
+            {
+                string fileName = Path.GetFileName(item);
+                string destinationPath = Path.Combine(Properties.Settings.Default.ProfileFolder, "Backup", fileName);
+                File.Copy(item, destinationPath, true);
+            }
+            sbar3("Profiles backed up to Backup folder");
         }
 
         private void restoreProfilesToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (Properties.Settings.Default.ProfileFolder == "")
+            {
+                MessageBox.Show("No profile folder set");
+                return;
+            }
 
+            if (Tools.ConfirmAction("Restore Backup","Restore Backup",MessageBoxButtons.OKCancel,MessageBoxIcon.Question)==DialogResult.Cancel)
+            {
+                MessageBox.Show("Restore cancelled");
+                return;
+            }
+
+            if (Directory.Exists(Path.Combine(Properties.Settings.Default.ProfileFolder, "Backup")))
+            {
+                foreach (var item in Directory.EnumerateFiles(Path.Combine(Properties.Settings.Default.ProfileFolder, "Backup"), "*.txt", SearchOption.TopDirectoryOnly))
+                {
+                    string fileName = Path.GetFileName(item);
+                    string destinationPath = Path.Combine(Properties.Settings.Default.ProfileFolder, fileName);
+                    File.Copy(item, destinationPath, true);
+                }
+                sbar3("Profiles restored from Backup folder");
+            }
+            else
+            {
+                MessageBox.Show("No backup folder found");
+            }
         }
     }
 }
