@@ -11,12 +11,11 @@ using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Windows.Forms.Design;
 using YamlDotNet.Serialization;
-using static Starfield_Tools.Common.Tools;
 using File = System.IO.File;
 
 namespace Starfield_Tools
@@ -63,6 +62,8 @@ namespace Starfield_Tools
 
             string PluginsPath = Tools.StarfieldAppData + "\\Plugins.txt";
             bool BackupStatus = false;
+
+
 
 #pragma warning disable CS0168 // Variable is declared but never used
             try
@@ -224,6 +225,18 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
                     }
                     systemToolStripMenuItem.Checked = true;
                     break;
+            }
+
+            try
+            {
+                if (!Directory.Exists(Tools.LocalAppDataPath))
+                    Directory.CreateDirectory(Tools.LocalAppDataPath);
+                if (!File.Exists(Path.Combine(Tools.LocalAppDataPath, "BlockedMods.txt")))
+                    File.Create(Path.Combine(Tools.LocalAppDataPath, "BlockedMods.txt")).Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
 
             // Initialise menu check marks from Properties.Settings.Default
