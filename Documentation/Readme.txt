@@ -61,6 +61,9 @@ TLDR; See the Help->Shortcuts and Quick Help menu
 
 New Features
 
+Install function handles SFSE plugins. SFSE must still be installed manually first.
+No uninstall function for SFSE plugins.
+
 Backup or restore profiles - creates a Backup folder under your profile folders and copies the profile files to the Backup folder.
 
 File->Reset/Reset Everything

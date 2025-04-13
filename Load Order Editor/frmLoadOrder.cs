@@ -1355,6 +1355,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
         {
             string ModPath, fileName, destinationPath;
             string ExtractPath = Path.GetTempPath() + "hstTools\\";
+            bool SFSEMod = false;
 
             if (!CheckGamePath()) // Bail out if game path not set
                 return;
@@ -1402,15 +1403,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                     return;
                 }
 
-                /*if (Directory.EnumerateFiles(ExtractPath, "*.esm", SearchOption.AllDirectories).Count() == 0) // Bail out if no esm files found
-                {
-                    MessageBox.Show("No esm files found in archive", "Unable to install");
-                    LoadScreen.Close();
-                    if (Directory.Exists(ExtractPath)) // Clean extract directory if necessary
-                        Directory.Delete(ExtractPath, true);
-                    return;
-                }*/
-
                 foreach (string ModFile in Directory.EnumerateFiles(ExtractPath, "*.esm", SearchOption.AllDirectories)) // Move extracted.esm files to Data folder
                 {
                     fileName = Path.GetFileName(ModFile);
@@ -1443,10 +1435,12 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                         File.Move(ModFile, destinationPath, true); // Overwrite
                 }
 
+                // Install SFSE plugin if found
                 try
                 {
-                    // Install SFSE plugin if found
                     string[] directories = Directory.GetDirectories(ExtractPath, "SFSE", SearchOption.AllDirectories);
+                    if (directories.Length > 0)
+                        SFSEMod = true;
 
                     foreach (string dir in directories)
                     {
@@ -1455,7 +1449,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"An error occurred: {ex.Message}");
+                    MessageBox.Show($"An error occurred: {ex.Message}");
                 }
 
                 static void CopyDirectory(string sourcePath, string targetPath)
@@ -1474,6 +1468,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                                 "File Overwrite Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No)
                                 continue; // Skip overwriting this file
                         }
+                        //else
                         File.Copy(file, destFile, true); // Overwrite if the user agrees
                     }
 
@@ -1487,13 +1482,20 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
                 LoadScreen.Close();
 
-                AddMissing();
-                SavePlugins();
-                if (AutoSort && InstallMod == "")
-                    RunLOOT(true);
+                if (!SFSEMod)
+                {
+                    AddMissing();
+                    SavePlugins();
+                    if (AutoSort && InstallMod == "")
+                        RunLOOT(true);
+                    sbar3("Mod installed");
+                }
+                else
+                    sbar3("SFSE mod installed");
+
                 if (Directory.Exists(ExtractPath)) // Clean up any left over files
                     Directory.Delete(ExtractPath, true);
-                sbar3("Mod installed");
+
                 return;
             }
         }
