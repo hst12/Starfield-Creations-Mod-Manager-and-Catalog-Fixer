@@ -1402,14 +1402,14 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                     return;
                 }
 
-                if (Directory.EnumerateFiles(ExtractPath, "*.esm", SearchOption.AllDirectories).Count() == 0) // Bail out if no esm files found
+                /*if (Directory.EnumerateFiles(ExtractPath, "*.esm", SearchOption.AllDirectories).Count() == 0) // Bail out if no esm files found
                 {
                     MessageBox.Show("No esm files found in archive", "Unable to install");
                     LoadScreen.Close();
                     if (Directory.Exists(ExtractPath)) // Clean extract directory if necessary
                         Directory.Delete(ExtractPath, true);
                     return;
-                }
+                }*/
 
                 foreach (string ModFile in Directory.EnumerateFiles(ExtractPath, "*.esm", SearchOption.AllDirectories)) // Move extracted.esm files to Data folder
                 {
@@ -1442,6 +1442,49 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                     else
                         File.Move(ModFile, destinationPath, true); // Overwrite
                 }
+
+                try
+                {
+                    // Install SFSE plugin if found
+                    string[] directories = Directory.GetDirectories(ExtractPath, "SFSE", SearchOption.AllDirectories);
+
+                    foreach (string dir in directories)
+                    {
+                        CopyDirectory(dir, Path.Combine(StarfieldGamePath, "Data", "SFSE"));
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"An error occurred: {ex.Message}");
+                }
+
+                static void CopyDirectory(string sourcePath, string targetPath)
+                {
+                    // Create the target directory if it doesn't exist
+                    Directory.CreateDirectory(targetPath);
+
+                    // Copy all files from the source directory to the target directory
+                    foreach (string file in Directory.GetFiles(sourcePath))
+                    {
+                        string destFile = Path.Combine(targetPath, Path.GetFileName(file));
+                        if (File.Exists(destFile))
+                        {
+                            // Show a warning message box
+                            if (Tools.ConfirmAction($"The file '{Path.GetFileName(file)}' already exists in the destination folder. Do you want to overwrite it?",
+                                "File Overwrite Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No)
+                                continue; // Skip overwriting this file
+                        }
+                        File.Copy(file, destFile, true); // Overwrite if the user agrees
+                    }
+
+                    // Recursively copy all subdirectories
+                    foreach (string directory in Directory.GetDirectories(sourcePath))
+                    {
+                        string destDirectory = Path.Combine(targetPath, Path.GetFileName(directory));
+                        CopyDirectory(directory, destDirectory);
+                    }
+                }
+
                 LoadScreen.Close();
 
                 AddMissing();
@@ -1450,7 +1493,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                     RunLOOT(true);
                 if (Directory.Exists(ExtractPath)) // Clean up any left over files
                     Directory.Delete(ExtractPath, true);
-                //sbar3("Mod installed");
+                sbar3("Mod installed");
                 return;
             }
         }
@@ -3856,15 +3899,15 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
 
         private void restoreProfilesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (Properties.Settings.Default.ProfileFolder == "")
+            if (Properties.Settings.Default.ProfileFolder == "" || !Directory.Exists(Path.Combine(Properties.Settings.Default.ProfileFolder, "Backup")))
             {
-                MessageBox.Show("No profile folder set");
+                MessageBox.Show("No profile or backup folder set");
                 return;
             }
 
-            if (Tools.ConfirmAction("Restore Backup","Restore Backup",MessageBoxButtons.OKCancel,MessageBoxIcon.Question)==DialogResult.Cancel)
+            if (Tools.ConfirmAction("Restore Backup", "Restore Backup", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.Cancel)
             {
-                MessageBox.Show("Restore cancelled");
+                sbar3("Restore cancelled");
                 return;
             }
 
@@ -3880,7 +3923,7 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
             }
             else
             {
-                MessageBox.Show("No backup folder found");
+                sbar3("No backup folder found");
             }
         }
     }

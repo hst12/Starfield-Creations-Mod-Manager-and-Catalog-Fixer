@@ -59,7 +59,9 @@ Further info below:
 
 TLDR; See the Help->Shortcuts and Quick Help menu
 
-New Feature
+New Features
+
+Backup or restore profiles - creates a Backup folder under your profile folders and copies the profile files to the Backup folder.
 
 File->Reset/Reset Everything
 Restores Starfield.ini to default
