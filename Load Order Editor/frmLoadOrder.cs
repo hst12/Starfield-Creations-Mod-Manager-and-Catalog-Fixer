@@ -2961,7 +2961,7 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
         private void UpdateGameVersion() // Display game version
         {
             Properties.Settings.Default.GameVersion = GameVersion;
-            if (Properties.Settings.Default.StarfieldGamePath == "" || Properties.Settings.Default.GamePathMS == "")
+            if (Properties.Settings.Default.StarfieldGamePath == "")
             {
                 StarfieldGamePath = tools.SetStarfieldGamePath();
                 if (GameVersion != MS)
@@ -2972,6 +2972,13 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
                 {
                     Properties.Settings.Default.GamePathMS = StarfieldGamePath;
                 }
+            }
+
+            if (Properties.Settings.Default.GamePathMS == "" && GameVersion == MS)
+            {
+                StarfieldGamePath = tools.SetStarfieldGamePath();
+                Properties.Settings.Default.GamePathMS = StarfieldGamePath;
+                SaveSettings();
             }
 
             SaveSettings();
@@ -3347,6 +3354,8 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
             {
                 SteamGameLocator steamGameLocator = new SteamGameLocator();
                 StarfieldGamePath = steamGameLocator.getGameInfoByFolder("Starfield").steamGameLocation;
+                Properties.Settings.Default.StarfieldGamePath=StarfieldGamePath;
+                SaveSettings();
             }
             catch (Exception ex)
             {
