@@ -1378,9 +1378,9 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
             OpenFileDialog OpenMod = new()
             {
-                //OpenMod.InitialDirectory = ProfileFolder;
+                InitialDirectory = Properties.Settings.Default.DownloadsDirectory,
                 Filter = "Archive Files (*.zip;*.7z;*.rar)|*.zip;*.7z;*.rar|All Files (*.*)|*.*",
-                Title = "Install Mod - Loose files not supported"
+                Title = "Install Mod - Loose files not supported except for SFSE plugins"
             };
 
             if (InstallMod == "")
@@ -1408,6 +1408,8 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                             statusStrip1.Refresh();
                         }
                     }
+                    Properties.Settings.Default.DownloadsDirectory=Path.GetDirectoryName(OpenMod.FileName);
+                    SaveSettings();
                 }
                 catch (Exception ex)
                 {

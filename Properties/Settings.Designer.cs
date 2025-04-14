@@ -608,5 +608,17 @@ namespace Starfield_Tools.Properties {
                 this["ModStats"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string DownloadsDirectory {
+            get {
+                return ((string)(this["DownloadsDirectory"]));
+            }
+            set {
+                this["DownloadsDirectory"] = value;
+            }
+        }
     }
 }
