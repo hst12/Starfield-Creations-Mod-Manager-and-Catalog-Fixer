@@ -71,7 +71,7 @@ namespace Starfield_Tools.Load_Order_Editor
         {
             List<string> fileContents = new();
 
-            if (Directory.Exists(Properties.Settings.Default.ProfileFolder) && checkedListBox1.CheckedItems.Count>0)
+            if (Directory.Exists(Properties.Settings.Default.ProfileFolder) && checkedListBox1.CheckedItems.Count > 0)
             {
                 foreach (var item in checkedListBox1.CheckedItems)
                 {

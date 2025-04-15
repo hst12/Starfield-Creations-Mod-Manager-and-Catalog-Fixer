@@ -1,12 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Starfield_Tools.Load_Order_Editor
@@ -51,7 +45,7 @@ namespace Starfield_Tools.Load_Order_Editor
 
             List<string> INILines = new();
             INILines.Add(@"[General]");
-            
+
             if (chkSkipIntro.Checked)
                 INILines.Add("sIntroSequence=");
 

@@ -16,7 +16,7 @@ namespace Starfield_Tools
 
         public bool AutoCheck, AutoClean, AutoBackup, AutoRestore, ForceClean, Verbose;
         public string CatalogStatus;
-        
+
 
         readonly Tools tools = new();
         private readonly string StarfieldGamePath;
@@ -104,7 +104,7 @@ namespace Starfield_Tools
                 if (!CheckBackup()) // Backup if necessary
                     BackupCatalog();
 
-            if (!File.Exists(Tools.GetCatalogPath()+".bak")) // Backup catalog if backup doesn't exist
+            if (!File.Exists(Tools.GetCatalogPath() + ".bak")) // Backup catalog if backup doesn't exist
                 BackupCatalog();
 
             DisplayCatalog();
@@ -364,7 +364,7 @@ namespace Starfield_Tools
         }
         public bool BackupCatalog()
         {
-            bool BackupStatus=false;
+            bool BackupStatus = false;
 
             if (!CheckCatalog())
             {
@@ -727,7 +727,7 @@ namespace Starfield_Tools
 
         private void btnAchievemnts_Click(object sender, EventArgs e)
         {
-            if (Tools.ConfirmAction("Do you want to continue?", "Experimental Feature - All achievement flags will be set. ",MessageBoxButtons.YesNo)==DialogResult.No)
+            if (Tools.ConfirmAction("Do you want to continue?", "Experimental Feature - All achievement flags will be set. ", MessageBoxButtons.YesNo) == DialogResult.No)
             {
                 toolStripStatusLabel1.Text = "Achievement flags not reset";
                 return;

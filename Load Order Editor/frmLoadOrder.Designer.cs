@@ -87,6 +87,7 @@
             toolStripSeparator = new System.Windows.Forms.ToolStripSeparator();
             toolStripMenuBackup = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuRestore = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripSeparator40 = new System.Windows.Forms.ToolStripSeparator();
             backupProfilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             restoreProfilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -660,7 +661,7 @@
             // 
             // fileToolStripMenuItem
             // 
-            fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { newToolStripMenuItem, openToolStripMenuItem, saveToolStripMenuItem, saveAsToolStripMenuItem, toolStripSeparator, toolStripMenuBackup, toolStripMenuRestore, backupProfilesToolStripMenuItem, restoreProfilesToolStripMenuItem, toolStripSeparator1, toolStripMenuExportActive, toolStripMenuExportCSV, toolStripSeparator2, exploreToolStripMenuItem, toolStripSeparator3, toolStripMenuEditFiles, toolStripSeparator19, resetDeleteFilesToolStripMenuItem, toolStripSeparator17, exitToolStripMenuItem });
+            fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { newToolStripMenuItem, openToolStripMenuItem, saveToolStripMenuItem, saveAsToolStripMenuItem, toolStripSeparator, toolStripMenuBackup, toolStripMenuRestore, toolStripSeparator40, backupProfilesToolStripMenuItem, restoreProfilesToolStripMenuItem, toolStripSeparator1, toolStripMenuExportActive, toolStripMenuExportCSV, toolStripSeparator2, exploreToolStripMenuItem, toolStripSeparator3, toolStripMenuEditFiles, toolStripSeparator19, resetDeleteFilesToolStripMenuItem, toolStripSeparator17, exitToolStripMenuItem });
             fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             fileToolStripMenuItem.Size = new System.Drawing.Size(71, 38);
             fileToolStripMenuItem.Text = "&File";
@@ -721,6 +722,11 @@
             toolStripMenuRestore.Size = new System.Drawing.Size(504, 44);
             toolStripMenuRestore.Text = "Restore Plugins.txt";
             toolStripMenuRestore.Click += toolStripMenuRestore_Click;
+            // 
+            // toolStripSeparator40
+            // 
+            toolStripSeparator40.Name = "toolStripSeparator40";
+            toolStripSeparator40.Size = new System.Drawing.Size(501, 6);
             // 
             // backupProfilesToolStripMenuItem
             // 
@@ -972,7 +978,7 @@
             // 
             resetEverythingToolStripMenuItem.Name = "resetEverythingToolStripMenuItem";
             resetEverythingToolStripMenuItem.Size = new System.Drawing.Size(888, 44);
-            resetEverythingToolStripMenuItem.Text = "Reset Everything";
+            resetEverythingToolStripMenuItem.Text = "Reset Everything Except App Preferences";
             resetEverythingToolStripMenuItem.Click += resetEverythingToolStripMenuItem_Click;
             // 
             // toolStripSeparator17
@@ -1583,7 +1589,6 @@
             starUIConfiguratorToolStripMenuItem.Name = "starUIConfiguratorToolStripMenuItem";
             starUIConfiguratorToolStripMenuItem.Size = new System.Drawing.Size(498, 44);
             starUIConfiguratorToolStripMenuItem.Text = "StarUI Configurator";
-            starUIConfiguratorToolStripMenuItem.Visible = false;
             starUIConfiguratorToolStripMenuItem.Click += starUIConfiguratorToolStripMenuItem_Click;
             // 
             // creationKitToolStripMenuItem
@@ -2271,5 +2276,6 @@
         private System.Windows.Forms.ToolStripMenuItem modStatsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem backupProfilesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem restoreProfilesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator40;
     }
 }
