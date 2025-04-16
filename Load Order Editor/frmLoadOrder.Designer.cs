@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmLoadOrder));
             dataGridView1 = new System.Windows.Forms.DataGridView();
             Index = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -115,14 +115,14 @@
             toolStripSeparator33 = new System.Windows.Forms.ToolStripSeparator();
             compareStarfieldCustominiToBackupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             resetStarfieldCustominiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            restoreStarfieldiniToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripSeparator37 = new System.Windows.Forms.ToolStripSeparator();
             toolStripMenuResetWindow = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator35 = new System.Windows.Forms.ToolStripSeparator();
             undoVortexChangesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             resetToVanillaStarfieldSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator34 = new System.Windows.Forms.ToolStripSeparator();
             checkArchivesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            toolStripSeparator37 = new System.Windows.Forms.ToolStripSeparator();
-            restoreStarfieldiniToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator38 = new System.Windows.Forms.ToolStripSeparator();
             resetAppPreferencesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator39 = new System.Windows.Forms.ToolStripSeparator();
@@ -279,14 +279,14 @@
             dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { Index, ModEnabled, PluginName, Description, Group, Version, AuthorVersion, TimeStamp, Achievements, Files, CreationsID, FileSize, URL, Blocked });
             dataGridView1.ContextMenuStrip = contextMenuDatagrid;
             dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            dataGridView1.Location = new System.Drawing.Point(2, 40);
+            dataGridView1.Location = new System.Drawing.Point(2, 42);
             dataGridView1.Margin = new System.Windows.Forms.Padding(2);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowHeadersWidth = 82;
             dataGridView1.RowTemplate.Height = 33;
             dataGridView1.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            dataGridView1.Size = new System.Drawing.Size(2272, 724);
+            dataGridView1.Size = new System.Drawing.Size(2272, 722);
             dataGridView1.TabIndex = 0;
             dataGridView1.CellDoubleClick += dataGridView1_CellDoubleClick;
             dataGridView1.Sorted += dataGridView1_Sorted;
@@ -345,8 +345,8 @@
             // Version
             // 
             Version.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            dataGridViewCellStyle2.NullValue = null;
-            Version.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.NullValue = null;
+            Version.DefaultCellStyle = dataGridViewCellStyle1;
             Version.HeaderText = "Date";
             Version.MinimumWidth = 10;
             Version.Name = "Version";
@@ -655,7 +655,7 @@
             menuStrip1.Location = new System.Drawing.Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Padding = new System.Windows.Forms.Padding(3, 1, 0, 1);
-            menuStrip1.Size = new System.Drawing.Size(2276, 38);
+            menuStrip1.Size = new System.Drawing.Size(2276, 40);
             menuStrip1.TabIndex = 7;
             menuStrip1.Text = "menuStrip1";
             // 
@@ -907,6 +907,18 @@
             resetStarfieldCustominiToolStripMenuItem.Text = "Reset StarfieldCustom.ini";
             resetStarfieldCustominiToolStripMenuItem.Click += toolStripMenuResetStarfieldCustom_Click;
             // 
+            // restoreStarfieldiniToolStripMenuItem
+            // 
+            restoreStarfieldiniToolStripMenuItem.Name = "restoreStarfieldiniToolStripMenuItem";
+            restoreStarfieldiniToolStripMenuItem.Size = new System.Drawing.Size(888, 44);
+            restoreStarfieldiniToolStripMenuItem.Text = "Reset Starfield.ini";
+            restoreStarfieldiniToolStripMenuItem.Click += restoreStarfieldiniToolStripMenuItem_Click;
+            // 
+            // toolStripSeparator37
+            // 
+            toolStripSeparator37.Name = "toolStripSeparator37";
+            toolStripSeparator37.Size = new System.Drawing.Size(885, 6);
+            // 
             // toolStripMenuResetWindow
             // 
             toolStripMenuResetWindow.Name = "toolStripMenuResetWindow";
@@ -945,18 +957,6 @@
             checkArchivesToolStripMenuItem.Text = "Check for Orphaned Archives";
             checkArchivesToolStripMenuItem.Click += checkArchivesToolStripMenuItem_Click;
             // 
-            // toolStripSeparator37
-            // 
-            toolStripSeparator37.Name = "toolStripSeparator37";
-            toolStripSeparator37.Size = new System.Drawing.Size(885, 6);
-            // 
-            // restoreStarfieldiniToolStripMenuItem
-            // 
-            restoreStarfieldiniToolStripMenuItem.Name = "restoreStarfieldiniToolStripMenuItem";
-            restoreStarfieldiniToolStripMenuItem.Size = new System.Drawing.Size(888, 44);
-            restoreStarfieldiniToolStripMenuItem.Text = "Reset Starfield.ini";
-            restoreStarfieldiniToolStripMenuItem.Click += restoreStarfieldiniToolStripMenuItem_Click;
-            // 
             // toolStripSeparator38
             // 
             toolStripSeparator38.Name = "toolStripSeparator38";
@@ -978,7 +978,7 @@
             // 
             resetEverythingToolStripMenuItem.Name = "resetEverythingToolStripMenuItem";
             resetEverythingToolStripMenuItem.Size = new System.Drawing.Size(888, 44);
-            resetEverythingToolStripMenuItem.Text = "Reset Everything Except App Preferences";
+            resetEverythingToolStripMenuItem.Text = "Reset Everything Except App Preferences, Delete Loose Files";
             resetEverythingToolStripMenuItem.Click += resetEverythingToolStripMenuItem_Click;
             // 
             // toolStripSeparator17

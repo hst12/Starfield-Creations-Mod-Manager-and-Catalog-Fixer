@@ -499,7 +499,7 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
                     {
                         sbar(ex.Message);
 #if DEBUG
-        MessageBox.Show(ex.Message);
+                        MessageBox.Show(ex.Message);
 #endif
                     }
                 }
@@ -700,7 +700,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                     {
                         sbar4("Catalog/Plugins mismatch - Run game to solve");
 #if DEBUG
-            MessageBox.Show("Catalog/Plugins mismatch - Run game to solve");
+                        MessageBox.Show("Catalog/Plugins mismatch - Run game to solve");
 #endif
                     }
                 }
@@ -708,7 +708,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 {
                     sbar("Starfield path needs to be set for mod stats");
 #if DEBUG
-        MessageBox.Show(ex.Message);
+                    MessageBox.Show(ex.Message);
 #endif
                 }
             }
@@ -1436,15 +1436,55 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 statusStrip1.Refresh();
 
                 // Use ArchiveFile to extract mod content.
+                string[] searchPatterns = { "*.7z", "*.rar","*.zip" };
+
                 using (ArchiveFile archiveFile = new ArchiveFile(modFilePath))
                 {
                     foreach (Entry entry in archiveFile.Entries)
                     {
+
                         string targetPath = Path.Combine(extractPath, entry.FileName);
                         entry.Extract(targetPath);
+
                         sbar2("Extracting " + entry.FileName);
+
                         statusStrip1.Refresh();
                     }
+
+                    // Check for embedded archive
+                    if (Directory.Exists(extractPath))
+                    {
+                        foreach (string pattern in searchPatterns)
+                        {
+                            string[] archiveFiles = Directory.GetFiles(extractPath, pattern, SearchOption.AllDirectories);
+
+                            if (archiveFiles.Length > 0)
+                            {
+                                Debug.WriteLine($"Found {pattern} archives:");
+                                foreach (string file in archiveFiles)
+                                {
+                                    Debug.WriteLine(file);
+
+                                    using (ArchiveFile archiveFile2 = new ArchiveFile(file))
+                                    {
+                                        foreach (Entry entry in archiveFile2.Entries)
+                                        {
+
+                                            string targetPath = Path.Combine(extractPath, entry.FileName);
+                                            entry.Extract(targetPath);
+
+                                            sbar2("Extracting " + entry.FileName);
+
+                                            statusStrip1.Refresh();
+                                        }
+
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+
                 }
 
                 // Update the downloads directory setting.
@@ -3754,7 +3794,8 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             catch (Exception ex)
             {
 #if DEBUG
-                MessageBox.Show(ex.Message);
+                //MessageBox.Show(ex.Message);
+
 #endif
                 return false;
             }
@@ -3826,7 +3867,8 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             {
 #if DEBUG
 
-                MessageBox.Show(ex.Message);
+                //MessageBox.Show(ex.Message);
+                sbar3(ex.Message);
 #endif
             }
             if (deleteCount > 0)
