@@ -17,7 +17,6 @@ namespace Starfield_Tools
         public bool AutoCheck, AutoClean, AutoBackup, AutoRestore, ForceClean, Verbose;
         public string CatalogStatus;
 
-
         readonly Tools tools = new();
         private readonly string StarfieldGamePath;
         public frmStarfieldTools()
@@ -41,38 +40,6 @@ namespace Starfield_Tools
             bool cmdLineRunMS = false;
             bool cmdlineRunSFSE = false;
             richTextBox2.Text = "";
-
-            /*foreach (var arg in Environment.GetCommandLineArgs())
-            {
-                if (String.Equals(arg, "-runSteam", StringComparison.OrdinalIgnoreCase))
-                    cmdLineRunSteam = true;
-                if (String.Equals(arg, "-runMS", StringComparison.OrdinalIgnoreCase))
-                    cmdLineRunMS = true;
-                if (String.Equals(arg, "-runSFSE", StringComparison.OrdinalIgnoreCase))
-                    cmdlineRunSFSE = true;
-                if (String.Equals(arg, "-noauto", StringComparison.OrdinalIgnoreCase))
-                {
-
-                    AutoCheck = false;
-                    AutoClean = false;
-                    AutoBackup = false;
-                    AutoRestore = false;
-                    ForceClean = false;
-                    SaveSettings();
-                    SetAutoCheckBoxes();
-                }
-
-                if (String.Equals(arg, "-auto", StringComparison.OrdinalIgnoreCase)) // Set recommended settings
-                {
-                    AutoCheck = true;
-                    AutoClean = true;
-                    AutoBackup = true;
-                    AutoRestore = true;
-                    ForceClean = false;
-                    SaveSettings();
-                    SetAutoCheckBoxes();
-                }
-            }*/
 
             if (AutoCheck) // Check catalog status if enabled
             {
@@ -191,118 +158,134 @@ namespace Starfield_Tools
 #pragma warning restore CS0168 // Variable is declared but never used
         }
 
-        private bool CheckCatalog() // returns true if catalog good
+        private bool CheckCatalog() // returns true if catalog is good
         {
             toolStripStatusLabel1.Text = "Checking...";
-            richTextBox1.Text = "";
-            int ErrorCount = 0;
-            int WarningCount = 0;
-            richTextBox2.Text += "Checking Catalog\n";
-            double VersionCheck;
-            double TimeStamp;
+            richTextBox1.Clear();
+            richTextBox2.Clear();
+            richTextBox2.AppendText("Checking Catalog\n");
+
+            int errorCount = 0;
+            int warningCount = 0;
+            string catalogPath = Tools.GetCatalogPath();
 
             try
             {
-                string jsonFilePath = Tools.GetCatalogPath();
-                if (jsonFilePath == null)
+                if (string.IsNullOrEmpty(catalogPath))
                 {
-                    toolStripStatusLabel1.Text = "Start the game and enter the Creations menu or load a save to create a catalog file";
-                    richTextBox2.Text = "Start the game and enter the Creations menu or load a save to create a catalog file";
+                    string message = "Start the game and enter the Creations menu or load a save to create a catalog file";
+                    toolStripStatusLabel1.Text = message;
+                    richTextBox2.Text = message;
                     return false;
                 }
-                string json = File.ReadAllText(jsonFilePath);
-                if (json == "")
+
+                string json = File.ReadAllText(catalogPath);
+                if (string.IsNullOrWhiteSpace(json))
                 {
                     toolStripStatusLabel1.Text = "Catalog file is empty, nothing to check";
                     return false;
                 }
-                string TestString = "";
 
+                // Deserialize the JSON but remove the header
                 var data = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, Tools.Creation>>(json);
-                data.Remove("ContentCatalog"); // remove header
+                data?.Remove("ContentCatalog");
 
                 foreach (var kvp in data)
                 {
-                    for (int i = 0; i < kvp.Value.Files.Length - 0; i++)
+                    Tools.Creation creation = kvp.Value;
+
+                    // Check each file for an ".esp" entry
+                    if (creation.Files != null)
                     {
-                        if (kvp.Value.Files[i].IndexOf(".esp") > 0)
+                        foreach (string file in creation.Files)
                         {
-                            richTextBox2.Text += "\nWarning - esp file found in catalog file - " + kvp.Value.Files[i] + "\n";
-                            WarningCount++;
+                            if (file.IndexOf(".esp", StringComparison.OrdinalIgnoreCase) > 0)
+                            {
+                                richTextBox2.AppendText($"\nWarning - esp file found in catalog file - {file}\n");
+                                warningCount++;
+                            }
                         }
                     }
 
-                    TestString = kvp.Value.Version;
-                    VersionCheck = double.Parse((kvp.Value.Version[..kvp.Value.Version.IndexOf('.')]));
-                    if (TestString != Tools.CatalogVersion) // Skip catalog header, pull version info apart into date and actual version number
-                        if (Verbose)
-                            richTextBox2.Text += kvp.Value.Title + ", date: " + Tools.ConvertTime(VersionCheck) + " version: " + TestString[(TestString.IndexOf('.') + 1)..] + "\n";
+                    string versionStr = creation.Version;
+                    int dotIndex = versionStr.IndexOf('.');
+                    double versionCheck = dotIndex > 0 ? double.Parse(versionStr.Substring(0, dotIndex)) : 0;
 
-                    TimeStamp = kvp.Value.Timestamp;
-                    if (VersionCheck > kvp.Value.Timestamp && VersionCheck != 1)
+                    // If the version string does not match the expected header and Verbose logging is enabled, log details.
+                    if (versionStr != Tools.CatalogVersion && Verbose)
                     {
-                        ErrorCount++;
-                        richTextBox2.Text += "Out of range version number detected in " + kvp.Value.Title + ": " + TestString + ", " + Tools.ConvertTime(VersionCheck) + "\n";
+                        string versionDetail = (dotIndex >= 0 && dotIndex < versionStr.Length - 1)
+                            ? versionStr.Substring(dotIndex + 1)
+                            : "";
+                        richTextBox2.AppendText($"{creation.Title}, date: {Tools.ConvertTime(versionCheck)} version: {versionDetail}\n");
                     }
-                    for (int i = 0; i < TestString.Length; i++)
+
+                    // If the numeric part of the version is out of range (and not equal to 1), log an error.
+                    if (versionCheck > creation.Timestamp && !versionCheck.Equals(1))
                     {
-                        if (!char.IsLetterOrDigit(TestString[i])) // Check for numbers or . in Version
+                        errorCount++;
+                        richTextBox2.AppendText($"Out of range version number detected in {creation.Title}: {versionStr}, {Tools.ConvertTime(versionCheck)}\n");
+                    }
+
+                    // Check the entire version string for invalid characters (anything other than letters, digits, or '.')
+                    foreach (char c in versionStr)
+                    {
+                        if (!char.IsLetterOrDigit(c) && c != '.')
                         {
-                            if (TestString[i] != '.')
-                            {
-                                ErrorCount++;
-                                richTextBox2.Text += "Non numeric version number detected in " + kvp.Value.Title + "\n";
-                                break;
-                            }
+                            errorCount++;
+                            richTextBox2.AppendText($"Non numeric version number detected in {creation.Title}\n");
+                            break;
                         }
                     }
                 }
 
-                if (ErrorCount == 0)
+                // Reporting based on error and warning counts
+                if (errorCount == 0)
                 {
-                    if (WarningCount == 0)
+                    if (warningCount == 0)
                     {
                         toolStripStatusLabel1.Text = "Catalog OK";
                         CatalogStatus = toolStripStatusLabel1.Text;
-                        richTextBox2.Text += "\nCatalog OK\n";
+                        richTextBox2.AppendText("\nCatalog OK\n");
                         return true;
                     }
                     else
                     {
-                        toolStripStatusLabel1.Text = WarningCount + " Warning(s) Press the Catalog button for details";
+                        toolStripStatusLabel1.Text = $"{warningCount} Warning(s) Press the Catalog button for details";
                         CatalogStatus = toolStripStatusLabel1.Text;
                         return true;
                     }
                 }
                 else
                 {
-                    toolStripStatusLabel1.Text = ErrorCount.ToString() + " Error(s) found";
+                    toolStripStatusLabel1.Text = $"{errorCount} Error(s) found";
                     CatalogStatus = toolStripStatusLabel1.Text;
-                    richTextBox2.Text += ErrorCount.ToString() + " Error(s) found\n";
+                    richTextBox2.AppendText($"{errorCount} Error(s) found\n");
                     return false;
                 }
             }
-
             catch (Exception ex)
             {
 #if DEBUG
-                MessageBox.Show(ex.Message);
+        MessageBox.Show(ex.Message);
 #endif
-                if (!File.Exists(Tools.GetCatalogPath()))
+                // If the catalog file is missing, prompt to create a dummy one.
+                if (!File.Exists(catalogPath))
                 {
-                    DialogResult result = MessageBox.Show("Missing ContentCatalog.txt", "Do you want to create a blank ContentCatalog.txt file?", MessageBoxButtons.OKCancel);
+                    DialogResult result = MessageBox.Show("Missing ContentCatalog.txt",
+                                                            "Do you want to create a blank ContentCatalog.txt file?",
+                                                            MessageBoxButtons.OKCancel);
                     if (result == DialogResult.OK)
                     {
-
-                        var CatalogHeader = Tools.MakeHeaderBlank();
-                        File.WriteAllText(Tools.GetCatalogPath(), CatalogHeader);
+                        string catalogHeader = Tools.MakeHeaderBlank();
+                        File.WriteAllText(catalogPath, catalogHeader);
                         toolStripStatusLabel1.Text = "Dummy ContentCatalog.txt created";
                         return false;
                     }
                 }
                 else
                 {
-                    richTextBox2.Text += "\n" + (ex.Message);
+                    richTextBox2.AppendText("\n" + ex.Message);
                     toolStripStatusLabel1.Text = "Catalog corrupt. Use the Restore or Clean functions to repair";
                 }
                 return false;
@@ -319,7 +302,7 @@ namespace Starfield_Tools
 
                 if (fileSize > 0)
                 {
-                    NewFix();
+                    FixCatalog();
 
                     if (AutoBackup)
                         BackupCatalog();
@@ -629,75 +612,74 @@ namespace Starfield_Tools
             }
         }
 
-        private void NewFix()
+        private void FixCatalog()
         {
             string jsonFilePath = Tools.GetCatalogPath();
-
             string json = File.ReadAllText(jsonFilePath); // Load catalog
-            if (json == "")
+
+            if (string.IsNullOrWhiteSpace(json))
             {
                 toolStripStatusLabel1.Text = "Catalog file is empty, nothing to clean";
                 return;
             }
-            string TestString;
-            bool FixVersion;
-            int errorCount = 0, VersionReplacementCount = 0;
-            double VersionCheck;
-            long TimeStamp;
 
+            int errorCount = 0;
+            int versionReplacementCount = 0;
+
+            // Deserialize the catalog into a dictionary.
             var data = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, Tools.Creation>>(json);
 
             foreach (var kvp in data)
             {
-                TestString = kvp.Value.Version;
-                FixVersion = false;
+                string versionStr = kvp.Value.Version;
                 if (Verbose)
-                    richTextBox2.Text += "Checking " + kvp.Value.Title + ", " + TestString + "\n";
+                    richTextBox2.AppendText($"Checking {kvp.Value.Title}, {versionStr}\n");
 
-                for (int i = 0; i < TestString.Length; i++)
+                // Check for any invalid characters in the version (allows letters, digits, or '.').
+                bool fixVersion = versionStr.Any(ch => !char.IsLetterOrDigit(ch) && ch != '.');
+
+                // If the version does not match the header, perform the timestamp check.
+                if (versionStr != Tools.CatalogVersion)
                 {
-
-                    if (!char.IsLetterOrDigit(TestString[i])) // Check for numbers or . in Version
+                    int dotIndex = versionStr.IndexOf('.');
+                    if (dotIndex > 0)
                     {
-                        if (TestString[i] != '.')
+                        double versionCheck = double.Parse(versionStr.Substring(0, dotIndex));
+                        long timeStamp = kvp.Value.Timestamp;
+                        if (versionCheck > timeStamp)
                         {
-                            FixVersion = true;
-                            break;
+                            richTextBox2.AppendText($"Replacing version no for {kvp.Value.Title}\n");
+                            kvp.Value.Version = "1704067200.0";
+                            versionReplacementCount++;
                         }
                     }
                 }
 
-                if (TestString != Tools.CatalogVersion) // Skip the catalog header then check for valid timestamps
+                // If invalid characters were found, correct the version string.
+                if (fixVersion)
                 {
-                    VersionCheck = double.Parse((kvp.Value.Version[..kvp.Value.Version.IndexOf('.')]));
-                    TimeStamp = kvp.Value.Timestamp;
-                    if (VersionCheck > kvp.Value.Timestamp)
-                    {
-                        richTextBox2.Text += "Replacing version no for " + kvp.Value.Title + "\n";
-                        kvp.Value.Version = "1704067200.0";
-                        VersionReplacementCount++;
-                    }
-                }
-                if (FixVersion) // Replace version numbers if they contain garbage characters.
-                {
-                    richTextBox2.Text += "Invalid characters in " + kvp.Value.Title + "\n";
-                    kvp.Value.Version = "1704067200.0"; // set version to 1704067200.0
+                    richTextBox2.AppendText($"Invalid characters in {kvp.Value.Title}\n");
+                    kvp.Value.Version = "1704067200.0"; // set version to default
                     errorCount++;
                 }
             }
-            data.Remove("ContentCatalog"); // remove content catalog section in case it's corrupted
 
+            // Remove any corrupted catalog header before re-serializing.
+            data.Remove("ContentCatalog");
+
+            // Serialize the catalog using Newtonsoft.Json for indented formatting.
             json = Newtonsoft.Json.JsonConvert.SerializeObject(data, Newtonsoft.Json.Formatting.Indented);
             if (json == "{}")
             {
                 toolStripStatusLabel1.Text = "Catalog is empty";
                 return;
             }
-            // Insert the Bethesda header back in. This will probably break if the version no. is updated from 1.1
-            json = Tools.MakeHeader() + json[1..]; // Remove a { char
 
+            // Re-insert the header (skipping the first '{' character from the JSON string).
+            json = Tools.MakeHeader() + json.Substring(1);
             File.WriteAllText(jsonFilePath, json);
-            toolStripStatusLabel1.Text = VersionReplacementCount.ToString() + " Version replacements";
+
+            toolStripStatusLabel1.Text = $"{versionReplacementCount} Version replacements";
             ScrollToEnd();
         }
 

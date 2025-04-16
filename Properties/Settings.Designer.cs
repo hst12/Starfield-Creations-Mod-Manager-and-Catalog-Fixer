@@ -620,5 +620,17 @@ namespace Starfield_Tools.Properties {
                 this["DownloadsDirectory"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string BackupDirectory {
+            get {
+                return ((string)(this["BackupDirectory"]));
+            }
+            set {
+                this["BackupDirectory"] = value;
+            }
+        }
     }
 }

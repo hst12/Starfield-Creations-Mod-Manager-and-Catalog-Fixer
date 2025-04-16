@@ -41,7 +41,7 @@ namespace Starfield_Tools
         {
             InitializeComponent();
 #if DEBUG
-            this.Text = Application.ProductName + " " + File.ReadAllText(Tools.CommonFolder + "\\App Version.txt");
+            this.Text = Application.ProductName + " " + File.ReadAllText(Tools.CommonFolder + "\\App Version.txt") + " Debug";
 #endif
 
             this.KeyPreview = true; // Ensure the form captures key presses
@@ -170,61 +170,74 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
             if (Properties.Settings.Default.MO2Path == "")
                 mO2ToolStripMenuItem.Visible = false;
 
-            if (String.IsNullOrEmpty(Properties.Settings.Default.LOOTPath))
+            if (string.IsNullOrEmpty(Properties.Settings.Default.LOOTPath) &&
+    File.Exists(@"C:\Program Files\LOOT\LOOT.exe")) // Try to detect LOOT if installed in default location
             {
-                toolStripMenuLOOTToggle.Visible = false;
-                autoSortToolStripMenuItem.Visible = false;
-                toolStripMenuLoot.Visible = false;
-                toolStripMenuLootSort.Visible = false;
+                Properties.Settings.Default.LOOTPath = @"C:\Program Files\LOOT\LOOT.exe";
+                SaveSettings();
             }
+
+            // Hide menu items if LOOTPath is still unset
+            bool lootPathIsEmpty = string.IsNullOrEmpty(Properties.Settings.Default.LOOTPath);
+            toolStripMenuLOOTToggle.Visible = !lootPathIsEmpty;
+            autoSortToolStripMenuItem.Visible = !lootPathIsEmpty;
+            toolStripMenuLoot.Visible = !lootPathIsEmpty;
+            toolStripMenuLootSort.Visible = !lootPathIsEmpty;
 
             if (Properties.Settings.Default.ProfileOn)
             {
-                toolStripMenuProfilesOn.Checked = Properties.Settings.Default.ProfileOn;
-                if (toolStripMenuProfilesOn.Checked)
-                {
-                    Profiles = true;
-                    chkProfile.Checked = true;
-                }
-                else Profiles = false;
+                toolStripMenuProfilesOn.Checked = true;
+                Profiles = true;
+                chkProfile.Checked = true;
+            }
+            else
+            {
+                Profiles = false;
             }
 
             SetupColumns();
 
             // Setup other preferences
 
-            switch (Properties.Settings.Default.DarkMode) // Theme
+            // Set the color mode based on the theme
+            var colorMode = Properties.Settings.Default.DarkMode switch
             {
-                case 0: // Light mode
-                    dataGridView1.EnableHeadersVisualStyles = true;
-#pragma warning disable WFO5001
-                    // 'System.Windows.Forms.Application.SetColorMode(System.Windows.Forms.SystemColorMode)' is for evaluation purposes only and is subject to
-                    // change or removal in future updates.
-                    // Suppress this diagnostic to proceed.
-                    System.Windows.Forms.Application.SetColorMode(SystemColorMode.Classic);
-                    lightToolStripMenuItem.Checked = true;
-                    break;
-                case 1: // Dark mode
-                    Application.SetColorMode(SystemColorMode.Dark);
-                    dataGridView1.EnableHeadersVisualStyles = false;
-                    dataGridView1.DefaultCellStyle.SelectionBackColor = Color.Green; // Background color of selected cells
-                    dataGridView1.DefaultCellStyle.SelectionForeColor = Color.White; // Text color of selected cells
-                    statusStrip1.BackColor = Color.Black;
-                    darkToolStripMenuItem.Checked = true;
-                    break;
-                case 2: // System
-                    Application.SetColorMode(SystemColorMode.System);
-                    if (System.Windows.Forms.Application.SystemColorMode == SystemColorMode.Dark)
-                    {
-                        dataGridView1.EnableHeadersVisualStyles = false;
-                        dataGridView1.DefaultCellStyle.SelectionBackColor = Color.Green; // Background color of selected cells
-                        dataGridView1.DefaultCellStyle.SelectionForeColor = Color.White; // Text color of selected cells
-                        statusStrip1.BackColor = Color.Black;
-                    }
-                    systemToolStripMenuItem.Checked = true;
-                    break;
+                0 => SystemColorMode.Classic,
+                1 => SystemColorMode.Dark,
+                2 => SystemColorMode.System,
+                _ => SystemColorMode.Classic // Default fallback
+            };
+
+            Application.SetColorMode(colorMode);
+
+            // Update menu item selection
+            var menuItems = new Dictionary<int, ToolStripMenuItem>
+{
+    { 0, lightToolStripMenuItem },
+    { 1, darkToolStripMenuItem },
+    { 2, systemToolStripMenuItem }
+};
+
+            if (menuItems.TryGetValue(Properties.Settings.Default.DarkMode, out var menuItem))
+            {
+                menuItem.Checked = true;
             }
 
+            // Apply UI changes for dark mode conditions
+            if (colorMode == SystemColorMode.Dark ||
+               (colorMode == SystemColorMode.System && System.Windows.Forms.Application.SystemColorMode == SystemColorMode.Dark))
+            {
+                dataGridView1.EnableHeadersVisualStyles = false;
+                dataGridView1.DefaultCellStyle.SelectionBackColor = Color.Green; // Background color of selected cells
+                dataGridView1.DefaultCellStyle.SelectionForeColor = Color.White; // Text color of selected cells
+                statusStrip1.BackColor = Color.Black;
+            }
+            else
+            {
+                dataGridView1.EnableHeadersVisualStyles = true;
+            }
+
+            // Create BlockedMods.txt if necessary
             try
             {
                 if (!Directory.Exists(Tools.LocalAppDataPath))
@@ -327,42 +340,47 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
         {
             var settings = Properties.Settings.Default;
 
+            // Assign values with minimal redundancy
             toolStripMenuProfilesOn.Checked = settings.ProfileOn;
             compareProfilesToolStripMenuItem.Checked = settings.CompareProfiles;
-
             looseFilesDisabledToolStripMenuItem.Checked = LooseFiles || settings.LooseFiles;
-            sbarCCC(looseFilesDisabledToolStripMenuItem.Checked ? "Loose files enabled" : "Loose files disabled");
-
             autoSortToolStripMenuItem.Checked = AutoSort = settings.AutoSort;
             activeOnlyToolStripMenuItem.Checked = ActiveOnly = settings.ActiveOnly;
-            if (ActiveOnly)
-                btnActiveOnly.Font = new Font(btnActiveOnly.Font, FontStyle.Bold);
             autoUpdateModsToolStripMenuItem.Checked = AutoUpdate = settings.AutoUpdate;
             toolStripMenuAutoDelccc.Checked = settings.AutoDelccc;
             autoResetToolStripMenuItem.Checked = settings.AutoReset;
-            showTimeToolStripMenuItem.Checked = settings.Showtime;
-            timer2.Enabled = settings.Showtime;
+            showTimeToolStripMenuItem.Checked = timer2.Enabled = settings.Showtime;
             activateNewModsToolStripMenuItem.Checked = settings.ActivateNew;
             disableAllWarningToolStripMenuItem.Checked = NoWarn = settings.NoWarn;
             toolStripMenuLOOTToggle.Checked = settings.LOOTEnabled;
             prepareForCreationsUpdateToolStripMenuItem.Checked = settings.CreationsUpdate;
             modStatsToolStripMenuItem.Checked = settings.ModStats;
 
-            if (settings.AutoReset) ResetDefaults();
+            // Display Loose Files status
+            sbarCCC(looseFilesDisabledToolStripMenuItem.Checked ? "Loose files enabled" : "Loose files disabled");
 
-            if (AutoUpdate)
+            // Apply bold styling when ActiveOnly is enabled
+            btnActiveOnly.Font = new Font(btnActiveOnly.Font, ActiveOnly ? FontStyle.Bold : FontStyle.Regular);
+
+            // Reset defaults if AutoReset is enabled
+            if (settings.AutoReset)
+                ResetDefaults();
+
+            // Handle AutoUpdate logic
+            if (!AutoUpdate) return;
+
+            int addedMods = AddMissing();
+            int removedMods = RemoveMissing();
+
+            if (addedMods + removedMods > 0)
             {
-                int addedMods = AddMissing(), removedMods = RemoveMissing();
+                sbar4($"Added: {addedMods}, Removed: {removedMods}");
+                SavePlugins();
 
-                if (addedMods + removedMods > 0)
-                {
-                    sbar4($"Added: {addedMods}, Removed: {removedMods}");
-                    SavePlugins();
+                if (AutoSort)
+                    RunLOOT(true);
 
-                    if (AutoSort) RunLOOT(true);
-
-                    InitDataGrid();
-                }
+                InitDataGrid();
             }
         }
 
@@ -506,7 +524,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 File.WriteAllText(loText, "# This file is used by Starfield to keep track of your downloaded content.\n# Please do not modify this file.\n");
                 sbar("");
                 progressBar1.Hide();
-                File.Create(loText).Close(); // Make a blank Plugins.txt
                 return;
             }
 
@@ -725,8 +742,8 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             cmbProfile.Items.Clear();
             ProfileFolder = Properties.Settings.Default.ProfileFolder;
             ProfileFolder = string.IsNullOrEmpty(ProfileFolder)
-    ? Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
-    : ProfileFolder;
+        ? Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+        : ProfileFolder;
 
             LastProfile ??= Properties.Settings.Default.LastProfile;
             try
@@ -964,57 +981,44 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void SearchMod()
         {
-            int currentIndex, nextIndex, ModIndex;
-            string DataGridString, TextBoxString;
-
-            // Exit if search box is empty
+            // Exit if the search box is empty.
             if (string.IsNullOrEmpty(txtSearchBox.Text))
                 return;
 
-            TextBoxString = txtSearchBox.Text.ToLower(); // Lowercase for case-insensitive search
+            // Lowercase the search query for case-insensitive matching.
+            string searchQuery = txtSearchBox.Text.ToLowerInvariant();
 
-            // Check if there's a current cell in the DataGridView
-            if (dataGridView1.CurrentCell == null)
+            // Return early if no current cell is selected.
+            if (dataGridView1.CurrentCell is null)
                 return;
 
-            currentIndex = dataGridView1.CurrentCell.RowIndex;
-            nextIndex = currentIndex + 1;
+            int currentIndex = dataGridView1.CurrentCell.RowIndex;
+            int totalRows = dataGridView1.RowCount;
 
-            // Function to handle the search result
-            void HandleSearchResult(int index)
+            // Loop through all rows starting after the current one, then wrap around.
+            for (int offset = 1; offset <= totalRows; offset++)
             {
-                DataGridString = dataGridView1.Rows[index].Cells["PluginName"].Value.ToString();
-                sbar2($"Found {txtSearchBox.Text} in {DataGridString}");
+                int rowIndex = (currentIndex + offset) % totalRows;
+                var cellValue = dataGridView1.Rows[rowIndex].Cells["PluginName"].Value;
+                string cellText = cellValue?.ToString().ToLowerInvariant() ?? string.Empty;
 
-                if (dataGridView1.Rows[index].Cells["PluginName"].Visible)
-                    dataGridView1.CurrentCell = dataGridView1.Rows[index].Cells["PluginName"];
-                else
-                    sbar2("Mod found but is inactive");
-            }
-
-            // First check the current and subsequent rows
-            for (ModIndex = nextIndex; ModIndex < dataGridView1.RowCount; ModIndex++)
-            {
-                DataGridString = dataGridView1.Rows[ModIndex].Cells["PluginName"].Value.ToString().ToLower();
-                if (DataGridString.Contains(TextBoxString))
+                if (cellText.Contains(searchQuery))
                 {
-                    HandleSearchResult(ModIndex);
+                    // Report the result.
+                    string foundText = cellValue?.ToString() ?? "";
+                    sbar2($"Found {txtSearchBox.Text} in {foundText}");
+
+                    // Set current cell if the cell is visible; otherwise, notify the mod is inactive.
+                    if (dataGridView1.Rows[rowIndex].Cells["PluginName"].Visible)
+                        dataGridView1.CurrentCell = dataGridView1.Rows[rowIndex].Cells["PluginName"];
+                    else
+                        sbar2("Mod found but is inactive");
+
                     return;
                 }
             }
 
-            // If not found, wrap around to start from the top
-            for (ModIndex = 0; ModIndex < dataGridView1.RowCount; ModIndex++)
-            {
-                DataGridString = dataGridView1.Rows[ModIndex].Cells["PluginName"].Value.ToString().ToLower();
-                if (DataGridString.Contains(TextBoxString))
-                {
-                    HandleSearchResult(ModIndex);
-                    return;
-                }
-            }
-
-            // If nothing found after all iterations
+            // Notify that the search query was not found.
             sbar2($"{txtSearchBox.Text} not found");
         }
 
@@ -1289,8 +1293,8 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 isModified = true;
             }
 
-            if (dataGridView1.RowCount > 0)
-                dataGridView1.CurrentCell = dataGridView1.Rows[0].Cells["PluginName"];
+            /*if (dataGridView1.RowCount > 0)
+                dataGridView1.CurrentCell = dataGridView1.Rows[0].Cells["PluginName"];*/
 
             return addedFiles;
         }
@@ -1388,7 +1392,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void InstallMod(string InstallMod = "")
         {
-            // Build the extraction path using Path.Combine for cross–platform safety.
             string extractPath = Path.Combine(Path.GetTempPath(), "hstTools");
             bool SFSEMod = false;
             int filesInstalled = 0;
@@ -2327,21 +2330,16 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void GameVersionDisplay()
         {
-            switch (GameVersion)
+            string version = GameVersion switch
             {
-                case Steam:
-                    sbar2("Game version - Steam");
-                    break;
-                case MS:
-                    sbar2("Game version - MS");
-                    break;
-                case Custom:
-                    sbar2("Game version - Custom - " + Properties.Settings.Default.CustomEXE);
-                    break;
-                case SFSE:
-                    sbar2("Game version - SFSE");
-                    break;
-            }
+                Steam => "Game version - Steam",
+                MS => "Game version - MS",
+                Custom => $"Game version - Custom - {Properties.Settings.Default.CustomEXE}",
+                SFSE => "Game version - SFSE",
+                _ => "Unknown game version"
+            };
+
+            sbar2(version);
         }
 
         private bool ResetStarfieldCustomINI(bool ConfirmOverwrite)  // true for confirmation
@@ -2534,14 +2532,15 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void btnUpdate_Click(object sender, EventArgs e)
         {
-            string ReturnStatus = AddRemove();
-            int Duplicates = RemoveDuplicates();
+            string returnStatus = AddRemove();
+            int duplicates = RemoveDuplicates();
 
-            if (AutoSort && (ReturnStatus != "Plugins.txt is up to date" || Duplicates > 0))
-                if (AutoSort && ReturnStatus != "Plugins.txt is up to date")
-                    RunLOOT(true);
+            bool needsSorting = AutoSort && (returnStatus != "Plugins.txt is up to date" || duplicates > 0);
 
-            sbar3(ReturnStatus);
+            if (needsSorting)
+                RunLOOT(true);
+
+            sbar3(returnStatus);
         }
 
         private void LooseFilesOnOff(bool EnableDisable) // True for enabled
@@ -2983,8 +2982,8 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             frmStarfieldCustomINI fci = new();
             fci.ShowDialog();
             string PluginsPath = Tools.StarfieldAppData + "\\Plugins.txt",
-LooseFilesDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\My Games\\Starfield\\", // Check if loose files are enabled
-filePath = LooseFilesDir + "StarfieldCustom.ini";
+        LooseFilesDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\My Games\\Starfield\\", // Check if loose files are enabled
+        filePath = LooseFilesDir + "StarfieldCustom.ini";
             LooseFiles = false;
             try
             {
@@ -3276,10 +3275,13 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
 
             using FolderBrowserDialog folderBrowserDialog = new();
             folderBrowserDialog.Description = "Choose folder to archive the mods to";
+            folderBrowserDialog.InitialDirectory = Properties.Settings.Default.BackupDirectory;
             if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
             {
                 MessageBox.Show("Current archive will continue to be created", "Press Q to stop operation");
                 string selectedFolderPath = folderBrowserDialog.SelectedPath;
+                Properties.Settings.Default.BackupDirectory = selectedFolderPath;
+                SaveSettings();
 
                 foreach (DataGridViewRow row in dataGridView1.Rows)
                 {
@@ -3564,7 +3566,7 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
         private void toolStripMenuItemHideAll_Click(object sender, EventArgs e)
         {
             var items = new[]
-{
+        {
     ("TimeStamp", timeStampToolStripMenuItem),
     ("Achievements", toolStripMenuAchievements),
     ("CreationsID", toolStripMenuCreationsID),
@@ -3589,7 +3591,7 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
         private void toolStripMenuShowRecommended_Click(object sender, EventArgs e)
         {
             var items = new[]
-{
+        {
     ("Group", toolStripMenuGroup),
     ("Version", toolStripMenuVersion),
     ("AuthorVersion", toolStripMenuAuthorVersion),
