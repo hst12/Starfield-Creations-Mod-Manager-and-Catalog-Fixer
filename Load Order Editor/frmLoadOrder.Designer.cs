@@ -91,6 +91,9 @@
             backupProfilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             restoreProfilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            mnuBackupBlockedMods = new System.Windows.Forms.ToolStripMenuItem();
+            mnuRestoreBlockedMods = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripSeparator41 = new System.Windows.Forms.ToolStripSeparator();
             toolStripMenuExportActive = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuExportCSV = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
@@ -661,7 +664,7 @@
             // 
             // fileToolStripMenuItem
             // 
-            fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { newToolStripMenuItem, openToolStripMenuItem, saveToolStripMenuItem, saveAsToolStripMenuItem, toolStripSeparator, toolStripMenuBackup, toolStripMenuRestore, toolStripSeparator40, backupProfilesToolStripMenuItem, restoreProfilesToolStripMenuItem, toolStripSeparator1, toolStripMenuExportActive, toolStripMenuExportCSV, toolStripSeparator2, exploreToolStripMenuItem, toolStripSeparator3, toolStripMenuEditFiles, toolStripSeparator19, resetDeleteFilesToolStripMenuItem, toolStripSeparator17, exitToolStripMenuItem });
+            fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { newToolStripMenuItem, openToolStripMenuItem, saveToolStripMenuItem, saveAsToolStripMenuItem, toolStripSeparator, toolStripMenuBackup, toolStripMenuRestore, toolStripSeparator40, backupProfilesToolStripMenuItem, restoreProfilesToolStripMenuItem, toolStripSeparator1, mnuBackupBlockedMods, mnuRestoreBlockedMods, toolStripSeparator41, toolStripMenuExportActive, toolStripMenuExportCSV, toolStripSeparator2, exploreToolStripMenuItem, toolStripSeparator3, toolStripMenuEditFiles, toolStripSeparator19, resetDeleteFilesToolStripMenuItem, toolStripSeparator17, exitToolStripMenuItem });
             fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             fileToolStripMenuItem.Size = new System.Drawing.Size(71, 38);
             fileToolStripMenuItem.Text = "&File";
@@ -746,6 +749,25 @@
             // 
             toolStripSeparator1.Name = "toolStripSeparator1";
             toolStripSeparator1.Size = new System.Drawing.Size(501, 6);
+            // 
+            // mnuBackupBlockedMods
+            // 
+            mnuBackupBlockedMods.Name = "mnuBackupBlockedMods";
+            mnuBackupBlockedMods.Size = new System.Drawing.Size(504, 44);
+            mnuBackupBlockedMods.Text = "Backup BlockedMods.txt";
+            mnuBackupBlockedMods.Click += mnuBackupBlockedMods_Click;
+            // 
+            // mnuRestoreBlockedMods
+            // 
+            mnuRestoreBlockedMods.Name = "mnuRestoreBlockedMods";
+            mnuRestoreBlockedMods.Size = new System.Drawing.Size(504, 44);
+            mnuRestoreBlockedMods.Text = "Restore BlockedMods.txt";
+            mnuRestoreBlockedMods.Click += mnuRestoreBlockedMods_Click;
+            // 
+            // toolStripSeparator41
+            // 
+            toolStripSeparator41.Name = "toolStripSeparator41";
+            toolStripSeparator41.Size = new System.Drawing.Size(501, 6);
             // 
             // toolStripMenuExportActive
             // 
@@ -2277,5 +2299,8 @@
         private System.Windows.Forms.ToolStripMenuItem backupProfilesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem restoreProfilesToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator40;
+        private System.Windows.Forms.ToolStripMenuItem mnuBackupBlockedMods;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator41;
+        private System.Windows.Forms.ToolStripMenuItem mnuRestoreBlockedMods;
     }
 }

@@ -1436,7 +1436,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 statusStrip1.Refresh();
 
                 // Use ArchiveFile to extract mod content.
-                string[] searchPatterns = { "*.7z", "*.rar","*.zip" };
+                string[] searchPatterns = { "*.7z", "*.rar", "*.zip" };
 
                 using (ArchiveFile archiveFile = new ArchiveFile(modFilePath))
                 {
@@ -3977,7 +3977,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             if (Directory.Exists(appPreferencesPath))
             {
                 Directory.Delete(appPreferencesPath, true); // true to delete subdirectories and files
-                MessageBox.Show("Restart the app", "User preferences reset successfully.");
+                MessageBox.Show("Please Restart the app", "User preferences reset successfully.");
                 Environment.Exit(0); // Close the application
             }
             else
@@ -4050,6 +4050,58 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             {
                 sbar3("No backup folder found");
             }
+        }
+
+        private void mnuBackupBlockedMods_Click(object sender, EventArgs e)
+        {
+            using FolderBrowserDialog folderBrowserDialog = new();
+            folderBrowserDialog.Description = "Choose folder to use to backup BlockedMods.txt";
+            if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+            {
+                string selectedFolderPath = folderBrowserDialog.SelectedPath;
+
+                string blockedModsFilePath = Path.Combine(Tools.LocalAppDataPath, "BlockedMods.txt");
+                string destinationPath = Path.Combine(selectedFolderPath, "BlockedMods.txt");
+                if (!File.Exists(blockedModsFilePath))
+                {
+                    MessageBox.Show("BlockedMods.txt not found");
+                    return;
+                }
+                File.Copy(blockedModsFilePath, destinationPath, true);
+                sbar3("BlockedMods.txt backed up successfully.");
+            }
+        }
+
+        private void mnuRestoreBlockedMods_Click(object sender, EventArgs e)
+        {
+            using FolderBrowserDialog folderBrowserDialog = new();
+            folderBrowserDialog.Description = "Choose folder to restore BlockedMods.txt from";
+            if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+            {
+                string selectedFolderPath = folderBrowserDialog.SelectedPath;
+
+                string backupFilePath = Path.Combine(selectedFolderPath, "BlockedMods.txt");
+                string destinationPath = Path.Combine(Tools.LocalAppDataPath, "BlockedMods.txt");
+
+                if (!File.Exists(backupFilePath))
+                {
+                    MessageBox.Show("BlockedMods.txt not found in the selected folder.");
+                    return;
+                }
+
+                try
+                {
+                    File.Copy(backupFilePath, destinationPath, true);
+                    sbar3("BlockedMods.txt restored successfully.");
+                    RefreshDataGrid();
+                    MessageBox.Show("BlockedMods.txt has been restored successfully.", "Restore Complete", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"An error occurred while restoring BlockedMods.txt: {ex.Message}", "Restore Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+
         }
     }
 }
