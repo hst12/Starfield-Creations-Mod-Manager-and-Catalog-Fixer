@@ -1922,16 +1922,20 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             Tools.OpenUrl("https://x.com/StarfieldGame");
         }
 
-        private void toolStripMenuViewOnCreations_Click(object sender, EventArgs e)
+        private void toolStripMenuViewWebSite_Click(object sender, EventArgs e)
         {
-            string url;
-
-            url = (string)dataGridView1.CurrentRow.Cells["URL"].Value;
-            if (url != "")
-                Tools.OpenUrl(url);
-
-            if (url == "")
-                sbar3("No link for mod");
+            foreach (DataGridViewRow selectedRow in dataGridView1.SelectedRows)
+            {
+                string url = selectedRow.Cells["URL"].Value as string;
+                if (!string.IsNullOrEmpty(url))
+                {
+                    Tools.OpenUrl(url);
+                }
+                else
+                {
+                    sbar3($"No link for mod in row {selectedRow.Index + 1}");
+                }
+            }
         }
 
         private void toolStripMenuUninstall_Click(object sender, EventArgs e)
