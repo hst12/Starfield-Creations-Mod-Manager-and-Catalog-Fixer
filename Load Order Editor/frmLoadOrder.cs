@@ -1393,7 +1393,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
         private void InstallMod(string InstallMod = "")
         {
             string extractPath = Path.Combine(Path.GetTempPath(), "hstTools");
-            bool SFSEMod = false;
+            bool SFSEMod = false, looseFileMod = false;
             int filesInstalled = 0;
 
             if (!CheckGamePath()) // Bail out if game path not set
@@ -1481,10 +1481,8 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                                     }
                                 }
                             }
-
                         }
                     }
-
                 }
 
                 // Update the downloads directory setting.
@@ -1550,28 +1548,56 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 MessageBox.Show($"An error occurred: {ex.Message}");
             }
 
+            // Install Loose files
+            var looseFileDirs = new[] { "meshes", "interface", "textures", "geometries", "scripts", "sound" };
+
+            foreach (var dir in looseFileDirs)
+            {
+                foreach (var basePath in new[] { Path.Combine(extractPath, "Data"), extractPath })
+                {
+                    string sourcePath = Path.Combine(basePath, dir).ToLowerInvariant();
+                    if (Directory.Exists(sourcePath))
+                    {
+                        // Copy to Documents folder
+                        CopyDirectory(sourcePath, Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"My Games\Starfield\Data", dir));
+                        looseFileMod = true;
+                        filesInstalled++;
+                    }
+                }
+            }
+
             loadScreen.Close();
 
+            // Clean up any temporary extraction files.
+            if (Directory.Exists(extractPath))
+                Directory.Delete(extractPath, true);
+
             // Display status messages based on what was installed.
-            if (!SFSEMod && filesInstalled > 0)
+
+            if (looseFileMod)
+            {
+                LooseFilesOnOff(true);
+                sbar3($"Directories installed (loose files) {filesInstalled}");
+                sbar2("");
+                return;
+            }
+
+            if (SFSEMod)
+            {
+                sbar3("SFSE mod installed");
+                return;
+            }
+
+            if (filesInstalled > 0)
             {
                 AddMissing();
                 SavePlugins();
                 if (AutoSort && string.IsNullOrEmpty(InstallMod))
                     RunLOOT(true);
-                sbar2($"Mod installed - {filesInstalled} files");
+                sbar3($"Mod installed - {filesInstalled} files");
             }
             else
-            {
-                sbar2("SFSE mod installed");
-            }
-
-            if (filesInstalled == 0)
-                sbar2("");
-
-            // Clean up any temporary extraction files.
-            if (Directory.Exists(extractPath))
-                Directory.Delete(extractPath, true);
+                sbar3("Nothing installed");
 
             return;
 
@@ -1599,6 +1625,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                     CopyDirectory(directory, destDirectory);
                 }
             }
+
         }
         private void toolStripMenuInstall_Click(object sender, EventArgs e)
         {
@@ -1929,7 +1956,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 string url = selectedRow.Cells["URL"].Value as string;
                 if (!string.IsNullOrEmpty(url))
                 {
-                    Tools.OpenUrl(url);
+                    Tools.OpenUrl(url); // Open website in default browser. Creations or other site.
                 }
                 else
                 {
@@ -3791,19 +3818,30 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private static bool CleanFolder(string folderPath)
         {
+            bool gameFolder = false, documentsFolder = false;
+
             try
             {
                 Directory.Delete(StarfieldGamePath + "\\Data\\" + folderPath, true); // Delete recursive
+                gameFolder = true;
             }
+            catch
+            {
+                gameFolder = false;
+            }
+
+            try
+            {
+                Directory.Delete(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"My Games\Starfield\Data", folderPath), true);
+                documentsFolder = true;
+            }
+
             catch (Exception ex)
             {
-#if DEBUG
-                //MessageBox.Show(ex.Message);
-
-#endif
-                return false;
+                documentsFolder = false;
             }
-            return true;
+            return documentsFolder || gameFolder;
+
         }
 
         private int DeleteLooseFileFolders()
@@ -3831,7 +3869,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 "textures\\effects",
                 "textures\\interface",
                 "textures\\items",
-                "textures\\Motd_Media",
                 "textures\\setdressing",
                 "textures\\ships",
                 "geometries",
@@ -4096,9 +4133,8 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 try
                 {
                     File.Copy(backupFilePath, destinationPath, true);
-                    sbar3("BlockedMods.txt restored successfully.");
                     RefreshDataGrid();
-                    MessageBox.Show("BlockedMods.txt has been restored successfully.", "Restore Complete", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    sbar3("BlockedMods.txt restored successfully.");
                 }
                 catch (Exception ex)
                 {
