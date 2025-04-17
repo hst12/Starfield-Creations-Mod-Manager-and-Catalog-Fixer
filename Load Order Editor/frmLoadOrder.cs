@@ -4143,5 +4143,23 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             }
 
         }
+
+        private void deleteStarfieldCustominiToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\My Games\Starfield\StarfieldCustom.ini"))
+                {
+                    File.Delete(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\My Games\Starfield\StarfieldCustom.ini");
+                    sbar3("StarfieldCustom.ini deleted");
+                }
+                else
+                    sbar3("StarfieldCustom.ini not found");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
     }
 }
