@@ -812,8 +812,9 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
         }
         private void MoveUp()
         {
-            int rowIndex = dataGridView1.CurrentCell.RowIndex;
-            int colIndex = dataGridView1.CurrentCell.ColumnIndex;
+            int rowIndex = dataGridView1.SelectedCells[0].OwningRow.Index;
+            int colIndex = 1;
+
             if (rowIndex == 0)
                 return; // Already at the top
 
