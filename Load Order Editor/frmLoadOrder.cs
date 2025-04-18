@@ -14,6 +14,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Windows.ApplicationModel.UserDataTasks;
 using YamlDotNet.Serialization;
 using File = System.IO.File;
 
@@ -355,6 +356,8 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
             toolStripMenuLOOTToggle.Checked = settings.LOOTEnabled;
             prepareForCreationsUpdateToolStripMenuItem.Checked = settings.CreationsUpdate;
             modStatsToolStripMenuItem.Checked = settings.ModStats;
+            if (Properties.Settings.Default.VortexPath != "")
+                vortexToolStripMenuItem.Visible = true;
 
             // Display Loose Files status
             sbarCCC(looseFilesDisabledToolStripMenuItem.Checked ? "Loose files enabled" : "Loose files disabled");
@@ -2787,12 +2790,19 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void vortexPathToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            openFileDialog1.Filter = "Executable Files|*.exe";
-            openFileDialog1.Title = "Set the path to the Vortex executable";
-            openFileDialog1.FileName = "Vortex.exe";
-            DialogResult VortexPath = openFileDialog1.ShowDialog();
-            if (VortexPath == DialogResult.OK && openFileDialog1.FileName != "")
-                Properties.Settings.Default.VortexPath = openFileDialog1.FileName;
+            if (!DetectVortex())
+            {
+                openFileDialog1.Filter = "Executable Files|*.exe";
+                openFileDialog1.Title = "Set the path to the Vortex executable";
+                openFileDialog1.FileName = "Vortex.exe";
+                DialogResult VortexPath = openFileDialog1.ShowDialog();
+                if (VortexPath == DialogResult.OK && openFileDialog1.FileName != "")
+                {
+                    Properties.Settings.Default.VortexPath = openFileDialog1.FileName;
+                    vortexToolStripMenuItem.Visible = true;
+                }
+            }
+
         }
 
         private void uRLToolStripMenuItem_Click(object sender, EventArgs e)
@@ -2805,37 +2815,49 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             Properties.Settings.Default.URL = uRLToolStripMenuItem.Checked;
         }
 
-        private void vortexToolStripMenuItem_Click(object sender, EventArgs e)
+        private bool DetectVortex()
         {
             string keyName = @"HKEY_CLASSES_ROOT\nxm\shell\open\command";
             string valueName = ""; // Default value
 
-            // Read the registry value
-            object value = Registry.GetValue(keyName, valueName, null);
-            if (value != null)
+            if (Properties.Settings.Default.VortexPath == "")
             {
-                int startIndex = value.ToString().IndexOf('"') + 1;
-                int endIndex = value.ToString().IndexOf('"', startIndex);
-
-                if (startIndex > 0 && endIndex > startIndex)
+                // Read the registry value
+                object value = Registry.GetValue(keyName, valueName, null);
+                if (value != null)
                 {
-                    string extracted = value.ToString()[startIndex..endIndex];
-                    try
+                    int startIndex = value.ToString().IndexOf('"') + 1;
+                    int endIndex = value.ToString().IndexOf('"', startIndex);
+
+                    if (startIndex > 0 && endIndex > startIndex)
                     {
-                        var result = Process.Start(extracted);
-                        if (result != null)
-                        {
-                            SaveSettings();
-                            System.Windows.Forms.Application.Exit();
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message);
+                        string extracted = value.ToString()[startIndex..endIndex];
+                        Properties.Settings.Default.VortexPath = extracted;
+                        SaveSettings();
+                        vortexToolStripMenuItem.Visible = true;
+                        return true;
                     }
                 }
-                else
-                    MessageBox.Show("Vortex doesn't seem to be installed.");
+            }
+            return false;
+        }
+        private void vortexToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Properties.Settings.Default.VortexPath!="")
+            {
+                try
+                {
+                    var result = Process.Start(Properties.Settings.Default.VortexPath);
+                    if (result != null)
+                    {
+                        SaveSettings();
+                        System.Windows.Forms.Application.Exit();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             }
             else
                 MessageBox.Show("Vortex doesn't seem to be installed.");
@@ -4148,9 +4170,10 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
         {
             try
             {
-                if (File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\My Games\Starfield\StarfieldCustom.ini"))
+                var StarfieldCustomINIPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\My Games\Starfield\StarfieldCustom.ini";
+                if (File.Exists(StarfieldCustomINIPath))
                 {
-                    File.Delete(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\My Games\Starfield\StarfieldCustom.ini");
+                    File.Delete(StarfieldCustomINIPath);
                     sbar3("StarfieldCustom.ini deleted");
                 }
                 else

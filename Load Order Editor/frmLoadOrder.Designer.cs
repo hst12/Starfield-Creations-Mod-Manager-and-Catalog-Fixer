@@ -1610,6 +1610,7 @@
             vortexToolStripMenuItem.Name = "vortexToolStripMenuItem";
             vortexToolStripMenuItem.Size = new System.Drawing.Size(498, 44);
             vortexToolStripMenuItem.Text = "Vortex";
+            vortexToolStripMenuItem.Visible = false;
             vortexToolStripMenuItem.Click += vortexToolStripMenuItem_Click;
             // 
             // mO2ToolStripMenuItem
