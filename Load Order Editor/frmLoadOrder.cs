@@ -825,6 +825,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             DataGridViewRow selectedRow = dataGridView1.Rows[rowIndex];
             dataGridView1.Rows.Remove(selectedRow);
             dataGridView1.Rows.Insert(rowIndex - 1, selectedRow);
+            dataGridView1.ClearSelection();
             dataGridView1.Rows[rowIndex - 1].Selected = true;
             dataGridView1.Rows[rowIndex - 1].Cells[colIndex].Selected = true;
             isModified = true;
