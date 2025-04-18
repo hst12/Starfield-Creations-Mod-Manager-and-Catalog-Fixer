@@ -341,7 +341,7 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
         {
             var settings = Properties.Settings.Default;
 
-            // Assign values with minimal redundancy
+            // Assign values
             toolStripMenuProfilesOn.Checked = settings.ProfileOn;
             compareProfilesToolStripMenuItem.Checked = settings.CompareProfiles;
             looseFilesDisabledToolStripMenuItem.Checked = LooseFiles || settings.LooseFiles;
@@ -356,6 +356,7 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
             toolStripMenuLOOTToggle.Checked = settings.LOOTEnabled;
             prepareForCreationsUpdateToolStripMenuItem.Checked = settings.CreationsUpdate;
             modStatsToolStripMenuItem.Checked = settings.ModStats;
+            blockedToolStripMenuItem.Checked = settings.Blocked;
             if (Properties.Settings.Default.VortexPath != "")
                 vortexToolStripMenuItem.Visible = true;
 
@@ -3690,7 +3691,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
     ("Version", toolStripMenuVersion),
     ("AuthorVersion", toolStripMenuAuthorVersion),
     ("Description", toolStripMenuDescription),
-    ("Blocked", toolStripMenuDescription)
+    ("Blocked", blockedToolStripMenuItem)
 };
 
             foreach (var (columnName, menuItem) in items)
