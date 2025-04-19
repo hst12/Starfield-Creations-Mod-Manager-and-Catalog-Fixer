@@ -37,6 +37,7 @@ namespace Starfield_Tools
         private string LastProfile, tempstr;
 
         bool Profiles = false, GridSorted = false, AutoUpdate = false, ActiveOnly = false, AutoSort = false, isModified = false, LooseFiles;
+        Tools.Configuration Groups = new();
 
         public frmLoadOrder(string parameter)
         {
@@ -284,6 +285,8 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
                 if (StarfieldTools.CatalogStatus.Contains("Error"))
                     StarfieldTools.Show(); // Show catalog fixer if catalog broken
 
+            ReadLOOTGroups();
+
             // Initialise profiles
             cmbProfile.Enabled = Profiles;
             if (Profiles)
@@ -407,6 +410,23 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
             sbar4("");
         }
 
+        private void ReadLOOTGroups() // Read LOOT Groups
+        {
+            try
+            {
+                var deserializer = new DeserializerBuilder().Build();
+                string yamlContent = File.ReadAllText(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                    @"LOOT\games\Starfield\userlist.yaml"));
+                Groups = deserializer.Deserialize<Tools.Configuration>(yamlContent);
+            }
+            catch (Exception ex)
+            {
+#if DEBUG
+                    MessageBox.Show(ex.Message, "Yaml decoding error\nLOOT userlist.yaml possibly corrupt", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+#endif
+                sbar3(ex.Message);
+            }
+        }
         private void KeyEvent(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.F5)
@@ -454,7 +474,9 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
             SetColumnVisibility(false, uRLToolStripMenuItem, dataGridView1.Columns["URL"]);
 
             string json = File.ReadAllText(Tools.GetCatalogPath());
-            Tools.Configuration Groups = new();
+
+            // Moved to frmLoadOrder
+            /*Tools.Configuration Groups = new();
 
             if (!string.IsNullOrEmpty(LOOTPath) && dataGridView1.Columns["Group"].Visible)
             {
@@ -472,7 +494,7 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
 #endif
                     sbar3(ex.Message);
                 }
-            }
+            }*/
 
             try
             {
@@ -1441,19 +1463,16 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 sbar2("Installing mod...");
                 statusStrip1.Refresh();
 
-                // Use ArchiveFile to extract mod content.
+                // Use ArchiveFile to extract mod content to temp folder
                 string[] searchPatterns = { "*.7z", "*.rar", "*.zip" };
 
                 using (ArchiveFile archiveFile = new ArchiveFile(modFilePath))
                 {
                     foreach (Entry entry in archiveFile.Entries)
                     {
-
                         string targetPath = Path.Combine(extractPath, entry.FileName);
                         entry.Extract(targetPath);
-
                         sbar2("Extracting " + entry.FileName);
-
                         statusStrip1.Refresh();
                     }
 
@@ -1466,24 +1485,18 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
                             if (archiveFiles.Length > 0)
                             {
-                                Debug.WriteLine($"Found {pattern} archives:");
+
                                 foreach (string file in archiveFiles)
                                 {
-                                    Debug.WriteLine(file);
-
                                     using (ArchiveFile archiveFile2 = new ArchiveFile(file))
                                     {
                                         foreach (Entry entry in archiveFile2.Entries)
                                         {
-
                                             string targetPath = Path.Combine(extractPath, entry.FileName);
                                             entry.Extract(targetPath);
-
                                             sbar2("Extracting " + entry.FileName);
-
                                             statusStrip1.Refresh();
                                         }
-
                                     }
                                 }
                             }
@@ -1491,7 +1504,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                     }
                 }
 
-                // Update the downloads directory setting.
+                // Update the downloads directory setting for future use.
                 Properties.Settings.Default.DownloadsDirectory = Path.GetDirectoryName(modFilePath);
                 SaveSettings();
             }
@@ -1500,37 +1513,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 MessageBox.Show(ex.Message);
                 loadScreen.Close();
                 return;
-            }
-
-            // Helper local function that moves extracted files with confirmation if a destination file exists.
-            int MoveExtractedFiles(string searchPattern, string fileTypeLabel)
-            {
-                int count = 0;
-                foreach (string modFile in Directory.EnumerateFiles(extractPath, searchPattern, SearchOption.AllDirectories))
-                {
-                    string fileName = Path.GetFileName(modFile);
-                    string destinationPath = Path.Combine(StarfieldGamePath, "Data", fileName);
-
-                    if (File.Exists(destinationPath))
-                    {
-                        if (Tools.ConfirmAction($"Overwrite {fileTypeLabel} {destinationPath}", "Replace mod?", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                        {
-                            File.Move(modFile, destinationPath, true);
-                            count++;
-                        }
-                        else
-                        {
-                            // If the user declines to overwrite, break out of this file loop
-                            break;
-                        }
-                    }
-                    else
-                    {
-                        File.Move(modFile, destinationPath, true);
-                        count++;
-                    }
-                }
-                return count;
             }
 
             // Move .esm and .ba2 files to the game's Data folder.
@@ -1606,6 +1588,37 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 sbar3("Nothing installed");
 
             return;
+
+            // Helper local function that moves extracted files with confirmation if a destination file exists.
+            int MoveExtractedFiles(string searchPattern, string fileTypeLabel)
+            {
+                int count = 0;
+                foreach (string modFile in Directory.EnumerateFiles(extractPath, searchPattern, SearchOption.AllDirectories))
+                {
+                    string fileName = Path.GetFileName(modFile);
+                    string destinationPath = Path.Combine(StarfieldGamePath, "Data", fileName);
+
+                    if (File.Exists(destinationPath))
+                    {
+                        if (Tools.ConfirmAction($"Overwrite {fileTypeLabel} {destinationPath}", "Replace mod?", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                        {
+                            File.Move(modFile, destinationPath, true);
+                            count++;
+                        }
+                        else
+                        {
+                            // If the user declines to overwrite, break out of this file loop
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        File.Move(modFile, destinationPath, true);
+                        count++;
+                    }
+                }
+                return count;
+            }
 
             // Local static recursive function to copy an entire directory.
             static void CopyDirectory(string sourcePath, string targetPath)
@@ -2079,6 +2092,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             using (Process process = Process.Start(startInfo)) // Freeze this app until LOOT closes
             {
                 process.WaitForExit();
+                ReadLOOTGroups();
             }
 
             if (Properties.Settings.Default.AutoDelccc)
