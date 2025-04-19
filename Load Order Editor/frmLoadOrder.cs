@@ -37,6 +37,7 @@ namespace Starfield_Tools
         private string LastProfile, tempstr;
 
         bool Profiles = false, GridSorted = false, AutoUpdate = false, ActiveOnly = false, AutoSort = false, isModified = false, LooseFiles;
+        Tools.Configuration Groups = new();
 
         public frmLoadOrder(string parameter)
         {
@@ -284,6 +285,8 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
                 if (StarfieldTools.CatalogStatus.Contains("Error"))
                     StarfieldTools.Show(); // Show catalog fixer if catalog broken
 
+            ReadLOOTGroups();
+
             // Initialise profiles
             cmbProfile.Enabled = Profiles;
             if (Profiles)
@@ -407,6 +410,23 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
             sbar4("");
         }
 
+        private void ReadLOOTGroups() // Read LOOT Groups
+        {
+            try
+            {
+                var deserializer = new DeserializerBuilder().Build();
+                string yamlContent = File.ReadAllText(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                    @"LOOT\games\Starfield\userlist.yaml"));
+                Groups = deserializer.Deserialize<Tools.Configuration>(yamlContent);
+            }
+            catch (Exception ex)
+            {
+#if DEBUG
+                    MessageBox.Show(ex.Message, "Yaml decoding error\nLOOT userlist.yaml possibly corrupt", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+#endif
+                sbar3(ex.Message);
+            }
+        }
         private void KeyEvent(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.F5)
@@ -454,7 +474,9 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
             SetColumnVisibility(false, uRLToolStripMenuItem, dataGridView1.Columns["URL"]);
 
             string json = File.ReadAllText(Tools.GetCatalogPath());
-            Tools.Configuration Groups = new();
+
+            // Moved to frmLoadOrder
+            /*Tools.Configuration Groups = new();
 
             if (!string.IsNullOrEmpty(LOOTPath) && dataGridView1.Columns["Group"].Visible)
             {
@@ -472,7 +494,7 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
 #endif
                     sbar3(ex.Message);
                 }
-            }
+            }*/
 
             try
             {
@@ -2079,6 +2101,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             using (Process process = Process.Start(startInfo)) // Freeze this app until LOOT closes
             {
                 process.WaitForExit();
+                ReadLOOTGroups();
             }
 
             if (Properties.Settings.Default.AutoDelccc)
