@@ -14,7 +14,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Windows.ApplicationModel.UserDataTasks;
 using YamlDotNet.Serialization;
 using File = System.IO.File;
 
@@ -1438,16 +1437,15 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             string modFilePath = InstallMod;
             if (string.IsNullOrEmpty(modFilePath))
             {
-                using (OpenFileDialog openMod = new OpenFileDialog())
+                using (OpenFileDialog openMod = new OpenFileDialog
                 {
-                    openMod.InitialDirectory = Properties.Settings.Default.DownloadsDirectory;
-                    openMod.Filter = "Archive Files (*.zip;*.7z;*.rar)|*.zip;*.7z;*.rar|All Files (*.*)|*.*";
-                    openMod.Title = "Install Mod - Loose files not supported except for SFSE plugins";
-
-                    if (openMod.ShowDialog() != DialogResult.OK)
-                        return;
-
-                    modFilePath = openMod.FileName;
+                    InitialDirectory = Properties.Settings.Default.DownloadsDirectory,
+                    Filter = "Archive Files (*.zip;*.7z;*.rar)|*.zip;*.7z;*.rar|All Files (*.*)|*.*",
+                    Title = "Install Mod - Loose files not supported except for SFSE plugins"
+                })
+                {
+                    if (openMod.ShowDialog() == DialogResult.OK)
+                        modFilePath = openMod.FileName;
                 }
             }
 
@@ -1460,9 +1458,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
             try
             {
-                sbar2("Installing mod...");
-                statusStrip1.Refresh();
-
                 // Use ArchiveFile to extract mod content to temp folder
                 string[] searchPatterns = { "*.7z", "*.rar", "*.zip" };
 
@@ -1566,27 +1561,26 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             {
                 LooseFilesOnOff(true);
                 sbar3($"Directories installed (loose files) {filesInstalled}");
-                sbar2("");
-                return;
             }
-
-            if (SFSEMod)
+            else if (SFSEMod)
             {
                 sbar3("SFSE mod installed");
-                return;
             }
-
-            if (filesInstalled > 0)
+            else if (filesInstalled > 0)
             {
                 AddMissing();
                 SavePlugins();
                 if (AutoSort && string.IsNullOrEmpty(InstallMod))
                     RunLOOT(true);
+
                 sbar3($"Mod installed - {filesInstalled} files");
             }
             else
+            {
                 sbar3("Nothing installed");
+            }
 
+            sbar2("");
             return;
 
             // Helper local function that moves extracted files with confirmation if a destination file exists.
@@ -1644,7 +1638,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                     CopyDirectory(directory, destDirectory);
                 }
             }
-
         }
         private void toolStripMenuInstall_Click(object sender, EventArgs e)
         {
@@ -2860,7 +2853,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
         }
         private void vortexToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (Properties.Settings.Default.VortexPath!="")
+            if (Properties.Settings.Default.VortexPath != "")
             {
                 try
                 {
@@ -3855,119 +3848,18 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             UpdateArchiveModsAsync();
         }
 
-        private static bool CleanFolder(string folderPath)
-        {
-            bool gameFolder = false, documentsFolder = false;
-
-            try
-            {
-                Directory.Delete(StarfieldGamePath + "\\Data\\" + folderPath, true); // Delete recursive
-                gameFolder = true;
-            }
-            catch
-            {
-                gameFolder = false;
-            }
-
-            try
-            {
-                Directory.Delete(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"My Games\Starfield\Data", folderPath), true);
-                documentsFolder = true;
-            }
-
-            catch (Exception ex)
-            {
-                documentsFolder = false;
-            }
-            return documentsFolder || gameFolder;
-
-        }
-
         private int DeleteLooseFileFolders()
         {
-            int deleteCount = 0;
-            List<string> DeletedFiles = new();
+            frmDeleteLooseFiles fdl = new frmDeleteLooseFiles();
 
-            if (string.IsNullOrEmpty(StarfieldGamePath))
-            {
-                MessageBox.Show("Game path not set");
-                return 0;
-            }
-            if (Tools.ConfirmAction("Are you sure you want to delete loose files folders including their contents?", "Warning, this will delete any loose file mods",
-                MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, true) == DialogResult.No) // Always show warning
-                return 0;
-
-            // Delete these folders
-            var foldersToDelete = new[]
-            { "meshes",
-                "interface",
-                "textures\\actors",
-                "textures\\architecture",
-                "textures\\common",
-                "textures\\decals",
-                "textures\\effects",
-                "textures\\interface",
-                "textures\\items",
-                "textures\\setdressing",
-                "textures\\ships",
-                "geometries",
-                "scripts",
-                "sound" };
-
-            foreach (var item in foldersToDelete)
-            {
-                if (CleanFolder(item))
-                {
-                    DeletedFiles.Add(item);
-                    deleteCount++;
-                }
-            }
-
-            // Clear the Materials folder but leave it in place
-            string folderPath = StarfieldGamePath + "\\Data\\Materials";
             try
             {
-                // Delete all files in the folder
-                foreach (string file in Directory.GetFiles(folderPath))
-                {
-                    File.Delete(file);
-                    DeletedFiles.Add(file);
-                }
-
-                // Delete all subdirectories and their contents
-                foreach (string directory in Directory.GetDirectories(folderPath))
-                {
-                    Directory.Delete(directory, true); // 'true' ensures recursive deletion
-                    DeletedFiles.Add(directory);
-                    deleteCount++;
-                }
-
+                fdl.Show();
             }
-            catch (Exception ex)
-            {
-#if DEBUG
+            catch { }
 
-                //MessageBox.Show(ex.Message);
-                sbar3(ex.Message);
-#endif
-            }
-            if (deleteCount > 0)
-            {
+            return 0;
 
-                frmGenericTextList fgt = new frmGenericTextList(DeletedFiles) // Show deleted items
-                {
-                    StartPosition = FormStartPosition.CenterScreen, // Centers the form on the screen
-                    Text = "Deleted files and/or folders" // Set the title of the form
-                };
-                fgt.Show();
-                sbar3("Item(s) deleted " + deleteCount);
-                return deleteCount;
-            }
-            else
-            {
-                sbar3("No folders deleted");
-                return 0;
-            }
         }
 
         private void deleteLooseFileFoldersToolStripMenuItem_Click(object sender, EventArgs e)
