@@ -1376,25 +1376,26 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             return removedFiles;
         }
 
-        private string AddRemove()
+        private int AddRemove()
         {
             int addedMods, removedMods;
-            string ReturnStatus;
+            int ReturnStatus=0;
             addedMods = AddMissing();
             removedMods = RemoveMissing();
-            if (addedMods != 0 || removedMods != 0)
+            if (addedMods > 0 || removedMods > 0)
             {
                 SavePlugins();
-                ReturnStatus = addedMods.ToString() + " Mods added, " + removedMods.ToString() + " Mods removed";
+                ReturnStatus = addedMods + removedMods;
             }
             else
-                ReturnStatus = "Plugins.txt is up to date";
+                ReturnStatus = 0;
             return ReturnStatus;
         }
 
         private void toolStripMenuAutoClean_Click(object sender, EventArgs e)
         {
-            sbar3(AddRemove());
+            
+            sbar3($"Changes made: {AddRemove().ToString()}");
         }
 
         private void frmLoadOrder_FormClosing(object sender, FormClosingEventArgs e)
@@ -2616,15 +2617,11 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void btnUpdate_Click(object sender, EventArgs e)
         {
-            string returnStatus = AddRemove();
-            int duplicates = RemoveDuplicates();
-
-            bool needsSorting = AutoSort && (returnStatus != "Plugins.txt is up to date" || duplicates > 0);
-
-            if (needsSorting)
+            int changes = AddRemove()+RemoveDuplicates();
+            if( AutoSort && changes > 0)
                 RunLOOT(true);
 
-            sbar3(returnStatus);
+            sbar3($"Changes made: {changes}");
         }
 
         private void LooseFilesOnOff(bool EnableDisable) // True for enabled
@@ -2885,11 +2882,15 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             Tools.OpenUrl("Documentation\\Index.htm");
         }
 
-        private void compareProfilesToolStripMenuItem_Click(object sender, EventArgs e)
+        private void CompareProfiles()
         {
             compareProfilesToolStripMenuItem.Checked = !compareProfilesToolStripMenuItem.Checked;
             Properties.Settings.Default.CompareProfiles = compareProfilesToolStripMenuItem.Checked;
             SaveSettings();
+        }
+        private void compareProfilesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CompareProfiles();
         }
 
         private void lightToolStripMenuItem_Click(object sender, EventArgs e)
@@ -4092,6 +4093,39 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private void updateAllProfilesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string activeProfile = cmbProfile.SelectedItem.ToString();
+            bool activeStatus = ActiveOnly,needsSorting,profileChanges=Properties.Settings.Default.CompareProfiles;
+            int changes;
+
+            if (profileChanges)
+                CompareProfiles();
+            if (ActiveOnly)
+                ActiveOnlyToggle();
+
+            if (cmbProfile.Items.Count == 0 || cmbProfile.SelectedItem == null)
+            {
+                MessageBox.Show("No valid profiles found");
+                return;
+            }
+
+            foreach (var item in cmbProfile.Items)
+            {
+                SwitchProfile(Properties.Settings.Default.ProfileFolder + "\\" + item.ToString());
+                RefreshDataGrid();
+                changes= AddRemove()+ RemoveDuplicates();
+                if (AutoSort && changes>0)
+                    RunLOOT(true);
+            }
+            SwitchProfile(Properties.Settings.Default.ProfileFolder + "\\" + activeProfile);
+            RefreshDataGrid();
+            if (activeStatus)
+                ActiveOnlyToggle();
+            if (profileChanges)
+                CompareProfiles();
         }
     }
 }

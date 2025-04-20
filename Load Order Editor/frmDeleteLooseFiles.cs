@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualBasic.FileIO;
-using Starfield_Tools.Common;
+﻿using Starfield_Tools.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,7 +9,7 @@ namespace Starfield_Tools.Load_Order_Editor
 {
     public partial class frmDeleteLooseFiles : Form
     {
-        public frmDeleteLooseFiles()
+        public  frmDeleteLooseFiles()
         {
             InitializeComponent();
 
@@ -52,7 +51,6 @@ namespace Starfield_Tools.Load_Order_Editor
             {
                 MessageBox.Show("No folders found to delete.");
                 this.Close();
-                //return;
             }
         }
 
@@ -135,7 +133,7 @@ namespace Starfield_Tools.Load_Order_Editor
             }
 
             this.Close();
-            
+
         }
     }
 }

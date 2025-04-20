@@ -91,6 +91,8 @@
             backupProfilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             restoreProfilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            updateAllProfilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripSeparator43 = new System.Windows.Forms.ToolStripSeparator();
             mnuBackupBlockedMods = new System.Windows.Forms.ToolStripMenuItem();
             mnuRestoreBlockedMods = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator41 = new System.Windows.Forms.ToolStripSeparator();
@@ -666,7 +668,7 @@
             // 
             // fileToolStripMenuItem
             // 
-            fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { newToolStripMenuItem, openToolStripMenuItem, saveToolStripMenuItem, saveAsToolStripMenuItem, toolStripSeparator, toolStripMenuBackup, toolStripMenuRestore, toolStripSeparator40, backupProfilesToolStripMenuItem, restoreProfilesToolStripMenuItem, toolStripSeparator1, mnuBackupBlockedMods, mnuRestoreBlockedMods, toolStripSeparator41, toolStripMenuExportActive, toolStripMenuExportCSV, toolStripSeparator2, exploreToolStripMenuItem, toolStripSeparator3, toolStripMenuEditFiles, toolStripSeparator19, resetDeleteFilesToolStripMenuItem, toolStripSeparator17, exitToolStripMenuItem });
+            fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { newToolStripMenuItem, openToolStripMenuItem, saveToolStripMenuItem, saveAsToolStripMenuItem, toolStripSeparator, toolStripMenuBackup, toolStripMenuRestore, toolStripSeparator40, backupProfilesToolStripMenuItem, restoreProfilesToolStripMenuItem, toolStripSeparator1, updateAllProfilesToolStripMenuItem, toolStripSeparator43, mnuBackupBlockedMods, mnuRestoreBlockedMods, toolStripSeparator41, toolStripMenuExportActive, toolStripMenuExportCSV, toolStripSeparator2, exploreToolStripMenuItem, toolStripSeparator3, toolStripMenuEditFiles, toolStripSeparator19, resetDeleteFilesToolStripMenuItem, toolStripSeparator17, exitToolStripMenuItem });
             fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             fileToolStripMenuItem.Size = new System.Drawing.Size(71, 38);
             fileToolStripMenuItem.Text = "&File";
@@ -751,6 +753,18 @@
             // 
             toolStripSeparator1.Name = "toolStripSeparator1";
             toolStripSeparator1.Size = new System.Drawing.Size(501, 6);
+            // 
+            // updateAllProfilesToolStripMenuItem
+            // 
+            updateAllProfilesToolStripMenuItem.Name = "updateAllProfilesToolStripMenuItem";
+            updateAllProfilesToolStripMenuItem.Size = new System.Drawing.Size(504, 44);
+            updateAllProfilesToolStripMenuItem.Text = "Update All Profiles";
+            updateAllProfilesToolStripMenuItem.Click += updateAllProfilesToolStripMenuItem_Click;
+            // 
+            // toolStripSeparator43
+            // 
+            toolStripSeparator43.Name = "toolStripSeparator43";
+            toolStripSeparator43.Size = new System.Drawing.Size(501, 6);
             // 
             // mnuBackupBlockedMods
             // 
@@ -2319,5 +2333,7 @@
         private System.Windows.Forms.ToolStripMenuItem mnuRestoreBlockedMods;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator42;
         private System.Windows.Forms.ToolStripMenuItem deleteStarfieldCustominiToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem updateAllProfilesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator43;
     }
 }
