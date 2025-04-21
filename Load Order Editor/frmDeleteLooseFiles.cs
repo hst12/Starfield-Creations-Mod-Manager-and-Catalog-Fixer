@@ -9,10 +9,11 @@ namespace Starfield_Tools.Load_Order_Editor
 {
     public partial class frmDeleteLooseFiles : Form
     {
-        public  frmDeleteLooseFiles()
+        public frmDeleteLooseFiles()
         {
             InitializeComponent();
 
+            frmLoadOrder.returnStatus = 0;
             List<string> DeletedFiles = new();
 
             if (string.IsNullOrEmpty(frmLoadOrder.StarfieldGamePath))
@@ -125,10 +126,15 @@ namespace Starfield_Tools.Load_Order_Editor
             //    foreach (int i in Enumerable.Range(0, checkedListBox1.Items.Count))
             {
                 if (Directory.Exists(Path.Combine(gameFolderPath, item.ToString())))
+                {
                     Directory.Delete(Path.Combine(gameFolderPath, item.ToString()), true); // Delete recursive
-
+                    frmLoadOrder.returnStatus++;
+                }
                 if (Directory.Exists(Path.Combine(documentsFolderPath, item.ToString())))
+                {
                     Directory.Delete(Path.Combine(documentsFolderPath, item.ToString()), true); // Delete recursive
+                    frmLoadOrder.returnStatus++;
+                }
 
             }
 

@@ -27,6 +27,7 @@ namespace Starfield_Tools
         public const byte Steam = 0, MS = 1, Custom = 2, SFSE = 3;
         public static string StarfieldGamePath;
         public static bool NoWarn;
+        public static int returnStatus;
 
         private Rectangle dragBoxFromMouseDown;
         private int rowIndexFromMouseDown, rowIndexOfItemUnderMouseToDrop, GameVersion = Steam;
@@ -1379,7 +1380,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
         private int AddRemove()
         {
             int addedMods, removedMods;
-            int ReturnStatus=0;
+            int ReturnStatus = 0;
             addedMods = AddMissing();
             removedMods = RemoveMissing();
             if (addedMods > 0 || removedMods > 0)
@@ -1394,7 +1395,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void toolStripMenuAutoClean_Click(object sender, EventArgs e)
         {
-            
+
             sbar3($"Changes made: {AddRemove().ToString()}");
         }
 
@@ -2091,7 +2092,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
             if (Properties.Settings.Default.AutoDelccc)
                 Delccc();
-            InitDataGrid();
+            RefreshDataGrid();
 
             for (i = 0; i < tools.BethFiles.Count; i++)  // Remove base game files if LOOT added them
                 for (j = 0; j < dataGridView1.Rows.Count; j++)
@@ -2617,8 +2618,8 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void btnUpdate_Click(object sender, EventArgs e)
         {
-            int changes = AddRemove()+RemoveDuplicates();
-            if( AutoSort && changes > 0)
+            int changes = AddRemove() + RemoveDuplicates();
+            if (AutoSort && changes > 0)
                 RunLOOT(true);
 
             sbar3($"Changes made: {changes}");
@@ -3560,8 +3561,11 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                     if (selectedRow.Cells["PluginName"].Value != null) // Ensure the cell value is not null
                     {
                         frmAddModToProfile addMod = new(profiles, selectedRow.Cells["PluginName"].Value.ToString());
-                        addMod.Show(cmbProfile);
+                        addMod.ShowDialog(cmbProfile);
                     }
+                    if (Tools.ConfirmAction("Run update/sort on all profiles", "Update All Profiles?",
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                        UpdateAllProfiles();
                 }
             }
             catch (Exception ex)
@@ -3855,17 +3859,17 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
             try
             {
-                fdl.Show();
+                fdl.ShowDialog();
             }
             catch { }
 
-            return 0;
+            return returnStatus;
 
         }
 
         private void deleteLooseFileFoldersToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DeleteLooseFileFolders();
+            sbar3($"Folders Deleted: {DeleteLooseFileFolders().ToString()}");
         }
 
         private void starUIConfiguratorToolStripMenuItem_Click(object sender, EventArgs e)
@@ -4095,11 +4099,11 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             }
         }
 
-        private void updateAllProfilesToolStripMenuItem_Click(object sender, EventArgs e)
+        private void UpdateAllProfiles()
         {
             string activeProfile = cmbProfile.SelectedItem.ToString();
-            bool activeStatus = ActiveOnly,needsSorting,profileChanges=Properties.Settings.Default.CompareProfiles;
-            int changes;
+            bool activeStatus = ActiveOnly, needsSorting, profileChanges = Properties.Settings.Default.CompareProfiles;
+            int changes = 0;
 
             if (profileChanges)
                 CompareProfiles();
@@ -4116,8 +4120,8 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             {
                 SwitchProfile(Properties.Settings.Default.ProfileFolder + "\\" + item.ToString());
                 RefreshDataGrid();
-                changes= AddRemove()+ RemoveDuplicates();
-                if (AutoSort && changes>0)
+                changes += AddRemove() + RemoveDuplicates();
+                if (AutoSort)
                     RunLOOT(true);
             }
             SwitchProfile(Properties.Settings.Default.ProfileFolder + "\\" + activeProfile);
@@ -4126,6 +4130,12 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 ActiveOnlyToggle();
             if (profileChanges)
                 CompareProfiles();
+            sbar3($"Changes made: {changes}");
+        }
+
+        private void updateAllProfilesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            UpdateAllProfiles();
         }
     }
 }
