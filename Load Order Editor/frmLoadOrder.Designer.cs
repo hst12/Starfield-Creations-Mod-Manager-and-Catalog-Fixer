@@ -105,6 +105,7 @@
             toolStripMenuExploreGameDocs = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuExploreCommon = new System.Windows.Forms.ToolStripMenuItem();
             profileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            sFSEPluginsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             toolStripMenuEditFiles = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuEditPlugins = new System.Windows.Forms.ToolStripMenuItem();
@@ -806,7 +807,7 @@
             // 
             // exploreToolStripMenuItem
             // 
-            exploreToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuExploreAppData, toolStripMenuExploreData, toolStripMenuExploreGameDocs, toolStripMenuExploreCommon, profileToolStripMenuItem });
+            exploreToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuExploreAppData, toolStripMenuExploreData, toolStripMenuExploreGameDocs, toolStripMenuExploreCommon, profileToolStripMenuItem, sFSEPluginsToolStripMenuItem });
             exploreToolStripMenuItem.Name = "exploreToolStripMenuItem";
             exploreToolStripMenuItem.Size = new System.Drawing.Size(504, 44);
             exploreToolStripMenuItem.Text = "Explore";
@@ -814,37 +815,44 @@
             // toolStripMenuExploreAppData
             // 
             toolStripMenuExploreAppData.Name = "toolStripMenuExploreAppData";
-            toolStripMenuExploreAppData.Size = new System.Drawing.Size(338, 44);
+            toolStripMenuExploreAppData.Size = new System.Drawing.Size(359, 44);
             toolStripMenuExploreAppData.Text = "AppData";
             toolStripMenuExploreAppData.Click += toolStripMenuExploreAppData_Click;
             // 
             // toolStripMenuExploreData
             // 
             toolStripMenuExploreData.Name = "toolStripMenuExploreData";
-            toolStripMenuExploreData.Size = new System.Drawing.Size(338, 44);
+            toolStripMenuExploreData.Size = new System.Drawing.Size(359, 44);
             toolStripMenuExploreData.Text = "Game Data";
             toolStripMenuExploreData.Click += toolStripMenuExploreData_Click;
             // 
             // toolStripMenuExploreGameDocs
             // 
             toolStripMenuExploreGameDocs.Name = "toolStripMenuExploreGameDocs";
-            toolStripMenuExploreGameDocs.Size = new System.Drawing.Size(338, 44);
+            toolStripMenuExploreGameDocs.Size = new System.Drawing.Size(359, 44);
             toolStripMenuExploreGameDocs.Text = "Game Documents";
             toolStripMenuExploreGameDocs.Click += toolStripMenuExploreGameDocs_Click;
             // 
             // toolStripMenuExploreCommon
             // 
             toolStripMenuExploreCommon.Name = "toolStripMenuExploreCommon";
-            toolStripMenuExploreCommon.Size = new System.Drawing.Size(338, 44);
+            toolStripMenuExploreCommon.Size = new System.Drawing.Size(359, 44);
             toolStripMenuExploreCommon.Text = "App Common";
             toolStripMenuExploreCommon.Click += toolStripMenuExploreCommon_Click;
             // 
             // profileToolStripMenuItem
             // 
             profileToolStripMenuItem.Name = "profileToolStripMenuItem";
-            profileToolStripMenuItem.Size = new System.Drawing.Size(338, 44);
+            profileToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
             profileToolStripMenuItem.Text = "Profiles";
             profileToolStripMenuItem.Click += profileToolStripMenuItem_Click;
+            // 
+            // sFSEPluginsToolStripMenuItem
+            // 
+            sFSEPluginsToolStripMenuItem.Name = "sFSEPluginsToolStripMenuItem";
+            sFSEPluginsToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+            sFSEPluginsToolStripMenuItem.Text = "SFSE Plugins";
+            sFSEPluginsToolStripMenuItem.Click += sFSEPluginsToolStripMenuItem_Click;
             // 
             // toolStripSeparator3
             // 
@@ -2335,5 +2343,6 @@
         private System.Windows.Forms.ToolStripMenuItem deleteStarfieldCustominiToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem updateAllProfilesToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator43;
+        private System.Windows.Forms.ToolStripMenuItem sFSEPluginsToolStripMenuItem;
     }
 }
