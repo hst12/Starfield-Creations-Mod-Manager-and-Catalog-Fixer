@@ -10,10 +10,8 @@ using System.Windows.Forms;
 
 namespace Starfield_Tools.Common // Various functions used by the app
 {
-
     internal class Tools
     {
-
         public static string CommonFolder { get; set; }
         public static string DocumentationFolder { get; set; }
         public static string LocalAppDataPath { get; set; }
@@ -57,7 +55,6 @@ namespace Starfield_Tools.Common // Various functions used by the app
             {
                 StarfieldAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\Starfield";
             }
-
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Starfield AppData folder missing. Repair the game", MessageBoxButtons.OK, MessageBoxIcon.Stop);
@@ -85,6 +82,7 @@ namespace Starfield_Tools.Common // Various functions used by the app
                 return null;
             }
         }
+
         public static string MakeHeaderBlank() // Used to build ContentCatalog.txt header
         {
             string HeaderString = "";
@@ -107,6 +105,7 @@ namespace Starfield_Tools.Common // Various functions used by the app
             HeaderString = HeaderString[..^5] + ",";
             return HeaderString;
         }
+
         public static void OpenUrl(string url) // Launch web browser from argument
         {
             try
@@ -132,6 +131,7 @@ namespace Starfield_Tools.Common // Various functions used by the app
             }
             return start;
         }
+
         public static string GetCatalogPath()
         {
             return StarfieldAppData + @"\ContentCatalog.txt";
@@ -153,7 +153,6 @@ namespace Starfield_Tools.Common // Various functions used by the app
             public List<Req> req { get; set; }
             public List<Msg> msg { get; set; }
             public List<Url> url { get; set; }
-
         }
 
         public class Req // LOOT
@@ -167,11 +166,13 @@ namespace Starfield_Tools.Common // Various functions used by the app
             public string type { get; set; }
             public string content { get; set; }
         }
+
         public class Url // LOOT
         {
             public string link { get; set; }
             public string name { get; set; }
         }
+
         public class Prelude// LOOT
         {
             public List<MessageAnchor> common { get; set; }
@@ -192,6 +193,7 @@ namespace Starfield_Tools.Common // Various functions used by the app
             public List<string> subs { get; set; }
             public string condition { get; set; }
         }
+
         public class Configuration // LOOT
         {
             public Prelude prelude { get; set; }
@@ -201,6 +203,7 @@ namespace Starfield_Tools.Common // Various functions used by the app
             public List<Plugin> common { get; set; }
             public List<Globals> globals { get; set; }
         }
+
         public class Creation // ContentCatalog.txt format
         {
             public bool AchievementSafe { get; set; }
@@ -209,15 +212,6 @@ namespace Starfield_Tools.Common // Various functions used by the app
             public long Timestamp { get; set; }
             public string Title { get; set; }
             public string Version { get; set; }
-        }
-
-        public class ModMetaData // Testing
-        {
-            public string ModName { get; set; }
-            public string[] ModFiles { get; set; }
-            public string ModVersion { get; set; }
-            public string SourceURL { get; set; }
-            public string MainCategory { get; set; }
         }
 
         public static bool FileCompare(string file1, string file2)
@@ -258,16 +252,18 @@ namespace Starfield_Tools.Common // Various functions used by the app
 #endif
                 return false;
             }
-
         }
+
         public static void CheckGame() // Check if Starfield appdata folder exists
         {
             if (!Directory.Exists(StarfieldAppData))
             {
-                MessageBox.Show("Unable to continue. Is Starfield installed correctly?", "Starfield AppData directory not found", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                MessageBox.Show("Unable to continue. Is Starfield installed correctly?", "Starfield AppData directory not found",
+                    MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 Environment.Exit(1);
             }
         }
+
         public static void ShowAbout()
         {
             Form AboutBox = new frmAbout();
@@ -282,8 +278,8 @@ namespace Starfield_Tools.Common // Various functions used by the app
 
         public string SetStarfieldGamePath() // Prompt for Starfield game path
         {
-
-            MessageBox.Show("Please select the path to the game installation folder where Starfield.exe is located", "Select Game Path", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("Please select the path to the game installation folder where Starfield.exe is located", "Select Game Path",
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
@@ -337,6 +333,7 @@ namespace Starfield_Tools.Common // Various functions used by the app
                     return "";
             }
         }
+
         public static bool StartStarfieldCustom() // Start game with custom exe
         {
             string cmdLine = Properties.Settings.Default.CustomEXE;
@@ -384,6 +381,7 @@ namespace Starfield_Tools.Common // Various functions used by the app
                 return false;
             }
         }
+
         public static bool StartStarfieldMS() // Start game with MS Store version
         {
             //string cmdLine = @"shell:AppsFolder\BethesdaSoftworks.ProjectGold_3275kfvn8vcwc!Game";
@@ -407,6 +405,7 @@ namespace Starfield_Tools.Common // Various functions used by the app
                 return false;
             }
         }
+
         public static bool StartGame(int GameVersion) // Determine which version of the game to start
         {
             return GameVersion switch
@@ -449,6 +448,7 @@ namespace Starfield_Tools.Common // Various functions used by the app
 
             return MessageBox.Show(ActionText, ActionTitle, buttons, icon);
         }
+
         public List<string> GetPluginList() // Get list of plugins from Starfield Data folder
         {
             try
@@ -471,5 +471,4 @@ namespace Starfield_Tools.Common // Various functions used by the app
             Process.Start(new ProcessStartInfo(folder) { UseShellExecute = true });
         }
     }
-
 }

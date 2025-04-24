@@ -19,7 +19,6 @@ using File = System.IO.File;
 
 namespace Starfield_Tools
 {
-
     public partial class frmLoadOrder : Form
     {
         private CancellationTokenSource cancellationTokenSource;
@@ -32,12 +31,12 @@ namespace Starfield_Tools
         private Rectangle dragBoxFromMouseDown;
         private int rowIndexFromMouseDown, rowIndexOfItemUnderMouseToDrop, GameVersion = Steam;
 
-        readonly Tools tools = new();
+        private readonly Tools tools = new();
 
         private string LastProfile, tempstr;
 
-        bool Profiles = false, GridSorted = false, AutoUpdate = false, ActiveOnly = false, AutoSort = false, isModified = false, LooseFiles;
-        Tools.Configuration Groups = new();
+        private bool Profiles = false, GridSorted = false, AutoUpdate = false, ActiveOnly = false, AutoSort = false, isModified = false, LooseFiles;
+        private Tools.Configuration Groups = new();
 
         public frmLoadOrder(string parameter)
         {
@@ -57,14 +56,20 @@ namespace Starfield_Tools
                     ChangeSettings(false); // Disable auto settings
                     sbar3("Auto Settings Disabled");
                 }
+
                 if (arg.Equals("-reset", StringComparison.InvariantCultureIgnoreCase))
                     ResetPreferences();
             }
 
+            frmStarfieldTools StarfieldTools = new(); // Check the catalog
+            tempstr = StarfieldTools.CatalogStatus;
+            sbar4(tempstr);
+            if (tempstr != null && StarfieldTools.CatalogStatus.Contains("Error"))
+                StarfieldTools.Show(); // Show catalog fixer if catalog broken
+
             string PluginsPath = Tools.StarfieldAppData + "\\Plugins.txt";
             bool BackupStatus = false;
 
-#pragma warning disable CS0168 // Variable is declared but never used
             try
             {
                 string LooseFilesDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\My Games\\Starfield\\", // Check if loose files are enabled
@@ -87,7 +92,6 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
                 MessageBox.Show(ex.Message, "Error opening StarfieldCustom.ini");
 #endif
             }
-#pragma warning restore CS0168 // Variable is declared but never used
 
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(KeyEvent); // Handle <enter> for search
 
@@ -142,7 +146,7 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
                 toolStripMenuAutoDelccc.Checked = true;
                 sbarCCCOn();
                 if (Delccc())
-                    toolStripStatusDelCCC.Text = ("Starfield.ccc deleted");
+                    toolStripStatus1.Text = ("Starfield.ccc deleted");
             }
             else
                 sbarCCCOff();
@@ -153,12 +157,15 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
                 case Steam:
                     toolStripMenuSteam.Checked = true;
                     break;
+
                 case MS:
                     toolStripMenuMS.Checked = true;
                     break;
+
                 case Custom:
                     toolStripMenuCustom.Checked = true;
                     break;
+
                 case SFSE:
                     gameVersionSFSEToolStripMenuItem.Checked = true;
                     break;
@@ -278,13 +285,6 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
                 File.Copy(tempstr, tempstr + ".bak");
             }
 
-            frmStarfieldTools StarfieldTools = new(); // Check the catalog
-            tempstr = StarfieldTools.CatalogStatus;
-            sbar4(tempstr);
-            if (StarfieldTools.CatalogStatus != null)
-                if (StarfieldTools.CatalogStatus.Contains("Error"))
-                    StarfieldTools.Show(); // Show catalog fixer if catalog broken
-
             ReadLOOTGroups();
 
             // Initialise profiles
@@ -313,8 +313,15 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
                     RunGame();
                     Application.Exit();
                 }
+#if DEBUG
+                if (arg.StartsWith("-install")) // For future use (maybe) install mod from Nexus web link
+                {
+                    string strippedCommandLine = Regex.Replace(Environment.CommandLine, "^\"[^\"]+\"\\s*|^-install\\s*", "");
+                    Debug.WriteLine(strippedCommandLine);
+                    InstallMod(strippedCommandLine);
+                }
+#endif
             }
-
         }
 
         private void SetupColumns()
@@ -340,6 +347,7 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
                 SetColumnVisibility(setting, menuItem, column);
             }
         }
+
         private void SetMenus()
         {
             var settings = Properties.Settings.Default;
@@ -396,8 +404,11 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
             menuItem.Checked = condition;
             column.Visible = condition;
         }
+
         private void RefreshDataGrid()
         {
+            if (isModified && Tools.ConfirmAction("Save Changes?", "Load order has been modified", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                SavePlugins();
             if (!Profiles)
                 InitDataGrid();
 
@@ -422,11 +433,12 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
             catch (Exception ex)
             {
 #if DEBUG
-                    MessageBox.Show(ex.Message, "Yaml decoding error\nLOOT userlist.yaml possibly corrupt", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                MessageBox.Show(ex.Message, "Yaml decoding error\nLOOT userlist.yaml possibly corrupt", MessageBoxButtons.OK, MessageBoxIcon.Stop);
 #endif
                 sbar3(ex.Message);
             }
         }
+
         private void KeyEvent(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.F5)
@@ -435,17 +447,17 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
 
         private static bool CheckStarfieldCustom()
         {
-            bool result = Tools.FileCompare(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) +
-                "\\My Games\\Starfield\\StarfieldCustom.ini", Tools.CommonFolder + "StarfieldCustom.ini");
-            return result;
+            return Tools.FileCompare(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) +
+                     "\\My Games\\Starfield\\StarfieldCustom.ini", Tools.CommonFolder + "StarfieldCustom.ini");
         }
+
         private void InitDataGrid()
         {
             bool ModEnabled;
             int EnabledCount = 0, IndexCount = 1, esmCount = 0, espCount = 0, ba2Count, mainCount;
             string loText = Tools.StarfieldAppData + @"\Plugins.txt",
                    LOOTPath = Properties.Settings.Default.LOOTPath,
-                   StatText = "", directory;
+                   StatText = "", directory, pluginName;
 
             List<string> CreationsPlugin = new(), CreationsTitle = new(), CreationsFiles = new(), CreationsVersion = new();
             List<bool> AchievementSafe = new();
@@ -453,14 +465,16 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
             List<string> CreationsID = new(), blockedMods = Tools.BlockedMods();
             DateTime start = new(1970, 1, 1, 0, 0, 0, 0);
 
-            if (!File.Exists(Tools.GetCatalogPath()))
-            {
-                MessageBox.Show("Blank Catalog created\n\nStart the game and load a save or enter the Creations menu in game to rebuild the catalog",
-                    "Missing ContentCatalog.txt - Restart the app");
-
-                File.WriteAllText(Tools.GetCatalogPath(), Tools.MakeHeaderBlank());
-                Environment.Exit(1);
-            }
+            // Cache the visibility of columns checked repeatedly.
+            bool isGroupVisible = dataGridView1.Columns["Group"]?.Visible ?? false;
+            bool isDescriptionVisible = dataGridView1.Columns["Description"]?.Visible ?? false;
+            bool isVersionVisible = dataGridView1.Columns["Version"]?.Visible ?? false;
+            bool isAuthorVersionVisible = dataGridView1.Columns["AuthorVersion"]?.Visible ?? false;
+            bool isTimeStampVisible = dataGridView1.Columns["TimeStamp"]?.Visible ?? false;
+            bool isAchievementsVisible = dataGridView1.Columns["Achievements"]?.Visible ?? false;
+            bool isFilesVisible = dataGridView1.Columns["Files"]?.Visible ?? false;
+            bool isFileSizeVisible = dataGridView1.Columns["FileSize"]?.Visible ?? false;
+            bool isIndexVisible = dataGridView1.Columns["Index"]?.Visible ?? false;
 
             sbar("Loading...");
             sbar3("");
@@ -470,31 +484,10 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
             saveToolStripMenuItem.Enabled = true;
 
             dataGridView1.Rows.Clear();
-            SetColumnVisibility(false, toolStripMenuCreationsID, dataGridView1.Columns["CreationsID"]);
+            SetColumnVisibility(false, toolStripMenuCreationsID, dataGridView1.Columns["CreationsID"]); // Temporarily turn off these columns
             SetColumnVisibility(false, uRLToolStripMenuItem, dataGridView1.Columns["URL"]);
 
             string json = File.ReadAllText(Tools.GetCatalogPath());
-
-            // Moved to frmLoadOrder
-            /*Tools.Configuration Groups = new();
-
-            if (!string.IsNullOrEmpty(LOOTPath) && dataGridView1.Columns["Group"].Visible)
-            {
-                try
-                {
-                    var deserializer = new DeserializerBuilder().Build();
-                    string yamlContent = File.ReadAllText(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                        @"LOOT\games\Starfield\userlist.yaml"));
-                    Groups = deserializer.Deserialize<Tools.Configuration>(yamlContent);
-                }
-                catch (Exception ex)
-                {
-#if DEBUG
-                    MessageBox.Show(ex.Message, "Yaml decoding error\nLOOT userlist.yaml possibly corrupt", MessageBoxButtons.OK, MessageBoxIcon.Stop);
-#endif
-                    sbar3(ex.Message);
-                }
-            }*/
 
             try
             {
@@ -554,11 +547,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             }
 
             var lines = File.ReadAllLines(loText);
-            progressBar1.Maximum = lines.Length;
-            progressBar1.Value = 0;
-
-            progressBar1.Location = new Point((this.ClientSize.Width - progressBar1.Width) / 2, (this.ClientSize.Height - progressBar1.Height) / 2);
-            progressBar1.Show();
 
             // -- Pre-build a dictionary for quick lookup from plugin name (.esm and .esp) to index --
             var creationLookup = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
@@ -573,24 +561,43 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 }
             }
 
+            progressBar1.Maximum = lines.Length;
+            progressBar1.Value = 0;
+            progressBar1.Location = new Point((this.ClientSize.Width - progressBar1.Width) / 2, (this.ClientSize.Height - progressBar1.Height) / 2);
+            progressBar1.Show();
+
+            // Convert exclusion list to a HashSet for faster lookups.
+            var bethFilesSet = new HashSet<string>(tools.BethFiles);
+
+            // Suspend UI updates to avoid redraw for every row addition.
+            dataGridView1.SuspendLayout();
+
+            // Update the progress bar less frequently.
+            int progressInterval = Math.Max(1, lines.Count() / 100);
+
             foreach (var line in lines)
             {
                 progressBar1.Value++;
 
-                // Skip empty lines or those in the exclusion list.
-                if (string.IsNullOrEmpty(line) || tools.BethFiles.Contains(line))
+                // Skip empty lines, excluded lines or comments.
+                if (string.IsNullOrEmpty(line) || bethFilesSet.Contains(line) || line[0] == '#')
                     continue;
 
                 bool modEnabled = line[0] == '*';
-                string pluginName = modEnabled ? line[1..] : line;
+                pluginName = modEnabled ? line[1..] : line;
 
-                // Skip lines starting with '#' (as hidden/ignored)
-                if (pluginName[0] == '#')
-                    continue;
-
-                // -- Attempt to retrieve creation details in one quick lookup --
-                string description = "", modFiles = "", modVersion = "", authorVersion = "", aSafe = "", modTimeStamp = "", modID = "", url = "";
+                // Initialize details.
+                string description = string.Empty,
+                       modFiles = string.Empty,
+                       modVersion = string.Empty,
+                       authorVersion = string.Empty,
+                       aSafe = string.Empty,
+                       modTimeStamp = string.Empty,
+                       modID = string.Empty,
+                       url = string.Empty;
                 long modFileSize = 0;
+
+                // Attempt a quick lookup.
                 if (creationLookup.TryGetValue(pluginName, out int idx))
                 {
                     description = CreationsTitle[idx];
@@ -611,19 +618,19 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                     url = $"https://creations.bethesda.net/en/starfield/details/{(modID.Length > 3 ? modID[3..] : modID)}";
                 }
 
-                // -- Add a new row to your DataGridView --
-                var row = dataGridView1.Rows[dataGridView1.Rows.Add()];
+                // Add new row.
+                var newRowIndex = dataGridView1.Rows.Add();
+                var row = dataGridView1.Rows[newRowIndex];
 
                 // Update the group information if available.
-                if (!string.IsNullOrEmpty(LOOTPath) &&
-                    Groups.groups != null &&
-                    dataGridView1.Columns["Group"].Visible)
+                if (!string.IsNullOrEmpty(LOOTPath) && Groups.groups != null && isGroupVisible)
                 {
                     var group = Groups.plugins.FirstOrDefault(p => p.name.Equals(pluginName, StringComparison.OrdinalIgnoreCase));
                     if (group != null)
                     {
                         row.Cells["Group"].Value = group.group;
-                        if (group.url?.FirstOrDefault() is var urlInfo && urlInfo != null)
+                        // If a group URL exists, override our URL and description.
+                        if (group.url?.FirstOrDefault() is { } urlInfo)
                         {
                             url = urlInfo.link;
                             description = urlInfo.name;
@@ -638,14 +645,12 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                     row.Cells["Blocked"].Value = true;
                 }
 
-                if (modEnabled)
-                    EnabledCount++;
+                EnabledCount += modEnabled ? 1 : 0;
 
-                // Plugin names starting with "sfbgs" are assumed to be Bethesda Game Studios,
-                // then append extra information to the "Group" cell.
+                // Special handling for Bethesda Game Studios mods.
                 if (pluginName.StartsWith("sfbgs", StringComparison.OrdinalIgnoreCase))
                 {
-                    var currentGroup = row.Cells["Group"].Value?.ToString() ?? "Bethesda Game Studios Creations";
+                    string currentGroup = row.Cells["Group"].Value?.ToString() ?? "Bethesda Game Studios Creations";
                     row.Cells["Group"].Value = $"{currentGroup} (Bethesda)";
                 }
 
@@ -653,32 +658,32 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 row.Cells["ModEnabled"].Value = modEnabled;
                 row.Cells["PluginName"].Value = pluginName;
 
-                // Prepare additional columns.
-                var columnValues = new Dictionary<string, object>
-    {
-        { "Description", description },
-        { "Version", modVersion },
-        { "AuthorVersion", authorVersion },
-        { "TimeStamp", modTimeStamp },
-        { "Achievements", aSafe },
-        { "Files", modFiles },
-        { "FileSize", modFileSize != 0 ? modFileSize : null },
-        { "Index", IndexCount++ }
-    };
+                // Directly update additional columns as needed.
+                if (isDescriptionVisible)
+                    row.Cells["Description"].Value = description;
+                if (isVersionVisible)
+                    row.Cells["Version"].Value = modVersion;
+                if (isAuthorVersionVisible)
+                    row.Cells["AuthorVersion"].Value = authorVersion;
+                if (isTimeStampVisible)
+                    row.Cells["TimeStamp"].Value = modTimeStamp;
+                if (isAchievementsVisible)
+                    row.Cells["Achievements"].Value = aSafe;
+                if (isFilesVisible)
+                    row.Cells["Files"].Value = modFiles;
+                if (isFileSizeVisible)
+                    row.Cells["FileSize"].Value = modFileSize != 0 ? modFileSize : null;
+                if (isIndexVisible)
+                    row.Cells["Index"].Value = IndexCount++;
 
-                // Only update visible columns.
-                foreach (var entry in columnValues)
-                {
-                    if (dataGridView1.Columns[entry.Key]?.Visible == true)
-                    {
-                        row.Cells[entry.Key].Value = entry.Value;
-                    }
-                }
-
-                // Always update these columns.
+                // Always set these cells.
                 row.Cells["CreationsID"].Value = modID;
                 row.Cells["URL"].Value = url;
             }
+
+            // Resume layout after all rows have been processed.
+            dataGridView1.ResumeLayout();
+            progressBar1.Hide();
 
             // Restore column visibility based on user settings.
             SetColumnVisibility(Properties.Settings.Default.CreationsID, toolStripMenuCreationsID, dataGridView1.Columns["CreationsID"]);
@@ -689,14 +694,13 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             {
                 try
                 {
-                    string archivesPath = Path.Combine(Tools.CommonFolder, "BGS Archives.txt");
-                    var BGSArchives = new HashSet<string>(
-                        File.ReadLines(archivesPath).Select(line => line[..^4].ToLower())
-                    );
+                    var BGSArchives = File.ReadLines(Path.Combine(Tools.CommonFolder, "BGS Archives.txt"))
+    .Select(line => line[..^4].ToLower())
+    .ToHashSet();
 
-                    var archives = Directory.EnumerateFiles(Path.Combine(StarfieldGamePath, "Data"), "*.ba2", SearchOption.TopDirectoryOnly)
-                        .Select(Path.GetFileName)
-                        .Select(file => file.ToLower())
+                    var archives = Directory.EnumerateFiles(Path.Combine(StarfieldGamePath, "Data"), "*.ba2")
+                        .Select(file => Path.GetFileName(file)?.ToLower())
+                        .Except(BGSArchives)
                         .ToList();
 
                     var plugins = File.ReadLines(loText)
@@ -706,15 +710,15 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                         .ToList();
 
                     var suffixes = new[] { " - main.ba2", " - textures.ba2", " - textures_xbox.ba2", " - voices_en.ba2", ".ba2" };
-                    var modArchives = archives.Except(BGSArchives)
-                        .Select(archive => suffixes.Aggregate(archive, (current, suffix) => current.Replace(suffix, string.Empty)))
+                    var modArchives = archives.Select(archive =>
+                        suffixes.Aggregate(archive, (current, suffix) => current.Replace(suffix, string.Empty)))
                         .ToList();
 
                     ba2Count = modArchives.Count(mod => plugins.Contains(mod));
                     directory = Path.Combine(StarfieldGamePath, "Data");
-                    esmCount = Directory.EnumerateFiles(directory, "*.esm", SearchOption.TopDirectoryOnly).Count();
-                    espCount = Directory.EnumerateFiles(directory, "*.esp", SearchOption.TopDirectoryOnly).Count();
-                    mainCount = Directory.EnumerateFiles(directory, "* - main*.ba2", SearchOption.TopDirectoryOnly).Count();
+                    esmCount = Directory.EnumerateFiles(directory, "*.esm").Count();
+                    espCount = Directory.EnumerateFiles(directory, "*.esp").Count();
+                    mainCount = Directory.EnumerateFiles(directory, "* - main*.ba2").Count();
 
                     StatText = $"Total Mods: {dataGridView1.RowCount}, Creations: {CreationsPlugin.Count}, Other: {dataGridView1.RowCount - CreationsPlugin.Count}, " +
                                $"Enabled: {EnabledCount}, esm: {esmCount}, Archives - Active: {ba2Count}, Main: {mainCount}";
@@ -756,8 +760,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
             sbar(StatText);
             dataGridView1.EndEdit();
-            progressBar1.Value = progressBar1.Maximum;
-            progressBar1.Hide();
         }
 
         private void GetProfiles()
@@ -833,6 +835,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
         {
             this.Close();
         }
+
         private void MoveUp()
         {
             int rowIndex = dataGridView1.SelectedCells[0].OwningRow.Index;
@@ -852,6 +855,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             dataGridView1.Rows[rowIndex - 1].Cells[colIndex].Selected = true;
             isModified = true;
         }
+
         private void btnUp_Click(object sender, EventArgs e)
         {
             MoveUp();
@@ -876,6 +880,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             dataGridView1.Rows[rowIndex + 1].Cells[colIndex].Selected = true;
             isModified = true;
         }
+
         private void btnDown_Click(object sender, EventArgs e)
         {
             MoveDown();
@@ -939,6 +944,10 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             dataGridView1.Rows.Insert(0, selectedRow);
             dataGridView1.ClearSelection();
             dataGridView1.Rows[0].Cells[colIndex].Selected = true;
+            if (dataGridView1.Rows.Count > 0) // Ensure the DataGridView has rows
+            {
+                dataGridView1.FirstDisplayedScrollingRowIndex = 0; // Scroll to the first row
+            }
             isModified = true;
         }
 
@@ -952,8 +961,15 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             dataGridView1.Rows.Insert(dataGridView1.Rows.Count, selectedRow);
             dataGridView1.ClearSelection();
             dataGridView1.Rows[^1].Cells[colIndex].Selected = true;
+            int lastRowIndex = dataGridView1.Rows.Count - 1; // Get the index of the last row
+
+            if (lastRowIndex >= 0) // Ensure the DataGridView has rows
+            {
+                dataGridView1.FirstDisplayedScrollingRowIndex = lastRowIndex; // Scroll to the last row
+            }
             isModified = true;
         }
+
         private void btnBottom_Click(object sender, EventArgs e)
         {
             MoveBottom();
@@ -1095,7 +1111,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void toolStripMenuCreations_Click(object sender, EventArgs e)
         {
-
             Tools.OpenUrl("https://creations.bethesda.net/en/starfield/all?platforms=PC&sort=latest_uploaded");
         }
 
@@ -1155,14 +1170,9 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
                 if (Difference.Count > 0)
                 {
-                    // Check if the form is already open
-                    var existingForm = Application.OpenForms.OfType<frmProfileCompare>().FirstOrDefault();
-
-                    // Close the existing form
-                    existingForm?.Close();
-
-                    // Create and show a new instance of the form
-                    Form fpc = new frmProfileCompare(Difference);
+                    var existingForm = Application.OpenForms.OfType<frmProfileCompare>().FirstOrDefault(); // Check if the form is already open
+                    existingForm?.Close(); // Close the existing form
+                    Form fpc = new frmProfileCompare(Difference);// Create and show a new instance of the form
                     fpc.Show();
                 }
             }
@@ -1182,7 +1192,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 MessageBox.Show(ex.Message);
 #endif
             }
-
         }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1240,21 +1249,27 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                     if (dataGridView1.CurrentRow != null) // Prevent null reference exception
                         dataGridView1.Rows.RemoveAt(dataGridView1.CurrentRow.Index);
                     break;
+
                 case Keys.S:
                     MoveDown();
                     break;
+
                 case Keys.W:
                     MoveUp();
                     break;
+
                 case Keys.A:
                     MoveTop();
                     break;
+
                 case Keys.D:
                     MoveBottom();
                     break;
+
                 case Keys.Space:
                     EnableDisable();
                     break;
+
                 case Keys.R:
                     RunGame();
                     break;
@@ -1286,11 +1301,11 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 return 0;
 
             string directory = Path.Combine(StarfieldGamePath, "Data");
-            List<string> esmespFiles = tools.GetPluginList(); // Add .esm files
+            List<string> pluginFiles = tools.GetPluginList(); // Add .esm files
 
             try
             {
-                esmespFiles.AddRange(Directory.EnumerateFiles(directory, "*.esp", SearchOption.TopDirectoryOnly)
+                pluginFiles.AddRange(Directory.EnumerateFiles(directory, "*.esp", SearchOption.TopDirectoryOnly)
                                               .Select(Path.GetFileName));
             }
             catch (Exception ex)
@@ -1305,7 +1320,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                                  .Where(value => !string.IsNullOrEmpty(value))
             );
 
-            var filesToAdd = esmespFiles.Except(existingPlugins)
+            var filesToAdd = pluginFiles.Except(existingPlugins)
                                         .Except(tools.BethFiles)
                                         .ToList();
 
@@ -1329,14 +1344,14 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             int removedFiles = 0;
 
             if (!CheckGamePath() || string.IsNullOrEmpty(StarfieldGamePath))
-                return 0;
+                return 0; // Can't proceed without game path
 
             string directory = Path.Combine(StarfieldGamePath, "Data");
-            List<string> esmespFiles = tools.GetPluginList(); // Get existing plugin files
+            List<string> pluginFiles = tools.GetPluginList(); // Get existing plugin files
 
             try
             {
-                esmespFiles.AddRange(Directory.EnumerateFiles(directory, "*.esp", SearchOption.TopDirectoryOnly)
+                pluginFiles.AddRange(Directory.EnumerateFiles(directory, "*.esp", SearchOption.TopDirectoryOnly)
                                               .Select(Path.GetFileName));
             }
             catch (Exception ex)
@@ -1351,7 +1366,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                                  .Where(value => !string.IsNullOrEmpty(value))
             );
 
-            var filesToRemove = existingPlugins.Except(esmespFiles)
+            var filesToRemove = existingPlugins.Except(pluginFiles)
                                                .Union(tools.BethFiles) // Preserve Union here to remove both missing and base game files
                                                .ToList();
 
@@ -1368,37 +1383,28 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 }
             }
 
-            if (removedFiles > 0)
-                isModified = true;
+            isModified = removedFiles > 0;
 
             return removedFiles;
         }
 
         private int AddRemove()
         {
-            int addedMods, removedMods;
-            int ReturnStatus = 0;
-            addedMods = AddMissing();
-            removedMods = RemoveMissing();
-            if (addedMods > 0 || removedMods > 0)
-            {
+            int ReturnStatus = AddMissing() + RemoveMissing();
+            if (ReturnStatus > 0)
                 SavePlugins();
-                ReturnStatus = addedMods + removedMods;
-            }
-            else
-                ReturnStatus = 0;
+
             return ReturnStatus;
         }
 
         private void toolStripMenuAutoClean_Click(object sender, EventArgs e)
         {
-
             sbar3($"Changes made: {AddRemove().ToString()}");
         }
 
         private void frmLoadOrder_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Properties.Settings.Default.WindowLocation = this.Location;
+            Properties.Settings.Default.WindowLocation = this.Location; // Save window pos and size
             Properties.Settings.Default.WindowSize = this.Size;
 
             if (isModified)
@@ -1434,6 +1440,9 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
             // Obtain the mod file path either from the parameter or by showing a file dialog.
             string modFilePath = InstallMod;
+#if DEBUG
+            MessageBox.Show($"Installing {InstallMod}");
+#endif
             if (string.IsNullOrEmpty(modFilePath))
             {
                 using (OpenFileDialog openMod = new OpenFileDialog
@@ -1479,7 +1488,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
                             if (archiveFiles.Length > 0)
                             {
-
                                 foreach (string file in archiveFiles)
                                 {
                                     using (ArchiveFile archiveFile2 = new ArchiveFile(file))
@@ -1638,6 +1646,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 }
             }
         }
+
         private void toolStripMenuInstall_Click(object sender, EventArgs e)
         {
             InstallMod();
@@ -1718,7 +1727,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void toolStripMenuExploreData_Click(object sender, EventArgs e)
         {
-
             Tools.OpenFolder(Path.Combine(StarfieldGamePath, "Data"));
         }
 
@@ -1906,10 +1914,11 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 if (!Tools.FileCompare(pluginPath, profilePath))
                 {
                     SaveLO(profilePath); // Save profile if updated
-                    toolStripStatusSecondary.Text += $", {cmbProfile.Text} profile saved";
+                    toolStripStatus2.Text += $", {cmbProfile.Text} profile saved";
                 }
             }
         }
+
         private void btnSave_Click(object sender, EventArgs e)
         {
             SavePlugins();
@@ -1919,11 +1928,13 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
         {
             RunGame();
         }
+
         private static void ShowSplashScreen()
         {
             Form SS = new frmSplashScreen();
             SS.Show();
         }
+
         private void RunGame()
         {
             bool result;
@@ -2094,6 +2105,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             cmbProfile.Enabled = Profiles;
             chkProfile.Checked = Profiles;
         }
+
         private void toolStripMenuLoot_Click(object sender, EventArgs e)
         {
             RunLOOT(true);
@@ -2115,6 +2127,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             }
             return false;
         }
+
         private void toolStripMenuLootPath_Click(object sender, EventArgs e)
         {
             SetLOOTPath();
@@ -2127,12 +2140,12 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void sbar2(string StatusBarMessage)
         {
-            toolStripStatusSecondary.Text = StatusBarMessage;
+            toolStripStatus2.Text = StatusBarMessage;
         }
 
         private void sbar3(string StatusBarMessage)
         {
-            toolStripStatusTertiary.Text = StatusBarMessage;
+            toolStripStatus3.Text = StatusBarMessage;
         }
 
         private void sbar4(string StatusBarMessage)
@@ -2147,17 +2160,19 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void sbarCCC(string sbarMessage)
         {
-            toolStripStatusDelCCC.Text = sbarMessage;
+            toolStripStatus1.Text = sbarMessage;
         }
+
         private void sbarCCCOn()
         {
-            toolStripStatusDelCCC.Text = "Auto delete Starfield.ccc: On";
+            toolStripStatus1.Text = "Auto delete Starfield.ccc: On";
         }
 
         private void sbarCCCOff()
         {
-            toolStripStatusDelCCC.Text = "Auto delete Starfield.ccc: Off";
+            toolStripStatus1.Text = "Auto delete Starfield.ccc: Off";
         }
+
         private void toolStripMenuLoot_Click_1(object sender, EventArgs e)
         {
             RunLOOT(false);
@@ -2211,8 +2226,8 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 sbar3("Error deleting Starfield.ccc " + ex.Message);
                 return false;
             }
-
         }
+
         private void toolStripMenuDeleteCCC_Click(object sender, EventArgs e)
         {
             Delccc();
@@ -2363,6 +2378,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             sbar4(StarfieldTools.CatalogStatus);
             return StarfieldTools.CatalogStatus;
         }
+
         private void toolStripMenuCatalog_Click(object sender, EventArgs e)
         {
             CheckCatalog();
@@ -2423,6 +2439,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 return false;
             }
         }
+
         private void toolStripMenuResetStarfieldCustom_Click(object sender, EventArgs e)
         {
             ResetStarfieldCustomINI(true);
@@ -2450,12 +2467,14 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
         {
             RunGame();
         }
+
         private static bool GameSwitchWarning()
         {
             return (Tools.ConfirmAction("Do you want to proceed?\nAn app restart may be required to enable certain features.",
                 "Switching to a no mods profile is suggested before proceeding",
                 MessageBoxButtons.YesNo, MessageBoxIcon.Question, true) == DialogResult.Yes);
         }
+
         private void toolStripMenuSteam_Click(object sender, EventArgs e)
         {
             if (GameVersion == MS)
@@ -2572,6 +2591,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 sbar3(ChangeCount + " Change(s) made to Vortex created files");
             return ChangeCount;
         }
+
         private void undoVortexChangesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             UndoVortexChanges(true);
@@ -2651,6 +2671,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 toolStripMenuMS.Checked = false;
                 toolStripMenuCustom.Checked = false;
                 GameVersion = SFSE;
+                StarfieldGamePath = Properties.Settings.Default.StarfieldGamePath;
                 UpdateGameVersion();
             }
             else
@@ -2712,6 +2733,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             // Set button to bold for active
             btnActiveOnly.Font = new Font(btnActiveOnly.Font, ActiveOnly ? FontStyle.Bold : FontStyle.Regular);
         }
+
         private void activeOnlyToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ActiveOnlyToggle();
@@ -2776,6 +2798,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             }
             return false;
         }
+
         private void vortexToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (Properties.Settings.Default.VortexPath != "")
@@ -2816,6 +2839,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             Properties.Settings.Default.CompareProfiles = compareProfilesToolStripMenuItem.Checked;
             SaveSettings();
         }
+
         private void compareProfilesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CompareProfiles();
@@ -2912,12 +2936,13 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
                 if (ResetStarfieldCustomINI(false)) // Apply recommended settings
                     ChangeCount++;
-                if (ChangeCount > 0)
-                    sbar3(ChangeCount.ToString() + " Change(s) made to ini files");
+
+                sbar3(ChangeCount.ToString() + " Change(s) made to ini files");
             }
             sbar5("Auto Reset");
             return ChangeCount;
         }
+
         private void autoResetToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (!autoResetToolStripMenuItem.Checked)
@@ -2956,7 +2981,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                     var process = Process.Start(processInfo);
                     System.Windows.Forms.Application.Exit();
                 }
-
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message);
@@ -2992,6 +3016,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             SaveSettings();
             SetMenus();
         }
+
         private void enableAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (Tools.ConfirmAction("Enable All settings?", "This will turn on a most of the Tools menu settings and reset ini settings", MessageBoxButtons.OKCancel,
@@ -3000,6 +3025,8 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 ChangeSettings(true);
                 ResetDefaults();
             }
+            if (!ActiveOnly)
+                ActiveOnlyToggle();
         }
 
         private void disableAllToolStripMenuItem_Click(object sender, EventArgs e)
@@ -3035,7 +3062,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 #if DEBUG
                 MessageBox.Show(ex.Message);
 #endif
-
             }
             if (LooseFiles)
                 sbarCCC("Loose Files Enabled");
@@ -3192,7 +3218,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 sbar5("");
         }
 
-        static void CreateZipFromFiles(List<string> files, string zipPath)
+        private static void CreateZipFromFiles(List<string> files, string zipPath)
         {
             using (FileStream zipToOpen = new FileStream(zipPath, FileMode.Create))
             {
@@ -3208,7 +3234,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private bool CheckGamePath() // Check if game path is set
         {
-            if (StarfieldGamePath == "" || StarfieldGamePath == null)
+            if (String.IsNullOrEmpty(StarfieldGamePath))
                 StarfieldGamePath = tools.SetStarfieldGamePath(); // Prompt user to set game path if not set
             if (StarfieldGamePath == "")
             {
@@ -3218,6 +3244,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             else
                 return true;
         }
+
         private void archiveModToolStripMenuItem_Click_1(object sender, EventArgs e) // Make a zip of a mod and copy it to specified folder
         {
             List<string> files = new();
@@ -3309,7 +3336,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             folderBrowserDialog.InitialDirectory = Properties.Settings.Default.BackupDirectory;
             if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
             {
-                MessageBox.Show("Current archive will continue to be created", "Press Q to stop operation");
+                MessageBox.Show("Current archive will continue to be created", "Press F12 to stop operation");
                 string selectedFolderPath = folderBrowserDialog.SelectedPath;
                 Properties.Settings.Default.BackupDirectory = selectedFolderPath;
                 SaveSettings();
@@ -3356,7 +3383,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                         modsArchived++;
                     }
                     files.Clear();
-
                 }
                 sbar3(modsArchived + " Mod(s) archived");
             }
@@ -3374,7 +3400,8 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             if (StarfieldGamePath == "")
                 return 0;
 
-            using (StreamReader sr = new StreamReader(Tools.CommonFolder + "BGS Archives.txt")) // Read a list of standard game archives. Will need updating for future DLC
+            // Read a list of standard game archives. Will need updating for future DLC
+            using (StreamReader sr = new StreamReader(Tools.CommonFolder + "BGS Archives.txt"))
             {
                 string line;
                 while ((line = sr.ReadLine()) != null)
@@ -3425,8 +3452,8 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 sbar3("No orphaned archives found");
                 return 0;
             }
-
         }
+
         private void checkArchivesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CheckArchives();
@@ -3436,24 +3463,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
         {
             activateNewModsToolStripMenuItem.Checked = !activateNewModsToolStripMenuItem.Checked;
             Properties.Settings.Default.ActivateNew = activateNewModsToolStripMenuItem.Checked;
-        }
-
-        private static void GetSteamGamePath()
-        {
-            try
-            {
-                SteamGameLocator steamGameLocator = new SteamGameLocator();
-                StarfieldGamePath = steamGameLocator.getGameInfoByFolder("Starfield").steamGameLocation;
-                Properties.Settings.Default.StarfieldGamePath = StarfieldGamePath;
-                SaveSettings();
-            }
-            catch (Exception ex)
-            {
-#if DEBUG
-                MessageBox.Show(ex.Message);
-#endif
-            }
-
+            sbar3("test");
         }
 
         private void toolStripMenuItemDeletePlugins_Click(object sender, EventArgs e)
@@ -3509,6 +3519,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             this.Height = (int)(screenHeight * 0.85);
             this.StartPosition = FormStartPosition.CenterScreen;
         }
+
         private void frmLoadOrder_Load(object sender, EventArgs e)
         {
             this.Location = Properties.Settings.Default.WindowLocation;
@@ -3738,12 +3749,12 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private async void frmLoadOrder_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Q)
+            if (e.KeyCode == Keys.F12)
             {
                 sbar3("Operation Stopped.");
                 try
                 {
-                    cancellationTokenSource.Cancel(); // Signal cancellation
+                    cancellationTokenSource?.Cancel(); // Signal cancellation
                 }
                 catch (Exception ex)
                 {
@@ -3760,7 +3771,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             try
             {
                 await UpdateBackupAsync(cancellationTokenSource.Token);
-
             }
             catch (OperationCanceledException)
             {
@@ -3788,7 +3798,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             catch { }
 
             return returnStatus;
-
         }
 
         private void deleteLooseFileFoldersToolStripMenuItem_Click(object sender, EventArgs e)
@@ -4000,7 +4009,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                     MessageBox.Show($"An error occurred while restoring BlockedMods.txt: {ex.Message}", "Restore Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-
         }
 
         private void deleteStarfieldCustominiToolStripMenuItem_Click(object sender, EventArgs e)
@@ -4025,7 +4033,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
         private void UpdateAllProfiles()
         {
             string activeProfile = cmbProfile.SelectedItem.ToString();
-            bool activeStatus = ActiveOnly, needsSorting, profileChanges = Properties.Settings.Default.CompareProfiles;
+            bool activeStatus = ActiveOnly, profileChanges = Properties.Settings.Default.CompareProfiles;
             int changes = 0;
 
             if (profileChanges)
@@ -4056,6 +4064,24 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             sbar3($"Changes made: {changes}");
         }
 
+        private static void GetSteamGamePath()
+        {
+            try
+            {
+                SteamGameLocator steamGameLocator = new SteamGameLocator();
+                StarfieldGamePath = steamGameLocator.getGameInfoByFolder("Starfield").steamGameLocation;
+                Properties.Settings.Default.StarfieldGamePath = StarfieldGamePath;
+                SaveSettings();
+            }
+            catch (Exception ex)
+            {
+                //sbar3(ex.Message);
+#if DEBUG
+                MessageBox.Show(ex.Message);
+#endif
+            }
+        }
+
         private void updateAllProfilesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             UpdateAllProfiles();
@@ -4063,7 +4089,11 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void sFSEPluginsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Tools.OpenFolder(Path.Combine(StarfieldGamePath,@"Data\SFSE\Plugins"));
+            string SFSEPlugins = Path.Combine(StarfieldGamePath, @"Data\SFSE\Plugins");
+            if (Directory.Exists(SFSEPlugins))
+                Tools.OpenFolder(SFSEPlugins);
+            else
+                MessageBox.Show("Unable to find SFSE Plugins Directory");
         }
     }
 }

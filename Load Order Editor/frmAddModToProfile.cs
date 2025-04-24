@@ -9,8 +9,9 @@ namespace Starfield_Tools.Load_Order_Editor
 {
     public partial class frmAddModToProfile : Form
     {
-        readonly Tools tools = new();
-        string ModName;
+        private readonly Tools tools = new();
+        private string ModName;
+
         public frmAddModToProfile(List<string> items, string modName) // List of profiles and mod name
         {
             InitializeComponent();
@@ -51,12 +52,10 @@ namespace Starfield_Tools.Load_Order_Editor
 
         private void btnSelectAll_Click(object sender, EventArgs e)
         {
-
             for (int i = 0; i < checkedListBox1.Items.Count; i++)
             {
                 checkedListBox1.SetItemChecked(i, true);
             }
-
         }
 
         private void btnSelectNone_Click(object sender, EventArgs e)

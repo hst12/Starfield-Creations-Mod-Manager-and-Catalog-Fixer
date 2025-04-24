@@ -10,15 +10,14 @@ using System.Windows.Forms;
 
 namespace Starfield_Tools
 {
-
     public partial class frmStarfieldTools : Form
     {
-
         public bool AutoCheck, AutoClean, AutoBackup, AutoRestore, ForceClean, Verbose;
         public string CatalogStatus;
 
-        readonly Tools tools = new();
         private readonly string StarfieldGamePath;
+        private readonly Tools tools = new();
+
         public frmStarfieldTools()
         {
             InitializeComponent();
@@ -36,9 +35,6 @@ namespace Starfield_Tools
             ForceClean = Properties.Settings.Default.ForceClean;
             SetAutoCheckBoxes();
 
-            bool cmdLineRunSteam = false;
-            bool cmdLineRunMS = false;
-            bool cmdlineRunSFSE = false;
             richTextBox2.Text = "";
 
             if (AutoCheck) // Check catalog status if enabled
@@ -75,53 +71,164 @@ namespace Starfield_Tools
                 BackupCatalog();
 
             DisplayCatalog();
-
-            // Run  Command line params
-            if (cmdLineRunSteam)
-            {
-                SaveSettings();
-                Tools.StartStarfieldSteam();
-                if (Application.MessageLoop)
-                    Application.Exit();
-                else
-                    Environment.Exit(1);
-            }
-
-            if (cmdLineRunMS)
-            {
-                SaveSettings();
-                Tools.StartStarfieldMS();
-                if (Application.MessageLoop)
-                    Application.Exit();
-                else
-                    Environment.Exit(1);
-            }
-
-            if (cmdlineRunSFSE)
-            {
-                SaveSettings();
-                Tools.StartStarfieldSFSE();
-                if (Application.MessageLoop)
-                    Application.Exit();
-                else
-                    Environment.Exit(1);
-            }
         }
-        private void ScrollToEnd()
+
+        public static string GetStarfieldAppData()
         {
-            richTextBox2.SelectionStart = richTextBox2.Text.Length;
-            richTextBox2.ScrollToCaret();
+            return (Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)) + @"\Starfield";
         }
 
-        private void SetAutoCheckBoxes()
+        public bool BackupCatalog()
         {
-            // Initialise Checkboxes
-            chkAutoCheck.Checked = AutoCheck;
-            chkAutoClean.Checked = AutoClean;
-            chkAutoBackup.Checked = AutoBackup;
-            chkAutoRestore.Checked = AutoRestore;
-            chkForceClean.Checked = ForceClean;
+            bool BackupStatus = false;
+
+            if (!CheckCatalog())
+            {
+                richTextBox2.Text += "\nCatalog is corrupted. Backup not made.\n";
+                if (AutoClean)
+                    CleanCatalog();
+                return false;
+            }
+
+            if (!CheckBackup())
+            {
+                string sourceFileName = Tools.GetCatalogPath();
+                string destFileName = sourceFileName + ".bak";
+
+                try
+                {
+                    File.Copy(sourceFileName, destFileName, true); // overwrite
+                    richTextBox2.Text += "\nBackup done\n";
+                    toolStripStatusLabel1.Text = "Backup done";
+                    BackupStatus = true;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}", "Backup failed");
+                }
+            }
+            else
+                BackupStatus = false;
+            return BackupStatus;
         }
+
+        public void SaveSettings()  // Save user settings
+        {
+            Settings.Default.AutoCheck = AutoCheck;
+            Settings.Default.AutoClean = AutoClean;
+            Settings.Default.AutoBackup = AutoBackup;
+            Settings.Default.AutoRestore = AutoRestore;
+            if (StarfieldGamePath != "")
+                Settings.Default.StarfieldGamePath = StarfieldGamePath;
+            Settings.Default.ForceClean = ForceClean;
+            Settings.Default.Verbose = Verbose;
+            Settings.Default.Save();
+        }
+
+        private void btnAchievemnts_Click(object sender, EventArgs e)
+        {
+            if (Tools.ConfirmAction("Do you want to continue?", "Experimental Feature - All achievement flags will be set. ", MessageBoxButtons.YesNo) == DialogResult.No)
+            {
+                toolStripStatusLabel1.Text = "Achievement flags not reset";
+                return;
+            }
+
+            string jsonFilePath = Tools.GetCatalogPath(), json = File.ReadAllText(jsonFilePath);
+            var data = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, Tools.Creation>>(json);
+
+            foreach (var kvp in data)
+            {
+                kvp.Value.AchievementSafe = true;  // set Achievement flag
+            }
+
+            data.Remove("ContentCatalog"); // remove messed up content catalog section
+
+            json = Newtonsoft.Json.JsonConvert.SerializeObject(data, Newtonsoft.Json.Formatting.Indented);
+
+            // Hack the Bethesda header back in
+            json = Tools.MakeHeader() + json[1..];
+
+            File.WriteAllText(Tools.GetCatalogPath(), json); // Write updated catalog
+            DisplayCatalog();
+            toolStripStatusLabel1.Text = "Achievement flags set";
+        }
+
+        private void btnBackup_Click(object sender, EventArgs e)
+        {
+            BackupCatalog();
+            ScrollToEnd();
+            DisplayCatalog();
+        }
+
+        private void btnCheck_Click(object sender, EventArgs e)
+        {
+            CheckCatalog();
+            ScrollToEnd();
+            DisplayCatalog();
+        }
+
+        private void btnClearLog_Click(object sender, EventArgs e)
+        {
+            richTextBox2.Text = "";
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            if (Tools.ConfirmAction("Are you Sure?", "Delete ContentCatalog.txt", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                File.Delete(Tools.GetCatalogPath());
+        }
+
+        private void btnLoad_Click(object sender, EventArgs e)
+        {
+            string pathToFile = Tools.GetCatalogPath();
+            Process.Start("explorer", pathToFile);
+        }
+
+        private void btnQuit_Click(object sender, EventArgs e)
+        {
+            SaveSettings();
+            this.Close();
+        }
+
+        private void btnResetAll_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show("Do you want to continue?", "All version numbers will be reset. This will force all Creations to re-download", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+            if (result != DialogResult.OK)
+            {
+                toolStripStatusLabel1.Text = "Version numbers not reset";
+                return;
+            }
+
+            string jsonFilePath = Tools.GetCatalogPath();
+
+            string json = File.ReadAllText(jsonFilePath);
+
+            var data = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, Tools.Creation>>(json);
+
+            foreach (var kvp in data)
+            {
+                kvp.Value.Version = "1704067200.0"; // set version to 1704067200.0
+            }
+
+            data.Remove("ContentCatalog"); // remove messed up content catalog section
+
+            json = Newtonsoft.Json.JsonConvert.SerializeObject(data, Newtonsoft.Json.Formatting.Indented);
+
+            // Hack the Bethesda header back in
+            json = Tools.MakeHeader() + json[1..];
+
+            File.WriteAllText(Tools.GetCatalogPath(), json); // Write updated catalog
+            DisplayCatalog();
+            toolStripStatusLabel1.Text = "Version numbers reset";
+        }
+
+        private void btnRestore_Click(object sender, EventArgs e)
+        {
+            RestoreCatalog();
+            ScrollToEnd();
+            DisplayCatalog();
+        }
+
         private bool CheckBackup()
         {
             string fileName1 = Tools.GetCatalogPath();
@@ -139,23 +246,6 @@ namespace Starfield_Tools
                 ScrollToEnd();
                 return false;
             }
-        }
-
-        private void DisplayCatalog()
-        {
-#pragma warning disable CS0168 // Variable is declared but never used
-            try
-            {
-                richTextBox1.Text = File.ReadAllText(Tools.GetCatalogPath());
-            }
-            catch (Exception ex)
-            {
-#if DEBUG
-                MessageBox.Show(ex.Message);
-#endif
-                toolStripStatusLabel1.Text = "Catalog not found";
-            }
-#pragma warning restore CS0168 // Variable is declared but never used
         }
 
         private bool CheckCatalog() // returns true if catalog is good
@@ -209,13 +299,13 @@ namespace Starfield_Tools
 
                     string versionStr = creation.Version;
                     int dotIndex = versionStr.IndexOf('.');
-                    double versionCheck = dotIndex > 0 ? double.Parse(versionStr.Substring(0, dotIndex)) : 0;
+                    double versionCheck = dotIndex > 0 ? double.Parse(versionStr[..dotIndex]) : 0;
 
                     // If the version string does not match the expected header and Verbose logging is enabled, log details.
                     if (versionStr != Tools.CatalogVersion && Verbose)
                     {
                         string versionDetail = (dotIndex >= 0 && dotIndex < versionStr.Length - 1)
-                            ? versionStr.Substring(dotIndex + 1)
+                            ? versionStr[(dotIndex + 1)..]
                             : "";
                         richTextBox2.AppendText($"{creation.Title}, date: {Tools.ConvertTime(versionCheck)} version: {versionDetail}\n");
                     }
@@ -266,22 +356,13 @@ namespace Starfield_Tools
             }
             catch (Exception ex)
             {
-#if DEBUG
-        MessageBox.Show(ex.Message);
-#endif
-                // If the catalog file is missing, prompt to create a dummy one.
+                // If the catalog file is missing create a dummy one.
                 if (!File.Exists(catalogPath))
                 {
-                    DialogResult result = MessageBox.Show("Missing ContentCatalog.txt",
-                                                            "Do you want to create a blank ContentCatalog.txt file?",
-                                                            MessageBoxButtons.OKCancel);
-                    if (result == DialogResult.OK)
-                    {
-                        string catalogHeader = Tools.MakeHeaderBlank();
-                        File.WriteAllText(catalogPath, catalogHeader);
-                        toolStripStatusLabel1.Text = "Dummy ContentCatalog.txt created";
-                        return false;
-                    }
+                    Tools.ConfirmAction("Missing ContentCatalog.txt", "A Blank ContentCatalog.txt file will be created", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    File.WriteAllText(catalogPath, Tools.MakeHeaderBlank());
+                    toolStripStatusLabel1.Text = "Dummy ContentCatalog.txt created";
+                    return false;
                 }
                 else
                 {
@@ -290,6 +371,38 @@ namespace Starfield_Tools
                 }
                 return false;
             }
+        }
+
+        private void chkAutoBackup_CheckedChanged(object sender, EventArgs e)
+        {
+            AutoBackup = chkAutoBackup.Checked;
+        }
+
+        private void chkAutoCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            AutoCheck = chkAutoCheck.Checked;
+        }
+
+        private void chkAutoClean_CheckedChanged(object sender, EventArgs e)
+        {
+            AutoClean = chkAutoClean.Checked;
+        }
+
+        private void chkAutoRestore_CheckedChanged(object sender, EventArgs e)
+        {
+            AutoRestore = chkAutoRestore.Checked;
+            Properties.Settings.Default.AutoRestore = AutoRestore;
+        }
+
+        private void chkForceClean_CheckedChanged(object sender, EventArgs e)
+        {
+            ForceClean = chkForceClean.Checked;
+        }
+
+        private void chkVerbose_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Default.Verbose = chkVerbose.Checked;
+            Verbose = chkVerbose.Checked;
         }
 
         private void CleanCatalog()
@@ -327,91 +440,6 @@ namespace Starfield_Tools
             }
         }
 
-        private void btnQuit_Click(object sender, EventArgs e)
-        {
-            SaveSettings();
-            this.Close();
-        }
-
-        private void btnLoad_Click(object sender, EventArgs e)
-        {
-            string pathToFile = Tools.GetCatalogPath();
-            Process.Start("explorer", pathToFile);
-        }
-
-        private void btnCheck_Click(object sender, EventArgs e)
-        {
-            CheckCatalog();
-            ScrollToEnd();
-            DisplayCatalog();
-        }
-        public bool BackupCatalog()
-        {
-            bool BackupStatus = false;
-
-            if (!CheckCatalog())
-            {
-                richTextBox2.Text += "\nCatalog is corrupted. Backup not made.\n";
-                if (AutoClean)
-                    CleanCatalog();
-                return false;
-            }
-
-            if (!CheckBackup())
-            {
-                string sourceFileName = Tools.GetCatalogPath();
-                string destFileName = sourceFileName + ".bak";
-
-                try
-                {
-                    File.Copy(sourceFileName, destFileName, true); // overwrite
-                    richTextBox2.Text += "\nBackup done\n";
-                    toolStripStatusLabel1.Text = "Backup done";
-                    BackupStatus = true;
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error: {ex.Message}", "Backup failed");
-                }
-            }
-            else
-                BackupStatus = false;
-            return BackupStatus;
-        }
-
-        private void chkAutoCheck_CheckedChanged(object sender, EventArgs e)
-        {
-            AutoCheck = chkAutoCheck.Checked;
-        }
-
-        private void chkAutoClean_CheckedChanged(object sender, EventArgs e)
-        {
-            AutoClean = chkAutoClean.Checked;
-        }
-
-        private void chkAutoBackup_CheckedChanged(object sender, EventArgs e)
-        {
-            AutoBackup = chkAutoBackup.Checked;
-        }
-
-        private void chkAutoRestore_CheckedChanged(object sender, EventArgs e)
-        {
-            AutoRestore = chkAutoRestore.Checked;
-            Properties.Settings.Default.AutoRestore = AutoRestore;
-        }
-
-        private void chkForceClean_CheckedChanged(object sender, EventArgs e)
-        {
-            ForceClean = chkForceClean.Checked;
-        }
-
-        private void btnBackup_Click(object sender, EventArgs e)
-        {
-            BackupCatalog();
-            ScrollToEnd();
-            DisplayCatalog();
-        }
-
         private void cmdDeleteStale_Click(object sender, EventArgs e)
         {
             RemoveDeleteddEntries();
@@ -422,81 +450,92 @@ namespace Starfield_Tools
             ScrollToEnd();
         }
 
-        private bool RestoreCatalog()
+        private void DisplayCatalog()
         {
-            string destFileName = Tools.GetCatalogPath();
-            string sourceFileName = destFileName + ".bak";
-
-#pragma warning disable CS0168 // Variable is declared but never used
             try
             {
-                // Copy the file
-                File.Copy(sourceFileName, destFileName, true); // overwrite
-
-                richTextBox2.Text += "\nRestore complete\n";
-                toolStripStatusLabel1.Text = "Restore complete";
-                return true;
+                richTextBox1.Text = File.ReadAllText(Tools.GetCatalogPath());
             }
             catch (Exception ex)
             {
-#if DEBUG
-                MessageBox.Show(ex.Message);
-#endif
-                richTextBox2.Text += "\nRestore failed.\n";
-                toolStripStatusLabel1.Text = "Restore failed";
-                return false;
+                toolStripStatusLabel1.Text = $"{ex.Message} Catalog not found";
             }
-#pragma warning restore CS0168 // Variable is declared but never used
         }
 
-        private void btnResetAll_Click(object sender, EventArgs e)
+        private void FixCatalog()
         {
+            string jsonFilePath = Tools.GetCatalogPath();
+            string json = File.ReadAllText(jsonFilePath); // Load catalog
 
-            DialogResult result = MessageBox.Show("Do you want to continue?", "All version numbers will be reset. This will force all Creations to re-download", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
-            if (result != DialogResult.OK)
+            if (string.IsNullOrWhiteSpace(json))
             {
-                toolStripStatusLabel1.Text = "Version numbers not reset";
+                toolStripStatusLabel1.Text = "Catalog file is empty, nothing to clean";
                 return;
             }
 
-            string jsonFilePath = Tools.GetCatalogPath();
+            int errorCount = 0;
+            int versionReplacementCount = 0;
 
-            string json = File.ReadAllText(jsonFilePath);
-
+            // Deserialize the catalog into a dictionary.
             var data = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, Tools.Creation>>(json);
 
             foreach (var kvp in data)
             {
-                kvp.Value.Version = "1704067200.0"; // set version to 1704067200.0
+                string versionStr = kvp.Value.Version;
+                if (Verbose)
+                    richTextBox2.AppendText($"Checking {kvp.Value.Title}, {versionStr}\n");
+
+                // Check for any invalid characters in the version (allows letters, digits, or '.').
+                bool fixVersion = versionStr.Any(ch => !char.IsLetterOrDigit(ch) && ch != '.');
+
+                // If the version does not match the header, perform the timestamp check.
+                if (versionStr != Tools.CatalogVersion)
+                {
+                    int dotIndex = versionStr.IndexOf('.');
+                    if (dotIndex > 0)
+                    {
+                        double versionCheck = double.Parse(versionStr[..dotIndex]);
+                        long timeStamp = kvp.Value.Timestamp;
+                        if (versionCheck > timeStamp)
+                        {
+                            richTextBox2.AppendText($"Replacing version no for {kvp.Value.Title}\n");
+                            kvp.Value.Version = "1704067200.0";
+                            versionReplacementCount++;
+                        }
+                    }
+                }
+
+                // If invalid characters were found, correct the version string.
+                if (fixVersion)
+                {
+                    richTextBox2.AppendText($"Invalid characters in {kvp.Value.Title}\n");
+                    kvp.Value.Version = "1704067200.0"; // set version to default
+                    errorCount++;
+                }
             }
 
-            data.Remove("ContentCatalog"); // remove messed up content catalog section
+            // Remove any corrupted catalog header before re-serializing.
+            data.Remove("ContentCatalog");
 
+            // Serialize the catalog using Newtonsoft.Json for indented formatting.
             json = Newtonsoft.Json.JsonConvert.SerializeObject(data, Newtonsoft.Json.Formatting.Indented);
+            if (json == "{}")
+            {
+                toolStripStatusLabel1.Text = "Catalog is empty";
+                return;
+            }
 
-            // Hack the Bethesda header back in
-            json = Tools.MakeHeader() + json[1..];
+            // Re-insert the header (skipping the first '{' character from the JSON string).
+            json = Tools.MakeHeader() + json.Substring(1);
+            File.WriteAllText(jsonFilePath, json);
 
-            File.WriteAllText(Tools.GetCatalogPath(), json); // Write updated catalog
-            DisplayCatalog();
-            toolStripStatusLabel1.Text = "Version numbers reset";
-        }
-
-        private void btnRestore_Click(object sender, EventArgs e)
-        {
-            RestoreCatalog();
+            toolStripStatusLabel1.Text = $"{versionReplacementCount} Version replacements";
             ScrollToEnd();
-            DisplayCatalog();
         }
 
-        private void btnClearLog_Click(object sender, EventArgs e)
+        private void frmStarfieldTools_Shown(object sender, EventArgs e)
         {
-            richTextBox2.Text = "";
-        }
-
-        public static string GetStarfieldAppData()
-        {
-            return (Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)) + @"\Starfield";
+            this.Focus();
         }
 
         private void RemoveDeleteddEntries() // Remove left over entries from catalog
@@ -556,7 +595,6 @@ namespace Starfield_Tools
                             if (kvp.Value.Files[i].IndexOf(".esp") > 0)
                                 richTextBox2.Text += "\nWarning - esp file found in catalog file - " + kvp.Value.Files[i] + "\n";
                         }
-
                     }
                     catch (Exception ex)
                     {
@@ -603,142 +641,48 @@ namespace Starfield_Tools
             }
             catch (Exception ex)
             {
-#if DEBUG
-                MessageBox.Show($"Error: {ex.Message}");
-#endif
                 toolStripStatusLabel1.Text = (ex.Message);
                 json = Tools.MakeHeaderBlank();
                 File.WriteAllText(Tools.GetCatalogPath(), json);
             }
         }
 
-        private void FixCatalog()
+        private bool RestoreCatalog()
         {
-            string jsonFilePath = Tools.GetCatalogPath();
-            string json = File.ReadAllText(jsonFilePath); // Load catalog
+            string destFileName = Tools.GetCatalogPath();
+            string sourceFileName = destFileName + ".bak";
 
-            if (string.IsNullOrWhiteSpace(json))
+            try
             {
-                toolStripStatusLabel1.Text = "Catalog file is empty, nothing to clean";
-                return;
+                // Copy the file
+                File.Copy(sourceFileName, destFileName, true); // overwrite
+
+                richTextBox2.Text += "\nRestore complete\n";
+                toolStripStatusLabel1.Text = "Restore complete";
+                return true;
             }
-
-            int errorCount = 0;
-            int versionReplacementCount = 0;
-
-            // Deserialize the catalog into a dictionary.
-            var data = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, Tools.Creation>>(json);
-
-            foreach (var kvp in data)
+            catch (Exception ex)
             {
-                string versionStr = kvp.Value.Version;
-                if (Verbose)
-                    richTextBox2.AppendText($"Checking {kvp.Value.Title}, {versionStr}\n");
-
-                // Check for any invalid characters in the version (allows letters, digits, or '.').
-                bool fixVersion = versionStr.Any(ch => !char.IsLetterOrDigit(ch) && ch != '.');
-
-                // If the version does not match the header, perform the timestamp check.
-                if (versionStr != Tools.CatalogVersion)
-                {
-                    int dotIndex = versionStr.IndexOf('.');
-                    if (dotIndex > 0)
-                    {
-                        double versionCheck = double.Parse(versionStr.Substring(0, dotIndex));
-                        long timeStamp = kvp.Value.Timestamp;
-                        if (versionCheck > timeStamp)
-                        {
-                            richTextBox2.AppendText($"Replacing version no for {kvp.Value.Title}\n");
-                            kvp.Value.Version = "1704067200.0";
-                            versionReplacementCount++;
-                        }
-                    }
-                }
-
-                // If invalid characters were found, correct the version string.
-                if (fixVersion)
-                {
-                    richTextBox2.AppendText($"Invalid characters in {kvp.Value.Title}\n");
-                    kvp.Value.Version = "1704067200.0"; // set version to default
-                    errorCount++;
-                }
+                richTextBox2.Text += "\nRestore failed.\n";
+                toolStripStatusLabel1.Text = $"{ex.Message} Restore failed";
+                return false;
             }
-
-            // Remove any corrupted catalog header before re-serializing.
-            data.Remove("ContentCatalog");
-
-            // Serialize the catalog using Newtonsoft.Json for indented formatting.
-            json = Newtonsoft.Json.JsonConvert.SerializeObject(data, Newtonsoft.Json.Formatting.Indented);
-            if (json == "{}")
-            {
-                toolStripStatusLabel1.Text = "Catalog is empty";
-                return;
-            }
-
-            // Re-insert the header (skipping the first '{' character from the JSON string).
-            json = Tools.MakeHeader() + json.Substring(1);
-            File.WriteAllText(jsonFilePath, json);
-
-            toolStripStatusLabel1.Text = $"{versionReplacementCount} Version replacements";
-            ScrollToEnd();
         }
 
-        public void SaveSettings()  // Save user settings
+        private void ScrollToEnd()
         {
-            Settings.Default.AutoCheck = AutoCheck;
-            Settings.Default.AutoClean = AutoClean;
-            Settings.Default.AutoBackup = AutoBackup;
-            Settings.Default.AutoRestore = AutoRestore;
-            if (StarfieldGamePath != "")
-                Settings.Default.StarfieldGamePath = StarfieldGamePath;
-            Settings.Default.ForceClean = ForceClean;
-            Settings.Default.Verbose = Verbose;
-            Settings.Default.Save();
+            richTextBox2.SelectionStart = richTextBox2.Text.Length;
+            richTextBox2.ScrollToCaret();
         }
 
-        private void chkVerbose_CheckedChanged(object sender, EventArgs e)
+        private void SetAutoCheckBoxes()
         {
-            Settings.Default.Verbose = chkVerbose.Checked;
-            Verbose = chkVerbose.Checked;
-        }
-
-        private void frmStarfieldTools_Shown(object sender, EventArgs e)
-        {
-            this.Focus();
-        }
-
-        private void btnAchievemnts_Click(object sender, EventArgs e)
-        {
-            if (Tools.ConfirmAction("Do you want to continue?", "Experimental Feature - All achievement flags will be set. ", MessageBoxButtons.YesNo) == DialogResult.No)
-            {
-                toolStripStatusLabel1.Text = "Achievement flags not reset";
-                return;
-            }
-
-            string jsonFilePath = Tools.GetCatalogPath(), json = File.ReadAllText(jsonFilePath);
-            var data = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, Tools.Creation>>(json);
-
-            foreach (var kvp in data)
-            {
-                kvp.Value.AchievementSafe = true;  // set Achievement flag
-            }
-
-            data.Remove("ContentCatalog"); // remove messed up content catalog section
-
-            json = Newtonsoft.Json.JsonConvert.SerializeObject(data, Newtonsoft.Json.Formatting.Indented);
-
-            // Hack the Bethesda header back in
-            json = Tools.MakeHeader() + json[1..];
-
-            File.WriteAllText(Tools.GetCatalogPath(), json); // Write updated catalog
-            DisplayCatalog();
-            toolStripStatusLabel1.Text = "Achievement flags set";
-        }
-
-        private void btnDelete_Click(object sender, EventArgs e)
-        {
-            if (Tools.ConfirmAction("Are you Sure?", "Delete ContentCatalog.txt", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                File.Delete(Tools.GetCatalogPath());
+            // Initialise Checkboxes
+            chkAutoCheck.Checked = AutoCheck;
+            chkAutoClean.Checked = AutoClean;
+            chkAutoBackup.Checked = AutoBackup;
+            chkAutoRestore.Checked = AutoRestore;
+            chkForceClean.Checked = ForceClean;
         }
     }
 }
