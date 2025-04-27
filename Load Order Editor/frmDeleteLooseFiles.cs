@@ -38,7 +38,8 @@ namespace Starfield_Tools.Load_Order_Editor
                 "geometries",
                 "scripts",
                 "materials",
-                "sound" };
+                "sound" ,
+                "naf"};
 
             foreach (var item in foldersToDelete)
             {
@@ -77,13 +78,11 @@ namespace Starfield_Tools.Load_Order_Editor
                 if (Directory.Exists(documentsFolderPath))
                     documentsFolder = true;
             }
-
             catch (Exception ex)
             {
                 documentsFolder = false;
             }
             return documentsFolder || gameFolder;
-
         }
 
         private void btnClose_Click(object sender, EventArgs e)
@@ -123,7 +122,6 @@ namespace Starfield_Tools.Load_Order_Editor
                 return;
 
             foreach (var item in checkedListBox1.CheckedItems)
-            //    foreach (int i in Enumerable.Range(0, checkedListBox1.Items.Count))
             {
                 if (Directory.Exists(Path.Combine(gameFolderPath, item.ToString())))
                 {
@@ -135,11 +133,9 @@ namespace Starfield_Tools.Load_Order_Editor
                     Directory.Delete(Path.Combine(documentsFolderPath, item.ToString()), true); // Delete recursive
                     frmLoadOrder.returnStatus++;
                 }
-
             }
 
             this.Close();
-
         }
     }
 }

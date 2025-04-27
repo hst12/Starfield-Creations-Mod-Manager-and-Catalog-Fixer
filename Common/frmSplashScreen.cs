@@ -1,6 +1,9 @@
 ﻿using Starfield_Tools.Properties;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace Starfield_Tools
@@ -12,40 +15,72 @@ namespace Starfield_Tools
             InitializeComponent();
             string LoadScreen = Settings.Default.LoadScreenFilename;
             Rectangle screen = Screen.PrimaryScreen.Bounds;
-            float screenWidth = screen.Width * 0.85f;
-            float screenHeight = screen.Height * 0.85f;
+            float screenWidth;
+            float screenHeight;
+
             if (LoadScreen != null && LoadScreen != "")
             {
                 try
                 {
                     var bitmap = new Bitmap(LoadScreen);
-                    // Calculate the scaling factor to maintain aspect ratio
-                    float scale = Math.Min(screenWidth / bitmap.Width, screenHeight / bitmap.Height);
-
-                    // Calculate the new dimensions
-                    int newWidth = (int)(bitmap.Width * scale);
-                    int newHeight = (int)(bitmap.Height * scale);
-
-                    // Set the form size to the new dimensions
-
                     this.BackgroundImage = bitmap;
-                    this.ClientSize = new Size(newWidth, newHeight);
                 }
                 catch
                 {
                     Settings.Default.LoadScreenFilename = "";
                     Settings.Default.Save();
-                    this.Width = (int)(screen.Width * 0.75f);
-                    this.Height = (int)(screen.Height * 0.75f);
                 }
+            }
+
+            // Ensure the background image is already set in the designer
+            Image backgroundImage = this.BackgroundImage;
+
+            // Check if the background image exists
+            if (backgroundImage != null)
+            {
+                // Get the screen resolution
+                Rectangle screenBounds = Screen.PrimaryScreen.Bounds;
+                screenWidth = screenBounds.Width;
+                screenHeight = screenBounds.Height;
+
+                // Calculate the maximum allowed size for the longest side (75% of screen size)
+                int maxLongestSide = (int)(0.75 * Math.Max(screenWidth, screenHeight));
+
+                // Calculate the new dimensions while maintaining the aspect ratio
+                float aspectRatio = (float)backgroundImage.Width / backgroundImage.Height;
+                int newWidth, newHeight;
+
+                if (backgroundImage.Width > backgroundImage.Height) // Landscape
+                {
+                    newWidth = (int)(backgroundImage.Width * .75);
+                    if (newWidth > (screenWidth * 0.75))
+                        newWidth = (int)(screenWidth * 0.75);
+                    if (backgroundImage.Width < screenWidth * 0.75)
+                        newWidth = (int)(screenWidth * 0.75);
+                    newHeight = (int)(newWidth / aspectRatio);
+                    if (newHeight > (screenHeight * 0.75))
+                    {
+                        newHeight = (int)(screenHeight * 0.75);
+                        newWidth = (int)(newHeight * aspectRatio);
+                    }
+                }
+                else // Portrait
+                {
+                    newHeight = (int)(0.75 * Math.Min(screenWidth, screenHeight));
+                    newWidth = (int)(newHeight * aspectRatio);
+                }
+
+                // Set the form's client size to the calculated dimensions
+                this.ClientSize = new Size(newWidth, newHeight);
+
+                // Optional: Center the form on the screen
             }
             else
             {
-                this.Width = (int)(screen.Width * 0.75f);
-                this.Height = (int)(screen.Height * 0.75f);
+                MessageBox.Show("No background image found!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            this.StartPosition = FormStartPosition.CenterScreen;
 
+            this.StartPosition = FormStartPosition.CenterScreen;
         }
     }
 }
