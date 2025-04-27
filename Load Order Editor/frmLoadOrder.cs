@@ -691,7 +691,8 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
                     directory = Path.Combine(StarfieldGamePath, "Data");
                     esmCount = Directory.EnumerateFiles(directory, "*.esm").Count();
                     espCount = Directory.EnumerateFiles(directory, "*.esp").Count();
-                    mainCount = Directory.EnumerateFiles(directory, "* - main*.ba2").Count();
+                    mainCount = Directory.EnumerateFiles(directory, "* - main*.ba2").Select(Path.GetFileNameWithoutExtension).Count();
+                    //mainCount = Directory.EnumerateFiles(directory, "* - main*.ba2").Count();
                     i = Directory.EnumerateFiles(directory, "* - texture*.ba2").Count();
 
                     StatText = $"Total Mods: {dataGridView1.RowCount}, Creations: {CreationsPlugin.Count}, Other: {dataGridView1.RowCount - CreationsPlugin.Count}, " +
@@ -1448,6 +1449,8 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
 
                 using (ArchiveFile archiveFile = new ArchiveFile(modFilePath))
                 {
+                    sbar2($"Extracting: {modFilePath}");
+                    statusStrip1.Refresh();
                     archiveFile.Extract(extractPath);
 
                     // Check for embedded archive
@@ -1539,7 +1542,7 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
             if (looseFileMod)
             {
                 LooseFilesOnOff(true);
-                sbar3($"Directories installed (loose files) {filesInstalled}");
+                sbar3($"Directories installed (loose files): {filesInstalled}");
             }
             else if (SFSEMod)
             {
@@ -1921,7 +1924,10 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
 
             sbar("Starting game...");
             if (GameVersion != MS)
+            {
                 SS.Show();
+                
+            }
 
             if (isModified)
                 SavePlugins();
@@ -3503,7 +3509,12 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
             this.Location = Properties.Settings.Default.WindowLocation;
             this.Size = Properties.Settings.Default.WindowSize;
             if (this.Width < 500 || this.Height < 100)
+            {
                 ResetWindowSize();
+                Properties.Settings.Default.WindowLocation = this.Location;
+                Properties.Settings.Default.WindowSize = this.Size;
+                SaveSettings();
+            }
 
             progressBar1.Width = 400; // Set the width of the progress bar
             progressBar1.Height = 50; // Set the height of the progress bar
