@@ -1410,7 +1410,7 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
 
         private void cmbProfile_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SwitchProfile(Properties.Settings.Default.ProfileFolder + "\\" + (string)cmbProfile.SelectedItem);
+            SwitchProfile(Path.Combine(Properties.Settings.Default.ProfileFolder , (string)cmbProfile.SelectedItem));
         }
 
         private void InstallMod(string InstallMod = "")
@@ -3525,18 +3525,11 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
                     // Adjust the form's position to ensure it stays within the screen bounds
                     int newX = Math.Max(screenBounds.Left, Math.Min(this.Left, screenBounds.Right - this.Width));
                     int newY = Math.Max(screenBounds.Top, Math.Min(this.Top, screenBounds.Bottom - this.Height));
-
                     this.Location = new Point(newX, newY);
+                    Properties.Settings.Default.WindowLocation = this.Location;
+                    Properties.Settings.Default.WindowSize = this.Size;
+                    SaveSettings();
                 }
-            }
-;
-
-            if (this.Width < 500 || this.Height < 100)
-            {
-                ResetWindowSize();
-                Properties.Settings.Default.WindowLocation = this.Location;
-                Properties.Settings.Default.WindowSize = this.Size;
-                SaveSettings();
             }
 
             progressBar1.Width = 400; // Set the width of the progress bar
