@@ -24,6 +24,21 @@ namespace Starfield_Tools.Common // Various functions used by the app
         public static string StarfieldAppData { get; set; }
         public List<string> PluginList { get; set; }
 
+        public static readonly List<string> Suffixes = new List<string>
+{
+    " - main",
+    " - textures",
+    " - textures_xbox",
+    " - voices_en",
+    " - localization",
+    " - shaders",
+    " - voices_de",
+    " - voices_en",
+    " - voices_es",
+    " - voices_fr",
+    " - voices_ja"
+};
+
         public Tools() // Constructor
         {
             CommonFolder = Environment.CurrentDirectory + "\\Common\\"; // Used to read misc txt files used by the app
@@ -316,11 +331,12 @@ namespace Starfield_Tools.Common // Various functions used by the app
 
         public string SetStarfieldGamePathMS()
         {
-            string selectedPath = "";
+            string selectedPath = Properties.Settings.Default.GamePathMS;
             MessageBox.Show("Please select the path to the game installation folder where Starfield.exe is located", "Select Game Path", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             using (FolderBrowserDialog folderBrowserDialog = new())
             {
+                folderBrowserDialog.InitialDirectory = selectedPath;
                 if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
                 {
                     selectedPath = folderBrowserDialog.SelectedPath;
@@ -360,7 +376,7 @@ namespace Starfield_Tools.Common // Various functions used by the app
 
         public static bool StartStarfieldSFSE() // Start game with SFSE loader
         {
-            string cmdLine = Properties.Settings.Default.StarfieldGamePath + "\\sfse_loader.exe";
+            string cmdLine = Path.Combine(Properties.Settings.Default.StarfieldGamePath , "sfse_loader.exe");
             if (cmdLine == null)
                 return false;
 
@@ -464,6 +480,20 @@ namespace Starfield_Tools.Common // Various functions used by the app
                 MessageBox.Show(ex.Message, "Error reading plugins", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 return new List<string>();
             }
+        }
+
+        public static List<string> BGSArchives()
+        {
+            List<string> bgsArchives = new();
+            using (StreamReader sr = new StreamReader(CommonFolder + "BGS Archives.txt"))
+            {
+                string line;
+                while ((line = sr.ReadLine()) != null)
+                {
+                    bgsArchives.Add(line);
+                }
+            }
+            return bgsArchives;
         }
 
         public static void OpenFolder(string folder)

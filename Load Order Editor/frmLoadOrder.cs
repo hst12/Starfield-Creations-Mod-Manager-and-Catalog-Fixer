@@ -456,7 +456,7 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
         {
             bool ModEnabled;
             int EnabledCount = 0, IndexCount = 1, esmCount = 0, espCount = 0, ba2Count, mainCount, i, versionDelimiter, dotIndex;
-            string loText = Tools.StarfieldAppData + @"\Plugins.txt",
+            string loText = Path.Combine(Tools.StarfieldAppData, "Plugins.txt"),
                    LOOTPath = Properties.Settings.Default.LOOTPath,
                    StatText = "", directory, pluginName, rawVersion;
 
@@ -489,9 +489,9 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
             saveToolStripMenuItem.Enabled = true;
 
             dataGridView1.Rows.Clear();
-            dataGridView1.SuspendLayout(); // Suspend UI updates to avoid redraw for every row addition.
             SetColumnVisibility(false, toolStripMenuCreationsID, dataGridView1.Columns["CreationsID"]); // Temporarily turn off these columns
             SetColumnVisibility(false, uRLToolStripMenuItem, dataGridView1.Columns["URL"]);
+            dataGridView1.SuspendLayout(); // Suspend UI updates to avoid redraw for every row addition.
 
             try
             {
@@ -658,10 +658,6 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
             dataGridView1.ResumeLayout(); // Resume layout after all rows have been processed.
             progressBar1.Hide();
 
-            // Restore column visibility based on user settings.
-            SetColumnVisibility(Properties.Settings.Default.CreationsID, toolStripMenuCreationsID, dataGridView1.Columns["CreationsID"]);
-            SetColumnVisibility(Properties.Settings.Default.URL, uRLToolStripMenuItem, dataGridView1.Columns["URL"]);
-
             // -- Process mod stats if the Starfield game path is set --
             if (!string.IsNullOrEmpty(StarfieldGamePath) && Properties.Settings.Default.ModStats)
             {
@@ -672,31 +668,39 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
     .ToHashSet();
 
                     var archives = Directory.EnumerateFiles(Path.Combine(StarfieldGamePath, "Data"), "*.ba2")
-                        .Select(file => Path.GetFileName(file)?.ToLower())
-                        .Except(BGSArchives)
-                        .ToList();
+    .Select(file => Path.GetFileNameWithoutExtension(file)?.ToLower())
+    .Except(BGSArchives)
+    .ToList();
 
                     var plugins = File.ReadLines(loText)
                         .Where(line => line.StartsWith('*'))
-                        .Select(line => line[1..^4].ToLower())
+                        .Select(line => line[1..].Split('.')[0].ToLower())
                         .Where(plugin => !BGSArchives.Contains(plugin))
                         .ToList();
 
-                    var suffixes = new[] { " - main.ba2", " - textures.ba2", " - textures_xbox.ba2", " - voices_en.ba2", ".ba2" };
-                    var modArchives = archives.Select(archive =>
-                        suffixes.Aggregate(archive, (current, suffix) => current.Replace(suffix, string.Empty)))
-                        .ToList();
+                    List<string> suffixes = Tools.Suffixes;
 
-                    ba2Count = modArchives.Count(mod => plugins.Contains(mod));
                     directory = Path.Combine(StarfieldGamePath, "Data");
+
+                    ba2Count = Directory.EnumerateFiles(directory, "*.ba2").Count();
+
                     esmCount = Directory.EnumerateFiles(directory, "*.esm").Count();
-                    espCount = Directory.EnumerateFiles(directory, "*.esp").Count();
-                    mainCount = Directory.EnumerateFiles(directory, "* - main*.ba2").Select(Path.GetFileNameWithoutExtension).Count();
-                    //mainCount = Directory.EnumerateFiles(directory, "* - main*.ba2").Count();
-                    i = Directory.EnumerateFiles(directory, "* - texture*.ba2").Count();
+
+                    espCount = Directory.EnumerateFiles(directory, "*.esp")
+                        .Select(file => Path.GetFileNameWithoutExtension(file)?.ToLower())
+                        .Count(plugin => plugins.Contains(plugin));
+
+                    mainCount = Directory.EnumerateFiles(directory, "* - main*.ba2")
+                        .Select(file => Path.GetFileNameWithoutExtension(file)?.ToLower())
+                        .Select(file => file.Replace(" - main", string.Empty)) // Remove "- main" suffix for matching
+                        .Count(mod => plugins.Contains(mod));
+
+                    i = Directory.EnumerateFiles(directory, "* - texture*.ba2").Select(file => Path.GetFileNameWithoutExtension(file)?.ToLower())
+                    .Select(file => file.Replace(" - textures", string.Empty)) // Remove "- textures" suffix for matching
+                    .Count(mod => plugins.Contains(mod));
 
                     StatText = $"Total Mods: {dataGridView1.RowCount}, Creations: {CreationsPlugin.Count}, Other: {dataGridView1.RowCount - CreationsPlugin.Count}, " +
-                               $"Enabled: {EnabledCount}, esm: {esmCount}, Archives - Active: {ba2Count}, Main: {mainCount}, Textures: {i}";
+                               $"Enabled: {EnabledCount}, esm: {esmCount}, Archives: {ba2Count}, Main: {mainCount}, Textures: {i}";
 
                     if (espCount > 0)
                         StatText += $", esp files: {espCount}";
@@ -721,6 +725,10 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
             {
                 sbar("Starfield path needs to be set for mod stats");
             }
+
+            // Restore column visibility based on user settings.
+            SetColumnVisibility(Properties.Settings.Default.CreationsID, toolStripMenuCreationsID, dataGridView1.Columns["CreationsID"]);
+            SetColumnVisibility(Properties.Settings.Default.URL, uRLToolStripMenuItem, dataGridView1.Columns["URL"]);
 
             if (ActiveOnly)
             {
@@ -1380,10 +1388,15 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
             sbar3($"Changes made: {AddRemove().ToString()}");
         }
 
-        private void frmLoadOrder_FormClosing(object sender, FormClosingEventArgs e)
+        private void SaveWindowSettings()
         {
             Properties.Settings.Default.WindowLocation = this.Location; // Save window pos and size
             Properties.Settings.Default.WindowSize = this.Size;
+        }
+
+        private void frmLoadOrder_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            SaveWindowSettings();
 
             if (isModified)
                 SavePlugins();
@@ -1806,13 +1819,18 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
                     }
 
                     // Define the file extensions for the mod files to delete.
+
                     var extensions = new string[]
                     {
                 ".esm",
                 " - textures.ba2",
                 " - Textures_xbox.ba2",
                 " - main.ba2",
-                " - voices_en.ba2"
+                " - voices_de.ba2",
+                " - voices_en.ba2",
+                " - voices_es.ba2",
+                " - voices_fr.ba2",
+                " - voices_ja.ba2"
                     };
 
                     // Loop over each extension and delete the file if it exists.
@@ -1926,7 +1944,6 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
             if (GameVersion != MS)
             {
                 SS.Show();
-                
             }
 
             if (isModified)
@@ -3070,9 +3087,9 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
                 }
             }
 
-            if (Properties.Settings.Default.GamePathMS == "" && GameVersion == MS)
+            if (Properties.Settings.Default.GamePathMS == "" || GameVersion == MS)
             {
-                StarfieldGamePath = tools.SetStarfieldGamePath();
+                StarfieldGamePath = tools.SetStarfieldGamePathMS();
                 Properties.Settings.Default.GamePathMS = StarfieldGamePath;
                 SaveSettings();
             }
@@ -3374,25 +3391,15 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
 
         private int CheckArchives()
         {
-            List<string> BGSArchives = [];
+            //List<string> BGSArchives = Tools.BGSArchives();
             List<string> archives = [];
             List<string> plugins = [];
             List<string> orphaned = [];
             List<string> toDelete = [];
-            List<string> suffixes = new List<string> { " - main.ba2", " - textures.ba2", " - textures_xbox.ba2", " - voices_en.ba2", ".ba2" };
+            List<string> suffixes = Tools.Suffixes;
 
             if (StarfieldGamePath == "")
                 return 0;
-
-            // Read a list of standard game archives. Will need updating for future DLC
-            using (StreamReader sr = new StreamReader(Tools.CommonFolder + "BGS Archives.txt"))
-            {
-                string line;
-                while ((line = sr.ReadLine()) != null)
-                {
-                    BGSArchives.Add(line);
-                }
-            }
 
             // Build a list of all plugins excluding base game files
             plugins = tools.GetPluginList().Select(s => s[..^4].ToLower()).ToList();
@@ -3402,26 +3409,25 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
                 archives.Add(Path.GetFileName(file).ToLower());
             }
 
-            List<string> modArchives = archives.Except(BGSArchives) // Get the archive base names excluding BGS Archives
-                .Select(s => s.ToLower()
-                .Replace(" - main.ba2", string.Empty)
-                .Replace(" - textures.ba2", string.Empty)
-                .Replace(" - textures_xbox.ba2", string.Empty)
-                .Replace(" - voices_en.ba2", string.Empty)
-                .Replace(".ba2", string.Empty))
-                .ToList();
+            List<string> modArchives = archives
+                .Except(Tools.BGSArchives()) // Exclude BGS Archives
+                .Select(s =>
+                    suffixes.Aggregate(
+                        s.ToLower().Replace(".ba2", string.Empty), // Start by removing ".ba2"
+                        (current, suffix) => current.Replace(suffix, string.Empty) // Remove all suffixes dynamically
+                    )
+                ).ToList();
 
             // Build a list of archives to delete with full path
             orphaned = modArchives.Except(plugins).ToList(); // Strip out esm files to get orphaned archives
-
+            suffixes.Add(""); // Add a blank suffix
             foreach (var item in orphaned)
             {
-                tempstr = Path.GetFileNameWithoutExtension(item);
                 foreach (var suffix in suffixes)
                 {
-                    var filePath = StarfieldGamePath + @"\Data\" + tempstr + suffix;
-                    if (File.Exists(filePath))
-                        toDelete.Add(filePath);
+                    tempstr = StarfieldGamePath + @"\Data\" + Path.GetFileNameWithoutExtension(item) + suffix + ".ba2";
+                    if (File.Exists(tempstr))
+                        toDelete.Add(tempstr);
                 }
             }
 
@@ -3508,6 +3514,23 @@ filePath = LooseFilesDir + "StarfieldCustom.ini";
         {
             this.Location = Properties.Settings.Default.WindowLocation;
             this.Size = Properties.Settings.Default.WindowSize;
+
+            // Check if the form's bounds are within any screen's working area
+            foreach (Screen screen in Screen.AllScreens)
+            {
+                if (!screen.WorkingArea.Contains(this.Bounds))
+                {
+                    Rectangle screenBounds = Screen.FromControl(this).WorkingArea;
+
+                    // Adjust the form's position to ensure it stays within the screen bounds
+                    int newX = Math.Max(screenBounds.Left, Math.Min(this.Left, screenBounds.Right - this.Width));
+                    int newY = Math.Max(screenBounds.Top, Math.Min(this.Top, screenBounds.Bottom - this.Height));
+
+                    this.Location = new Point(newX, newY);
+                }
+            }
+;
+
             if (this.Width < 500 || this.Height < 100)
             {
                 ResetWindowSize();

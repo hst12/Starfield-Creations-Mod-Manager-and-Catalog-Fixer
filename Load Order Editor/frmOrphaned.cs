@@ -21,7 +21,7 @@ namespace Starfield_Tools.Load_Order_Editor
                 FileInfo fileInfo = new FileInfo(item);
                 fileSize += fileInfo.Length;
             }
-            toolStripStatusLabel1.Text = "Total Size: " + (fileSize / 1024).ToString() + " Mbytes";
+            toolStripStatusLabel1.Text = "Total Size: " + (fileSize / (1024*1024)).ToString() + " Mbytes";
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
