@@ -551,7 +551,7 @@ namespace Starfield_Tools
             bool unusedMods = false;
             richTextBox2.Text += "\nChecking for unused items in catalog...\n";
 
-            string filePath = GetStarfieldAppData() + "\\Plugins.txt";
+            string filePath = Path.Combine(GetStarfieldAppData() , "Plugins.txt");
             string fileContent = File.ReadAllText(filePath); // Load Plugins.txt
             // Split the content into lines if necessary
             List<string> lines = [.. fileContent.Split('\n')];

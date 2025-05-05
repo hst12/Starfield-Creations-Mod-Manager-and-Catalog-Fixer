@@ -10,7 +10,7 @@ namespace Starfield_Tools.Load_Order_Editor
         public frmStarfieldCustomINI()
         {
             InitializeComponent();
-            string filePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\My Games\\Starfield\\StarfieldCustom.ini";
+            string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"My Games\Starfield\StarfieldCustom.ini");
             if (File.Exists(filePath))
             {
                 var fileContent = File.ReadAllLines(filePath);
@@ -41,7 +41,7 @@ namespace Starfield_Tools.Load_Order_Editor
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            string filePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\My Games\\Starfield\\StarfieldCustom.ini";
+            string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) ,@"My Games\Starfield\StarfieldCustom.ini");
 
             List<string> INILines = new();
             INILines.Add(@"[General]");

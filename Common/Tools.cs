@@ -41,15 +41,15 @@ namespace Starfield_Tools.Common // Various functions used by the app
 
         public Tools() // Constructor
         {
-            CommonFolder = Environment.CurrentDirectory + "\\Common\\"; // Used to read misc txt files used by the app
+            CommonFolder = Path.Combine(Environment.CurrentDirectory , "Common"); // Used to read misc txt files used by the app
 
-            LocalAppDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Starfield_Tools\\");
+            LocalAppDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Starfield_Tools");
 
-            DocumentationFolder = Environment.CurrentDirectory + "\\Documentation";
+            DocumentationFolder = Path.Combine(Environment.CurrentDirectory , "Documentation");
 
             try
             {
-                BethFiles = new(File.ReadAllLines(CommonFolder + "BGS Exclude.txt")); // Exclude these files from Plugin list
+                BethFiles = new(File.ReadAllLines(Path.Combine(CommonFolder ,"BGS Exclude.txt"))); // Exclude these files from Plugin list
             }
             catch (Exception ex)
             {
@@ -59,7 +59,7 @@ namespace Starfield_Tools.Common // Various functions used by the app
 
             try
             {
-                CatalogVersion = File.ReadAllText(CommonFolder + "Catalog Version.txt");
+                CatalogVersion = File.ReadAllText(Path.Combine(CommonFolder , "Catalog Version.txt"));
             }
             catch (Exception ex)
             {
@@ -68,7 +68,7 @@ namespace Starfield_Tools.Common // Various functions used by the app
             }
             try
             {
-                StarfieldAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\Starfield";
+                StarfieldAppData = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) , "Starfield");
             }
             catch (Exception ex)
             {
@@ -81,13 +81,13 @@ namespace Starfield_Tools.Common // Various functions used by the app
         {
             try
             {
-                if (!File.Exists(LocalAppDataPath + "BlockedMods.txt"))
+                if (!File.Exists(Path.Combine(LocalAppDataPath , "BlockedMods.txt")))
                 {
-                    File.Create(LocalAppDataPath + "BlockedMods.txt");
+                    File.Create(Path.Combine(LocalAppDataPath , "BlockedMods.txt"));
                     return null;
                 }
                 else
-                    return (File.ReadAllLines(LocalAppDataPath + "BlockedMods.txt").ToList()); // Don't enable these mods
+                    return (File.ReadAllLines(Path.Combine(LocalAppDataPath , "BlockedMods.txt")).ToList()); // Don't enable these mods
             }
             catch (Exception ex)
             {
@@ -401,7 +401,7 @@ namespace Starfield_Tools.Common // Various functions used by the app
         public static bool StartStarfieldMS() // Start game with MS Store version
         {
             //string cmdLine = @"shell:AppsFolder\BethesdaSoftworks.ProjectGold_3275kfvn8vcwc!Game";
-            string cmdLine = Properties.Settings.Default.GamePathMS + "\\Starfield.exe";
+            string cmdLine = Path.Combine(Properties.Settings.Default.GamePathMS , "Starfield.exe");
 
             try
             {
@@ -485,7 +485,7 @@ namespace Starfield_Tools.Common // Various functions used by the app
         public static List<string> BGSArchives()
         {
             List<string> bgsArchives = new();
-            using (StreamReader sr = new StreamReader(CommonFolder + "BGS Archives.txt"))
+            using (StreamReader sr = new StreamReader(Path.Combine(CommonFolder, "BGS Archives.txt")))
             {
                 string line;
                 while ((line = sr.ReadLine()) != null)

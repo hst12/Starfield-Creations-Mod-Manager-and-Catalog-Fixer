@@ -37,10 +37,10 @@ namespace Starfield_Tools.Load_Order_Editor
             {
                 foreach (var item in checkedListBox1.CheckedItems)
                 {
-                    fileContents = File.ReadAllLines(Properties.Settings.Default.ProfileFolder + "\\" + item).ToList();
+                    fileContents = File.ReadAllLines(Path.Combine(Properties.Settings.Default.ProfileFolder ,  item.ToString())).ToList();
                     fileContents.Remove("*" + ModName);
                     fileContents.Add(ModName); // Add the mod back without the * to indicate it is inactive
-                    File.WriteAllLines(Properties.Settings.Default.ProfileFolder + "\\" + item, fileContents);
+                    File.WriteAllLines(Path.Combine(Properties.Settings.Default.ProfileFolder, item.ToString()), fileContents);
                 }
                 MessageBox.Show(checkedListBox1.CheckedItems.Count.ToString() + " profile(s) updated.", "Profiles Updated", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
@@ -69,17 +69,19 @@ namespace Starfield_Tools.Load_Order_Editor
         private void btnAdd_Click(object sender, EventArgs e)
         {
             List<string> fileContents = new();
+            string filePath;
 
             if (Directory.Exists(Properties.Settings.Default.ProfileFolder) && checkedListBox1.CheckedItems.Count > 0)
             {
                 foreach (var item in checkedListBox1.CheckedItems)
                 {
-                    fileContents = File.ReadAllLines(Properties.Settings.Default.ProfileFolder + "\\" + item).ToList();
+                    filePath = Path.Combine(Properties.Settings.Default.ProfileFolder, item.ToString());
+                    fileContents = File.ReadAllLines(filePath).ToList();
                     fileContents.Remove(ModName);
                     fileContents.Remove("*" + ModName);
                     fileContents.Add("*" + ModName); // Add the mod back with the * to indicate it is active
                     fileContents = fileContents.Distinct().ToList(); // Avoid adding a duplicate
-                    File.WriteAllLines(Properties.Settings.Default.ProfileFolder + "\\" + item, fileContents);
+                    File.WriteAllLines(Path.Combine(Properties.Settings.Default.ProfileFolder, item.ToString()), fileContents);
                 }
                 MessageBox.Show(checkedListBox1.CheckedItems.Count.ToString() + " profile(s) updated.", "Profiles Updated", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
