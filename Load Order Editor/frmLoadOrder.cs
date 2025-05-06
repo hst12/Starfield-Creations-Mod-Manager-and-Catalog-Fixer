@@ -3560,8 +3560,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 }
             }
 
-            int minWidth = 1800; // Set your minimum width
-            int minHeight = 900; // Set your minimum height
+            int minWidth = 1000; // Set your minimum width
+            int minHeight = 500; // Set your minimum height
 
             if (this.Width < minWidth || this.Height < minHeight)
             {

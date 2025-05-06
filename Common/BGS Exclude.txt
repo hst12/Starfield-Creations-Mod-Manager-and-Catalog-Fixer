@@ -1,5 +1,6 @@
 ﻿Starfield.esm
 BlueprintShips-Starfield.esm
+BlueprintShips-SFTA03.esm
 Constellation.esm
 OldMars.esm
 ShatteredSpace.esm
