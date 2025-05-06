@@ -3560,6 +3560,20 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 }
             }
 
+            int minWidth = 1800; // Set your minimum width
+            int minHeight = 900; // Set your minimum height
+
+            if (this.Width < minWidth || this.Height < minHeight)
+            {
+                this.Size = new Size(minWidth, minHeight);
+                this.Location = new Point(
+        (Screen.PrimaryScreen.WorkingArea.Width - this.Width) / 2,
+        (Screen.PrimaryScreen.WorkingArea.Height - this.Height) / 2
+    );
+
+            }
+
+
             progressBar1.Width = 400; // Set the width of the progress bar
             progressBar1.Height = 50; // Set the height of the progress bar
             progressBar1.Location = new Point((this.ClientSize.Width - progressBar1.Width) / 2, (this.ClientSize.Height - progressBar1.Height) / 2);
