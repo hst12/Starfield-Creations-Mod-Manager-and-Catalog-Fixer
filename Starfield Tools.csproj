@@ -180,4 +180,7 @@
       <PackagePath>\</PackagePath>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <None Remove="C:\Users\hst12\.nuget\packages\sevenzipextractor\1.0.19\build\x86\7z.dll" />
+  </ItemGroup>
 </Project>

@@ -690,7 +690,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                         .Where(plugin => !BGSArchives.Contains(plugin))
                         .ToList();
 
-                    List<string> suffixes = Tools.Suffixes;
+                    List<string> suffixes = new(Tools.Suffixes);
 
                     directory = Path.Combine(StarfieldGamePath, "Data");
 
