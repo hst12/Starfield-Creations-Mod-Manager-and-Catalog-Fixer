@@ -104,7 +104,7 @@ namespace Starfield_Tools.Common // Various functions used by the app
 
             try
             {
-                HeaderString = File.ReadAllText(CommonFolder + "header.txt"); // Read the header from file
+                HeaderString = File.ReadAllText(Path.Combine(CommonFolder , "header.txt")); // Read the header from file
             }
             catch (Exception ex)
             {

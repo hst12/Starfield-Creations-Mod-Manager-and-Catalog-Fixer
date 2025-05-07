@@ -1937,6 +1937,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
         private void btnSave_Click(object sender, EventArgs e)
         {
             SavePlugins();
+            SaveSettings();
         }
 
         private void btnRun_Click(object sender, EventArgs e)
