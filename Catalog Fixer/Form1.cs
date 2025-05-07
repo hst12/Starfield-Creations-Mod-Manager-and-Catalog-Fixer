@@ -551,10 +551,14 @@ namespace Starfield_Tools
             bool unusedMods = false;
             richTextBox2.Text += "\nChecking for unused items in catalog...\n";
 
-            string filePath = Path.Combine(GetStarfieldAppData() , "Plugins.txt");
-            string fileContent = File.ReadAllText(filePath); // Load Plugins.txt
-            // Split the content into lines if necessary
-            List<string> lines = [.. fileContent.Split('\n')];
+            string filePath = Path.Combine(GetStarfieldAppData(), "Plugins.txt");
+            //string fileContent = File.ReadAllText(filePath); // Load Plugins.txt
+
+            // Split the content into lines
+            //List<string> lines = [.. fileContent.Split('\n')];
+            List<string> lines = File.ReadLines(filePath)
+                                     .Select(line => line.Trim())
+                                     .ToList();
 
             foreach (var file in lines) // Process Plugins.txt to a list of .esm files
             {
@@ -576,15 +580,15 @@ namespace Starfield_Tools
             try
             {
                 var data = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, Tools.Creation>>(json); // Process catalog
-                data.Remove("ContentCatalog");
+                data.Remove("ContentCatalog"); // Remove header
 
                 foreach (var kvp in data)
                 {
                     try
                     {
-                        for (int i = 0; i < kvp.Value.Files.Length - 0; i++)
+                        for (int i = 0; i < kvp.Value.Files.Length; i++)
                         {
-                            if (kvp.Value.Files[i].IndexOf(".esm") > 0 || kvp.Value.Files[i].IndexOf(".esp") > 0) // Look for .esm or .esp files
+                            if (kvp.Value.Files[i].ToLower().IndexOf(".esm") > 0 || kvp.Value.Files[i].ToLower().IndexOf(".esp") > 0) // Look for .esm or .esp files
                             {
                                 CreationsPlugin.Add(kvp.Value.Files[i]);
                                 CreationsGUID.Add(kvp.Key);
@@ -592,7 +596,7 @@ namespace Starfield_Tools
                                 if (Verbose)
                                     richTextBox2.Text += kvp.Value.Title + "\n";
                             }
-                            if (kvp.Value.Files[i].IndexOf(".esp") > 0)
+                            if (kvp.Value.Files[i].ToLower().IndexOf(".esp") > 0)
                                 richTextBox2.Text += "\nWarning - esp file found in catalog file - " + kvp.Value.Files[i] + "\n";
                         }
                     }
@@ -602,7 +606,7 @@ namespace Starfield_Tools
                     }
                 }
 
-                List<string> missingStrings = CreationsPlugin.Except(esmFiles).ToList();
+                List<string> missingStrings = CreationsPlugin.Except(esmFiles, StringComparer.OrdinalIgnoreCase).ToList();
                 richTextBox1.Text = "";
                 index = 0;
 
@@ -612,7 +616,7 @@ namespace Starfield_Tools
                     {
                         for (int i = 0; i < CreationsGUID.Count; i++)
                         {
-                            if (CreationsPlugin[i] == missingStrings[index])
+                            if (CreationsPlugin[i].ToLower() == missingStrings[index].ToLower())
                             {
                                 richTextBox2.Text += "Removing " + CreationsGUID[i] + " " + CreationsTitle[i] + "\n";
                                 data.Remove(CreationsGUID[i]);
