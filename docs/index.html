@@ -1,121 +1,158 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8">
-			<meta name="viewport" content="width=device-width, initial-scale=1.0">
-				<title>Starfield Creations Mod Manager</title>
-				<style>
-					body {
-					font-family: Arial, sans-serif;
-					margin: 0;
-					padding: 0;
-					background-color: #f4f4f4;
-					color: #333;
-					}
-					header {
-					background-color: #222;
-					color: #fff;
-					padding: 20px 0;
-					text-align: center;
-					}
-					header h1 {
-					margin: 0;
-					}
-					nav {
-					background-color: #333;
-					color: #fff;
-					padding: 10px 0;
-					text-align: center;
-					}
-					nav a {
-					color: #fff;
-					text-decoration: none;
-					margin: 0 15px;
-					font-weight: bold;
-					}
-					nav a:hover {
-					text-decoration: underline;
-					}
-					.container {
-					padding: 20px;
-					max-width: 1200px;
-					margin: auto;
-					}
-					.features, .usage, .footer {
-					margin-bottom: 20px;
-					background: #fff;
-					padding: 20px;
-					border-radius: 8px;
-					box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-					}
-					.features ul {
-					list-style-type: disc;
-					padding-left: 20px;
-					}
-					footer {
-					background-color: #222;
-					color: #fff;
-					text-align: center;
-					padding: 10px 0;
-					}
-				</style>
-			</meta>
-		</meta>
-			</head>
-	<body>
-		<header>
-			<h1>Starfield Creations Mod Manager and Catalog Fixer</h1>
-			<p>Effortlessly Manage Your Starfield Creations Mods</p>
-		</header>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Starfield Creations Mod Manager</title>
+  <style>
+    /* General Styling */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Arial', sans-serif;
+      background: #f9f9f9;
+      color: #333;
+      line-height: 1.6;
+    }
+    a {
+      color: #0056b3;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    h1, h2 {
+      font-family: 'Verdana', sans-serif;
+    }
 
-		<nav>
-			<a href="#features">Features</a>
-			<a href="#usage">Usage</a>
-			<a href="#support">Support</a>
-		</nav>
+    /* Header Styling */
+    header {
+      background: #333;
+      color: #fff;
+      padding: 20px 0;
+      text-align: center;
+      border-bottom: 4px solid #0056b3;
+    }
+    header h1 {
+      font-size: 2.5em;
+    }
+    header p {
+      font-size: 1.2em;
+      font-style: italic;
+      color: #b0c4de;
+    }
 
-		<div class="container">
-			<section id="features" class="features">
-				<h2>Key Features</h2>
-				<ul>
-					<li>Manage Creations mods for Starfield with ease.</li>
-					<li>
-						Check and repair corrupted <code>ContentCatalog.txt</code> files.
-					</li>
-					<li>Reorder mods using drag-and-drop or keyboard shortcuts.</li>
-					<li>Enable or disable mods without removing files.</li>
-					<li>Create and switch between mod profiles for different save games.</li>
-					<li>Backup and restore your original mod configurations.</li>
-					<li>Dark mode support for better usability.</li>
-				</ul>
-			</section>
+    /* Navigation Bar */
+    nav {
+      display: flex;
+      justify-content: center;
+      background: #f4f4f4;
+      padding: 10px 0;
+      border-bottom: 1px solid #ddd;
+    }
+    nav a {
+      margin: 0 15px;
+      font-size: 1.1em;
+      font-weight: bold;
+      color: #333;
+    }
+    nav a:hover {
+      color: #0056b3;
+    }
 
-			<section id="usage" class="usage">
-				<h2>How to Use</h2>
-				<p>Follow these steps to get started with the Starfield Creations Mod Manager:</p>
-				<ol>
-					<li>Download and install the application.</li>
-					<li>Launch the tool and use the intuitive interface to manage your mods.</li>
-					<li>
-						Use the "Fix Catalog" feature to repair any issues with your <code>ContentCatalog.txt</code> file.
-					</li>
-					<li>Organize your mods by dragging and dropping them in the desired order.</li>
-					<li>Switch between different mod profiles for separate save files.</li>
-				</ol>
-			</section>
+    /* Main Container */
+    .container {
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 20px;
+    }
 
-			<section id="support" class="footer">
-				<h2>Support</h2>
-				<p>
-					If you encounter any issues or need assistance, please visit the <a href="https://github.com/hst12/Starfield-Creations-Mod-Manager-and-Catalog-Fixer/issues" target="_blank">GitHub Repository</a> and create an issue.
-				</p>
-			</section>
-		</div>
+    /* Section Styling */
+    section {
+      margin-bottom: 20px;
+      padding: 20px;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    section h2 {
+      font-size: 1.8em;
+      margin-bottom: 10px;
+      color: #0056b3;
+    }
+    section ul, section ol {
+      margin: 10px 0 0 20px;
+    }
+    section li {
+      margin-bottom: 8px;
+    }
 
-		<footer>
-			<p>
-				&copy; 2025 Starfield Creations Mod Manager. Developed by <a href="https://github.com/hst12" target="_blank">hst12</a>.
-			</p>
-		</footer>
-	</body>
+    /* Footer Styling */
+    footer {
+      text-align: center;
+      background: #333;
+      color: #fff;
+      padding: 15px 0;
+      border-top: 4px solid #0056b3;
+    }
+    footer p {
+      margin: 0;
+    }
+    footer a {
+      color: #b0c4de;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Starfield Creations Mod Manager</h1>
+    <p>Effortlessly Manage Your Starfield Mods</p>
+  </header>
+
+  <nav>
+    <a href="#features">Features</a>
+    <a href="#usage">Usage</a>
+    <a href="#support">Support</a>
+  </nav>
+
+  <div class="container">
+    <section id="features">
+      <h2>Key Features</h2>
+      <ul>
+        <li>Manage Creations mods for Starfield with ease.</li>
+        <li>Check and repair corrupted <code>ContentCatalog.txt</code> files.</li>
+        <li>Reorder mods using drag-and-drop or keyboard shortcuts.</li>
+        <li>Enable or disable mods without removing files.</li>
+        <li>Create and switch between mod profiles for different save games.</li>
+        <li>Backup and restore your original mod configurations.</li>
+        <li>Dark mode support for better usability.</li>
+      </ul>
+    </section>
+
+    <section id="usage">
+      <h2>How to Use</h2>
+      <p>Follow these steps to get started with the Starfield Creations Mod Manager:</p>
+      <ol>
+        <li>Download and install the application.</li>
+        <li>Launch the tool and use the intuitive interface to manage your mods.</li>
+        <li>Use the "Fix Catalog" feature to repair any issues with your <code>ContentCatalog.txt</code> file.</li>
+        <li>Organize your mods by dragging and dropping them in the desired order.</li>
+        <li>Switch between different mod profiles for separate save files.</li>
+      </ol>
+    </section>
+
+    <section id="support">
+      <h2>Support</h2>
+      <p>If you encounter any issues or need assistance, please visit the <a href="https://github.com/hst12/Starfield-Creations-Mod-Manager-and-Catalog-Fixer/issues" target="_blank">GitHub Repository</a> and create an issue.</p>
+    </section>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Starfield Creations Mod Manager. Developed by <a href="https://github.com/hst12" target="_blank">hst12</a>.</p>
+  </footer>
+</body>
 </html>

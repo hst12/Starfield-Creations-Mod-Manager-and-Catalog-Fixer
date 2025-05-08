@@ -237,6 +237,7 @@
             toolStripMenuBGSStarfield = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuBGSX = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuGitHub = new System.Windows.Forms.ToolStripMenuItem();
+            webPageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuShortcuts = new System.Windows.Forms.ToolStripMenuItem();
             documentationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -1695,7 +1696,7 @@
             // 
             // toolStripMenuLinks
             // 
-            toolStripMenuLinks.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuCreations, toolStripMenuNexus, toolStripMenuBGSStarfield, toolStripMenuBGSX, toolStripMenuGitHub });
+            toolStripMenuLinks.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuCreations, toolStripMenuNexus, toolStripMenuBGSStarfield, toolStripMenuBGSX, toolStripMenuGitHub, webPageToolStripMenuItem });
             toolStripMenuLinks.Name = "toolStripMenuLinks";
             toolStripMenuLinks.Size = new System.Drawing.Size(87, 38);
             toolStripMenuLinks.Text = "Links";
@@ -1734,6 +1735,13 @@
             toolStripMenuGitHub.Size = new System.Drawing.Size(553, 44);
             toolStripMenuGitHub.Text = "GitHub";
             toolStripMenuGitHub.Click += toolStripMenuGitHub_Click;
+            // 
+            // webPageToolStripMenuItem
+            // 
+            webPageToolStripMenuItem.Name = "webPageToolStripMenuItem";
+            webPageToolStripMenuItem.Size = new System.Drawing.Size(553, 44);
+            webPageToolStripMenuItem.Text = "Web Page";
+            webPageToolStripMenuItem.Click += webPageToolStripMenuItem_Click;
             // 
             // helpToolStripMenuItem
             // 
@@ -2343,5 +2351,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn FileSize;
         private System.Windows.Forms.DataGridViewTextBoxColumn URL;
         private System.Windows.Forms.DataGridViewTextBoxColumn Blocked;
+        private System.Windows.Forms.ToolStripMenuItem webPageToolStripMenuItem;
     }
 }

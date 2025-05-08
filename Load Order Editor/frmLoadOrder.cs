@@ -4157,5 +4157,10 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             else
                 MessageBox.Show("Unable to find SFSE Plugins Directory");
         }
+
+        private void webPageToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Tools.OpenUrl(Path.Combine("docs","index.html"));
+        }
     }
 }
