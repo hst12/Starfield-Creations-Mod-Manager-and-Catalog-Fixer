@@ -3769,8 +3769,9 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             }
 
             // Write to BlockedMods.txt and update isModified flag. No blank lines.
-            File.WriteAllLines(Tools.LocalAppDataPath + "BlockedMods.txt", blockedMods.Distinct().Where(s => !string.IsNullOrEmpty(s)));
+            File.WriteAllLines(Path.Combine(Tools.LocalAppDataPath , "BlockedMods.txt"), blockedMods.Distinct().Where(s => !string.IsNullOrEmpty(s)));
             isModified = true;
+            SavePlugins();
         }
 
         private void prepareForCreationsUpdateToolStripMenuItem_Click(object sender, EventArgs e)
