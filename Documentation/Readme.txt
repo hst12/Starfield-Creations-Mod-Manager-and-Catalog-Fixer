@@ -71,5 +71,4 @@ Resources & Credits
 - 7-Zip (https://www.7-zip.org)
 - SevenZipExtractor (https://github.com/adoconnection/SevenZipExtractor)
 - Narod's Steam Game Finder (https://github.com/NarodGaming/steamgamefinder)
-
-
+- ZeeOgre for ideas, testing and encouragement.
