@@ -1,5 +1,3 @@
-Here's a revised version with improved readability and removed repetition:
-
 Starfield Tools - Load Order Editor
 Important Notes
 - May conflict with mod managers like Vortex or MO2. Running Vortex after using this tool can disrupt your load order.
