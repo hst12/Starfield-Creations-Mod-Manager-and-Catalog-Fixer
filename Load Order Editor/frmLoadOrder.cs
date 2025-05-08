@@ -931,6 +931,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 
         private void MoveTop()
         {
+            if (ActiveOnly)
+                ActiveOnlyToggle();
             int rowIndex = dataGridView1.SelectedCells[0].RowIndex;
             DataGridViewRow selectedRow = dataGridView1.Rows[rowIndex];
             int colIndex = 1;
@@ -948,6 +950,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 
         private void MoveBottom()
         {
+            if (ActiveOnly)
+                ActiveOnlyToggle();
             int rowIndex = dataGridView1.SelectedCells[0].RowIndex;
             int colIndex = 1;
             DataGridViewRow selectedRow = dataGridView1.Rows[rowIndex];
@@ -3329,7 +3333,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 
                         if (dlgResult == DialogResult.No)
                             sbar3($"Archive for {ModName} not created");
-                        if (dlgResult == DialogResult.Yes)
+                        if (dlgResult == DialogResult.OK)
                             makeArchive();
                     }
                     else
