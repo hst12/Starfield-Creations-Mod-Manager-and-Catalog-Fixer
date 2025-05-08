@@ -32,7 +32,9 @@ It automatically checks the `ContentCatalog.txt` file when launched and has opti
 - Switch between light, dark, or system themes via **View -> Theme**. Restart the app after changing the theme.
 
 ## Usage Notes
-- The tool works with `.esm` and `.ba2` files but does not support loose files or FOMOD installations.
+- The tool works with `.esm` and `.ba2` files but does not provide full support for loose files
+- Installation of loose files mods and SFSE plugins is supported but un-installation is not.
+- FOMOD installations are not supported
 - Profiles and backups are essential for managing load orders across different game versions (Steam/MS Store).
 - The tool automatically quits after launching the game.
 
