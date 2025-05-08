@@ -1,71 +1,85 @@
 ﻿# Starfield Tools - Load Order Editor
 
-## ⚠️ Important Notice
-Use this tool cautiously if you're using other mod managers like Vortex or MO2, as they may conflict with it. Running Vortex after using this tool may disrupt your load order.
+## Important Notes
+- May conflict with mod managers like Vortex or MO2. Running Vortex after using this tool can disrupt your load order.
+- Works with `.esm` and `.ba2` files but has limited support for loose file mods.
 
-## 📌 Overview
-Starfield Tools provides a load order editor for managing mods in Starfield. It automatically checks the `ContentCatalog.txt` file upon launch and includes options to repair the file.
+## Key Features
 
----
+### Mod Management
+- Reorder mods using drag-and-drop or hotkeys (`WASD`).
+- Enable/disable mods without removing files.
+- Multi-select mods (`Ctrl+Click` or `Shift+Click`).
+- Install multiple mods by dragging and dropping `.zip`, `.7z` archives.
+- Prevent unnecessary re-downloading of Creations mods.
+- View LOOT groups if LOOT is installed.
 
-## 🚀 Key Features
+### Profiles
+- Create and switch between mod profiles for different save games.
+- Ensures load order is restored after being affected by other apps.
 
-### 🛠️ Mod Management
-- Reorder mods using **drag-and-drop** or **hotkeys** (`WASD`).
-- Enable/disable mods **without removing files**.
-- Multi-select mods using `Ctrl+Click` or `Shift+Click` for **batch actions**.
-- Drag and drop **mod archives** (e.g., `.zip`, `.7z`) onto the grid to install multiple mods at once.
-- **Mods -> Prepare for Creations Update**: Prevents re-downloading of updated Creations mods.
-- **Block Mods**: Block specific mods from activation via the **right-click menu**.
-  - Blocked mods are saved in `BlockedMods.txt` under `%localappdata%\Starfield Tools`.
-  - You can manually edit this file via **File -> Edit Files -> Edit BlockedMods.txt**.
-- View **LOOT groups** if LOOT is installed (**View -> Columns -> Group**).
-- **Launch Starfield** directly from the tool (supports Steam, MS Store, or SFSE versions).
+### Backup & Restore
+- Automatically backs up `Plugins.txt` on first run.
+- Restore the original file via **File -> Restore Plugins.txt**.
 
-### 📂 Profiles
-- Create and switch between **mod profiles** for different save games.
-- Profiles ensure your **load order remains intact** even after being affected by other apps.
+### Dark Mode
+- Switch between light, dark, or system themes via **View -> Theme** (restart required).
 
-### 🔄 Backup & Restore
-- **Automatically** backs up `Plugins.txt` on first run.
-- Use **File -> Restore Plugins.txt** to revert to the original file.
+## Reset Options
 
-### 🌙 Dark Mode
-- Switch between **light, dark, or system themes** via **View -> Theme**.
-- Restart the app after changing the theme for effects to take place.
+### Delete Loose File Folders
+- Cleans leftover mod files but does not affect SFSE files.
+- Deletes the following folders:
+  - `meshes`, `interface`, `scripts`, `sound`, `geometries`
+  - Various `textures` subfolders (`actors`, `architecture`, `common`, etc.)
+  - `materials` (contents deleted but folder preserved)
 
----
+### Reset Everything
+- Restores `Starfield.ini` and `StarfieldCustom.ini` to default.
+- Disables loose files and resets changes made by Vortex.
+- Deletes non-essential `.ba2` archives without `.esm` files.
 
-## 📖 Usage Notes
-- The tool works with `.esm` and `.ba2` files but **does not support loose files** or FOMOD installations.
-- **Profiles and backups** are essential for managing load orders across **different game versions** (Steam/MS Store).
-- The tool **automatically exits after launching the game**.
+## Creations Mods
 
----
+### Mod Blocking
+- Prevent Creations mods from being automatically downloaded.
+- Enable the **Blocked** column under **View -> Columns -> Blocked**.
+- Right-click a mod to block/unblock it.
+- Blocked mods are saved in `%localappdata%\Starfield Tools\BlockedMods.txt`.
 
-## 🔄 Reset Options
+### Managing Mods
+- Adjust load order, enable/disable mods outside of the game.
+- Subscribe/unsubscribe/bookmark mods via the Creations website.
+- Some Creations mods cannot be un-subscribed due to occasional Bethesda bugs.
 
-### 🗑️ Delete Loose File Folders (**File -> Reset/Delete Loose File Folders**)
-- Deletes **non-vanilla game folders** (e.g., `meshes`, `textures`, `scripts`) while preserving `materials` (contents deleted).
-- **SFSE files** and folders remain untouched.
-- Use this option to clean up leftover files from **uninstalled mods**. Avoid using it if you wish to keep loose file mods.
+### Using LOOT for Autosorting
+- If LOOT is installed, press **Autosort** to organize your load order after making in-game changes.
 
-### 🔄 Full Reset (**File -> Reset/Reset Everything**)
-- Almost like a **clean game install**, but keeps `.esm` and `.ba2` formatted mods.
-- Restores `Starfield.ini` and `StarfieldCustom.ini` to **default settings**.
-- **Disables loose files**.
-- Deletes commonly used **loose file folders**, but **preserves SFSE folders**.
-- Optionally deletes **leftover `.ba2` archives** without corresponding `.esm` files.
-- Resets **Starfield Documents folder** changes made by Vortex.
-- Deletes `Starfield.ccc`.
+## Game Version Switching
 
----
+### Switching Between Steam & MS Store Versions
+- Locate the directory with `Starfield.exe`:
+  - **Steam:** `E:\SteamLibrary\steamapps\common\Starfield`
+  - **MS Store:** `F:\XboxGames\Starfield\Content`
+- Use **Game -> Game Version** to select the version to run.
+- Set paths via **Tools -> Starfield Path** (only needed once per version).
+- Mods for each version go into their respective game folders.
 
-## 📝 Notes
-- For best results, back up your load order before making changes.
-- Keep profiles updated to ensure load order consistency across versions.
+## Catalog Repair Tool
 
----
+### Usage Instructions
+- Run the tool before and after accessing the Creations menu to prevent lockups.
+- Use **Backup** after entering Creations to save the catalog file.
+- Use **Restore** to revert the catalog if necessary.
+- **Check** and **Clean** functions ensure catalog integrity.
 
-Happy modding! 🚀✨
+## Additional Information
+- Works offline.
+- Faster than the Creations menu and displays more of the load order at once.
+- No `.ini` edits, folder junctions, or virtual folders required.
+- The tool automatically quits after launching the game.
 
+## Resources & Credits
+- **7-Zip** - [7-Zip](https://www.7-zip.org)
+- **SevenZipExtractor** - [SevenZipExtractor](https://github.com/adoconnection/SevenZipExtractor)
+- **Narod's Steam Game Finder** - [Steam Game Finder](https://github.com/NarodGaming/steamgamefinder)
