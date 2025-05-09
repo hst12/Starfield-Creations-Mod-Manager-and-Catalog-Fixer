@@ -27,6 +27,7 @@ namespace Starfield_Tools
         public static string StarfieldGamePath;
         public static bool NoWarn;
         public static int returnStatus;
+        private Tools.ActivityLog activityLog;
 
         private Rectangle dragBoxFromMouseDown;
         private int rowIndexFromMouseDown, rowIndexOfItemUnderMouseToDrop, GameVersion = Steam;
@@ -35,7 +36,7 @@ namespace Starfield_Tools
 
         private string LastProfile, tempstr;
 
-        private bool Profiles = false, GridSorted = false, AutoUpdate = false, ActiveOnly = false, AutoSort = false, isModified = false, LooseFiles;
+        private bool Profiles = false, GridSorted = false, AutoUpdate = false, ActiveOnly = false, AutoSort = false, isModified = false, LooseFiles, log;
         private Tools.Configuration Groups = new();
 
         public frmLoadOrder(string parameter)
@@ -367,6 +368,9 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             var settings = Properties.Settings.Default;
 
             // Assign values
+            toggleToolStripMenuItem.Checked = settings.Log;
+            if (activityLog == null && settings.Log)
+                EnableLog();
             toolStripMenuProfilesOn.Checked = settings.ProfileOn;
             compareProfilesToolStripMenuItem.Checked = settings.CompareProfiles;
             looseFilesDisabledToolStripMenuItem.Checked = LooseFiles || settings.LooseFiles;
@@ -421,6 +425,9 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 
         private async Task RefreshDataGrid()
         {
+            if (log)
+                activityLog.WriteLog("RefreshDataGrid");
+
             if (isModified && Tools.ConfirmAction("Save Changes?", "Load order has been modified", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 SavePlugins();
             if (!Profiles)
@@ -1157,6 +1164,16 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             if (!File.Exists(ProfileName))
                 return;
 
+            if (log)
+            {
+#if DEBUG
+                StackTrace stackTrace = new StackTrace();
+                StackFrame frame = stackTrace.GetFrame(1); // Get the caller
+                activityLog.WriteLog($"Switching profile to {ProfileName}, Called from {frame.GetMethod().Name}");
+#endif
+                activityLog.WriteLog($"Switching profile to {ProfileName}");
+            }
+
             if (Properties.Settings.Default.CompareProfiles)
             {
                 var currentProfile = File.ReadAllLines(Path.Combine(Tools.StarfieldAppData, "Plugins.txt")).ToList();
@@ -1342,6 +1359,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 isModified = true;
             }
 
+            if (log)
+                activityLog.WriteLog($"Adding missing plugins - {addedFiles}");
             return addedFiles;
         }
 
@@ -1390,6 +1409,9 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             }
 
             isModified = removedFiles > 0;
+
+            if (log)
+                activityLog.WriteLog($"Removing missing plugins - {removedFiles}");
 
             return removedFiles;
         }
@@ -1595,6 +1617,9 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             {
                 sbar3("Nothing installed");
             }
+
+            if (log)
+                activityLog.WriteLog($"Mod files installed - {filesInstalled}");
 
             sbar2("");
             return;
@@ -1864,6 +1889,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 
                     SavePlugins();
                     sbar3($"Mod '{modName}' uninstalled.");
+                    if (log)
+                        activityLog.WriteLog($"Uninstall mod: {modName}");
                 }
                 else
                 {
@@ -1881,6 +1908,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
         {
             if (GridSorted)
                 return;
+
             if (Tools.BlockedMods().Contains((string)dataGridView1.CurrentRow.Cells["PluginName"].Value))
             {
                 sbar2("Mod is blocked");
@@ -1892,6 +1920,9 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 DataGridViewRow currentRow = (DataGridViewRow)row;
                 currentRow.Cells["ModEnabled"].Value = !(bool)(currentRow.Cells["ModEnabled"].Value);
             }
+
+            if (log)
+                activityLog.WriteLog($"Enable/Disable mod: {dataGridView1.CurrentRow.Cells["PluginName"].Value}, {dataGridView1.CurrentRow.Cells["ModEnabled"].Value}");
 
             SavePlugins();
         }
@@ -2067,6 +2098,9 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
         {
             bool profilesActive = Profiles;
             string lootPath = Properties.Settings.Default.LOOTPath;
+
+            if (log)
+                activityLog.WriteLog($"Running LOOT: {LOOTMode}");
 
             if (isModified) SavePlugins();
 
@@ -2728,6 +2762,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             }
 
             int removedCount = originalCount - dataGridView1.RowCount;
+            if (log)
+                activityLog.WriteLog($"Removed {removedCount} duplicates from Plugins.txt");
             sbar4($"Duplicates removed: {removedCount}");
             return removedCount;
         }
@@ -3543,6 +3579,12 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             this.StartPosition = FormStartPosition.CenterScreen;
         }
 
+        private void EnableLog()
+        {
+            activityLog = new Tools.ActivityLog(Path.Combine(Tools.LocalAppDataPath, "Activity Log.txt"));
+            log = true;
+        }
+
         private void frmLoadOrder_Load(object sender, EventArgs e)
         {
             this.Location = Properties.Settings.Default.WindowLocation;
@@ -3580,6 +3622,11 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             progressBar1.Width = 400; // Set the width of the progress bar
             progressBar1.Height = 50; // Set the height of the progress bar
             progressBar1.Location = new Point((this.ClientSize.Width - progressBar1.Width) / 2, (this.ClientSize.Height - progressBar1.Height) / 2);
+
+            if (Properties.Settings.Default.Log)
+            {
+                EnableLog();
+            }
         }
 
         private void toolStripMenuResetWindow_Click(object sender, EventArgs e)
@@ -4169,6 +4216,29 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 Tools.OpenFolder(downloadsDirectory);
             else
                 MessageBox.Show("It will be set after a mod has been installed.", "Downloads directory not set.", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void toggleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            toggleToolStripMenuItem.Checked = Properties.Settings.Default.Log = log = !toggleToolStripMenuItem.Checked;
+            if (activityLog == null)
+                EnableLog();
+        }
+
+        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            activityLog.DeleteLog();
+            if (log)
+                EnableLog();
+        }
+
+        private void viewToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            string pathToFile = Path.Combine(Tools.LocalAppDataPath, "Activity Log.txt");
+            if (File.Exists(pathToFile))
+                Process.Start("explorer", pathToFile);
+            else
+                sbar3("Activity Log not found.");
         }
     }
 }

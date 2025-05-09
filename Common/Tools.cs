@@ -41,15 +41,15 @@ namespace Starfield_Tools.Common // Various functions used by the app
 
         public Tools() // Constructor
         {
-            CommonFolder = Path.Combine(Environment.CurrentDirectory , "Common"); // Used to read misc txt files used by the app
+            CommonFolder = Path.Combine(Environment.CurrentDirectory, "Common"); // Used to read misc txt files used by the app
 
             LocalAppDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Starfield_Tools");
 
-            DocumentationFolder = Path.Combine(Environment.CurrentDirectory , "Documentation");
+            DocumentationFolder = Path.Combine(Environment.CurrentDirectory, "Documentation");
 
             try
             {
-                BethFiles = new(File.ReadAllLines(Path.Combine(CommonFolder ,"BGS Exclude.txt"))); // Exclude these files from Plugin list
+                BethFiles = new(File.ReadAllLines(Path.Combine(CommonFolder, "BGS Exclude.txt"))); // Exclude these files from Plugin list
             }
             catch (Exception ex)
             {
@@ -59,7 +59,7 @@ namespace Starfield_Tools.Common // Various functions used by the app
 
             try
             {
-                CatalogVersion = File.ReadAllText(Path.Combine(CommonFolder , "Catalog Version.txt"));
+                CatalogVersion = File.ReadAllText(Path.Combine(CommonFolder, "Catalog Version.txt"));
             }
             catch (Exception ex)
             {
@@ -68,7 +68,7 @@ namespace Starfield_Tools.Common // Various functions used by the app
             }
             try
             {
-                StarfieldAppData = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) , "Starfield");
+                StarfieldAppData = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Starfield");
             }
             catch (Exception ex)
             {
@@ -81,13 +81,13 @@ namespace Starfield_Tools.Common // Various functions used by the app
         {
             try
             {
-                if (!File.Exists(Path.Combine(LocalAppDataPath , "BlockedMods.txt")))
+                if (!File.Exists(Path.Combine(LocalAppDataPath, "BlockedMods.txt")))
                 {
-                    File.Create(Path.Combine(LocalAppDataPath , "BlockedMods.txt"));
+                    File.Create(Path.Combine(LocalAppDataPath, "BlockedMods.txt"));
                     return null;
                 }
                 else
-                    return (File.ReadAllLines(Path.Combine(LocalAppDataPath , "BlockedMods.txt")).ToList()); // Don't enable these mods
+                    return (File.ReadAllLines(Path.Combine(LocalAppDataPath, "BlockedMods.txt")).ToList()); // Don't enable these mods
             }
             catch (Exception ex)
             {
@@ -104,7 +104,7 @@ namespace Starfield_Tools.Common // Various functions used by the app
 
             try
             {
-                HeaderString = File.ReadAllText(Path.Combine(CommonFolder , "header.txt")); // Read the header from file
+                HeaderString = File.ReadAllText(Path.Combine(CommonFolder, "header.txt")); // Read the header from file
             }
             catch (Exception ex)
             {
@@ -376,7 +376,7 @@ namespace Starfield_Tools.Common // Various functions used by the app
 
         public static bool StartStarfieldSFSE() // Start game with SFSE loader
         {
-            string cmdLine = Path.Combine(Properties.Settings.Default.StarfieldGamePath , "sfse_loader.exe");
+            string cmdLine = Path.Combine(Properties.Settings.Default.StarfieldGamePath, "sfse_loader.exe");
             if (cmdLine == null)
                 return false;
 
@@ -401,7 +401,7 @@ namespace Starfield_Tools.Common // Various functions used by the app
         public static bool StartStarfieldMS() // Start game with MS Store version
         {
             //string cmdLine = @"shell:AppsFolder\BethesdaSoftworks.ProjectGold_3275kfvn8vcwc!Game";
-            string cmdLine = Path.Combine(Properties.Settings.Default.GamePathMS , "Starfield.exe");
+            string cmdLine = Path.Combine(Properties.Settings.Default.GamePathMS, "Starfield.exe");
 
             try
             {
@@ -499,6 +499,63 @@ namespace Starfield_Tools.Common // Various functions used by the app
         public static void OpenFolder(string folder)
         {
             Process.Start(new ProcessStartInfo(folder) { UseShellExecute = true });
+        }
+
+        public class ActivityLog
+        {
+            private readonly string logFilePath;
+
+            public ActivityLog(string filePath)
+            {
+                logFilePath = filePath;
+            }
+
+            public void WriteLog(string message)
+            {
+                try
+                {
+                    // Insert message at the top of the file
+                    string[] existingLines = File.Exists(logFilePath) ? File.ReadAllLines(logFilePath) : new string[0];
+                    List<string> updatedLines = new List<string> { DateTime.Now.ToString() + ": " + message }; // Prepend the new entry
+                    updatedLines.AddRange(existingLines);
+                    File.WriteAllLines(logFilePath, updatedLines);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error writing to log file: {ex.Message}");
+                }
+            }
+
+            public string ReadLog()
+            {
+                try
+                {
+                    using (StreamReader reader = new StreamReader(logFilePath))
+                    {
+                        return reader.ReadToEnd();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error reading log file: {ex.Message}");
+                    return string.Empty;
+                }
+            }
+
+            public void DeleteLog()
+            {
+                try
+                {
+                    if (File.Exists(logFilePath))
+                    {
+                        File.Delete(logFilePath);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error deleting log file: {ex.Message}");
+                }
+            }
         }
     }
 }

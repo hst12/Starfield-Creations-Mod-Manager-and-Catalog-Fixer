@@ -632,5 +632,17 @@ namespace Starfield_Tools.Properties {
                 this["BackupDirectory"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Log {
+            get {
+                return ((bool)(this["Log"]));
+            }
+            set {
+                this["Log"] = value;
+            }
+        }
     }
 }
