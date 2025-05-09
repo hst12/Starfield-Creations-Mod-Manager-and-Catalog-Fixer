@@ -4161,5 +4161,14 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
         {
             Tools.OpenUrl(Path.Combine("docs", "index.html"));
         }
+
+        private void downloadsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string downloadsDirectory = Properties.Settings.Default.DownloadsDirectory;
+            if (!string.IsNullOrEmpty(downloadsDirectory))
+                Tools.OpenFolder(downloadsDirectory);
+            else
+                MessageBox.Show("It will be set after a mod has been installed.", "Downloads directory not set.", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
     }
 }
