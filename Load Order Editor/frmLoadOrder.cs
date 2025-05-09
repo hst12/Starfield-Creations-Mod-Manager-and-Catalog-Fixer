@@ -711,8 +711,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                     .Select(file => file.Replace(" - textures", string.Empty)) // Remove "- textures" suffix for matching
                     .Count(mod => plugins.Contains(mod));
 
-                    StatText = $"Total Mods: {dataGridView1.RowCount}, Creations: {CreationsPlugin.Count}, Other: {dataGridView1.RowCount - CreationsPlugin.Count}, " +
-                               $"Enabled: {EnabledCount}, esm: {esmCount}, Archives: {ba2Count}, Main: {mainCount}, Textures: {i}";
+                    StatText = $"Mods: Creations {CreationsPlugin.Count}, Other {dataGridView1.RowCount - CreationsPlugin.Count}, " +
+                               $"Enabled: {EnabledCount}, esm: {esmCount}, Archives Total: {ba2Count}, Enabled - Main: {mainCount}, Textures: {i}";
 
                     if (espCount > 0)
                         StatText += $", esp files: {espCount}";
