@@ -1578,11 +1578,11 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 LooseFilesOnOff(true);
                 sbar3($"Directories installed (loose files): {filesInstalled}");
             }
-            else if (SFSEMod)
+            if (SFSEMod)
             {
                 sbar3("SFSE mod installed");
             }
-            else if (filesInstalled > 0)
+            if (filesInstalled > 0)
             {
                 AddMissing();
                 SavePlugins();
@@ -3575,9 +3575,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
         (Screen.PrimaryScreen.WorkingArea.Width - this.Width) / 2,
         (Screen.PrimaryScreen.WorkingArea.Height - this.Height) / 2
     );
-
             }
-
 
             progressBar1.Width = 400; // Set the width of the progress bar
             progressBar1.Height = 50; // Set the height of the progress bar
@@ -3769,7 +3767,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             }
 
             // Write to BlockedMods.txt and update isModified flag. No blank lines.
-            File.WriteAllLines(Path.Combine(Tools.LocalAppDataPath , "BlockedMods.txt"), blockedMods.Distinct().Where(s => !string.IsNullOrEmpty(s)));
+            File.WriteAllLines(Path.Combine(Tools.LocalAppDataPath, "BlockedMods.txt"), blockedMods.Distinct().Where(s => !string.IsNullOrEmpty(s)));
             isModified = true;
             SavePlugins();
         }
@@ -4161,7 +4159,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 
         private void webPageToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Tools.OpenUrl(Path.Combine("docs","index.html"));
+            Tools.OpenUrl(Path.Combine("docs", "index.html"));
         }
     }
 }
