@@ -166,6 +166,7 @@
             showTimeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             modStatsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             activeOnlyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            viewLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator18 = new System.Windows.Forms.ToolStripSeparator();
@@ -197,7 +198,6 @@
             toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             logToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toggleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            viewToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator44 = new System.Windows.Forms.ToolStripSeparator();
             disableAllWarningToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -1081,7 +1081,7 @@
             // 
             // viewToolStripMenuItem
             // 
-            viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { refreshToolStripMenuItem, toolStripMenuColumns, themeToolStripMenuItem, toolStripSeparator25, showTimeToolStripMenuItem, modStatsToolStripMenuItem, activeOnlyToolStripMenuItem });
+            viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { refreshToolStripMenuItem, toolStripMenuColumns, themeToolStripMenuItem, toolStripSeparator25, showTimeToolStripMenuItem, modStatsToolStripMenuItem, activeOnlyToolStripMenuItem, viewLogToolStripMenuItem });
             viewToolStripMenuItem.Name = "viewToolStripMenuItem";
             viewToolStripMenuItem.Size = new System.Drawing.Size(85, 38);
             viewToolStripMenuItem.Text = "View";
@@ -1090,7 +1090,7 @@
             // 
             refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
             refreshToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            refreshToolStripMenuItem.Size = new System.Drawing.Size(269, 44);
+            refreshToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
             refreshToolStripMenuItem.Text = "Refresh";
             refreshToolStripMenuItem.Click += refreshToolStripMenuItem_Click;
             // 
@@ -1098,7 +1098,7 @@
             // 
             toolStripMenuColumns.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuIndex, toolStripMenuDescription, toolStripMenuGroup, toolStripMenuAchievements, toolStripMenuCreationsID, toolStripMenuFiles, toolStripMenuFileSize, timeStampToolStripMenuItem, uRLToolStripMenuItem, toolStripMenuVersion, toolStripMenuAuthorVersion, blockedToolStripMenuItem, toolStripSeparator30, toolStripMenuItemHideAll, toolStripMenuShowRecommended });
             toolStripMenuColumns.Name = "toolStripMenuColumns";
-            toolStripMenuColumns.Size = new System.Drawing.Size(269, 44);
+            toolStripMenuColumns.Size = new System.Drawing.Size(359, 44);
             toolStripMenuColumns.Text = "Columns";
             // 
             // toolStripMenuIndex
@@ -1214,7 +1214,7 @@
             // 
             themeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { lightToolStripMenuItem, darkToolStripMenuItem, systemToolStripMenuItem });
             themeToolStripMenuItem.Name = "themeToolStripMenuItem";
-            themeToolStripMenuItem.Size = new System.Drawing.Size(269, 44);
+            themeToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
             themeToolStripMenuItem.Text = "Theme";
             // 
             // lightToolStripMenuItem
@@ -1241,28 +1241,35 @@
             // toolStripSeparator25
             // 
             toolStripSeparator25.Name = "toolStripSeparator25";
-            toolStripSeparator25.Size = new System.Drawing.Size(266, 6);
+            toolStripSeparator25.Size = new System.Drawing.Size(356, 6);
             // 
             // showTimeToolStripMenuItem
             // 
             showTimeToolStripMenuItem.Name = "showTimeToolStripMenuItem";
-            showTimeToolStripMenuItem.Size = new System.Drawing.Size(269, 44);
+            showTimeToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
             showTimeToolStripMenuItem.Text = "Show Time";
             showTimeToolStripMenuItem.Click += showTimeToolStripMenuItem_Click_1;
             // 
             // modStatsToolStripMenuItem
             // 
             modStatsToolStripMenuItem.Name = "modStatsToolStripMenuItem";
-            modStatsToolStripMenuItem.Size = new System.Drawing.Size(269, 44);
+            modStatsToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
             modStatsToolStripMenuItem.Text = "Mod Stats";
             modStatsToolStripMenuItem.Click += modStatsToolStripMenuItem_Click;
             // 
             // activeOnlyToolStripMenuItem
             // 
             activeOnlyToolStripMenuItem.Name = "activeOnlyToolStripMenuItem";
-            activeOnlyToolStripMenuItem.Size = new System.Drawing.Size(269, 44);
+            activeOnlyToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
             activeOnlyToolStripMenuItem.Text = "Active Only";
             activeOnlyToolStripMenuItem.Click += activeOnlyToolStripMenuItem_Click;
+            // 
+            // viewLogToolStripMenuItem
+            // 
+            viewLogToolStripMenuItem.Name = "viewLogToolStripMenuItem";
+            viewLogToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+            viewLogToolStripMenuItem.Text = "Log";
+            viewLogToolStripMenuItem.Click += viewLogToolStripMenuItem_Click;
             // 
             // toolsToolStripMenuItem
             // 
@@ -1460,7 +1467,7 @@
             // 
             // logToolStripMenuItem
             // 
-            logToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toggleToolStripMenuItem, viewToolStripMenuItem1, deleteToolStripMenuItem });
+            logToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toggleToolStripMenuItem, deleteToolStripMenuItem });
             logToolStripMenuItem.Name = "logToolStripMenuItem";
             logToolStripMenuItem.Size = new System.Drawing.Size(407, 44);
             logToolStripMenuItem.Text = "Logging";
@@ -1471,13 +1478,6 @@
             toggleToolStripMenuItem.Size = new System.Drawing.Size(219, 44);
             toggleToolStripMenuItem.Text = "Toggle";
             toggleToolStripMenuItem.Click += toggleToolStripMenuItem_Click;
-            // 
-            // viewToolStripMenuItem1
-            // 
-            viewToolStripMenuItem1.Name = "viewToolStripMenuItem1";
-            viewToolStripMenuItem1.Size = new System.Drawing.Size(219, 44);
-            viewToolStripMenuItem1.Text = "View";
-            viewToolStripMenuItem1.Click += viewToolStripMenuItem1_Click;
             // 
             // deleteToolStripMenuItem
             // 
@@ -2402,7 +2402,7 @@
         private System.Windows.Forms.ToolStripMenuItem logToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator44;
         private System.Windows.Forms.ToolStripMenuItem toggleToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem viewLogToolStripMenuItem;
     }
 }

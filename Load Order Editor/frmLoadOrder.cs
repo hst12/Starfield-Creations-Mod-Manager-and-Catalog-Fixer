@@ -11,6 +11,7 @@ using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -425,9 +426,6 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 
         private async Task RefreshDataGrid()
         {
-            if (log)
-                activityLog.WriteLog("RefreshDataGrid");
-
             if (isModified && Tools.ConfirmAction("Save Changes?", "Load order has been modified", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 SavePlugins();
             if (!Profiles)
@@ -1506,7 +1504,10 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 {
                     sbar2($"Extracting: {modFilePath}");
                     statusStrip1.Refresh();
+                    if (log)
+                        activityLog.WriteLog($"Extracting: {modFilePath}");
                     archiveFile.Extract(extractPath);
+
 
                     // Check for embedded archive
                     if (Directory.Exists(extractPath))
@@ -1524,6 +1525,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                                         sbar2($"Extracting embedded archive: {file}");
                                         statusStrip1.Refresh();
                                         archiveFile2.Extract(extractPath);
+                                        if (log)
+                                            activityLog.WriteLog($"Extracting embedded archive: {file}");
                                     }
                                 }
                             }
@@ -1581,6 +1584,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 foreach (var sourceDir in directoriesFound)
                 {
                     CopyDirectory(sourceDir, Path.Combine(targetDir, dirName));
+                    if (log)
+                        activityLog.WriteLog($"Copying {sourceDir} to {Path.Combine(targetDir, dirName)}");
                     filesInstalled++;
                 }
                 if (directoriesFound.Length > 0)
@@ -1611,7 +1616,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 if (AutoSort && string.IsNullOrEmpty(InstallMod))
                     RunLOOT(true);
 
-                sbar3($"Mod installed - {filesInstalled} files");
+                sbar3($"Mod installed: {filesInstalled} files");
             }
             else
             {
@@ -1619,7 +1624,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             }
 
             if (log)
-                activityLog.WriteLog($"Mod files installed - {filesInstalled}");
+                activityLog.WriteLog($"Mod files installed: {filesInstalled}");
 
             sbar2("");
             return;
@@ -1638,6 +1643,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                         if (Tools.ConfirmAction($"Overwrite {fileTypeLabel} {destinationPath}", "Replace mod?", MessageBoxButtons.YesNo) == DialogResult.Yes)
                         {
                             File.Move(modFile, destinationPath, true);
+                            if (log)
+                                activityLog.WriteLog($"Installing {modFile}");
                             count++;
                         }
                         else
@@ -1649,6 +1656,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                     else
                     {
                         File.Move(modFile, destinationPath, true);
+                        if (log)
+                            activityLog.WriteLog($"Installing {modFile}");
                         count++;
                     }
                 }
@@ -1884,7 +1893,11 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                     {
                         string filePath = modBasePath + ext;
                         if (File.Exists(filePath))
+                        {
                             File.Delete(filePath);
+                            if (log)
+                                activityLog.WriteLog($"Deleted: {filePath}");
+                        }
                     }
 
                     SavePlugins();
@@ -4227,12 +4240,14 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (activityLog == null)
+                return;
             activityLog.DeleteLog();
             if (log)
                 EnableLog();
         }
 
-        private void viewToolStripMenuItem1_Click(object sender, EventArgs e)
+        private void viewLogToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string pathToFile = Path.Combine(Tools.LocalAppDataPath, "Activity Log.txt");
             if (File.Exists(pathToFile))
