@@ -1168,8 +1168,10 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 StackTrace stackTrace = new StackTrace();
                 StackFrame frame = stackTrace.GetFrame(1); // Get the caller
                 activityLog.WriteLog($"Switching profile to {ProfileName}, Called from {frame.GetMethod().Name}");
-#endif
+#else
                 activityLog.WriteLog($"Switching profile to {ProfileName}");
+#endif
+
             }
 
             if (Properties.Settings.Default.CompareProfiles)
@@ -1246,6 +1248,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 // Check if the row is not a new row
                 if (!row.IsNewRow)
                 {
+                    if (log)
+                        activityLog.WriteLog($"Deleting {row.Cells["PluginName"].Value} from Plugins.txt");
                     dataGridView1.Rows.Remove(row);
                 }
             }
@@ -1354,6 +1358,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 row.Cells["PluginName"].Value = file;
 
                 addedFiles++;
+                if (log)
+                    activityLog.WriteLog($"Adding {file} to Plugins.txt");
                 isModified = true;
             }
 
@@ -1401,6 +1407,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 
                 foreach (var row in rowsToRemove)
                 {
+                    if (log)
+                        activityLog.WriteLog($"Removing {fileToRemove} from Plugins.txt");
                     dataGridView1.Rows.Remove(row);
                     removedFiles++;
                 }
@@ -3907,7 +3915,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             UpdateArchiveModsAsync();
         }
 
-        private int DeleteLooseFileFolders()
+        private static int DeleteLooseFileFolders()
         {
             frmDeleteLooseFiles fdl = new frmDeleteLooseFiles();
 
@@ -4254,6 +4262,18 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 Process.Start("explorer", pathToFile);
             else
                 sbar3("Activity Log not found.");
+        }
+
+
+
+        private void nexusTrackingToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Tools.OpenUrl("https://www.nexusmods.com/starfield/mods/trackingcentre?tab=tracked+content+updates");
+        }
+
+        private void nexusUpdatedModsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Tools.OpenUrl("https://www.nexusmods.com/games/starfield/mods?sort=updatedAt");
         }
     }
 }
