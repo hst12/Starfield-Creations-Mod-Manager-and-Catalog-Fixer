@@ -858,6 +858,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             dataGridView1.ClearSelection();
             dataGridView1.Rows[rowIndex - 1].Selected = true;
             dataGridView1.Rows[rowIndex - 1].Cells[colIndex].Selected = true;
+            if (log)
+                activityLog.WriteLog($"Moved {selectedRow.Cells["PluginName"].Value} up the list from {selectedRow.Index + 2} to {selectedRow.Index + 1}");
             isModified = true;
         }
 
@@ -883,6 +885,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             dataGridView1.ClearSelection();
             dataGridView1.Rows[rowIndex + 1].Selected = true;
             dataGridView1.Rows[rowIndex + 1].Cells[colIndex].Selected = true;
+            if (log)
+                activityLog.WriteLog($"Moved {selectedRow.Cells["PluginName"].Value} down the list from {selectedRow.Index} to {selectedRow.Index + 1}");
             isModified = true;
         }
 
@@ -961,6 +965,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             {
                 dataGridView1.FirstDisplayedScrollingRowIndex = 0; // Scroll to the first row
             }
+            if (log)
+                activityLog.WriteLog($"Moved {selectedRow.Cells["PluginName"].Value} to top of list");
             isModified = true;
         }
 
@@ -982,6 +988,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             {
                 dataGridView1.FirstDisplayedScrollingRowIndex = lastRowIndex; // Scroll to the last row
             }
+            if (log)
+                activityLog.WriteLog($"Moved {selectedRow.Cells["PluginName"].Value} to bottom of list");
             isModified = true;
         }
 
@@ -1514,6 +1522,9 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             if (string.IsNullOrEmpty(modFilePath))
                 return;
 
+            if (log)
+                activityLog.WriteLog($"Starting mod install: {modFilePath}");
+
             // Show a loading screen while extracting.
             Form loadScreen = new frmLoading("Extracting mod...");
             loadScreen.Show();
@@ -1672,7 +1683,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                         {
                             File.Move(modFile, destinationPath, true);
                             if (log)
-                                activityLog.WriteLog($"Installing {modFile}");
+                                activityLog.WriteLog($"Moving {modFile} to {destinationPath}");
                             count++;
                         }
                         else
@@ -1695,6 +1706,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             // Local static recursive function to copy an entire directory.
             static void CopyDirectory(string sourceDir, string destinationDir)
             {
+                Tools.ActivityLog activityLog2 = new Tools.ActivityLog(Path.Combine(Tools.LocalAppDataPath, "Activity Log.txt"));
+
                 // Get information about the source directory
                 var dir = new DirectoryInfo(sourceDir);
 
@@ -1711,6 +1724,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 foreach (var file in dir.GetFiles())
                 {
                     string targetFilePath = Path.Combine(destinationDir, file.Name);
+                    if (Properties.Settings.Default.Log)
+                        activityLog2.WriteLog($"Copying {file.FullName} to {targetFilePath}");
                     file.CopyTo(targetFilePath, overwrite: true);
                 }
 
@@ -1870,6 +1885,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             var selectedRows = dataGridView1.SelectedRows.Cast<DataGridViewRow>().ToList();
             string dataDirectory = Path.Combine(StarfieldGamePath, "Data");
 
+
             foreach (var row in selectedRows)
             {
                 // Get the mod name from the PluginName cell (before the first dot).
@@ -1880,11 +1896,15 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 
                 string modName = pluginName.Substring(0, dotIndex);
 
+                if (log)
+                    activityLog.WriteLog($"Starting uninstall for mod: {modName}");
+
                 if (Tools.ConfirmAction(
                         $"This will delete all files related to the '{modName}' mod",
                         $"Delete {modName} - Are you sure?",
                         MessageBoxButtons.YesNo) == DialogResult.Yes || NoWarn)
                 {
+
                     isModified = true;
                     dataGridView1.Rows.Remove(row);
 
@@ -1896,6 +1916,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                     if (File.Exists(espFile))
                     {
                         File.Delete(espFile);
+                        if (log)
+                            activityLog.WriteLog($"Deleted: {espFile}");
                         SavePlugins();
                         sbar3("esp uninstalled - esm and archive files skipped");
                         continue;
@@ -1930,8 +1952,6 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 
                     SavePlugins();
                     sbar3($"Mod '{modName}' uninstalled.");
-                    if (log)
-                        activityLog.WriteLog($"Uninstall mod: {modName}");
                 }
                 else
                 {
@@ -4041,8 +4061,6 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             else
             {
                 sbar3("Starfield.ini Matches Default");
-                if (log)
-                    activityLog.WriteLog("Starfield.ini matches default settings.");
                 return 0;
             }
         }
@@ -4059,11 +4077,15 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             if (Tools.ConfirmAction("This will reset all settings and delete all loose files folders", "Are you sure?", MessageBoxButtons.YesNo,
                 MessageBoxIcon.Exclamation, true) == DialogResult.No)
                 return;
+            if (log)
+                activityLog.WriteLog("Starting reset everything.");
             actionCount = RestoreStarfieldINI();
             actionCount += DeleteLooseFileFolders();
             actionCount += ResetDefaults();
             actionCount += CheckArchives();
             sbar3(actionCount.ToString() + " Change(s) made");
+            if (log)
+                activityLog.WriteLog("Reset everything: " + actionCount.ToString() + " Change(s) made");
         }
 
         public void ResetPreferences()
@@ -4367,6 +4389,11 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
         private void btnLog_Click(object sender, EventArgs e)
         {
             ShowLog();
+        }
+
+        private void appAppDataToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Tools.OpenFolder(Tools.LocalAppDataPath);
         }
     }
 }

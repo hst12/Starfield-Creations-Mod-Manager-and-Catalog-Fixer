@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.VisualBasic.Logging;
+using Newtonsoft.Json;
 using Starfield_Tools.Common;
 using Starfield_Tools.Properties;
 using System;
@@ -7,16 +8,18 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using static Starfield_Tools.Common.Tools;
 
 namespace Starfield_Tools
 {
     public partial class frmStarfieldTools : Form
     {
-        public bool AutoCheck, AutoClean, AutoBackup, AutoRestore, ForceClean, Verbose;
+        public bool AutoCheck, AutoClean, AutoBackup, AutoRestore, ForceClean, Verbose, log;
         public string CatalogStatus;
 
         private readonly string StarfieldGamePath;
         private readonly Tools tools = new();
+        private Tools.ActivityLog activityLog;
 
         public frmStarfieldTools()
         {
@@ -33,6 +36,9 @@ namespace Starfield_Tools
             chkVerbose.Checked = Properties.Settings.Default.Verbose;
             AutoRestore = Properties.Settings.Default.AutoRestore;
             ForceClean = Properties.Settings.Default.ForceClean;
+            log = Properties.Settings.Default.Log;
+            if (log)
+                EnableLog();
             SetAutoCheckBoxes();
 
             richTextBox2.Text = "";
@@ -292,6 +298,8 @@ namespace Starfield_Tools
                             if (file.IndexOf(".esp", StringComparison.OrdinalIgnoreCase) > 0)
                             {
                                 richTextBox2.AppendText($"\nWarning - esp file found in catalog file - {file}\n");
+                                if (log)
+                                    activityLog.WriteLog($"Warning - esp file found in catalog file - {file}");
                                 warningCount++;
                             }
                         }
@@ -351,6 +359,8 @@ namespace Starfield_Tools
                     toolStripStatusLabel1.Text = $"{errorCount} Error(s) found";
                     CatalogStatus = toolStripStatusLabel1.Text;
                     richTextBox2.AppendText($"{errorCount} Error(s) found\n");
+                    if (log)
+                        activityLog.WriteLog($"{errorCount} Error(s) found in catalog file");
                     return false;
                 }
             }
@@ -362,12 +372,16 @@ namespace Starfield_Tools
                     Tools.ConfirmAction("Missing ContentCatalog.txt", "A Blank ContentCatalog.txt file will be created", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     File.WriteAllText(catalogPath, Tools.MakeHeaderBlank());
                     toolStripStatusLabel1.Text = "Dummy ContentCatalog.txt created";
+                    if (log)
+                        activityLog.WriteLog("Dummy ContentCatalog.txt created");
                     return false;
                 }
                 else
                 {
                     richTextBox2.AppendText("\n" + ex.Message);
                     toolStripStatusLabel1.Text = "Catalog corrupt. Use the Restore or Clean functions to repair";
+                    if (log)
+                        activityLog.WriteLog("Catalog corrupt. Use the Restore or Clean functions to repair");
                 }
                 return false;
             }
@@ -619,6 +633,8 @@ namespace Starfield_Tools
                             if (CreationsPlugin[i].ToLower() == missingStrings[index].ToLower())
                             {
                                 richTextBox2.Text += "Removing " + CreationsGUID[i] + " " + CreationsTitle[i] + "\n";
+                                if (log)
+                                    activityLog.WriteLog($"Removing {CreationsGUID[i]} {CreationsTitle[i]}");
                                 data.Remove(CreationsGUID[i]);
                                 unusedMods = true;
                                 RemovalCount++;
@@ -687,6 +703,12 @@ namespace Starfield_Tools
             chkAutoBackup.Checked = AutoBackup;
             chkAutoRestore.Checked = AutoRestore;
             chkForceClean.Checked = ForceClean;
+        }
+
+        private void EnableLog()
+        {
+            activityLog = new Tools.ActivityLog(Path.Combine(Tools.LocalAppDataPath, "Activity Log.txt"));
+            log = true;
         }
     }
 }

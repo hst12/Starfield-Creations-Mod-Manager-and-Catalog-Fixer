@@ -53,12 +53,7 @@ namespace Starfield_Tools.Load_Order_Editor
                 }
             }
             if (DeletedFiles.Count == 0)
-            {
-                if (log)
-                    activityLog.WriteLog("No folders found to delete.");
-
                 this.Close();
-            }
         }
 
         private static bool CheckFolder(string folderPath)
