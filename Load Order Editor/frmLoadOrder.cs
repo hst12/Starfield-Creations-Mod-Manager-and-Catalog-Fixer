@@ -301,6 +301,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             {
                 prepareForCreationsUpdateToolStripMenuItem.Checked = false;
                 Properties.Settings.Default.CreationsUpdate = false;
+                SaveSettings();
                 BackupStatus = StarfieldTools.BackupCatalog();
                 tempstr = BackupStatus ? "Catalog backed up" : "Catalog backup is up to date";
                 Properties.Settings.Default.AutoRestore = true;
@@ -829,6 +830,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 
             sbar2($"{Path.GetFileName(PluginFileName)} saved");
             isModified = false;
+            if (log)
+                activityLog.WriteLog($"{Path.GetFileName(PluginFileName)} saved");
         }
 
         private void btnOK_Click(object sender, EventArgs e)
@@ -1171,7 +1174,6 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 #else
                 activityLog.WriteLog($"Switching profile to {ProfileName}");
 #endif
-
             }
 
             if (Properties.Settings.Default.CompareProfiles)
@@ -1515,7 +1517,6 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                     if (log)
                         activityLog.WriteLog($"Extracting: {modFilePath}");
                     archiveFile.Extract(extractPath);
-
 
                     // Check for embedded archive
                     if (Directory.Exists(extractPath))
@@ -2024,6 +2025,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 SavePlugins();
 
             result = Tools.StartGame(GameVersion);
+            if (log)
+                activityLog.WriteLog($"Game started: {GameVersion}, Status: {result}");
 
             if (!result)
             {
@@ -2287,6 +2290,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 {
                     File.Delete(Starfieldccc);
                     sbar3("Starfield.ccc deleted");
+                    if (log)
+                        activityLog.WriteLog("Starfield.ccc deleted");
                     return true;
                 }
                 else
@@ -2506,6 +2511,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                     File.Copy(Path.Combine(Tools.CommonFolder, "StarfieldCustom.ini"), Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                         @"My Games\Starfield\StarfieldCustom.ini"), true);
                     sbar3("StarfieldCustom.ini restored");
+                    if (log)
+                        activityLog.WriteLog("StarfieldCustom.ini restored");
                     return true;
                 }
                 else
@@ -2514,6 +2521,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error restoring StarfieldCustom.ini");
+                if (log)
+                    activityLog.WriteLog("Error restoring StarfieldCustom.ini: " + ex.Message);
                 return false;
             }
         }
@@ -2699,6 +2708,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                     File.AppendAllLines(filePath, linesToAppend.Where(line => !existingLines.Contains(line)));
                     LooseFiles = true;
                     sbarCCC("Loose Files Enabled");
+                    if (log)
+                        activityLog.WriteLog("Loose files enabled in StarfieldCustom.ini");
                 }
             }
             else if (File.Exists(filePath))
@@ -2710,6 +2721,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 File.WriteAllLines(filePath, updatedLines);
                 LooseFiles = false;
                 sbarCCC("Loose Files Disabled");
+                if (log)
+                    activityLog.WriteLog("Loose files disabled in StarfieldCustom.ini");
             }
         }
 
@@ -3372,6 +3385,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                         statusStrip1.Refresh();
                         CreateZipFromFiles(files, zipPath); // Make zip
                         sbar3($"{ModName} archived");
+                        if (log)
+                            activityLog.WriteLog($"Created archive for {ModName} at {zipPath}");
                         statusStrip1.Refresh();
                         files.Clear();
                     }
@@ -3390,7 +3405,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 
                         if (dlgResult == DialogResult.No)
                             sbar3($"Archive for {ModName} not created");
-                        if (dlgResult == DialogResult.OK)
+                        if (dlgResult == DialogResult.Yes)
                             makeArchive();
                     }
                     else
@@ -3600,11 +3615,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             this.StartPosition = FormStartPosition.CenterScreen;
         }
 
-        private void EnableLog()
-        {
-            activityLog = new Tools.ActivityLog(Path.Combine(Tools.LocalAppDataPath, "Activity Log.txt"));
-            log = true;
-        }
+
 
         private void frmLoadOrder_Load(object sender, EventArgs e)
         {
@@ -3826,11 +3837,15 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                     blockedMods.Add(currentRow.Cells["PluginName"].Value.ToString());
                     currentRow.Cells["ModEnabled"].Value = false;
                     sbar2(currentRow.Cells["PluginName"].Value.ToString() + " blocked");
+                    if (log)
+                        activityLog.WriteLog($"Blocked {currentRow.Cells["PluginName"].Value.ToString()}");
                 }
                 else // Remove mod from blocked list
                 {
                     blockedMods.Remove(currentRow.Cells["PluginName"].Value.ToString());
                     sbar2(currentRow.Cells["PluginName"].Value.ToString() + " unblocked");
+                    if (log)
+                        activityLog.WriteLog($"Unblocked {currentRow.Cells["PluginName"].Value.ToString()}");
                 }
             }
 
@@ -3847,6 +3862,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 prepareForCreationsUpdateToolStripMenuItem.Checked = true;
                 Properties.Settings.Default.CreationsUpdate = true;
                 Properties.Settings.Default.AutoRestore = false;
+                if (log)
+                    activityLog.WriteLog("Creations Update started");
                 if (Tools.ConfirmAction("1. Run the game and update Creations mods.\n2. Don't Load a Save Game\n3. Quit the game and run this app again\n\n" +
                     "To Cancel this option," +
                     " click this menu option again\n\nRun the game now?", "Steps to Update Creations Mods", MessageBoxButtons.YesNo, MessageBoxIcon.Question,
@@ -3859,6 +3876,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 Properties.Settings.Default.CreationsUpdate = false;
                 Properties.Settings.Default.AutoRestore = true;
                 MessageBox.Show("Catalog Auto Restore set to on", "Creations Update Cancelled");
+                if (log)
+                    activityLog.WriteLog("Creations Update Cancelled");
             }
         }
 
@@ -3969,6 +3988,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 {
                     File.Copy(Path.Combine(Tools.CommonFolder, "Starfield.ini"), Path.Combine(StarfieldGamePath, "Starfield.ini"), true); // Restore Starfield.ini
                     sbar3("Starfield.ini restored");
+                    if (log)
+                        activityLog.WriteLog("Starfield.ini restored to default settings");
                     return 1;
                 }
                 catch (Exception ex)
@@ -4264,8 +4285,6 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 sbar3("Activity Log not found.");
         }
 
-
-
         private void nexusTrackingToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Tools.OpenUrl("https://www.nexusmods.com/starfield/mods/trackingcentre?tab=tracked+content+updates");
@@ -4274,6 +4293,12 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
         private void nexusUpdatedModsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Tools.OpenUrl("https://www.nexusmods.com/games/starfield/mods?sort=updatedAt");
+        }
+
+        private void EnableLog()
+        {
+            activityLog = new Tools.ActivityLog(Path.Combine(Tools.LocalAppDataPath, "Activity Log.txt"));
+            log = true;
         }
     }
 }

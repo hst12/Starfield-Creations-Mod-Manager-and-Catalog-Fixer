@@ -10,9 +10,11 @@ namespace Starfield_Tools.Load_Order_Editor
     public partial class frmOrphaned : Form
     {
         readonly Tools tools = new();
+        Tools.ActivityLog activityLog = new(Path.Combine(Tools.LocalAppDataPath, "Activity Log.txt"));
         public frmOrphaned(List<string> orphaned)
         {
             InitializeComponent();
+            Tools.ActivityLog activityLog = new(Path.Combine(Tools.LocalAppDataPath,"Activity Log.txt"));
             long fileSize = 0;
 
             foreach (var item in orphaned)
@@ -51,6 +53,8 @@ namespace Starfield_Tools.Load_Order_Editor
                 foreach (var item in checkedListBox1.CheckedItems)
                 {
                     File.Delete(Path.Combine(frmLoadOrder.StarfieldGamePath, "Data", item.ToString()));
+                    if (Properties.Settings.Default.Log)
+                        activityLog.WriteLog($"Deleted orphaned archive {item} from Data folder.");
                 }
             }
             catch (Exception ex)
