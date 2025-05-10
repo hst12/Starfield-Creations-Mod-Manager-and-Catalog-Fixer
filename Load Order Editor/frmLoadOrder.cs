@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualBasic.Logging;
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 using Narod.SteamGameFinder;
 using SevenZipExtractor;
 using Starfield_Tools.Common;
@@ -12,7 +11,6 @@ using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -373,7 +371,10 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             // Assign values
             toggleToolStripMenuItem.Checked = settings.Log;
             if (activityLog == null && settings.Log)
+            {
                 EnableLog();
+                activityLog.WriteLog("Starting Log\n");
+            }
             toolStripMenuProfilesOn.Checked = settings.ProfileOn;
             compareProfilesToolStripMenuItem.Checked = settings.CompareProfiles;
             looseFilesDisabledToolStripMenuItem.Checked = LooseFiles || settings.LooseFiles;
@@ -1202,6 +1203,9 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                     existingForm?.Close(); // Close the existing form
                     Form fpc = new frmProfileCompare(Difference);// Create and show a new instance of the form
                     fpc.Show();
+                    if (log)
+                        foreach (var item in Difference)
+                            activityLog.WriteLog($"Profile compare - {item}");
                 }
             }
 
@@ -1458,6 +1462,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             if (isModified)
                 SavePlugins();
             SaveSettings();
+            if (log)
+                activityLog.WriteLog("Shutting down");
         }
 
         private static void SaveSettings()
@@ -2712,6 +2718,9 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
         {
             string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", "Starfield", "StarfieldCustom.ini");
 
+            if (Tools.FileCompare(filePath, Path.Combine(Tools.CommonFolder, "StarfieldCustom.ini")) && enable == false) // Return if loose files are already disabled
+                return;
+
             if (enable)
             {
                 var existingLines = File.Exists(filePath) ? File.ReadLines(filePath).Select(line => line.Trim()).ToHashSet() : new HashSet<string>();
@@ -3138,6 +3147,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 MessageBoxIcon.Exclamation) == DialogResult.OK)
             {
                 ChangeSettings(true);
+                if (log)
+                    activityLog.WriteLog("Enabling all settings");
                 ResetDefaults();
             }
             if (!ActiveOnly)
@@ -3147,6 +3158,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
         private void disableAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ChangeSettings(false);
+            if (log)
+                activityLog.WriteLog("Disabling all settings");
             sbar5("");
         }
 
@@ -3694,6 +3707,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             disableAllWarningToolStripMenuItem.Checked = !disableAllWarningToolStripMenuItem.Checked;
             Properties.Settings.Default.NoWarn = disableAllWarningToolStripMenuItem.Checked;
             NoWarn = disableAllWarningToolStripMenuItem.Checked;
+            if (log)
+                activityLog.WriteLog("Disable all warnings set to " + NoWarn.ToString());
         }
 
         private void toolStripMenuExportCSV_Click(object sender, EventArgs e)
