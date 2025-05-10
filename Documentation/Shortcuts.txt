@@ -40,6 +40,7 @@ Search is case insensitive and any part of the filename can be searched for.
 View Menu
 Columns: Some columns can be hidden or shown. Certain columns require a press of the Refresh button to update the display
 Theme: Light, dark mode or System=Windows setting
+Log File: Open the log file.
 
 File->Edit Files->StarfieldCustomINI Editor - Some tweak options for the game.
 Warning, using this function will overwrite your StarfieldCustom.ini file
@@ -52,3 +53,4 @@ The app will quit 7 seconds after launching the game for the Steam version.
 Content Catalog Check - Launches the ContentCatalog.txt checker. This runs automatically at startup but won't display anything unless an issue is found.
 Warning: The Enable All Settings function will turn on settings that will reverse the INI file changes made by Vortex, so use with caution. It will also overwrite any settings in StarfieldCustom.ini and deletes Starfield.CCC file if found. A warning will be displayed before any action is taken in case you accidently click this option.
 The tool will not modify the INI files in the game folder, only the ones found in your Documents\My Games\Starfield folder.
+Tools->Logging - Enable or disable log or delete log

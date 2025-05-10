@@ -100,14 +100,14 @@
             toolStripMenuExportCSV = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             exploreToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            downloadsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuExploreAppData = new System.Windows.Forms.ToolStripMenuItem();
-            appAppDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuExploreData = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuExploreGameDocs = new System.Windows.Forms.ToolStripMenuItem();
-            toolStripMenuExploreCommon = new System.Windows.Forms.ToolStripMenuItem();
             sFSEPluginsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             profileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            downloadsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            appAppDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripMenuExploreCommon = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             toolStripMenuEditFiles = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuEditPlugins = new System.Windows.Forms.ToolStripMenuItem();
@@ -245,8 +245,9 @@
             nexusTrackingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuBGSStarfield = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuBGSX = new System.Windows.Forms.ToolStripMenuItem();
-            toolStripMenuGitHub = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripSeparator45 = new System.Windows.Forms.ToolStripSeparator();
             webPageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripMenuGitHub = new System.Windows.Forms.ToolStripMenuItem();
             helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuShortcuts = new System.Windows.Forms.ToolStripMenuItem();
             documentationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -817,66 +818,66 @@
             // 
             // exploreToolStripMenuItem
             // 
-            exploreToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuExploreAppData, appAppDataToolStripMenuItem, toolStripMenuExploreData, toolStripMenuExploreGameDocs, toolStripMenuExploreCommon, sFSEPluginsToolStripMenuItem, profileToolStripMenuItem, downloadsToolStripMenuItem });
+            exploreToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { downloadsToolStripMenuItem, toolStripMenuExploreAppData, toolStripMenuExploreData, toolStripMenuExploreGameDocs, sFSEPluginsToolStripMenuItem, profileToolStripMenuItem, appAppDataToolStripMenuItem, toolStripMenuExploreCommon });
             exploreToolStripMenuItem.Name = "exploreToolStripMenuItem";
             exploreToolStripMenuItem.Size = new System.Drawing.Size(504, 44);
             exploreToolStripMenuItem.Text = "Explore";
             // 
+            // downloadsToolStripMenuItem
+            // 
+            downloadsToolStripMenuItem.Name = "downloadsToolStripMenuItem";
+            downloadsToolStripMenuItem.Size = new System.Drawing.Size(338, 44);
+            downloadsToolStripMenuItem.Text = "Downloads";
+            downloadsToolStripMenuItem.Click += downloadsToolStripMenuItem_Click;
+            // 
             // toolStripMenuExploreAppData
             // 
             toolStripMenuExploreAppData.Name = "toolStripMenuExploreAppData";
-            toolStripMenuExploreAppData.Size = new System.Drawing.Size(359, 44);
+            toolStripMenuExploreAppData.Size = new System.Drawing.Size(338, 44);
             toolStripMenuExploreAppData.Text = "Game AppData";
             toolStripMenuExploreAppData.Click += toolStripMenuExploreAppData_Click;
-            // 
-            // appAppDataToolStripMenuItem
-            // 
-            appAppDataToolStripMenuItem.Name = "appAppDataToolStripMenuItem";
-            appAppDataToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
-            appAppDataToolStripMenuItem.Text = "App AppData";
-            appAppDataToolStripMenuItem.Click += appAppDataToolStripMenuItem_Click;
             // 
             // toolStripMenuExploreData
             // 
             toolStripMenuExploreData.Name = "toolStripMenuExploreData";
-            toolStripMenuExploreData.Size = new System.Drawing.Size(359, 44);
+            toolStripMenuExploreData.Size = new System.Drawing.Size(338, 44);
             toolStripMenuExploreData.Text = "Game Data";
             toolStripMenuExploreData.Click += toolStripMenuExploreData_Click;
             // 
             // toolStripMenuExploreGameDocs
             // 
             toolStripMenuExploreGameDocs.Name = "toolStripMenuExploreGameDocs";
-            toolStripMenuExploreGameDocs.Size = new System.Drawing.Size(359, 44);
+            toolStripMenuExploreGameDocs.Size = new System.Drawing.Size(338, 44);
             toolStripMenuExploreGameDocs.Text = "Game Documents";
             toolStripMenuExploreGameDocs.Click += toolStripMenuExploreGameDocs_Click;
-            // 
-            // toolStripMenuExploreCommon
-            // 
-            toolStripMenuExploreCommon.Name = "toolStripMenuExploreCommon";
-            toolStripMenuExploreCommon.Size = new System.Drawing.Size(359, 44);
-            toolStripMenuExploreCommon.Text = "App Common";
-            toolStripMenuExploreCommon.Click += toolStripMenuExploreCommon_Click;
             // 
             // sFSEPluginsToolStripMenuItem
             // 
             sFSEPluginsToolStripMenuItem.Name = "sFSEPluginsToolStripMenuItem";
-            sFSEPluginsToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+            sFSEPluginsToolStripMenuItem.Size = new System.Drawing.Size(338, 44);
             sFSEPluginsToolStripMenuItem.Text = "SFSE Plugins";
             sFSEPluginsToolStripMenuItem.Click += sFSEPluginsToolStripMenuItem_Click;
             // 
             // profileToolStripMenuItem
             // 
             profileToolStripMenuItem.Name = "profileToolStripMenuItem";
-            profileToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+            profileToolStripMenuItem.Size = new System.Drawing.Size(338, 44);
             profileToolStripMenuItem.Text = "Profiles";
             profileToolStripMenuItem.Click += profileToolStripMenuItem_Click;
             // 
-            // downloadsToolStripMenuItem
+            // appAppDataToolStripMenuItem
             // 
-            downloadsToolStripMenuItem.Name = "downloadsToolStripMenuItem";
-            downloadsToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
-            downloadsToolStripMenuItem.Text = "Downloads";
-            downloadsToolStripMenuItem.Click += downloadsToolStripMenuItem_Click;
+            appAppDataToolStripMenuItem.Name = "appAppDataToolStripMenuItem";
+            appAppDataToolStripMenuItem.Size = new System.Drawing.Size(338, 44);
+            appAppDataToolStripMenuItem.Text = "App AppData";
+            appAppDataToolStripMenuItem.Click += appAppDataToolStripMenuItem_Click;
+            // 
+            // toolStripMenuExploreCommon
+            // 
+            toolStripMenuExploreCommon.Name = "toolStripMenuExploreCommon";
+            toolStripMenuExploreCommon.Size = new System.Drawing.Size(338, 44);
+            toolStripMenuExploreCommon.Text = "App Common";
+            toolStripMenuExploreCommon.Click += toolStripMenuExploreCommon_Click;
             // 
             // toolStripSeparator3
             // 
@@ -1753,7 +1754,7 @@
             // 
             // toolStripMenuLinks
             // 
-            toolStripMenuLinks.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuCreations, toolStripMenuNexus, nexusUpdatedModsToolStripMenuItem, nexusTrackingToolStripMenuItem, toolStripMenuBGSStarfield, toolStripMenuBGSX, toolStripMenuGitHub, webPageToolStripMenuItem });
+            toolStripMenuLinks.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuCreations, toolStripMenuNexus, nexusUpdatedModsToolStripMenuItem, nexusTrackingToolStripMenuItem, toolStripMenuBGSStarfield, toolStripMenuBGSX, toolStripSeparator45, webPageToolStripMenuItem, toolStripMenuGitHub });
             toolStripMenuLinks.Name = "toolStripMenuLinks";
             toolStripMenuLinks.Size = new System.Drawing.Size(87, 38);
             toolStripMenuLinks.Text = "Links";
@@ -1800,19 +1801,24 @@
             toolStripMenuBGSX.Text = "BGS Starfield (X.com)";
             toolStripMenuBGSX.Click += toolStripMenuBGSX_Click;
             // 
+            // toolStripSeparator45
+            // 
+            toolStripSeparator45.Name = "toolStripSeparator45";
+            toolStripSeparator45.Size = new System.Drawing.Size(550, 6);
+            // 
+            // webPageToolStripMenuItem
+            // 
+            webPageToolStripMenuItem.Name = "webPageToolStripMenuItem";
+            webPageToolStripMenuItem.Size = new System.Drawing.Size(553, 44);
+            webPageToolStripMenuItem.Text = "Web Page on Nexus";
+            webPageToolStripMenuItem.Click += webPageToolStripMenuItem_Click;
+            // 
             // toolStripMenuGitHub
             // 
             toolStripMenuGitHub.Name = "toolStripMenuGitHub";
             toolStripMenuGitHub.Size = new System.Drawing.Size(553, 44);
             toolStripMenuGitHub.Text = "GitHub";
             toolStripMenuGitHub.Click += toolStripMenuGitHub_Click;
-            // 
-            // webPageToolStripMenuItem
-            // 
-            webPageToolStripMenuItem.Name = "webPageToolStripMenuItem";
-            webPageToolStripMenuItem.Size = new System.Drawing.Size(553, 44);
-            webPageToolStripMenuItem.Text = "Web Page";
-            webPageToolStripMenuItem.Click += webPageToolStripMenuItem_Click;
             // 
             // helpToolStripMenuItem
             // 
@@ -2446,5 +2452,6 @@
         private System.Windows.Forms.ToolStripMenuItem nexusUpdatedModsToolStripMenuItem;
         private System.Windows.Forms.Button btnLog;
         private System.Windows.Forms.ToolStripMenuItem appAppDataToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator45;
     }
 }

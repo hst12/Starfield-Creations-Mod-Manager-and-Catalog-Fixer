@@ -4328,7 +4328,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 
         private void webPageToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Tools.OpenUrl(Path.Combine("docs", "index.html"));
+            Tools.OpenUrl("https://www.nexusmods.com/starfield/mods/10432?tab=files");
         }
 
         private void downloadsToolStripMenuItem_Click(object sender, EventArgs e)

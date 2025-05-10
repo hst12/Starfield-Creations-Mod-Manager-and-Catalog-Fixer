@@ -11,6 +11,8 @@ namespace Starfield_Tools.Load_Order_Editor
     {
         private readonly Tools tools = new();
         private string ModName;
+        private Tools.ActivityLog activityLog;
+        bool log = Properties.Settings.Default.Log;
 
         public frmAddModToProfile(List<string> items, string modName) // List of profiles and mod name
         {
@@ -22,6 +24,9 @@ namespace Starfield_Tools.Load_Order_Editor
             }
             this.Text = "Enable or Disable " + modName + " in Profile(s)"; // Change form title to name of mod being applied
             ModName = modName;
+            if (log)
+                activityLog = new Tools.ActivityLog(Path.Combine(Tools.LocalAppDataPath, "Activity Log.txt"));
+
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -41,6 +46,8 @@ namespace Starfield_Tools.Load_Order_Editor
                     fileContents.Remove("*" + ModName);
                     fileContents.Add(ModName); // Add the mod back without the * to indicate it is inactive
                     File.WriteAllLines(Path.Combine(Properties.Settings.Default.ProfileFolder, item.ToString()), fileContents);
+                    if (log)
+                        activityLog.WriteLog("Removed " + ModName + " from " + item.ToString() + " profile.");
                 }
                 MessageBox.Show(checkedListBox1.CheckedItems.Count.ToString() + " profile(s) updated.", "Profiles Updated", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
@@ -82,6 +89,8 @@ namespace Starfield_Tools.Load_Order_Editor
                     fileContents.Add("*" + ModName); // Add the mod back with the * to indicate it is active
                     fileContents = fileContents.Distinct().ToList(); // Avoid adding a duplicate
                     File.WriteAllLines(Path.Combine(Properties.Settings.Default.ProfileFolder, item.ToString()), fileContents);
+                    if (log)
+                        activityLog.WriteLog("Added " + ModName + " to " + item.ToString() + " profile.");
                 }
                 MessageBox.Show(checkedListBox1.CheckedItems.Count.ToString() + " profile(s) updated.", "Profiles Updated", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
