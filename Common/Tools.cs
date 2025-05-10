@@ -556,8 +556,6 @@ namespace Starfield_Tools.Common // Various functions used by the app
                     MessageBox.Show($"Error deleting log file: {ex.Message}");
                 }
             }
-
-
         }
     }
 }

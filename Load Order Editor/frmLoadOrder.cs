@@ -3615,8 +3615,6 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             this.StartPosition = FormStartPosition.CenterScreen;
         }
 
-
-
         private void frmLoadOrder_Load(object sender, EventArgs e)
         {
             this.Location = Properties.Settings.Default.WindowLocation;
@@ -4276,13 +4274,18 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 EnableLog();
         }
 
-        private void viewLogToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ShowLog()
         {
             string pathToFile = Path.Combine(Tools.LocalAppDataPath, "Activity Log.txt");
             if (File.Exists(pathToFile))
                 Process.Start("explorer", pathToFile);
             else
                 sbar3("Activity Log not found.");
+        }
+
+        private void viewLogToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ShowLog();
         }
 
         private void nexusTrackingToolStripMenuItem_Click(object sender, EventArgs e)
@@ -4299,6 +4302,11 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
         {
             activityLog = new Tools.ActivityLog(Path.Combine(Tools.LocalAppDataPath, "Activity Log.txt"));
             log = true;
+        }
+
+        private void btnLog_Click(object sender, EventArgs e)
+        {
+            ShowLog();
         }
     }
 }
