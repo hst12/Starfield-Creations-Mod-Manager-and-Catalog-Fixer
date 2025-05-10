@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using Microsoft.VisualBasic.Logging;
+using Microsoft.Win32;
 using Narod.SteamGameFinder;
 using SevenZipExtractor;
 using Starfield_Tools.Common;
@@ -904,6 +905,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             {
                 File.Copy(sourceFileName, destFileName, true); // overwrite
                 sbar2("Backup done");
+                if (log)
+                    activityLog.WriteLog($"Backup of {Path.GetFileName(sourceFileName)} done to {Path.GetFileName(destFileName)}");
             }
             catch (Exception ex)
             {
@@ -930,10 +933,14 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 toolStripStatusStats.ForeColor = DefaultForeColor;
                 SavePlugins();
                 sbar2("Restore done");
+                if (log)
+                    activityLog.WriteLog($"Restore of {Path.GetFileName(sourceFileName)} done to {Path.GetFileName(destFileName)}");
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error: {ex.Message}", "Restore failed");
+                if (log)
+                    activityLog.WriteLog($"Restore of {Path.GetFileName(sourceFileName)} failed: {ex.Message}");
             }
         }
 
@@ -1613,10 +1620,14 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             {
                 LooseFilesOnOff(true);
                 sbar3($"Directories installed (loose files): {filesInstalled}");
+                if (log)
+                    activityLog.WriteLog($"Directories installed (loose files): {filesInstalled}");
             }
             if (SFSEMod)
             {
                 sbar3("SFSE mod installed");
+                if (log)
+                    activityLog.WriteLog("SFSE mod installed");
             }
             if (filesInstalled > 0)
             {
@@ -1630,6 +1641,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             else
             {
                 sbar3("Nothing installed");
+                if (log)
+                    activityLog.WriteLog("Nothing installed");
             }
 
             if (log)
@@ -2456,6 +2469,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
         private string CheckCatalog()
         {
             frmStarfieldTools StarfieldTools = new();
+            if (log)
+                activityLog.WriteLog("Starting Catalog Checker");
             StarfieldTools.Show();
             sbar4(StarfieldTools.CatalogStatus);
             return StarfieldTools.CatalogStatus;
@@ -2902,6 +2917,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                     if (result != null)
                     {
                         SaveSettings();
+                        if (log)
+                            activityLog.WriteLog("Starting Vortex");
                         System.Windows.Forms.Application.Exit();
                     }
                 }
@@ -2982,6 +2999,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                     if (result != null)
                     {
                         SaveSettings();
+                        if (log)
+                            activityLog.WriteLog("Starting Mod Organizer 2");
                         System.Windows.Forms.Application.Exit();
                     }
                 }
@@ -3073,6 +3092,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                     string stringValue = (string)Registry.GetValue(keyName, "SteamExe", ""); // Get Steam path from Registry
                     var processInfo = new ProcessStartInfo(stringValue, "-applaunch 2722710");
                     var process = Process.Start(processInfo);
+                    if (log)
+                        activityLog.WriteLog("Starting Creation Kit");
                     System.Windows.Forms.Application.Exit();
                 }
                 catch (Exception ex)
@@ -3195,6 +3216,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 StarfieldGamePath = Properties.Settings.Default.GamePathMS;
                 RefreshDataGrid();
             }
+            if (log)
+                activityLog.WriteLog($"Game version set to {GameVersion}");
             GameVersionDisplay();
         }
 
@@ -3613,6 +3636,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             this.Width = (int)(screenWidth * 0.85);
             this.Height = (int)(screenHeight * 0.85);
             this.StartPosition = FormStartPosition.CenterScreen;
+            if (log)
+                activityLog.WriteLog("Window size reset to default");
         }
 
         private void frmLoadOrder_Load(object sender, EventArgs e)
@@ -3966,6 +3991,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                     };
 
                     Process process = Process.Start(startInfo);
+                    if (log)
+                        activityLog.WriteLog("Starting StarUI Configurator");
                 }
                 catch (Exception ex)
                 {
@@ -3999,6 +4026,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             else
             {
                 sbar3("Starfield.ini Matches Default");
+                if (log)
+                    activityLog.WriteLog("Starfield.ini matches default settings.");
                 return 0;
             }
         }
@@ -4022,7 +4051,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             sbar3(actionCount.ToString() + " Change(s) made");
         }
 
-        public static void ResetPreferences()
+        public void ResetPreferences()
         {
             string localAppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
             string appPreferencesPath = Path.Combine(localAppDataPath, "Starfield_Tools");
@@ -4034,7 +4063,10 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             if (Directory.Exists(appPreferencesPath))
             {
                 Directory.Delete(appPreferencesPath, true); // true to delete subdirectories and files
+                if (log)
+                    activityLog.WriteLog("User preferences reset successfully.");
                 MessageBox.Show("Please Restart the app", "User preferences reset successfully.");
+
                 Environment.Exit(0); // Close the application
             }
             else
@@ -4074,6 +4106,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 string fileName = Path.GetFileName(item);
                 string destinationPath = Path.Combine(Properties.Settings.Default.ProfileFolder, "Backup", fileName);
                 File.Copy(item, destinationPath, true);
+                if (log)
+                    activityLog.WriteLog($"Backed up {item} to backup folder {destinationPath}.");
             }
             sbar3("Profiles backed up to Backup folder");
         }
@@ -4099,6 +4133,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                     string fileName = Path.GetFileName(item);
                     string destinationPath = Path.Combine(Properties.Settings.Default.ProfileFolder, fileName);
                     File.Copy(item, destinationPath, true);
+                    if (log)
+                        activityLog.WriteLog($"Restored {item} from backup folder {destinationPath}.");
                 }
                 sbar3("Profiles restored from Backup folder");
                 RefreshDataGrid();
@@ -4125,6 +4161,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 }
                 File.Copy(blockedModsFilePath, destinationPath, true);
                 sbar3("BlockedMods.txt backed up successfully.");
+                if (log)
+                    activityLog.WriteLog($"BlockedMods.txt backed up to {selectedFolderPath}");
             }
         }
 
@@ -4150,6 +4188,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                     File.Copy(backupFilePath, destinationPath, true);
                     RefreshDataGrid();
                     sbar3("BlockedMods.txt restored successfully.");
+                    if (log)
+                        activityLog.WriteLog($"BlockedMods.txt restored from {selectedFolderPath}");
                 }
                 catch (Exception ex)
                 {
@@ -4183,6 +4223,9 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             bool activeStatus = ActiveOnly, profileChanges = Properties.Settings.Default.CompareProfiles;
             int changes = 0;
 
+            if (log)
+                activityLog.WriteLog("Updating all profiles");
+
             Properties.Settings.Default.CompareProfiles = false;
             SaveSettings();
 
@@ -4192,6 +4235,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             if (cmbProfile.Items.Count == 0 || cmbProfile.SelectedItem == null)
             {
                 MessageBox.Show("No valid profiles found");
+                if (log)
+                    activityLog.WriteLog("No valid profiles found");
                 return;
             }
 

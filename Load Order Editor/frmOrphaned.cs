@@ -11,6 +11,7 @@ namespace Starfield_Tools.Load_Order_Editor
     {
         readonly Tools tools = new();
         Tools.ActivityLog activityLog = new(Path.Combine(Tools.LocalAppDataPath, "Activity Log.txt"));
+        bool log= Properties.Settings.Default.Log;
         public frmOrphaned(List<string> orphaned)
         {
             InitializeComponent();
@@ -53,7 +54,7 @@ namespace Starfield_Tools.Load_Order_Editor
                 foreach (var item in checkedListBox1.CheckedItems)
                 {
                     File.Delete(Path.Combine(frmLoadOrder.StarfieldGamePath, "Data", item.ToString()));
-                    if (Properties.Settings.Default.Log)
+                    if (log)
                         activityLog.WriteLog($"Deleted orphaned archive {item} from Data folder.");
                 }
             }

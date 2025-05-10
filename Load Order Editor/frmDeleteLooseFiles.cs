@@ -10,6 +10,7 @@ namespace Starfield_Tools.Load_Order_Editor
     public partial class frmDeleteLooseFiles : Form
     {
         private Tools.ActivityLog activityLog = new(Path.Combine(Tools.LocalAppDataPath, "Activity Log.txt"));
+        private bool log = Properties.Settings.Default.Log;
 
         public frmDeleteLooseFiles()
         {
@@ -53,7 +54,9 @@ namespace Starfield_Tools.Load_Order_Editor
             }
             if (DeletedFiles.Count == 0)
             {
-                MessageBox.Show("No folders found to delete.");
+                if (log)
+                    activityLog.WriteLog("No folders found to delete.");
+
                 this.Close();
             }
         }
@@ -128,14 +131,14 @@ namespace Starfield_Tools.Load_Order_Editor
                 if (Directory.Exists(Path.Combine(gameFolderPath, item.ToString())))
                 {
                     Directory.Delete(Path.Combine(gameFolderPath, item.ToString()), true); // Delete recursive
-                    if (Properties.Settings.Default.Log)
+                    if (log)
                         activityLog.WriteLog($"Deleted folder: {Path.Combine(gameFolderPath, item.ToString())}");
                     frmLoadOrder.returnStatus++;
                 }
                 if (Directory.Exists(Path.Combine(documentsFolderPath, item.ToString())))
                 {
                     Directory.Delete(Path.Combine(documentsFolderPath, item.ToString()), true); // Delete recursive
-                    if (Properties.Settings.Default.Log)
+                    if (log)
                         activityLog.WriteLog($"Deleted folder: {Path.Combine(documentsFolderPath, item.ToString())}");
                     frmLoadOrder.returnStatus++;
                 }
