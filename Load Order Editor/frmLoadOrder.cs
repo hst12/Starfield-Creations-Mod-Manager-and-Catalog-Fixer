@@ -4389,5 +4389,12 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
         {
             Tools.OpenFolder(Tools.LocalAppDataPath);
         }
+
+        private void convertLooseFilesModToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmConvertLooseFiles frmCLF = new frmConvertLooseFiles();
+            frmCLF.StartPosition = FormStartPosition.CenterScreen;
+            frmCLF.ShowDialog(this);
+        }
     }
 }
