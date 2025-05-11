@@ -1486,7 +1486,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 
         private void InstallMod(string InstallMod = "")
         {
-            string extractPath = Path.Combine(Path.GetTempPath(), "hstTools"),esmFile="";
+            string extractPath = Path.Combine(Path.GetTempPath(), "hstTools"), esmFile = "";
             bool SFSEMod = false, looseFileMod = false;
             int filesInstalled = 0;
 
@@ -1644,14 +1644,14 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 sbar3($"Directories installed (loose files): {filesInstalled}");
                 if (log)
                     activityLog.WriteLog($"Directories installed (loose files): {filesInstalled}");
-                if (Tools.ConfirmAction("Do you want to convert them","Loose Files found",MessageBoxButtons.YesNo,MessageBoxIcon.Question) == DialogResult.Yes)
+                if (Tools.ConfirmAction("Do you want to convert them", "Loose Files found", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    if (esmFile!="")
+                    if (esmFile != "")
                         ConvertLooseFiles(Path.GetFileNameWithoutExtension(esmFile));
                     else
                         ConvertLooseFiles();
                     sbar3("Converted loose files to archives");
-                    if (log)
+                    if (log && returnStatus>0)
                         activityLog.WriteLog("Converted loose files to archives");
                 }
             }
@@ -4403,19 +4403,30 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             Tools.OpenFolder(Tools.LocalAppDataPath);
         }
 
-        private void ConvertLooseFiles(string esm="")
+        private void ConvertLooseFiles(string esm = "")
         {
+            if (log)
+                activityLog.WriteLog("Converting loose files to archive(s)");
+            returnStatus = 0;
             frmConvertLooseFiles frmCLF = new frmConvertLooseFiles(esm);
             frmCLF.StartPosition = FormStartPosition.CenterScreen;
-            frmCLF.ShowDialog(this);
-            if (AutoUpdate)
-                AddRemove();
-            if (AutoSort)
-                RunLOOT(true);
+            try
+            {
+                frmCLF.ShowDialog(this);
+            
+            }
+            catch (Exception)
+            {
+            }
+
             if (returnStatus > 0)
+            {
                 if (Tools.ConfirmAction("Delete Loose File Folders?") == DialogResult.OK)
                     DeleteLooseFileFolders();
+                LooseFilesOnOff(false);
+            }
         }
+
         private void convertLooseFilesModToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ConvertLooseFiles();

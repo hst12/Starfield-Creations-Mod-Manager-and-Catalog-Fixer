@@ -42,9 +42,11 @@ Columns: Some columns can be hidden or shown. Certain columns require a press of
 Theme: Light, dark mode or System=Windows setting
 Log File: Open the log file.
 
-File->Edit Files->StarfieldCustomINI Editor - Some tweak options for the game.
+File Menu
+Edit Files->StarfieldCustomINI Editor - Some tweak options for the game.
 Warning, using this function will overwrite your StarfieldCustom.ini file
 Disable Tools->Auto Reset if enabled for the settings to persist
+Convert Loose Files Mod - Converts a mod with loose files to an archive mod.
 
 Tools Menu
 Set up paths for the game folder and various other tools - Steam and MS Store version of the game supported.

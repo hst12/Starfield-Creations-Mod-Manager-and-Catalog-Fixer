@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmConvertLooseFiles));
             btnClose = new System.Windows.Forms.Button();
             flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             btnStart = new System.Windows.Forms.Button();
@@ -38,6 +39,7 @@
             flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             label1 = new System.Windows.Forms.Label();
             txtEsm = new System.Windows.Forms.TextBox();
+            lblRequired = new System.Windows.Forms.Label();
             flowLayoutPanel1.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
@@ -97,13 +99,15 @@
             tableLayoutPanel2.Controls.Add(btnEsmSelect, 0, 0);
             tableLayoutPanel2.Controls.Add(label2, 0, 1);
             tableLayoutPanel2.Controls.Add(flowLayoutPanel2, 0, 2);
+            tableLayoutPanel2.Controls.Add(lblRequired, 0, 3);
             tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             tableLayoutPanel2.Location = new System.Drawing.Point(3, 3);
             tableLayoutPanel2.Name = "tableLayoutPanel2";
-            tableLayoutPanel2.RowCount = 3;
-            tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.3333321F));
-            tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.3333321F));
-            tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.3333321F));
+            tableLayoutPanel2.RowCount = 4;
+            tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             tableLayoutPanel2.Size = new System.Drawing.Size(668, 389);
             tableLayoutPanel2.TabIndex = 3;
             // 
@@ -112,7 +116,7 @@
             btnEsmSelect.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             btnEsmSelect.Location = new System.Drawing.Point(3, 3);
             btnEsmSelect.Name = "btnEsmSelect";
-            btnEsmSelect.Size = new System.Drawing.Size(662, 123);
+            btnEsmSelect.Size = new System.Drawing.Size(662, 91);
             btnEsmSelect.TabIndex = 2;
             btnEsmSelect.Text = "Select esm";
             btnEsmSelect.UseVisualStyleBackColor = true;
@@ -122,9 +126,9 @@
             // 
             label2.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             label2.AutoSize = true;
-            label2.Location = new System.Drawing.Point(3, 129);
+            label2.Location = new System.Drawing.Point(3, 97);
             label2.Name = "label2";
-            label2.Size = new System.Drawing.Size(662, 129);
+            label2.Size = new System.Drawing.Size(662, 97);
             label2.TabIndex = 4;
             label2.Text = "OR";
             label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -134,14 +138,14 @@
             flowLayoutPanel2.Controls.Add(label1);
             flowLayoutPanel2.Controls.Add(txtEsm);
             flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            flowLayoutPanel2.Location = new System.Drawing.Point(3, 261);
+            flowLayoutPanel2.Location = new System.Drawing.Point(3, 197);
             flowLayoutPanel2.Name = "flowLayoutPanel2";
-            flowLayoutPanel2.Size = new System.Drawing.Size(662, 125);
+            flowLayoutPanel2.Size = new System.Drawing.Size(662, 91);
             flowLayoutPanel2.TabIndex = 6;
             // 
             // label1
             // 
-            label1.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom;
+            label1.Anchor = System.Windows.Forms.AnchorStyles.Top;
             label1.AutoSize = true;
             label1.Location = new System.Drawing.Point(3, 0);
             label1.Name = "label1";
@@ -152,11 +156,20 @@
             // 
             // txtEsm
             // 
-            txtEsm.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom;
+            txtEsm.Anchor = System.Windows.Forms.AnchorStyles.Top;
             txtEsm.Location = new System.Drawing.Point(232, 3);
             txtEsm.Name = "txtEsm";
             txtEsm.Size = new System.Drawing.Size(398, 39);
             txtEsm.TabIndex = 2;
+            // 
+            // lblRequired
+            // 
+            lblRequired.AutoSize = true;
+            lblRequired.Location = new System.Drawing.Point(3, 291);
+            lblRequired.Name = "lblRequired";
+            lblRequired.Size = new System.Drawing.Size(314, 32);
+            lblRequired.TabIndex = 7;
+            lblRequired.Text = "Dummy esm name required";
             // 
             // frmConvertLooseFiles
             // 
@@ -164,6 +177,7 @@
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(674, 453);
             Controls.Add(tableLayoutPanel1);
+            Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             Name = "frmConvertLooseFiles";
             Text = "Convert Loose Files to Archives";
@@ -189,5 +203,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
+        private System.Windows.Forms.Label lblRequired;
     }
 }
