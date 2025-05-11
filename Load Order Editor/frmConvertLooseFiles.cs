@@ -24,7 +24,7 @@ namespace Starfield_Tools.Load_Order_Editor
                 this.Close();
             }
 
-            if (esm != "")
+            if (!string.IsNullOrEmpty(esm))
             {
                 ProcessArchives();
                 this.Close();
@@ -71,7 +71,8 @@ namespace Starfield_Tools.Load_Order_Editor
             // Create main archive
             cmdLine = @"interface,geometries,materials,meshes,scripts -create="""
                     + Path.Combine(frmLoadOrder.StarfieldGamePath, "Data", Path.GetFileNameWithoutExtension(esm) + " - main.ba2") + @""""
-                    + " -format=General -excludefile=\" + \"\\\"\"";
+                    + " -format=General";
+
             if (!File.Exists(Path.Combine(frmLoadOrder.StarfieldGamePath, "Data", Path.GetFileNameWithoutExtension(esm) + " - main.ba2")))
             {
                 MakeArchive(archive2Path, cmdLine, workingDirectory);
@@ -118,7 +119,8 @@ namespace Starfield_Tools.Load_Order_Editor
 
             using (Process process = Process.Start(startInfo))
             {
-                process.WaitForExit();
+                //process.WaitForExit();
+                process.Start();
             }
         }
 

@@ -1579,7 +1579,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             }
 
             if (Directory.EnumerateFiles(extractPath, "*.esm", SearchOption.AllDirectories).Any())
-                esmFile = Directory.GetFiles(extractPath, "*.esm").FirstOrDefault();
+                esmFile = Directory.GetFiles(extractPath, "*.esm", SearchOption.AllDirectories).FirstOrDefault();
 
             // Move .esm and .ba2 files to the game's Data folder.
             filesInstalled += MoveExtractedFiles("*.esm", "esm");
