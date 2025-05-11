@@ -35,7 +35,6 @@
             tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             btnEsmSelect = new System.Windows.Forms.Button();
             label2 = new System.Windows.Forms.Label();
-            chkDeleteLooseFiles = new System.Windows.Forms.CheckBox();
             flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             label1 = new System.Windows.Forms.Label();
             txtEsm = new System.Windows.Forms.TextBox();
@@ -50,7 +49,7 @@
             btnClose.Location = new System.Drawing.Point(159, 3);
             btnClose.Name = "btnClose";
             btnClose.Size = new System.Drawing.Size(150, 46);
-            btnClose.TabIndex = 0;
+            btnClose.TabIndex = 1;
             btnClose.Text = "Close";
             btnClose.UseVisualStyleBackColor = true;
             btnClose.Click += btnClose_Click;
@@ -71,7 +70,7 @@
             btnStart.Location = new System.Drawing.Point(3, 3);
             btnStart.Name = "btnStart";
             btnStart.Size = new System.Drawing.Size(150, 46);
-            btnStart.TabIndex = 1;
+            btnStart.TabIndex = 0;
             btnStart.Text = "Start";
             btnStart.UseVisualStyleBackColor = true;
             btnStart.Click += btnStart_Click;
@@ -94,19 +93,17 @@
             // tableLayoutPanel2
             // 
             tableLayoutPanel2.ColumnCount = 1;
-            tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             tableLayoutPanel2.Controls.Add(btnEsmSelect, 0, 0);
             tableLayoutPanel2.Controls.Add(label2, 0, 1);
-            tableLayoutPanel2.Controls.Add(chkDeleteLooseFiles, 0, 3);
             tableLayoutPanel2.Controls.Add(flowLayoutPanel2, 0, 2);
             tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             tableLayoutPanel2.Location = new System.Drawing.Point(3, 3);
             tableLayoutPanel2.Name = "tableLayoutPanel2";
-            tableLayoutPanel2.RowCount = 4;
-            tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            tableLayoutPanel2.RowCount = 3;
+            tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.3333321F));
+            tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.3333321F));
+            tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.3333321F));
             tableLayoutPanel2.Size = new System.Drawing.Size(668, 389);
             tableLayoutPanel2.TabIndex = 3;
             // 
@@ -115,7 +112,7 @@
             btnEsmSelect.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             btnEsmSelect.Location = new System.Drawing.Point(3, 3);
             btnEsmSelect.Name = "btnEsmSelect";
-            btnEsmSelect.Size = new System.Drawing.Size(662, 91);
+            btnEsmSelect.Size = new System.Drawing.Size(662, 123);
             btnEsmSelect.TabIndex = 2;
             btnEsmSelect.Text = "Select esm";
             btnEsmSelect.UseVisualStyleBackColor = true;
@@ -125,36 +122,26 @@
             // 
             label2.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             label2.AutoSize = true;
-            label2.Location = new System.Drawing.Point(3, 97);
+            label2.Location = new System.Drawing.Point(3, 129);
             label2.Name = "label2";
-            label2.Size = new System.Drawing.Size(662, 97);
+            label2.Size = new System.Drawing.Size(662, 129);
             label2.TabIndex = 4;
             label2.Text = "OR";
             label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // chkDeleteLooseFiles
-            // 
-            chkDeleteLooseFiles.AutoSize = true;
-            chkDeleteLooseFiles.Location = new System.Drawing.Point(3, 294);
-            chkDeleteLooseFiles.Name = "chkDeleteLooseFiles";
-            chkDeleteLooseFiles.Size = new System.Drawing.Size(374, 36);
-            chkDeleteLooseFiles.TabIndex = 5;
-            chkDeleteLooseFiles.Text = "Delete Loose Files When Done";
-            chkDeleteLooseFiles.UseVisualStyleBackColor = true;
             // 
             // flowLayoutPanel2
             // 
             flowLayoutPanel2.Controls.Add(label1);
             flowLayoutPanel2.Controls.Add(txtEsm);
             flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            flowLayoutPanel2.Location = new System.Drawing.Point(3, 197);
+            flowLayoutPanel2.Location = new System.Drawing.Point(3, 261);
             flowLayoutPanel2.Name = "flowLayoutPanel2";
-            flowLayoutPanel2.Size = new System.Drawing.Size(662, 91);
+            flowLayoutPanel2.Size = new System.Drawing.Size(662, 125);
             flowLayoutPanel2.TabIndex = 6;
             // 
             // label1
             // 
-            label1.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            label1.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom;
             label1.AutoSize = true;
             label1.Location = new System.Drawing.Point(3, 0);
             label1.Name = "label1";
@@ -165,6 +152,7 @@
             // 
             // txtEsm
             // 
+            txtEsm.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom;
             txtEsm.Location = new System.Drawing.Point(232, 3);
             txtEsm.Name = "txtEsm";
             txtEsm.Size = new System.Drawing.Size(398, 39);
@@ -200,7 +188,6 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.CheckBox chkDeleteLooseFiles;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
     }
 }
