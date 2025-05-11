@@ -44,6 +44,7 @@ namespace Starfield_Tools.Common // Various functions used by the app
 "interface",
 "textures\\actors",
 "textures\\architecture",
+"textures\\clothes",
 "textures\\common",
 "textures\\decals",
 "textures\\effects",

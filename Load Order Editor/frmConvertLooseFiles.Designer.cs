@@ -51,7 +51,7 @@
             btnClose.Location = new System.Drawing.Point(159, 3);
             btnClose.Name = "btnClose";
             btnClose.Size = new System.Drawing.Size(150, 46);
-            btnClose.TabIndex = 1;
+            btnClose.TabIndex = 2;
             btnClose.Text = "Close";
             btnClose.UseVisualStyleBackColor = true;
             btnClose.Click += btnClose_Click;
@@ -72,7 +72,7 @@
             btnStart.Location = new System.Drawing.Point(3, 3);
             btnStart.Name = "btnStart";
             btnStart.Size = new System.Drawing.Size(150, 46);
-            btnStart.TabIndex = 0;
+            btnStart.TabIndex = 1;
             btnStart.Text = "Start";
             btnStart.UseVisualStyleBackColor = true;
             btnStart.Click += btnStart_Click;
@@ -160,7 +160,7 @@
             txtEsm.Location = new System.Drawing.Point(232, 3);
             txtEsm.Name = "txtEsm";
             txtEsm.Size = new System.Drawing.Size(398, 39);
-            txtEsm.TabIndex = 2;
+            txtEsm.TabIndex = 0;
             // 
             // lblRequired
             // 
@@ -181,6 +181,7 @@
             MaximizeBox = false;
             Name = "frmConvertLooseFiles";
             Text = "Convert Loose Files to Archives";
+            Shown += frmConvertLooseFiles_Shown;
             flowLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();

@@ -1,2 +1,3 @@
 Motd
 Photos
+sound

@@ -3536,6 +3536,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                     {
                         sbar3($"Creating archive for {ModName}...");
                         statusStrip1.Refresh();
+                        if (log)
+                            activityLog.WriteLog($"Creating archive for {ModName} at {zipPath}");
                         CreateZipFromFiles(files, zipPath); // Make zip
                         sbar3($"{ModName} archived");
                         statusStrip1.Refresh();
@@ -4421,7 +4423,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 
             if (returnStatus > 0)
             {
-                if (Tools.ConfirmAction("Delete Loose File Folders?") == DialogResult.OK)
+                if (Tools.ConfirmAction("Delete Them?","Loose File Folders Remain") == DialogResult.OK)
                     DeleteLooseFileFolders();
                 LooseFilesOnOff(false);
             }
