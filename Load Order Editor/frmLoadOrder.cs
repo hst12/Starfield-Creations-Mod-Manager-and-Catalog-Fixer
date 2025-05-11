@@ -1593,6 +1593,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 {
                     tempstr = Path.Combine(StarfieldGamePath, "Data", "SFSE");
                     CopyDirectory(dir, tempstr);
+                    filesInstalled++;
                 }
             }
             catch (Exception ex)
@@ -1601,7 +1602,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             }
 
             // Install Loose files
-            var looseFileDirs = new[] { "materials", "meshes", "interface", "textures", "geometries", "scripts", "sound", "naf" };
+            List<string> looseFileDirs = Tools.LooseFolderDirsOnly; // Get the list of loose file directories from the Tools class
 
             // Define the target directory
             var targetDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"My Games\Starfield\Data");
@@ -1612,6 +1613,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             // Recursively search for each directory and copy its contents
             foreach (var dirName in looseFileDirs)
             {
+                Debug.WriteLine($"Searching for {dirName} in {extractPath}");
                 var directoriesFound = Directory.GetDirectories(extractPath, dirName, SearchOption.AllDirectories);
 
                 foreach (var sourceDir in directoriesFound)
@@ -1654,12 +1656,6 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                     RunLOOT(true);
 
                 sbar3($"Mod installed: {filesInstalled} files");
-            }
-            else
-            {
-                sbar3("Nothing installed");
-                if (log)
-                    activityLog.WriteLog("Nothing installed");
             }
 
             if (log)
@@ -1885,7 +1881,6 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             var selectedRows = dataGridView1.SelectedRows.Cast<DataGridViewRow>().ToList();
             string dataDirectory = Path.Combine(StarfieldGamePath, "Data");
 
-
             foreach (var row in selectedRows)
             {
                 // Get the mod name from the PluginName cell (before the first dot).
@@ -1904,7 +1899,6 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                         $"Delete {modName} - Are you sure?",
                         MessageBoxButtons.YesNo) == DialogResult.Yes || NoWarn)
                 {
-
                     isModified = true;
                     dataGridView1.Rows.Remove(row);
 

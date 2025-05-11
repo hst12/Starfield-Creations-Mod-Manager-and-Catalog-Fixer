@@ -26,23 +26,7 @@ namespace Starfield_Tools.Load_Order_Editor
             }
 
             // Delete these folders
-            var foldersToDelete = new[]
-            { "meshes",
-                "interface",
-                "textures\\actors",
-                "textures\\architecture",
-                "textures\\common",
-                "textures\\decals",
-                "textures\\effects",
-                "textures\\interface",
-                "textures\\items",
-                "textures\\setdressing",
-                "textures\\ships",
-                "geometries",
-                "scripts",
-                "materials",
-                "sound" ,
-                "naf"};
+            List<string> foldersToDelete = new(Tools.LooseFolders);
 
             foreach (var item in foldersToDelete)
             {

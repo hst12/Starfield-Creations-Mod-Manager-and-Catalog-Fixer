@@ -39,6 +39,37 @@ namespace Starfield_Tools.Common // Various functions used by the app
     " - voices_ja"
 };
 
+        public static readonly List<string> LooseFolders = new List<string>
+{ "meshes",
+"interface",
+"textures\\actors",
+"textures\\architecture",
+"textures\\common",
+"textures\\decals",
+"textures\\effects",
+"textures\\interface",
+"textures\\items",
+"textures\\setdressing",
+"textures\\ships",
+"geometries",
+"scripts",
+"materials",
+"sound" ,
+"naf"
+};
+
+        public static readonly List<string> LooseFolderDirsOnly = new List<string>
+        {
+            "meshes",
+"interface",
+"textures",
+"geometries",
+"scripts",
+"materials",
+"sound" ,
+"naf"
+        };
+
         public Tools() // Constructor
         {
             CommonFolder = Path.Combine(Environment.CurrentDirectory, "Common"); // Used to read misc txt files used by the app
