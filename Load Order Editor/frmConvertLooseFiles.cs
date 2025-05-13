@@ -86,7 +86,7 @@ namespace Starfield_Tools.Load_Order_Editor
             // ToDo: Create sound archive
             cmdLine = @"sound -create="""
                     + Path.Combine(frmLoadOrder.StarfieldGamePath, "Data", Path.GetFileNameWithoutExtension(esm) + " - main.ba2") + @""""
-                    + " -format=General -compression=Default";
+                    + " -format=General -compression=None";
 
             if (!File.Exists(Path.Combine(frmLoadOrder.StarfieldGamePath, "Data", Path.GetFileNameWithoutExtension(esm) + " - main.ba2")))
             {
