@@ -83,19 +83,21 @@ namespace Starfield_Tools.Load_Order_Editor
                 MessageBox.Show("Skipping main archive creation.", "Main archive already exists.", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
 
-            // ToDo: Create sound archive
-            cmdLine = @"sound -create="""
-                    + Path.Combine(frmLoadOrder.StarfieldGamePath, "Data", Path.GetFileNameWithoutExtension(esm) + " - main.ba2") + @""""
-                    + " -format=General -compression=None";
+            if (Directory.Exists(Path.Combine(workingDirectory, "sound")))
+            {
+                cmdLine = @"sound -create="""
+                        + Path.Combine(frmLoadOrder.StarfieldGamePath, "Data", Path.GetFileNameWithoutExtension(esm) + " - main.ba2") + @""""
+                        + " -format=General -compression=None";
 
-            if (!File.Exists(Path.Combine(frmLoadOrder.StarfieldGamePath, "Data", Path.GetFileNameWithoutExtension(esm) + " - main.ba2")))
-            {
-                MakeArchive(archive2Path, cmdLine, workingDirectory);
-                frmLoadOrder.returnStatus++;
-            }
-            else
-            {
-                MessageBox.Show("Skipping sound archive creation.", "Sound archive already exists.", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                if (!File.Exists(Path.Combine(frmLoadOrder.StarfieldGamePath, "Data", Path.GetFileNameWithoutExtension(esm) + " - main.ba2")))
+                {
+                    MakeArchive(archive2Path, cmdLine, workingDirectory);
+                    frmLoadOrder.returnStatus++;
+                }
+                else
+                {
+                    MessageBox.Show("Skipping sound archive creation.", "Sound archive already exists.", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                }
             }
         }
 
@@ -119,8 +121,8 @@ namespace Starfield_Tools.Load_Order_Editor
 
             using (Process process = Process.Start(startInfo))
             {
-                //process.WaitForExit();
-                process.Start();
+                process.WaitForExit();
+                //process.Start();
             }
         }
 
