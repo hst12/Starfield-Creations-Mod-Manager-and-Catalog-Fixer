@@ -9,7 +9,7 @@ namespace Starfield_Tools.Load_Order_Editor
 {
     public partial class frmDeleteLooseFiles : Form
     {
-        private frmLoadOrder.ActivityLog activityLog;
+        private frmLoadOrder.ActivityLog activityLog = frmLoadOrder.activityLog;
         private bool log = Properties.Settings.Default.Log;
 
         public frmDeleteLooseFiles()

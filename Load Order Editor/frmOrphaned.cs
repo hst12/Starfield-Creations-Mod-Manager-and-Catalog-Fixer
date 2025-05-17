@@ -10,7 +10,7 @@ namespace Starfield_Tools.Load_Order_Editor
     public partial class frmOrphaned : Form
     {
         readonly Tools tools = new();
-        private  frmLoadOrder.ActivityLog activityLog ;
+        private frmLoadOrder.ActivityLog activityLog = frmLoadOrder.activityLog;
         bool log= Properties.Settings.Default.Log;
         public frmOrphaned(List<string> orphaned)
         {

@@ -46,6 +46,12 @@ namespace Starfield_Tools
             this.Text = Application.ProductName + " " + File.ReadAllText(Path.Combine(Tools.CommonFolder, "App Version.txt")) + " Debug";
 #endif
 
+            if (Properties.Settings.Default.Log)
+            {
+                activityLog = new ActivityLog(Path.Combine(Tools.LocalAppDataPath, "Activity Log.txt")); // Create activity log if enabled
+                log = true;
+            }
+
             this.KeyPreview = true; // Ensure the form captures key presses
 
             Tools.CheckGame(); // Exit if Starfield appdata folder not found
@@ -1773,7 +1779,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             // Local static recursive function to copy an entire directory.
             static void CopyDirectory(string sourceDir, string destinationDir)
             {
-                ActivityLog activityLog2 = new ActivityLog(Path.Combine(Tools.LocalAppDataPath, "Activity Log.txt"));
+                //ActivityLog activityLog2 = new ActivityLog(Path.Combine(Tools.LocalAppDataPath, "Activity Log.txt"));
 
                 // Get information about the source directory
                 var dir = new DirectoryInfo(sourceDir);
@@ -1792,7 +1798,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 {
                     string targetFilePath = Path.Combine(destinationDir, file.Name);
                     if (Properties.Settings.Default.Log)
-                        activityLog2.WriteLog($"Copying {file.FullName} to {targetFilePath}");
+                        activityLog.WriteLog($"Copying {file.FullName} to {targetFilePath}");
                     file.CopyTo(targetFilePath, overwrite: true);
                 }
 

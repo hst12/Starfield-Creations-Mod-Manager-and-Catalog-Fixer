@@ -451,6 +451,7 @@
             Name = "frmStarfieldTools";
             StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             Text = "Starfield Tools";
+            FormClosing += frmStarfieldTools_FormClosing;
             Shown += frmStarfieldTools_Shown;
             statusStrip1.ResumeLayout(false);
             statusStrip1.PerformLayout();

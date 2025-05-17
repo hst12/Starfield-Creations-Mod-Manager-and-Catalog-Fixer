@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualBasic.Logging;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Starfield_Tools.Common;
 using Starfield_Tools.Properties;
 using System;
@@ -8,7 +7,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using static Starfield_Tools.Common.Tools;
 
 namespace Starfield_Tools
 {
@@ -19,7 +17,7 @@ namespace Starfield_Tools
 
         private readonly string StarfieldGamePath;
         private readonly Tools tools = new();
-        private frmLoadOrder.ActivityLog activityLog;
+        private frmLoadOrder.ActivityLog activityLog = frmLoadOrder.activityLog;
 
         public frmStarfieldTools()
         {
@@ -104,11 +102,15 @@ namespace Starfield_Tools
                     File.Copy(sourceFileName, destFileName, true); // overwrite
                     richTextBox2.Text += "\nBackup done\n";
                     toolStripStatusLabel1.Text = "Backup done";
+                    if (log)
+                        activityLog.WriteLog("Catalog Backup done");
                     BackupStatus = true;
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Error: {ex.Message}", "Backup failed");
+                    MessageBox.Show($"Error: {ex.Message}", "Catalog Backup failed");
+                    if (log)
+                        activityLog.WriteLog($"Error: {ex.Message} Backup failed");
                 }
             }
             else
@@ -563,6 +565,8 @@ namespace Starfield_Tools
             int index;
             bool unusedMods = false;
             richTextBox2.Text += "\nChecking for unused items in catalog...\n";
+            if (log)
+                activityLog.WriteLog("Checking for unused items in catalog.");
 
             string filePath = Path.Combine(GetStarfieldAppData(), "Plugins.txt");
             //string fileContent = File.ReadAllText(filePath); // Load Plugins.txt
@@ -610,7 +614,11 @@ namespace Starfield_Tools
                                     richTextBox2.Text += kvp.Value.Title + "\n";
                             }
                             if (kvp.Value.Files[i].ToLower().IndexOf(".esp") > 0)
+                            {
                                 richTextBox2.Text += "\nWarning - esp file found in catalog file - " + kvp.Value.Files[i] + "\n";
+                                if (log)
+                                    activityLog.WriteLog($"Warning - esp file found in catalog file - {kvp.Value.Files[i]}");
+                            }
                         }
                     }
                     catch (Exception ex)
@@ -656,6 +664,8 @@ namespace Starfield_Tools
                     richTextBox2.Text += "\nNo unused mods found in catalog\n";
                     ScrollToEnd();
                     toolStripStatusLabel1.Text = "No unused mods found in catalog";
+                    if (log)
+                        activityLog.WriteLog("No unused mods found in catalog");
                 }
             }
             catch (Exception ex)
@@ -678,12 +688,16 @@ namespace Starfield_Tools
 
                 richTextBox2.Text += "\nRestore complete\n";
                 toolStripStatusLabel1.Text = "Restore complete";
+                if (log)
+                    activityLog.WriteLog("Catalog Restore complete");
                 return true;
             }
             catch (Exception ex)
             {
                 richTextBox2.Text += "\nRestore failed.\n";
                 toolStripStatusLabel1.Text = $"{ex.Message} Restore failed";
+                if (log)
+                    activityLog.WriteLog($"{ex.Message} Catalog Restore failed");
                 return false;
             }
         }
@@ -702,6 +716,12 @@ namespace Starfield_Tools
             chkAutoBackup.Checked = AutoBackup;
             chkAutoRestore.Checked = AutoRestore;
             chkForceClean.Checked = ForceClean;
+        }
+
+        private void frmStarfieldTools_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (log)
+                activityLog.WriteLog("Catalog Checker Closing.");
         }
     }
 }

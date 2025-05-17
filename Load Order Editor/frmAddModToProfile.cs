@@ -11,7 +11,7 @@ namespace Starfield_Tools.Load_Order_Editor
     {
         private readonly Tools tools = new();
         private string ModName;
-        private frmLoadOrder.ActivityLog activityLog;
+        private frmLoadOrder.ActivityLog activityLog = frmLoadOrder.activityLog;
         private bool log = Properties.Settings.Default.Log;
 
         public frmAddModToProfile(List<string> items, string modName) // List of profiles and mod name
