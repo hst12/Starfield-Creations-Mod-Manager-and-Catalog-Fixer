@@ -17,8 +17,8 @@ Profiles
 Backup & Restore
 - Automatically backs up Plugins.txt on first run.
 - Restore original file via File -> Restore Plugins.txt.
-Dark Mode
-- Switch between light, dark, or system themes via View -> Theme (restart required).
+Convert loose file mods to .ba2 archives
+- File -> Convert Loose Files Mod. Limitations: No FOMOD support. Mods have to be installed in the game Documents folder. Archive2.exe fro the Creation Kit is required.
 
 Reset Options
 Delete Loose File Folders

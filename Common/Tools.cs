@@ -181,7 +181,7 @@ namespace Starfield_Tools.Common // Various functions used by the app
 
         public static string GetCatalogPath()
         {
-            return StarfieldAppData + @"\ContentCatalog.txt";
+            return Path.Combine(StarfieldAppData ,"ContentCatalog.txt");
         }
 
         public class Group // LOOT
@@ -540,6 +540,7 @@ namespace Starfield_Tools.Common // Various functions used by the app
             public ActivityLog(string filePath)
             {
                 logFilePath = filePath;
+                WriteLog("Starting log");
             }
 
             public void WriteLog(string message)

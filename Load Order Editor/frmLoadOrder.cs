@@ -269,13 +269,15 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             {
                 if (!File.Exists(Path.Combine(Tools.StarfieldAppData, "Plugins.txt.bak")))
                 {
-                    File.Copy(PluginsPath, Tools.StarfieldAppData + "Plugins.txt.bak");
+                    File.Copy(PluginsPath, Tools.StarfieldAppData + @"\Plugins.txt.bak");
                     sbar2("Plugins.txt backed up to Plugins.txt.bak");
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Unable to find Plugins.txt");
+#if DEBUG
+                MessageBox.Show(ex.Message, "Error backing up Plugins.txt");
+#endif
             }
 
             // Do a 1-time backup of StarfieldCustom.ini if it doesn't exist
@@ -373,7 +375,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             if (activityLog == null && settings.Log)
             {
                 EnableLog();
-                activityLog.WriteLog("Starting Log\n");
+                //activityLog.WriteLog("Starting Log\n");
             }
             toolStripMenuProfilesOn.Checked = settings.ProfileOn;
             compareProfilesToolStripMenuItem.Checked = settings.CompareProfiles;
@@ -1651,7 +1653,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                     else
                         ConvertLooseFiles();
                     sbar3("Converted loose files to archives");
-                    if (log && returnStatus>0)
+                    if (log && returnStatus > 0)
                         activityLog.WriteLog("Converted loose files to archives");
                 }
             }
@@ -1991,7 +1993,6 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 
             if (log)
                 activityLog.WriteLog($"Enable/Disable mod: {dataGridView1.CurrentRow.Cells["PluginName"].Value}, {dataGridView1.CurrentRow.Cells["ModEnabled"].Value}");
-
             SavePlugins();
         }
 
@@ -3720,10 +3721,10 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             progressBar1.Height = 50; // Set the height of the progress bar
             progressBar1.Location = new Point((this.ClientSize.Width - progressBar1.Width) / 2, (this.ClientSize.Height - progressBar1.Height) / 2);
 
-            if (Properties.Settings.Default.Log)
+            /*if (Properties.Settings.Default.Log)
             {
                 EnableLog();
-            }
+            }*/
         }
 
         private void toolStripMenuResetWindow_Click(object sender, EventArgs e)
@@ -4415,7 +4416,6 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             try
             {
                 frmCLF.ShowDialog(this);
-            
             }
             catch (Exception)
             {
@@ -4423,7 +4423,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 
             if (returnStatus > 0)
             {
-                if (Tools.ConfirmAction("Delete Them?","Loose File Folders Remain") == DialogResult.OK)
+                if (Tools.ConfirmAction("Delete Them?", "Loose File Folders Remain") == DialogResult.OK)
                     DeleteLooseFileFolders();
                 LooseFilesOnOff(false);
             }
