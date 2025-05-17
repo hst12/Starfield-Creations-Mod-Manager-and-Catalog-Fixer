@@ -1084,6 +1084,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             sbar2("All mods disabled");
             isModified = true;
             SavePlugins();
+            if (log)
+                activityLog.WriteLog("All mods disabled");
         }
 
         private void EnableAll()
@@ -1097,6 +1099,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             sbar2("All mods enabled");
             isModified = true;
             SavePlugins();
+            if (log)
+                activityLog.WriteLog("All mods enabled");
         }
 
         private void FontSelect()
@@ -1449,7 +1453,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             }
 
             if (log)
-                activityLog.WriteLog($"Adding missing plugins - {addedFiles}");
+                activityLog.WriteLog($"Plugins added: {addedFiles}");
             return addedFiles;
         }
 
@@ -1502,7 +1506,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             isModified = removedFiles > 0;
 
             if (log)
-                activityLog.WriteLog($"Removing missing plugins - {removedFiles}");
+                activityLog.WriteLog($"Plugins removed: {removedFiles}");
 
             return removedFiles;
         }
@@ -2911,7 +2915,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 
             int removedCount = originalCount - dataGridView1.RowCount;
             if (log)
-                activityLog.WriteLog($"Removed {removedCount} duplicates from Plugins.txt");
+                activityLog.WriteLog($"Duplicates Removed: {removedCount}");
             sbar4($"Duplicates removed: {removedCount}");
             return removedCount;
         }
@@ -3369,6 +3373,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             sbar2("All achievement friendly mods enabled");
             isModified = true;
             SavePlugins();
+            if (log)
+                activityLog.WriteLog("Achievement friendly mods enabled");
         }
 
         /*private void SetAchievement(bool OnOff) // Experimental. Should probably remove
@@ -4364,6 +4370,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 
             Properties.Settings.Default.CompareProfiles = profileChanges;
             sbar3($"Changes made: {changes}");
+            if (log)
+                activityLog.WriteLog($"Update All Profiles Changes made: {changes}");
         }
 
         private static void GetSteamGamePath()
