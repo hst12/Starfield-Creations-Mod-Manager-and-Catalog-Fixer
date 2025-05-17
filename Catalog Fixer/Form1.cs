@@ -19,7 +19,7 @@ namespace Starfield_Tools
 
         private readonly string StarfieldGamePath;
         private readonly Tools tools = new();
-        private Tools.ActivityLog activityLog;
+        private frmLoadOrder.ActivityLog activityLog;
 
         public frmStarfieldTools()
         {
@@ -37,8 +37,6 @@ namespace Starfield_Tools
             AutoRestore = Properties.Settings.Default.AutoRestore;
             ForceClean = Properties.Settings.Default.ForceClean;
             log = Properties.Settings.Default.Log;
-            if (log)
-                EnableLog();
             SetAutoCheckBoxes();
 
             richTextBox2.Text = "";
@@ -300,6 +298,7 @@ namespace Starfield_Tools
                                 richTextBox2.AppendText($"\nWarning - esp file found in catalog file - {file}\n");
                                 if (log)
                                     activityLog.WriteLog($"Warning - esp file found in catalog file - {file}");
+
                                 warningCount++;
                             }
                         }
@@ -703,12 +702,6 @@ namespace Starfield_Tools
             chkAutoBackup.Checked = AutoBackup;
             chkAutoRestore.Checked = AutoRestore;
             chkForceClean.Checked = ForceClean;
-        }
-
-        private void EnableLog()
-        {
-            activityLog = new Tools.ActivityLog(Path.Combine(Tools.LocalAppDataPath, "Activity Log.txt"));
-            log = true;
         }
     }
 }

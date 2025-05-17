@@ -181,7 +181,7 @@ namespace Starfield_Tools.Common // Various functions used by the app
 
         public static string GetCatalogPath()
         {
-            return Path.Combine(StarfieldAppData ,"ContentCatalog.txt");
+            return Path.Combine(StarfieldAppData, "ContentCatalog.txt");
         }
 
         public class Group // LOOT
@@ -531,64 +531,6 @@ namespace Starfield_Tools.Common // Various functions used by the app
         public static void OpenFolder(string folder)
         {
             Process.Start(new ProcessStartInfo(folder) { UseShellExecute = true });
-        }
-
-        public class ActivityLog
-        {
-            private readonly string logFilePath;
-
-            public ActivityLog(string filePath)
-            {
-                logFilePath = filePath;
-                WriteLog("Starting log");
-            }
-
-            public void WriteLog(string message)
-            {
-                try
-                {
-                    // Insert message at the top of the file
-                    string[] existingLines = File.Exists(logFilePath) ? File.ReadAllLines(logFilePath) : new string[0];
-                    List<string> updatedLines = new List<string> { DateTime.Now.ToString() + ": " + message }; // Prepend the new entry
-                    updatedLines.AddRange(existingLines);
-                    File.WriteAllLines(logFilePath, updatedLines);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Error writing to log file: {ex.Message}");
-                }
-            }
-
-            public string ReadLog()
-            {
-                try
-                {
-                    using (StreamReader reader = new StreamReader(logFilePath))
-                    {
-                        return reader.ReadToEnd();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error reading log file: {ex.Message}");
-                    return string.Empty;
-                }
-            }
-
-            public void DeleteLog()
-            {
-                try
-                {
-                    if (File.Exists(logFilePath))
-                    {
-                        File.Delete(logFilePath);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error deleting log file: {ex.Message}");
-                }
-            }
         }
     }
 }

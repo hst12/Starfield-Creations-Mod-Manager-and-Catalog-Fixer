@@ -10,12 +10,11 @@ namespace Starfield_Tools.Load_Order_Editor
     public partial class frmOrphaned : Form
     {
         readonly Tools tools = new();
-        Tools.ActivityLog activityLog = new(Path.Combine(Tools.LocalAppDataPath, "Activity Log.txt"));
+        private  frmLoadOrder.ActivityLog activityLog ;
         bool log= Properties.Settings.Default.Log;
         public frmOrphaned(List<string> orphaned)
         {
             InitializeComponent();
-            Tools.ActivityLog activityLog = new(Path.Combine(Tools.LocalAppDataPath,"Activity Log.txt"));
             long fileSize = 0;
 
             foreach (var item in orphaned)

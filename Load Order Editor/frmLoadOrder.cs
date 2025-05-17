@@ -27,7 +27,7 @@ namespace Starfield_Tools
         public static string StarfieldGamePath;
         public static bool NoWarn;
         public static int returnStatus;
-        private Tools.ActivityLog activityLog;
+        public static ActivityLog activityLog;
 
         private Rectangle dragBoxFromMouseDown;
         private int rowIndexFromMouseDown, rowIndexOfItemUnderMouseToDrop, GameVersion = Steam;
@@ -342,6 +342,64 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             }
         }
 
+        public class ActivityLog
+        {
+            private readonly string logFilePath;
+
+            public ActivityLog(string filePath)
+            {
+                logFilePath = filePath;
+                WriteLog("Starting log\n");
+            }
+
+            public void WriteLog(string message)
+            {
+                try
+                {
+                    // Insert message at the top of the file
+                    string[] existingLines = File.Exists(logFilePath) ? File.ReadAllLines(logFilePath) : new string[0];
+                    List<string> updatedLines = new List<string> { DateTime.Now.ToString() + ": " + message }; // Prepend the new entry
+                    updatedLines.AddRange(existingLines);
+                    File.WriteAllLines(logFilePath, updatedLines);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error writing to log file: {ex.Message}");
+                }
+            }
+
+            public string ReadLog()
+            {
+                try
+                {
+                    using (StreamReader reader = new StreamReader(logFilePath))
+                    {
+                        return reader.ReadToEnd();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error reading log file: {ex.Message}");
+                    return string.Empty;
+                }
+            }
+
+            public void DeleteLog()
+            {
+                try
+                {
+                    if (File.Exists(logFilePath))
+                    {
+                        File.Delete(logFilePath);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error deleting log file: {ex.Message}");
+                }
+            }
+        }
+
         private void SetupColumns()
         {
             var columnSettings = new (bool setting, ToolStripMenuItem menuItem, DataGridViewColumn column)[]
@@ -373,10 +431,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             // Assign values
             toggleToolStripMenuItem.Checked = settings.Log;
             if (activityLog == null && settings.Log)
-            {
                 EnableLog();
-                //activityLog.WriteLog("Starting Log\n");
-            }
+
             toolStripMenuProfilesOn.Checked = settings.ProfileOn;
             compareProfilesToolStripMenuItem.Checked = settings.CompareProfiles;
             looseFilesDisabledToolStripMenuItem.Checked = LooseFiles || settings.LooseFiles;
@@ -1717,7 +1773,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             // Local static recursive function to copy an entire directory.
             static void CopyDirectory(string sourceDir, string destinationDir)
             {
-                Tools.ActivityLog activityLog2 = new Tools.ActivityLog(Path.Combine(Tools.LocalAppDataPath, "Activity Log.txt"));
+                ActivityLog activityLog2 = new ActivityLog(Path.Combine(Tools.LocalAppDataPath, "Activity Log.txt"));
 
                 // Get information about the source directory
                 var dir = new DirectoryInfo(sourceDir);
@@ -4392,7 +4448,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 
         private void EnableLog()
         {
-            activityLog = new Tools.ActivityLog(Path.Combine(Tools.LocalAppDataPath, "Activity Log.txt"));
+            activityLog = new ActivityLog(Path.Combine(Tools.LocalAppDataPath, "Activity Log.txt"));
             log = true;
         }
 
