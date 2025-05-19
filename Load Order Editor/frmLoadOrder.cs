@@ -294,7 +294,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 File.Copy(tempstr, tempstr + ".bak");
             }
 
-            ReadLOOTGroups();
+            if (Properties.Settings.Default.LOOTEnabled)
+                ReadLOOTGroups();
 
             // Initialise profiles
             cmbProfile.Enabled = Profiles;
@@ -539,6 +540,14 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 
         private void InitDataGrid()
         {
+#if DEBUG
+            if (log)
+            {
+                StackTrace stackTrace = new StackTrace();
+                StackFrame frame = stackTrace.GetFrame(1); // Get the caller
+                activityLog.WriteLog($"InitDatagrid called from {frame.GetMethod().Name}");
+            }
+#endif
             int EnabledCount = 0, IndexCount = 1, esmCount = 0, espCount = 0, ba2Count, mainCount, i, versionDelimiter, dotIndex;
             string loText = Path.Combine(Tools.StarfieldAppData, "Plugins.txt"),
                    LOOTPath = Properties.Settings.Default.LOOTPath,
@@ -1246,19 +1255,18 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 
         private void SwitchProfile(string ProfileName)
         {
-            if (!File.Exists(ProfileName))
-                return;
-
             if (log)
             {
 #if DEBUG
                 StackTrace stackTrace = new StackTrace();
                 StackFrame frame = stackTrace.GetFrame(1); // Get the caller
-                activityLog.WriteLog($"Switching profile to {ProfileName}, Called from {frame.GetMethod().Name}");
+                activityLog.WriteLog($"SwitchProfile called from {frame.GetMethod().Name} switching to {ProfileName}");
 #else
                 activityLog.WriteLog($"Switching profile to {ProfileName}");
 #endif
             }
+            if (!File.Exists(ProfileName))
+                return;
 
             if (Properties.Settings.Default.CompareProfiles)
             {
@@ -1549,6 +1557,14 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 
         private void cmbProfile_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (log)
+            {
+#if DEBUG
+                StackTrace stackTrace = new StackTrace();
+                StackFrame frame = stackTrace.GetFrame(1); // Get the caller
+                activityLog.WriteLog($"cmbProfile_SelectedIndexChanged called from {frame.GetMethod().Name}");
+#endif
+            }
             SwitchProfile(Path.Combine(Properties.Settings.Default.ProfileFolder, (string)cmbProfile.SelectedItem));
         }
 
@@ -3934,7 +3950,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 
         private void editBlockedModstxtToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string pathToFile = (Tools.LocalAppDataPath + "BlockedMods.txt");
+            string pathToFile = (Path.Combine(Tools.LocalAppDataPath , "BlockedMods.txt"));
             Process.Start("explorer", pathToFile);
             MessageBox.Show("Click OK to refresh");
             isModified = true;

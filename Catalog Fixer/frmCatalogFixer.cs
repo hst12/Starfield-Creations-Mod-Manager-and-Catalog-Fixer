@@ -59,7 +59,7 @@ namespace Starfield_Tools
             else toolStripStatusLabel1.Text = "Ready";
             ScrollToEnd();
 
-            if (AutoRestore && !Tools.FileCompare(Tools.GetCatalogPath(), Tools.GetCatalogPath() + ".bak"))
+            if (AutoRestore)
             {
                 RestoreCatalog();
                 CatalogStatus = "Catalog restored";
@@ -324,6 +324,8 @@ namespace Starfield_Tools
                     {
                         errorCount++;
                         richTextBox2.AppendText($"Out of range version number detected in {creation.Title}: {versionStr}, {Tools.ConvertTime(versionCheck)}\n");
+                        if (log)
+                            activityLog.WriteLog($"Out of range version number detected in {creation.Title}: {versionStr}, {Tools.ConvertTime(versionCheck)}");
                     }
 
                     // Check the entire version string for invalid characters (anything other than letters, digits, or '.')
@@ -333,6 +335,8 @@ namespace Starfield_Tools
                         {
                             errorCount++;
                             richTextBox2.AppendText($"Non numeric version number detected in {creation.Title}\n");
+                            if (log)
+                                activityLog.WriteLog($"Non numeric version number detected in {creation.Title}");
                             break;
                         }
                     }
@@ -680,6 +684,13 @@ namespace Starfield_Tools
         {
             string destFileName = Tools.GetCatalogPath();
             string sourceFileName = destFileName + ".bak";
+
+            if (Tools.FileCompare(destFileName, sourceFileName))
+            {
+                richTextBox2.Text += "\nBackup file is up to date.\n";
+                toolStripStatusLabel1.Text = "Backup file is up to date.";
+                return true;
+            }
 
             try
             {
