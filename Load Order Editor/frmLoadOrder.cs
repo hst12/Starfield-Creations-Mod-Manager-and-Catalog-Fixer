@@ -80,11 +80,16 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 File.WriteAllText(PluginsPath, "# This file is used by Starfield to keep track of your downloaded content.\n# Please do not modify this file.\n");
             }
 
-            frmStarfieldTools StarfieldTools = new(); // Check the catalog
-            tempstr = StarfieldTools.CatalogStatus;
-            sbar4(tempstr);
-            if (tempstr != null && StarfieldTools.CatalogStatus.Contains("Error"))
-                StarfieldTools.Show(); // Show catalog fixer if catalog broken
+            frmStarfieldTools StarfieldTools = new();
+
+            if (Properties.Settings.Default.AutoCheck)
+            {
+                // Check the catalog
+                tempstr = StarfieldTools.CatalogStatus;
+                sbar4(tempstr);
+                if (tempstr != null && StarfieldTools.CatalogStatus.Contains("Error"))
+                    StarfieldTools.Show(); // Show catalog fixer if catalog broken
+            }
 
             bool BackupStatus = false;
 
@@ -3631,6 +3636,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                     files.Clear();
                 }
                 sbar3(modsArchived + " Mod(s) archived");
+                if (log)
+                    activityLog.WriteLog($"{modsArchived} mods archived to {selectedFolderPath}");
             }
         }
 
@@ -3950,7 +3957,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 
         private void editBlockedModstxtToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string pathToFile = (Path.Combine(Tools.LocalAppDataPath , "BlockedMods.txt"));
+            string pathToFile = (Path.Combine(Tools.LocalAppDataPath, "BlockedMods.txt"));
             Process.Start("explorer", pathToFile);
             MessageBox.Show("Click OK to refresh");
             isModified = true;
@@ -4014,6 +4021,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 prepareForCreationsUpdateToolStripMenuItem.Checked = true;
                 Properties.Settings.Default.CreationsUpdate = true;
                 Properties.Settings.Default.AutoRestore = false;
+                Properties.Settings.Default.AutoCheck = true;
                 if (log)
                     activityLog.WriteLog("Creations Update started");
                 if (Tools.ConfirmAction("1. Run the game and update Creations mods.\n2. Don't Load a Save Game\n3. Quit the game and run this app again\n\n" +
