@@ -103,7 +103,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                     if (lines.Contains("bInvalidateOlderFiles"))
                     {
                         Properties.Settings.Default.LooseFiles = true;
-                        SaveSettings();
+                        //SaveSettings();
                         LooseFiles = true;
                         break;
                     }
@@ -135,7 +135,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                     {
                         StarfieldGamePath = tools.SetStarfieldGamePath();
                         Properties.Settings.Default.StarfieldGamePath = StarfieldGamePath;
-                        SaveSettings();
+                        //SaveSettings();
                     }
                 }
             }
@@ -196,28 +196,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
     File.Exists(@"C:\Program Files\LOOT\LOOT.exe")) // Try to detect LOOT if installed in default location
             {
                 Properties.Settings.Default.LOOTPath = @"C:\Program Files\LOOT\LOOT.exe";
-                SaveSettings();
+                //SaveSettings();
             }
-
-            // Hide menu items if LOOTPath is still unset
-            bool lootPathIsEmpty = string.IsNullOrEmpty(Properties.Settings.Default.LOOTPath);
-            toolStripMenuLOOTToggle.Visible = !lootPathIsEmpty;
-            autoSortToolStripMenuItem.Visible = !lootPathIsEmpty;
-            toolStripMenuLoot.Visible = !lootPathIsEmpty;
-            toolStripMenuLootSort.Visible = !lootPathIsEmpty;
-
-            if (Properties.Settings.Default.ProfileOn)
-            {
-                toolStripMenuProfilesOn.Checked = true;
-                Profiles = true;
-                chkProfile.Checked = true;
-            }
-            else
-            {
-                Profiles = false;
-            }
-
-            SetupColumns();
 
             // Setup other preferences
 
@@ -272,8 +252,15 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 MessageBox.Show(ex.Message);
             }
 
-            // Initialise menu check marks from Properties.Settings.Default
             SetMenus();
+            SetupColumns();
+
+            // Hide menu items if LOOTPath is still unset
+            bool lootPathIsEmpty = string.IsNullOrEmpty(Properties.Settings.Default.LOOTPath);
+            toolStripMenuLOOTToggle.Visible = !lootPathIsEmpty;
+            autoSortToolStripMenuItem.Visible = !lootPathIsEmpty;
+            toolStripMenuLoot.Visible = !lootPathIsEmpty;
+            toolStripMenuLootSort.Visible = !lootPathIsEmpty;
 
             // Do a 1-time backup of Plugins.txt if it doesn't exist
             try
@@ -303,6 +290,20 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 ReadLOOTGroups();
 
             // Initialise profiles
+            if (Properties.Settings.Default.ProfileOn)
+            {
+                toolStripMenuProfilesOn.Checked = true;
+                Profiles = true;
+#if DEBUG
+                Debug.WriteLine(Properties.Settings.Default.Blocked.ToString());
+#endif
+                chkProfile.Checked = true;
+            }
+            else
+            {
+                Profiles = false;
+            }
+
             cmbProfile.Enabled = Profiles;
             if (Profiles)
                 GetProfiles();
@@ -351,6 +352,35 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                     InstallMod(strippedCommandLine);
                 }
 #endif
+            }
+
+            // Display Loose Files status
+            sbarCCC(looseFilesDisabledToolStripMenuItem.Checked ? "Loose files enabled" : "Loose files disabled");
+
+            // Apply bold styling when ActiveOnly is enabled
+            btnActiveOnly.Font = new Font(btnActiveOnly.Font, ActiveOnly ? FontStyle.Bold : FontStyle.Regular);
+
+            // Reset defaults if AutoReset is enabled
+            if (Properties.Settings.Default.AutoReset)
+                ResetDefaults();
+
+            // Handle AutoUpdate logic
+            if (AutoUpdate)
+            {
+                int addedMods = AddMissing();
+                int removedMods = RemoveMissing();
+                int duplicates = RemoveDuplicates();
+
+                if (addedMods + removedMods > 0)
+                {
+                    sbar4($"Added: {addedMods}, Removed: {removedMods}, Duplicates: {duplicates}");
+                    SavePlugins();
+
+                    if (AutoSort)
+                        RunLOOT(true);
+
+                    InitDataGrid();
+                }
             }
         }
 
@@ -412,30 +442,6 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             }
         }
 
-        private void SetupColumns()
-        {
-            var columnSettings = new (bool setting, ToolStripMenuItem menuItem, DataGridViewColumn column)[]
-            {
-                (Properties.Settings.Default.TimeStamp, timeStampToolStripMenuItem, dataGridView1.Columns["TimeStamp"]),
-                (Properties.Settings.Default.Achievements, toolStripMenuAchievements, dataGridView1.Columns["Achievements"]),
-                (Properties.Settings.Default.CreationsID, toolStripMenuCreationsID, dataGridView1.Columns["CreationsID"]),
-                (Properties.Settings.Default.Files, toolStripMenuFiles, dataGridView1.Columns["Files"]),
-                (Properties.Settings.Default.Group, toolStripMenuGroup, dataGridView1.Columns["Group"]),
-                (Properties.Settings.Default.Index, toolStripMenuIndex, dataGridView1.Columns["Index"]),
-                (Properties.Settings.Default.FileSize, toolStripMenuFileSize, dataGridView1.Columns["FileSize"]),
-                (Properties.Settings.Default.URL, uRLToolStripMenuItem, dataGridView1.Columns["URL"]),
-                (Properties.Settings.Default.Version, toolStripMenuVersion, dataGridView1.Columns["Version"]),
-                (Properties.Settings.Default.AuthorVersion, toolStripMenuAuthorVersion, dataGridView1.Columns["AuthorVersion"]),
-                (Properties.Settings.Default.Description, toolStripMenuDescription, dataGridView1.Columns["Description"]),
-                (Properties.Settings.Default.Blocked, blockedToolStripMenuItem, dataGridView1.Columns["Blocked"])
-            };
-
-            foreach (var (setting, menuItem, column) in columnSettings)
-            {
-                SetColumnVisibility(setting, menuItem, column);
-            }
-        }
-
         private void SetMenus()
         {
             var settings = Properties.Settings.Default;
@@ -462,33 +468,49 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             blockedToolStripMenuItem.Checked = settings.Blocked;
             if (Properties.Settings.Default.VortexPath != "")
                 vortexToolStripMenuItem.Visible = true;
+        }
 
-            // Display Loose Files status
-            sbarCCC(looseFilesDisabledToolStripMenuItem.Checked ? "Loose files enabled" : "Loose files disabled");
-
-            // Apply bold styling when ActiveOnly is enabled
-            btnActiveOnly.Font = new Font(btnActiveOnly.Font, ActiveOnly ? FontStyle.Bold : FontStyle.Regular);
-
-            // Reset defaults if AutoReset is enabled
-            if (settings.AutoReset)
-                ResetDefaults();
-
-            // Handle AutoUpdate logic
-            if (!AutoUpdate) return;
-
-            int addedMods = AddMissing();
-            int removedMods = RemoveMissing();
-
-            if (addedMods + removedMods > 0)
+        /*private void SetupColumns()
+        {
+            var columnSettings = new (bool setting, ToolStripMenuItem menuItem, DataGridViewColumn column)[]
             {
-                sbar4($"Added: {addedMods}, Removed: {removedMods}");
-                SavePlugins();
+                (Properties.Settings.Default.TimeStamp, timeStampToolStripMenuItem, dataGridView1.Columns["TimeStamp"]),
+                (Properties.Settings.Default.Achievements, toolStripMenuAchievements, dataGridView1.Columns["Achievements"]),
+                (Properties.Settings.Default.CreationsID, toolStripMenuCreationsID, dataGridView1.Columns["CreationsID"]),
+                (Properties.Settings.Default.Files, toolStripMenuFiles, dataGridView1.Columns["Files"]),
+                (Properties.Settings.Default.Group, toolStripMenuGroup, dataGridView1.Columns["Group"]),
+                (Properties.Settings.Default.Index, toolStripMenuIndex, dataGridView1.Columns["Index"]),
+                (Properties.Settings.Default.FileSize, toolStripMenuFileSize, dataGridView1.Columns["FileSize"]),
+                (Properties.Settings.Default.URL, uRLToolStripMenuItem, dataGridView1.Columns["URL"]),
+                (Properties.Settings.Default.Version, toolStripMenuVersion, dataGridView1.Columns["Version"]),
+                (Properties.Settings.Default.AuthorVersion, toolStripMenuAuthorVersion, dataGridView1.Columns["AuthorVersion"]),
+                (Properties.Settings.Default.Description, toolStripMenuDescription, dataGridView1.Columns["Description"]),
+                (Properties.Settings.Default.Blocked, blockedToolStripMenuItem, dataGridView1.Columns["Blocked"])
+            };
 
-                if (AutoSort)
-                    RunLOOT(true);
-
-                InitDataGrid();
+            foreach (var (setting, menuItem, column) in columnSettings)
+            {
+#if DEBUG
+                Debug.WriteLine($"{setting.ToString()}, {menuItem.ToString()}, {column}");
+#endif
+                SetColumnVisibility(setting, menuItem, column);
             }
+        }*/
+
+        private void SetupColumns()
+        {
+            SetColumnVisibility(Properties.Settings.Default.TimeStamp, timeStampToolStripMenuItem, dataGridView1.Columns["TimeStamp"]);
+            SetColumnVisibility(Properties.Settings.Default.Achievements, toolStripMenuAchievements, dataGridView1.Columns["Achievements"]);
+            SetColumnVisibility(Properties.Settings.Default.CreationsID, toolStripMenuCreationsID, dataGridView1.Columns["CreationsID"]);
+            SetColumnVisibility(Properties.Settings.Default.Files, toolStripMenuFiles, dataGridView1.Columns["Files"]);
+            SetColumnVisibility(Properties.Settings.Default.Group, toolStripMenuGroup, dataGridView1.Columns["Group"]);
+            SetColumnVisibility(Properties.Settings.Default.Index, toolStripMenuIndex, dataGridView1.Columns["Index"]);
+            SetColumnVisibility(Properties.Settings.Default.FileSize, toolStripMenuFileSize, dataGridView1.Columns["FileSize"]);
+            SetColumnVisibility(Properties.Settings.Default.URL, uRLToolStripMenuItem, dataGridView1.Columns["URL"]);
+            SetColumnVisibility(Properties.Settings.Default.Version, toolStripMenuVersion, dataGridView1.Columns["Version"]);
+            SetColumnVisibility(Properties.Settings.Default.AuthorVersion, toolStripMenuAuthorVersion, dataGridView1.Columns["AuthorVersion"]);
+            SetColumnVisibility(Properties.Settings.Default.Description, toolStripMenuDescription, dataGridView1.Columns["Description"]);
+            SetColumnVisibility(Properties.Settings.Default.Blocked, blockedToolStripMenuItem, dataGridView1.Columns["Blocked"]);
         }
 
         private static void SetColumnVisibility(bool condition, ToolStripMenuItem menuItem, DataGridViewColumn column)
@@ -1557,6 +1579,9 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 
         private static void SaveSettings()
         {
+#if DEBUG
+            Debug.WriteLine(Properties.Settings.Default.Blocked.ToString());
+#endif
             Properties.Settings.Default.Save();
         }
 
@@ -2210,7 +2235,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
         {
             if (isModified)
                 SavePlugins();
-            SaveSettings();
+            //SaveSettings();
             System.Windows.Forms.Application.Exit();
         }
 
@@ -3175,7 +3200,6 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 
                 sbar3(ChangeCount.ToString() + " Change(s) made to ini files");
             }
-            ShowRecommendedColumns();
             sbar5("Auto Reset");
             return ChangeCount;
         }
@@ -3265,6 +3289,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 if (log)
                     activityLog.WriteLog("Enabling all settings");
                 ResetDefaults();
+                ShowRecommendedColumns();
             }
             if (!ActiveOnly)
                 ActiveOnlyToggle();
@@ -3624,12 +3649,12 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                     // Check if archive already exists, bail out on user cancel
                     if (!File.Exists(zipPath))
                     {
-                        sbar3($"Creating archive for {ModName}...");
+                        sbar($"Creating archive for {ModName}...");
                         statusStrip1.Refresh();
                         if (log)
                             activityLog.WriteLog($"Creating archive for {ModName} at {zipPath}");
                         CreateZipFromFiles(files, zipPath); // Make zip
-                        sbar3($"{ModName} archived");
+                        sbar($"{ModName} archived");
                         statusStrip1.Refresh();
                         modsArchived++;
                     }
@@ -3796,8 +3821,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 }
             }
 
-            int minWidth = 1000; // Set your minimum width
-            int minHeight = 500; // Set your minimum height
+            int minWidth = 1500; // Set your minimum width
+            int minHeight = 800; // Set your minimum height
 
             if (this.Width < minWidth || this.Height < minHeight)
             {
