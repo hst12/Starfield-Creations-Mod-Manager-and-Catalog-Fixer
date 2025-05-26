@@ -115,7 +115,7 @@ namespace Starfield_Tools.Common // Various functions used by the app
             {
                 if (!File.Exists(Path.Combine(LocalAppDataPath, "BlockedMods.txt")))
                 {
-                    File.Create(Path.Combine(LocalAppDataPath, "BlockedMods.txt"));
+                    File.Create(Path.Combine(LocalAppDataPath, "BlockedMods.txt")).Close();
                     return null;
                 }
                 else

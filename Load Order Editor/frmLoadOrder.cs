@@ -316,10 +316,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 if (arg.StartsWith("-profile", StringComparison.InvariantCultureIgnoreCase))
                 {
                     tempstr = Path.Combine(Properties.Settings.Default.ProfileFolder, Environment.GetCommandLineArgs()[2]);
-                    //MessageBox.Show(Environment.GetCommandLineArgs()[2]);
                     LastProfile = Environment.GetCommandLineArgs()[2];
-
-                    //SaveSettings();
                 }
 
                 if (arg.StartsWith("-install")) // For future use (maybe) install mod from Nexus web link
@@ -4546,6 +4543,20 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
         private void convertLooseFilesModToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ConvertLooseFiles();
+        }
+
+        private void deleteBlockedModstxtToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                File.Delete(Path.Combine(Tools.LocalAppDataPath, "BlockedMods.txt"));
+                Tools.BlockedMods(); // Refresh blocked mods list
+                InitDataGrid();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error deleting BlockedMods.txt: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }
