@@ -29,9 +29,23 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmLoadOrder));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmLoadOrder));
             dataGridView1 = new System.Windows.Forms.DataGridView();
+            Index = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            ModEnabled = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            PluginName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            Description = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            Group = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            Version = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            AuthorVersion = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            TimeStamp = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            Achievements = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            Files = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            CreationsID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            FileSize = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            URL = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            Blocked = new System.Windows.Forms.DataGridViewTextBoxColumn();
             contextMenuDatagrid = new System.Windows.Forms.ContextMenuStrip(components);
             toolStripMenuEnableDisable = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuAddToProfile = new System.Windows.Forms.ToolStripMenuItem();
@@ -267,20 +281,6 @@
             timer1 = new System.Windows.Forms.Timer(components);
             timer2 = new System.Windows.Forms.Timer(components);
             progressBar1 = new System.Windows.Forms.ProgressBar();
-            Index = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            ModEnabled = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            PluginName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            Description = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            Group = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            Version = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            AuthorVersion = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            TimeStamp = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            Achievements = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            Files = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            CreationsID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            FileSize = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            URL = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            Blocked = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             contextMenuDatagrid.SuspendLayout();
             statusStrip1.SuspendLayout();
@@ -319,6 +319,133 @@
             dataGridView1.KeyDown += dataGridView1_KeyDown;
             dataGridView1.MouseDown += dataGridView1_MouseDown;
             dataGridView1.MouseMove += dataGridView1_MouseMove;
+            // 
+            // Index
+            // 
+            Index.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            Index.HeaderText = "Index";
+            Index.MinimumWidth = 10;
+            Index.Name = "Index";
+            Index.ReadOnly = true;
+            Index.Width = 117;
+            // 
+            // ModEnabled
+            // 
+            ModEnabled.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            ModEnabled.HeaderText = "Enabled";
+            ModEnabled.MinimumWidth = 10;
+            ModEnabled.Name = "ModEnabled";
+            ModEnabled.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            ModEnabled.Width = 144;
+            // 
+            // PluginName
+            // 
+            PluginName.HeaderText = "Plugin Name";
+            PluginName.MinimumWidth = 10;
+            PluginName.Name = "PluginName";
+            PluginName.ReadOnly = true;
+            // 
+            // Description
+            // 
+            Description.FillWeight = 90F;
+            Description.HeaderText = "Description";
+            Description.MinimumWidth = 10;
+            Description.Name = "Description";
+            Description.ReadOnly = true;
+            Description.Visible = false;
+            // 
+            // Group
+            // 
+            Group.FillWeight = 80F;
+            Group.HeaderText = "Group";
+            Group.MinimumWidth = 10;
+            Group.Name = "Group";
+            Group.ReadOnly = true;
+            Group.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            // 
+            // Version
+            // 
+            Version.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            dataGridViewCellStyle1.NullValue = null;
+            Version.DefaultCellStyle = dataGridViewCellStyle1;
+            Version.HeaderText = "Date";
+            Version.MinimumWidth = 10;
+            Version.Name = "Version";
+            Version.ReadOnly = true;
+            Version.Width = 109;
+            // 
+            // AuthorVersion
+            // 
+            AuthorVersion.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            AuthorVersion.HeaderText = "Version";
+            AuthorVersion.MinimumWidth = 10;
+            AuthorVersion.Name = "AuthorVersion";
+            AuthorVersion.ReadOnly = true;
+            AuthorVersion.Width = 137;
+            // 
+            // TimeStamp
+            // 
+            TimeStamp.FillWeight = 10F;
+            TimeStamp.HeaderText = "Time Stamp";
+            TimeStamp.MinimumWidth = 10;
+            TimeStamp.Name = "TimeStamp";
+            TimeStamp.ReadOnly = true;
+            // 
+            // Achievements
+            // 
+            Achievements.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            Achievements.FillWeight = 10F;
+            Achievements.HeaderText = "Achievements";
+            Achievements.MinimumWidth = 10;
+            Achievements.Name = "Achievements";
+            Achievements.ReadOnly = true;
+            Achievements.Width = 209;
+            // 
+            // Files
+            // 
+            Files.FillWeight = 10F;
+            Files.HeaderText = "Files";
+            Files.MinimumWidth = 10;
+            Files.Name = "Files";
+            Files.ReadOnly = true;
+            // 
+            // CreationsID
+            // 
+            CreationsID.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            CreationsID.FillWeight = 10F;
+            CreationsID.HeaderText = "Creations ID";
+            CreationsID.MinimumWidth = 10;
+            CreationsID.Name = "CreationsID";
+            CreationsID.ReadOnly = true;
+            CreationsID.Width = 174;
+            // 
+            // FileSize
+            // 
+            FileSize.FillWeight = 10F;
+            FileSize.HeaderText = "File Size (MB)";
+            FileSize.MinimumWidth = 10;
+            FileSize.Name = "FileSize";
+            FileSize.ReadOnly = true;
+            // 
+            // URL
+            // 
+            URL.FillWeight = 10F;
+            URL.HeaderText = "URL";
+            URL.MinimumWidth = 10;
+            URL.Name = "URL";
+            URL.ReadOnly = true;
+            URL.Visible = false;
+            // 
+            // Blocked
+            // 
+            Blocked.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            Blocked.FillWeight = 10F;
+            Blocked.HeaderText = "Blocked";
+            Blocked.MinimumWidth = 10;
+            Blocked.Name = "Blocked";
+            Blocked.ReadOnly = true;
+            Blocked.Visible = false;
+            Blocked.Width = 200;
             // 
             // contextMenuDatagrid
             // 
@@ -2058,133 +2185,6 @@
             progressBar1.Name = "progressBar1";
             progressBar1.Size = new System.Drawing.Size(200, 46);
             progressBar1.TabIndex = 8;
-            // 
-            // Index
-            // 
-            Index.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            Index.HeaderText = "Index";
-            Index.MinimumWidth = 10;
-            Index.Name = "Index";
-            Index.ReadOnly = true;
-            Index.Width = 117;
-            // 
-            // ModEnabled
-            // 
-            ModEnabled.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            ModEnabled.HeaderText = "Enabled";
-            ModEnabled.MinimumWidth = 10;
-            ModEnabled.Name = "ModEnabled";
-            ModEnabled.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            ModEnabled.Width = 144;
-            // 
-            // PluginName
-            // 
-            PluginName.HeaderText = "Plugin Name";
-            PluginName.MinimumWidth = 10;
-            PluginName.Name = "PluginName";
-            PluginName.ReadOnly = true;
-            // 
-            // Description
-            // 
-            Description.FillWeight = 90F;
-            Description.HeaderText = "Description";
-            Description.MinimumWidth = 10;
-            Description.Name = "Description";
-            Description.ReadOnly = true;
-            Description.Visible = false;
-            // 
-            // Group
-            // 
-            Group.FillWeight = 80F;
-            Group.HeaderText = "Group";
-            Group.MinimumWidth = 10;
-            Group.Name = "Group";
-            Group.ReadOnly = true;
-            Group.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            // 
-            // Version
-            // 
-            Version.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            dataGridViewCellStyle1.NullValue = null;
-            Version.DefaultCellStyle = dataGridViewCellStyle1;
-            Version.HeaderText = "Date";
-            Version.MinimumWidth = 10;
-            Version.Name = "Version";
-            Version.ReadOnly = true;
-            Version.Width = 109;
-            // 
-            // AuthorVersion
-            // 
-            AuthorVersion.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            AuthorVersion.HeaderText = "Version";
-            AuthorVersion.MinimumWidth = 10;
-            AuthorVersion.Name = "AuthorVersion";
-            AuthorVersion.ReadOnly = true;
-            AuthorVersion.Width = 137;
-            // 
-            // TimeStamp
-            // 
-            TimeStamp.FillWeight = 10F;
-            TimeStamp.HeaderText = "Time Stamp";
-            TimeStamp.MinimumWidth = 10;
-            TimeStamp.Name = "TimeStamp";
-            TimeStamp.ReadOnly = true;
-            // 
-            // Achievements
-            // 
-            Achievements.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            Achievements.FillWeight = 10F;
-            Achievements.HeaderText = "Achievements";
-            Achievements.MinimumWidth = 10;
-            Achievements.Name = "Achievements";
-            Achievements.ReadOnly = true;
-            Achievements.Width = 209;
-            // 
-            // Files
-            // 
-            Files.FillWeight = 10F;
-            Files.HeaderText = "Files";
-            Files.MinimumWidth = 10;
-            Files.Name = "Files";
-            Files.ReadOnly = true;
-            // 
-            // CreationsID
-            // 
-            CreationsID.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            CreationsID.FillWeight = 10F;
-            CreationsID.HeaderText = "Creations ID";
-            CreationsID.MinimumWidth = 10;
-            CreationsID.Name = "CreationsID";
-            CreationsID.ReadOnly = true;
-            CreationsID.Width = 174;
-            // 
-            // FileSize
-            // 
-            FileSize.FillWeight = 10F;
-            FileSize.HeaderText = "File Size (MB)";
-            FileSize.MinimumWidth = 10;
-            FileSize.Name = "FileSize";
-            FileSize.ReadOnly = true;
-            // 
-            // URL
-            // 
-            URL.FillWeight = 10F;
-            URL.HeaderText = "URL";
-            URL.MinimumWidth = 10;
-            URL.Name = "URL";
-            URL.ReadOnly = true;
-            URL.Visible = false;
-            // 
-            // Blocked
-            // 
-            Blocked.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            Blocked.FillWeight = 10F;
-            Blocked.HeaderText = "Blocked";
-            Blocked.MinimumWidth = 10;
-            Blocked.Name = "Blocked";
-            Blocked.ReadOnly = true;
-            Blocked.Visible = false;
-            Blocked.Width = 143;
             // 
             // frmLoadOrder
             // 

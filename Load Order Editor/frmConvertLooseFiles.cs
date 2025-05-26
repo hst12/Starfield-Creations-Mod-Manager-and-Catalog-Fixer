@@ -61,7 +61,7 @@ namespace Starfield_Tools.Load_Order_Editor
 
             if (!File.Exists(Path.Combine(frmLoadOrder.StarfieldGamePath, "Data", Path.GetFileNameWithoutExtension(esm) + " - textures.ba2")))
             {
-                activityLog.WriteLog($"Creating texture archive\n{archive2Path} {cmdLine}");
+                //activityLog.WriteLog($"Creating texture archive\n{archive2Path} {cmdLine}");
                 MakeArchive(archive2Path, cmdLine, workingDirectory);
                 frmLoadOrder.returnStatus++;
             }
@@ -78,7 +78,7 @@ namespace Starfield_Tools.Load_Order_Editor
 
             if (!File.Exists(Path.Combine(frmLoadOrder.StarfieldGamePath, "Data", Path.GetFileNameWithoutExtension(esm) + " - main.ba2")))
             {
-                activityLog.WriteLog($"Creating main archive\n{archive2Path} {cmdLine}");
+                //activityLog.WriteLog($"Creating main archive\n{archive2Path} {cmdLine}");
                 MakeArchive(archive2Path, cmdLine, workingDirectory);
                 frmLoadOrder.returnStatus++;
             }

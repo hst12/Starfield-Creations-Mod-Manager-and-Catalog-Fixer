@@ -46,6 +46,8 @@ namespace Starfield_Tools
             this.Text = Application.ProductName + " " + File.ReadAllText(Path.Combine(Tools.CommonFolder, "App Version.txt")) + " Debug";
 #endif
 
+            LastProfile ??= Properties.Settings.Default.LastProfile;
+
             if (Properties.Settings.Default.Log)
             {
                 activityLog = new ActivityLog(Path.Combine(Tools.LocalAppDataPath, "Activity Log.txt")); // Create activity log if enabled
@@ -294,14 +296,38 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             {
                 toolStripMenuProfilesOn.Checked = true;
                 Profiles = true;
-#if DEBUG
-                Debug.WriteLine(Properties.Settings.Default.Blocked.ToString());
-#endif
+
                 chkProfile.Checked = true;
             }
             else
             {
                 Profiles = false;
+            }
+
+            foreach (var arg in Environment.GetCommandLineArgs()) // Handle command line arguments
+            {
+                //MessageBox.Show(arg); // Show all arguments for debugging
+                if (arg.Equals("-run", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    RunGame();
+                    Application.Exit();
+                }
+
+                if (arg.StartsWith("-profile", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    tempstr = Path.Combine(Properties.Settings.Default.ProfileFolder, Environment.GetCommandLineArgs()[2]);
+                    //MessageBox.Show(Environment.GetCommandLineArgs()[2]);
+                    LastProfile = Environment.GetCommandLineArgs()[2];
+
+                    //SaveSettings();
+                }
+
+                if (arg.StartsWith("-install")) // For future use (maybe) install mod from Nexus web link
+                {
+                    string strippedCommandLine = Environment.GetCommandLineArgs()[2];
+
+                    InstallMod(strippedCommandLine);
+                }
             }
 
             cmbProfile.Enabled = Profiles;
@@ -321,37 +347,6 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 Properties.Settings.Default.AutoRestore = true;
                 MessageBox.Show(tempstr + "\nAuto Restore turned on\n\nYou can now play the game normally until the next time you want to update\n\n" +
                     "Remember to choose the Prepare for Creations Update option again before you update or add new mods", "Creations update complete");
-            }
-
-            foreach (var arg in Environment.GetCommandLineArgs()) // Handle command line arguments
-            {
-                //MessageBox.Show(arg); // Show all arguments for debugging
-                if (arg.Equals("-run", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    RunGame();
-                    Application.Exit();
-                }
-#if DEBUG
-                if (arg.StartsWith("-profile", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    MessageBox.Show(Environment.GetCommandLineArgs()[2]);
-                    SwitchProfile(Path.Combine(Properties.Settings.Default.ProfileFolder, Environment.GetCommandLineArgs()[2]));
-                    GetProfiles();
-                }
-
-                if (arg.StartsWith("-install")) // For future use (maybe) install mod from Nexus web link
-                {
-                    string strippedCommandLine = Environment.CommandLine
-                        .Split(' ')
-                        .Skip(1) // Skip the executable path
-                        .Where(part => part != "-install ") // Remove the "-install" argument
-                        .Aggregate("", (current, next) => current + " " + next)
-                        .Trim();
-
-                    Debug.WriteLine(strippedCommandLine);
-                    InstallMod(strippedCommandLine);
-                }
-#endif
             }
 
             // Display Loose Files status
@@ -490,9 +485,6 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 
             foreach (var (setting, menuItem, column) in columnSettings)
             {
-#if DEBUG
-                Debug.WriteLine($"{setting.ToString()}, {menuItem.ToString()}, {column}");
-#endif
                 SetColumnVisibility(setting, menuItem, column);
             }
         }*/
@@ -876,14 +868,18 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
         ? Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
         : ProfileFolder;
 
-            LastProfile ??= Properties.Settings.Default.LastProfile;
+            //LastProfile ??= Properties.Settings.Default.LastProfile;
             try
             {
                 foreach (var profileName in Directory.EnumerateFiles(ProfileFolder, "*.txt", SearchOption.TopDirectoryOnly))
                 {
                     cmbProfile.Items.Add(profileName[(profileName.LastIndexOf('\\') + 1)..]);
                 }
-                int index = cmbProfile.Items.IndexOf(Properties.Settings.Default.LastProfile);
+
+                //int index = cmbProfile.Items.IndexOf(Properties.Settings.Default.LastProfile);
+                int index = cmbProfile.Items.Cast<string>()
+               .ToList()
+               .FindIndex(item => string.Equals(item, LastProfile, StringComparison.OrdinalIgnoreCase));
                 if (index != -1)
                 {
                     cmbProfile.SelectedIndex = index;
@@ -1579,9 +1575,6 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 
         private static void SaveSettings()
         {
-#if DEBUG
-            Debug.WriteLine(Properties.Settings.Default.Blocked.ToString());
-#endif
             Properties.Settings.Default.Save();
         }
 
@@ -1730,7 +1723,9 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             // Recursively search for each directory and copy its contents
             foreach (var dirName in looseFileDirs)
             {
+#if DEBUG
                 Debug.WriteLine($"Searching for {dirName} in {extractPath}");
+#endif
                 var directoriesFound = Directory.GetDirectories(extractPath, dirName, SearchOption.AllDirectories);
 
                 foreach (var sourceDir in directoriesFound)
