@@ -873,10 +873,9 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                     cmbProfile.Items.Add(profileName[(profileName.LastIndexOf('\\') + 1)..]);
                 }
 
-                //int index = cmbProfile.Items.IndexOf(Properties.Settings.Default.LastProfile);
-                int index = cmbProfile.Items.Cast<string>()
-               .ToList()
-               .FindIndex(item => string.Equals(item, LastProfile, StringComparison.OrdinalIgnoreCase));
+                int index = cmbProfile.Items.IndexOf(Properties.Settings.Default.LastProfile);
+                //int index = cmbProfile.Items.Cast<string>().ToList()
+               //.FindIndex(item => string.Equals(item, LastProfile, StringComparison.OrdinalIgnoreCase));
                 if (index != -1)
                 {
                     cmbProfile.SelectedIndex = index;
@@ -1477,7 +1476,13 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 addedFiles++;
                 if (log)
                     activityLog.WriteLog($"Adding {file} to Plugins.txt");
+
+            }
+
+            if (addedFiles > 0)
+            {
                 isModified = true;
+                SavePlugins(); // Save changes to Plugins.txt
             }
 
             if (log)
@@ -1531,7 +1536,12 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 }
             }
 
-            isModified = removedFiles > 0;
+            if (removedFiles > 0)
+            {
+                isModified = true;
+                SavePlugins(); // Save changes to Plugins.txt
+            }
+
 
             if (log)
                 activityLog.WriteLog($"Plugins removed: {removedFiles}");
@@ -2318,7 +2328,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             }
 
             if (Properties.Settings.Default.AutoDelccc) Delccc();
-            RefreshDataGrid();
+            //RefreshDataGrid();
+            InitDataGrid();
 
             // Remove base game files if LOOT added them
             tools.BethFiles.ForEach(bethFile =>
@@ -2332,6 +2343,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 
             // Re-enable profiles if previously active
             Profiles = profilesActive;
+            isModified = true;
             SavePlugins();
             cmbProfile.Enabled = Profiles;
             chkProfile.Checked = Profiles;
@@ -4399,12 +4411,14 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             foreach (var item in cmbProfile.Items)
             {
                 SwitchProfile(Path.Combine(Properties.Settings.Default.ProfileFolder, item.ToString()));
+                SaveSettings();
                 RefreshDataGrid();
                 changes += AddRemove() + RemoveDuplicates();
                 if (AutoSort)
                     RunLOOT(true);
             }
             SwitchProfile(Path.Combine(Properties.Settings.Default.ProfileFolder, activeProfile));
+            SaveSettings();
             RefreshDataGrid();
             if (activeStatus)
                 ActiveOnlyToggle();

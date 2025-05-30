@@ -331,12 +331,12 @@ namespace Starfield_Tools
                     // Check the entire version string for invalid characters (anything other than letters, digits, or '.')
                     foreach (char c in versionStr)
                     {
-                        if (!char.IsLetterOrDigit(c) && c != '.')
+                        if (!char.IsLetterOrDigit(c) && c != '.' && c!='\\' && c!=' ')
                         {
                             errorCount++;
-                            richTextBox2.AppendText($"Non numeric version number detected in {creation.Title}\n");
+                            richTextBox2.AppendText($"Non numeric version number detected in {creation.Title} - {c}\n");
                             if (log)
-                                activityLog.WriteLog($"Non numeric version number detected in {creation.Title}");
+                                activityLog.WriteLog($"Non numeric version number detected in {creation.Title} - {c}");
                             break;
                         }
                     }
