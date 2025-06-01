@@ -4317,6 +4317,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
         {
             using FolderBrowserDialog folderBrowserDialog = new();
             folderBrowserDialog.Description = "Choose folder to use to backup BlockedMods.txt";
+            folderBrowserDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments); // Set initial directory to Documents Directory
             if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
             {
                 string selectedFolderPath = folderBrowserDialog.SelectedPath;
@@ -4338,6 +4339,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
         {
             using FolderBrowserDialog folderBrowserDialog = new();
             folderBrowserDialog.Description = "Choose folder to restore BlockedMods.txt from";
+            folderBrowserDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments); // Set initial directory to Documents Directory
             if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
             {
                 string selectedFolderPath = folderBrowserDialog.SelectedPath;
