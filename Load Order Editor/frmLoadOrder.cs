@@ -462,30 +462,6 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 vortexToolStripMenuItem.Visible = true;
         }
 
-        /*private void SetupColumns()
-        {
-            var columnSettings = new (bool setting, ToolStripMenuItem menuItem, DataGridViewColumn column)[]
-            {
-                (Properties.Settings.Default.TimeStamp, timeStampToolStripMenuItem, dataGridView1.Columns["TimeStamp"]),
-                (Properties.Settings.Default.Achievements, toolStripMenuAchievements, dataGridView1.Columns["Achievements"]),
-                (Properties.Settings.Default.CreationsID, toolStripMenuCreationsID, dataGridView1.Columns["CreationsID"]),
-                (Properties.Settings.Default.Files, toolStripMenuFiles, dataGridView1.Columns["Files"]),
-                (Properties.Settings.Default.Group, toolStripMenuGroup, dataGridView1.Columns["Group"]),
-                (Properties.Settings.Default.Index, toolStripMenuIndex, dataGridView1.Columns["Index"]),
-                (Properties.Settings.Default.FileSize, toolStripMenuFileSize, dataGridView1.Columns["FileSize"]),
-                (Properties.Settings.Default.URL, uRLToolStripMenuItem, dataGridView1.Columns["URL"]),
-                (Properties.Settings.Default.Version, toolStripMenuVersion, dataGridView1.Columns["Version"]),
-                (Properties.Settings.Default.AuthorVersion, toolStripMenuAuthorVersion, dataGridView1.Columns["AuthorVersion"]),
-                (Properties.Settings.Default.Description, toolStripMenuDescription, dataGridView1.Columns["Description"]),
-                (Properties.Settings.Default.Blocked, blockedToolStripMenuItem, dataGridView1.Columns["Blocked"])
-            };
-
-            foreach (var (setting, menuItem, column) in columnSettings)
-            {
-                SetColumnVisibility(setting, menuItem, column);
-            }
-        }*/
-
         private void SetupColumns()
         {
             SetColumnVisibility(Properties.Settings.Default.TimeStamp, timeStampToolStripMenuItem, dataGridView1.Columns["TimeStamp"]);
@@ -875,7 +851,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 
                 int index = cmbProfile.Items.IndexOf(Properties.Settings.Default.LastProfile);
                 //int index = cmbProfile.Items.Cast<string>().ToList()
-               //.FindIndex(item => string.Equals(item, LastProfile, StringComparison.OrdinalIgnoreCase));
+                //.FindIndex(item => string.Equals(item, LastProfile, StringComparison.OrdinalIgnoreCase));
                 if (index != -1)
                 {
                     cmbProfile.SelectedIndex = index;
@@ -1476,7 +1452,6 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 addedFiles++;
                 if (log)
                     activityLog.WriteLog($"Adding {file} to Plugins.txt");
-
             }
 
             if (addedFiles > 0)
@@ -1541,7 +1516,6 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 isModified = true;
                 SavePlugins(); // Save changes to Plugins.txt
             }
-
 
             if (log)
                 activityLog.WriteLog($"Plugins removed: {removedFiles}");

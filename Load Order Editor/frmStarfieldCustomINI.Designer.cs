@@ -182,7 +182,7 @@
             MinimizeBox = false;
             Name = "frmStarfieldCustomINI";
             StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            Text = "StarfieldCustom.ini Settings (Caution - Overwirtes file)";
+            Text = "StarfieldCustom.ini Settings (Caution - Overwrites file)";
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
             ResumeLayout(false);
