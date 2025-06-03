@@ -644,5 +644,17 @@ namespace Starfield_Tools.Properties {
                 this["Log"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool BlockedView {
+            get {
+                return ((bool)(this["BlockedView"]));
+            }
+            set {
+                this["BlockedView"] = value;
+            }
+        }
     }
 }

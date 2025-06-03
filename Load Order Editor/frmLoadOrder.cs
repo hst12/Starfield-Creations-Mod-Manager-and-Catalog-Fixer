@@ -458,6 +458,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             prepareForCreationsUpdateToolStripMenuItem.Checked = settings.CreationsUpdate;
             modStatsToolStripMenuItem.Checked = settings.ModStats;
             blockedToolStripMenuItem.Checked = settings.Blocked;
+            blockedModsToolStripMenuItem.Checked = settings.BlockedView;
             if (Properties.Settings.Default.VortexPath != "")
                 vortexToolStripMenuItem.Visible = true;
         }
@@ -1629,6 +1630,16 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                     if (log)
                         activityLog.WriteLog($"Extracting: {modFilePath}");
                     archiveFile.Extract(extractPath);
+                    if (Directory.Exists(Path.Combine(extractPath,"fomod")))
+                    {
+                        if (Tools.ConfirmAction("Attempt installation anyway?", "Fomod detected - mod will probably not install correctly", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                        {
+                            if (Directory.Exists(extractPath))
+                                Directory.Delete(extractPath, true);
+                            loadScreen.Close();
+                            return;
+                        }
+                    }
 
                     // Check for embedded archive
                     if (Directory.Exists(extractPath))
@@ -4547,6 +4558,12 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             {
                 MessageBox.Show("Error deleting BlockedMods.txt: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void blockedModsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            blockedModsToolStripMenuItem.Checked = !blockedModsToolStripMenuItem.Checked;
+            Properties.Settings.Default.BlockedView = blockedModsToolStripMenuItem.Checked;
         }
     }
 }
