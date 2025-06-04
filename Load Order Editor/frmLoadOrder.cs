@@ -586,31 +586,31 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 
                 foreach (var kvp in data)
                 {
-                    try
-                    {
-                        var item = kvp.Value;
-                        var files = item.Files;
+                    /*try
+                    {*/
+                    var item = kvp.Value;
+                    var files = item.Files;
 
-                        // Add files that end with .esm or .esp (ignoring case)
-                        CreationsPlugin.AddRange(files.Where(file =>
-                            file.EndsWith(".esm", StringComparison.OrdinalIgnoreCase) ||
-                            file.EndsWith(".esp", StringComparison.OrdinalIgnoreCase)));
+                    // Add files that end with .esm or .esp (ignoring case)
+                    CreationsPlugin.AddRange(files.Where(file =>
+                        file.EndsWith(".esm", StringComparison.OrdinalIgnoreCase) ||
+                        file.EndsWith(".esp", StringComparison.OrdinalIgnoreCase)));
 
-                        CreationsTitle.Add(item.Title);
-                        CreationsVersion.Add(item.Version);
-                        CreationsFiles.Add(string.Join(", ", files));
-                        AchievementSafe.Add(item.AchievementSafe);
-                        TimeStamp.Add(item.Timestamp);
-                        CreationsID.Add(kvp.Key);
-                        FileSize.Add(item.FilesSize);
-                    }
+                    CreationsTitle.Add(item.Title);
+                    CreationsVersion.Add(item.Version);
+                    CreationsFiles.Add(string.Join(", ", files));
+                    AchievementSafe.Add(item.AchievementSafe);
+                    TimeStamp.Add(item.Timestamp);
+                    CreationsID.Add(kvp.Key);
+                    FileSize.Add(item.FilesSize);
+                    /*}
                     catch (Exception ex)
                     {
                         sbar(ex.Message);
 #if DEBUG
                         MessageBox.Show(ex.Message);
 #endif
-                    }
+                    }*/
                 }
             }
             catch (Exception ex)
@@ -794,9 +794,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                     if (dataGridView1.RowCount - CreationsPlugin.Count < 0)
                     {
                         sbar4("Catalog/Plugins mismatch - Run game to solve");
-#if DEBUG
                         MessageBox.Show("Catalog/Plugins mismatch - Run game to solve");
-#endif
                     }
                 }
                 catch (Exception ex)
@@ -1630,7 +1628,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                     if (log)
                         activityLog.WriteLog($"Extracting: {modFilePath}");
                     archiveFile.Extract(extractPath);
-                    if (Directory.Exists(Path.Combine(extractPath,"fomod")))
+                    if (Directory.Exists(Path.Combine(extractPath, "fomod")))
                     {
                         if (Tools.ConfirmAction("Attempt installation anyway?", "Fomod detected - mod will probably not install correctly", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
                         {
@@ -1763,14 +1761,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                     activityLog.WriteLog("SFSE mod installed");
             }
             if (filesInstalled > 0)
-            {
-                AddMissing();
-                SavePlugins();
-                if (AutoSort && string.IsNullOrEmpty(InstallMod))
-                    RunLOOT(true);
-
-                sbar3($"Mod installed: {filesInstalled} files");
-            }
+                UpdatePlugins();
 
             if (log)
                 activityLog.WriteLog($"Mod files installed: {filesInstalled}");
@@ -2834,13 +2825,17 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             UndoVortexChanges(true);
         }
 
-        private void btnUpdate_Click(object sender, EventArgs e)
+        private void UpdatePlugins()
         {
             int changes = AddRemove() + RemoveDuplicates();
             if (AutoSort && changes > 0)
                 RunLOOT(true);
 
             sbar3($"Changes made: {changes}");
+        }
+        private void btnUpdate_Click(object sender, EventArgs e)
+        {
+            UpdatePlugins();
         }
 
         private void LooseFilesOnOff(bool enable)
@@ -4544,6 +4539,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
         private void convertLooseFilesModToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ConvertLooseFiles();
+            if (returnStatus > 0)
+                UpdatePlugins(); // Refresh the plugins list after conversion
         }
 
         private void deleteBlockedModstxtToolStripMenuItem_Click(object sender, EventArgs e)
