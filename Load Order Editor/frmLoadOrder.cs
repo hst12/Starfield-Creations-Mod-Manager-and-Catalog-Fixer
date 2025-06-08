@@ -3869,10 +3869,13 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                         sw.WriteLine();
 
                         // Write the data
-                        for (i = 0; i < dataGridView1.Rows.Count; i++)
+                        for (i = 0; i < dataGridView1.Rows.Count; i++) // Rows
                         {
+                            if (ActiveOnly && !(bool)dataGridView1.Rows[i].Cells["ModEnabled"].Value)
+                                continue;
+
                             ExportedLines++;
-                            for (j = 0; j < dataGridView1.Columns.Count; j++)
+                            for (j = 0; j < dataGridView1.Columns.Count; j++) // Columns
                             {
                                 sw.Write(dataGridView1.Rows[i].Cells[j].Value);
                                 if (j < dataGridView1.Columns.Count - 1) sw.Write(",");
