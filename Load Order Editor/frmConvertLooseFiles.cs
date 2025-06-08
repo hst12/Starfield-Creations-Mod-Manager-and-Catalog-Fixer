@@ -133,14 +133,17 @@ namespace Starfield_Tools.Load_Order_Editor
 
         private void btnEsmSelect_Click(object sender, EventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog
+            OpenFileDialog openFileDialog = new()
             {
+                InitialDirectory = Path.GetFullPath(Path.Combine(frmLoadOrder.StarfieldGamePath, "Data")),
+                AutoUpgradeEnabled = true,
                 Filter = "Esm files (*.esm)|*.esm|All files (*.*)|*.*",
                 Title = "Select the esm file to convert loose files to",
-                InitialDirectory = Path.Combine(frmLoadOrder.StarfieldGamePath, "Data")
             };
 
-            //Debug.WriteLine(openFileDialog.InitialDirectory);
+#if DEBUG
+            Debug.WriteLine(openFileDialog.InitialDirectory);
+#endif
             openFileDialog.ShowDialog(this);
             if (openFileDialog.FileName != string.Empty)
             {

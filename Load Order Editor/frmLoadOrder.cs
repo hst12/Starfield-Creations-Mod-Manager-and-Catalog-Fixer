@@ -485,7 +485,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             column.Visible = condition;
         }
 
-        private async Task RefreshDataGrid()
+        private void RefreshDataGrid()
         {
             if (isModified && Tools.ConfirmAction("Save Changes?", "Load order has been modified", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 SavePlugins();
@@ -2833,6 +2833,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 
             sbar3($"Changes made: {changes}");
         }
+
         private void btnUpdate_Click(object sender, EventArgs e)
         {
             UpdatePlugins();
@@ -3729,11 +3730,10 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
         {
             if (Tools.ConfirmAction("Are you sure you want to delete Plugins.txt?", "This will delete Plugins.txt", MessageBoxButtons.YesNo) == DialogResult.No)
                 return;
-            ChangeSettings(false);
             File.Delete(Path.Combine(Tools.StarfieldAppData, "Plugins.txt"));
         }
 
-        private void toolStripMenuAddToProfile_Click(object sender, EventArgs e)
+        private void toolStripMenuAddToProfile_Click(object sender, EventArgs e) // Add selected mods to a different profile
         {
             List<string> profiles = new();
 
@@ -3758,6 +3758,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                         frmAddModToProfile addMod = new(profiles, selectedRow.Cells["PluginName"].Value.ToString());
                         addMod.ShowDialog(cmbProfile);
                     }
+
                     if (Tools.ConfirmAction("Run update/sort on all profiles", "Update All Profiles?",
                         MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                         UpdateAllProfiles();
@@ -3783,7 +3784,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 activityLog.WriteLog("Window size reset to default");
         }
 
-        private void frmLoadOrder_Load(object sender, EventArgs e)
+        private void frmLoadOrder_Load(object sender, EventArgs e) // Do some initialisation when the form loads
         {
             this.Location = Properties.Settings.Default.WindowLocation;
             this.Size = Properties.Settings.Default.WindowSize;
@@ -3841,7 +3842,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 activityLog.WriteLog("Disable all warnings set to " + NoWarn.ToString());
         }
 
-        private void toolStripMenuExportCSV_Click(object sender, EventArgs e)
+        private void toolStripMenuExportCSV_Click(object sender, EventArgs e) // Export DataGridView to CSV file
         {
             int i, j, ExportedLines = 0;
 
@@ -3909,7 +3910,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             Properties.Settings.Default.Description = toolStripMenuDescription.Checked;
         }
 
-        private void toolStripMenuItemHideAll_Click(object sender, EventArgs e)
+        private void toolStripMenuItemHideAll_Click(object sender, EventArgs e) // Hide all columns in the DataGridView except active status and plugin name
         {
             var items = new[]
         {
@@ -4023,7 +4024,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             SavePlugins();
         }
 
-        private void prepareForCreationsUpdateToolStripMenuItem_Click(object sender, EventArgs e)
+        private void prepareForCreationsUpdateToolStripMenuItem_Click(object sender, EventArgs e) // Workaround for Creations update re-downloading mods
         {
             if (!Properties.Settings.Default.CreationsUpdate) // Catalog Auto Restore off etc.
             {
@@ -4050,7 +4051,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             }
         }
 
-        private void dataGridView1_DragEnter(object sender, DragEventArgs e)
+        private void dataGridView1_DragEnter(object sender, DragEventArgs e) // Handle drag and drop of files into the DataGridView
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
                 e.Effect = DragDropEffects.Copy;
@@ -4121,7 +4122,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             sbar3($"Folders Deleted: {DeleteLooseFileFolders().ToString()}");
         }
 
-        private void starUIConfiguratorToolStripMenuItem_Click(object sender, EventArgs e)
+        private void starUIConfiguratorToolStripMenuItem_Click(object sender, EventArgs e) // Launch StarUI Configurator if installed
         {
             string workingDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\My Games\Starfield\Data\";
             string StarUI = workingDirectory + @"StarUI Configurator.bat";
@@ -4181,11 +4182,11 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             RestoreStarfieldINI();
         }
 
-        private void resetEverythingToolStripMenuItem_Click(object sender, EventArgs e)
+        private void resetEverythingToolStripMenuItem_Click(object sender, EventArgs e) // Reset all game settings and delete loose file folders, preserves app settings.
         {
             int actionCount;
 
-            if (Tools.ConfirmAction("This will reset all settings and delete all loose files folders", "Are you sure?", MessageBoxButtons.YesNo,
+            if (Tools.ConfirmAction("This will reset all game settings and delete all loose files folders", "Are you sure?", MessageBoxButtons.YesNo,
                 MessageBoxIcon.Exclamation, true) == DialogResult.No)
                 return;
             if (log)
@@ -4199,7 +4200,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 activityLog.WriteLog("Reset everything: " + actionCount.ToString() + " Change(s) made");
         }
 
-        public void ResetPreferences()
+        public void ResetPreferences() // Reset user preferences
         {
             string localAppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
             string appPreferencesPath = Path.Combine(localAppDataPath, "Starfield_Tools");
@@ -4228,7 +4229,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             ResetPreferences();
         }
 
-        private void modStatsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void modStatsToolStripMenuItem_Click(object sender, EventArgs e) // Toggle Mod Stats visibility
         {
             modStatsToolStripMenuItem.Checked = !modStatsToolStripMenuItem.Checked;
             Properties.Settings.Default.ModStats = modStatsToolStripMenuItem.Checked;
@@ -4236,7 +4237,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 RefreshDataGrid();
         }
 
-        private void backupProfilesToolStripMenuItem_Click(object sender, EventArgs e)
+        private void backupProfilesToolStripMenuItem_Click(object sender, EventArgs e) // Backup profiles to Backup folder in Profile folder
         {
             if (Properties.Settings.Default.ProfileFolder == "")
             {
@@ -4260,7 +4261,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             sbar3("Profiles backed up to Backup folder");
         }
 
-        private void restoreProfilesToolStripMenuItem_Click(object sender, EventArgs e)
+        private void restoreProfilesToolStripMenuItem_Click(object sender, EventArgs e) // Restore profiles from Backup folder
         {
             if (Properties.Settings.Default.ProfileFolder == "" || !Directory.Exists(Path.Combine(Properties.Settings.Default.ProfileFolder, "Backup")))
             {
@@ -4293,7 +4294,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             }
         }
 
-        private void mnuBackupBlockedMods_Click(object sender, EventArgs e)
+        private void mnuBackupBlockedMods_Click(object sender, EventArgs e) // Backup BlockedMods.txt to a user selected folder
         {
             using FolderBrowserDialog folderBrowserDialog = new();
             folderBrowserDialog.Description = "Choose folder to use to backup BlockedMods.txt";
@@ -4315,7 +4316,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             }
         }
 
-        private void mnuRestoreBlockedMods_Click(object sender, EventArgs e)
+        private void mnuRestoreBlockedMods_Click(object sender, EventArgs e) // Restore BlockedMods.txt from backup folder
         {
             using FolderBrowserDialog folderBrowserDialog = new();
             folderBrowserDialog.Description = "Choose folder to restore BlockedMods.txt from";
@@ -4434,7 +4435,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             UpdateAllProfiles();
         }
 
-        private void sFSEPluginsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void sFSEPluginsToolStripMenuItem_Click(object sender, EventArgs e) // Open SFSE Plugins Directory
         {
             string SFSEPlugins = Path.Combine(StarfieldGamePath, @"Data\SFSE\Plugins");
             if (Directory.Exists(SFSEPlugins))
@@ -4448,7 +4449,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             Tools.OpenUrl("https://www.nexusmods.com/starfield/mods/10432?tab=files");
         }
 
-        private void downloadsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void downloadsToolStripMenuItem_Click(object sender, EventArgs e) // Open Downloads Directory
         {
             string downloadsDirectory = Properties.Settings.Default.DownloadsDirectory;
             if (!string.IsNullOrEmpty(downloadsDirectory))
@@ -4457,14 +4458,14 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 MessageBox.Show("It will be set after a mod has been installed.", "Downloads directory not set.", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        private void toggleToolStripMenuItem_Click(object sender, EventArgs e)
+        private void toggleToolStripMenuItem_Click(object sender, EventArgs e) // Log Toggle
         {
             toggleToolStripMenuItem.Checked = Properties.Settings.Default.Log = log = !toggleToolStripMenuItem.Checked;
             if (activityLog == null)
                 EnableLog();
         }
 
-        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+        private void deleteToolStripMenuItem_Click(object sender, EventArgs e) // Log Delete
         {
             if (activityLog == null)
                 return;
@@ -4473,7 +4474,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 EnableLog();
         }
 
-        private void ShowLog()
+        private void ShowLog() // Show Activity Log
         {
             string pathToFile = Path.Combine(Tools.LocalAppDataPath, "Activity Log.txt");
             if (File.Exists(pathToFile))

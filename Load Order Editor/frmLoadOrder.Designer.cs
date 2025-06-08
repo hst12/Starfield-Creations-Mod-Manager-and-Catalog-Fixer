@@ -1086,7 +1086,7 @@
             // 
             resetEverythingToolStripMenuItem.Name = "resetEverythingToolStripMenuItem";
             resetEverythingToolStripMenuItem.Size = new System.Drawing.Size(888, 44);
-            resetEverythingToolStripMenuItem.Text = "Reset Everything Except App Preferences, Delete Loose Files";
+            resetEverythingToolStripMenuItem.Text = "Reset All Game Settings";
             resetEverythingToolStripMenuItem.Click += resetEverythingToolStripMenuItem_Click;
             // 
             // toolStripSeparator46
