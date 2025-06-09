@@ -4176,6 +4176,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             else
             {
                 sbar3("Starfield.ini Matches Default");
+                if (log)
+                    activityLog.WriteLog("Starfield.ini Matches Default");
                 return 0;
             }
         }
