@@ -2657,7 +2657,11 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                     return true;
                 }
                 else
+                {
+                    if (log)
+                        activityLog.WriteLog("StarfieldCustom.ini matches recommended default");
                     return false;
+                }
             }
             catch (Exception ex)
             {
@@ -4567,6 +4571,28 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
         {
             blockedModsToolStripMenuItem.Checked = !blockedModsToolStripMenuItem.Checked;
             Properties.Settings.Default.BlockedView = blockedModsToolStripMenuItem.Checked;
+        }
+
+        private void removeMissingModsFromBlockedModstxtToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var blockedMods = Tools.BlockedMods();
+            List<string> plugins = tools.GetPluginList(); // Add .esm files
+            var missingMods = plugins.Intersect(blockedMods);
+
+            try
+            {
+                if (File.Exists(Path.Combine(Tools.LocalAppDataPath, "BlockedMods.txt")))
+                {
+                    File.WriteAllLines(Path.Combine(Tools.LocalAppDataPath, "BlockedMods.txt"), missingMods);
+                    sbar3("Removed missing mods from BlockedMods.txt");
+                    if (log)
+                        activityLog.WriteLog("Removed missing mods from BlockedMods.txt");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error writing BlockedMods.txt: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

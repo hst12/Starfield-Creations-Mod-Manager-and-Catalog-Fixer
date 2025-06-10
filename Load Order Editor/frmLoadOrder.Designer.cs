@@ -115,6 +115,7 @@
             uIToEditStarfieldCustominiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             editContentCatalogtxtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             editBlockedModstxtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            removeMissingModsFromBlockedModstxtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator17 = new System.Windows.Forms.ToolStripSeparator();
             convertLooseFilesModToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator19 = new System.Windows.Forms.ToolStripSeparator();
@@ -892,7 +893,7 @@
             // 
             // toolStripMenuEditFiles
             // 
-            toolStripMenuEditFiles.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuEditPlugins, editStarfieldCustominiToolStripMenuItem, uIToEditStarfieldCustominiToolStripMenuItem, editContentCatalogtxtToolStripMenuItem, editBlockedModstxtToolStripMenuItem });
+            toolStripMenuEditFiles.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuEditPlugins, editStarfieldCustominiToolStripMenuItem, uIToEditStarfieldCustominiToolStripMenuItem, editContentCatalogtxtToolStripMenuItem, editBlockedModstxtToolStripMenuItem, removeMissingModsFromBlockedModstxtToolStripMenuItem });
             toolStripMenuEditFiles.Name = "toolStripMenuEditFiles";
             toolStripMenuEditFiles.Size = new System.Drawing.Size(504, 44);
             toolStripMenuEditFiles.Text = "Edit Files";
@@ -900,37 +901,44 @@
             // toolStripMenuEditPlugins
             // 
             toolStripMenuEditPlugins.Name = "toolStripMenuEditPlugins";
-            toolStripMenuEditPlugins.Size = new System.Drawing.Size(416, 44);
+            toolStripMenuEditPlugins.Size = new System.Drawing.Size(628, 44);
             toolStripMenuEditPlugins.Text = "Edit Plugins.txt";
             toolStripMenuEditPlugins.Click += toolStripMenuEditPlugins_Click;
             // 
             // editStarfieldCustominiToolStripMenuItem
             // 
             editStarfieldCustominiToolStripMenuItem.Name = "editStarfieldCustominiToolStripMenuItem";
-            editStarfieldCustominiToolStripMenuItem.Size = new System.Drawing.Size(416, 44);
+            editStarfieldCustominiToolStripMenuItem.Size = new System.Drawing.Size(628, 44);
             editStarfieldCustominiToolStripMenuItem.Text = "Edit StarfieldCustom.ini";
             editStarfieldCustominiToolStripMenuItem.Click += editStarfieldCustominiToolStripMenuItem_Click;
             // 
             // uIToEditStarfieldCustominiToolStripMenuItem
             // 
             uIToEditStarfieldCustominiToolStripMenuItem.Name = "uIToEditStarfieldCustominiToolStripMenuItem";
-            uIToEditStarfieldCustominiToolStripMenuItem.Size = new System.Drawing.Size(416, 44);
+            uIToEditStarfieldCustominiToolStripMenuItem.Size = new System.Drawing.Size(628, 44);
             uIToEditStarfieldCustominiToolStripMenuItem.Text = "StarfieldCustom.ini Editor";
             uIToEditStarfieldCustominiToolStripMenuItem.Click += uIToEditStarfieldCustominiToolStripMenuItem_Click;
             // 
             // editContentCatalogtxtToolStripMenuItem
             // 
             editContentCatalogtxtToolStripMenuItem.Name = "editContentCatalogtxtToolStripMenuItem";
-            editContentCatalogtxtToolStripMenuItem.Size = new System.Drawing.Size(416, 44);
+            editContentCatalogtxtToolStripMenuItem.Size = new System.Drawing.Size(628, 44);
             editContentCatalogtxtToolStripMenuItem.Text = "Edit ContentCatalog.txt";
             editContentCatalogtxtToolStripMenuItem.Click += editContentCatalogtxtToolStripMenuItem_Click;
             // 
             // editBlockedModstxtToolStripMenuItem
             // 
             editBlockedModstxtToolStripMenuItem.Name = "editBlockedModstxtToolStripMenuItem";
-            editBlockedModstxtToolStripMenuItem.Size = new System.Drawing.Size(416, 44);
+            editBlockedModstxtToolStripMenuItem.Size = new System.Drawing.Size(628, 44);
             editBlockedModstxtToolStripMenuItem.Text = "Edit BlockedMods.txt";
             editBlockedModstxtToolStripMenuItem.Click += editBlockedModstxtToolStripMenuItem_Click;
+            // 
+            // removeMissingModsFromBlockedModstxtToolStripMenuItem
+            // 
+            removeMissingModsFromBlockedModstxtToolStripMenuItem.Name = "removeMissingModsFromBlockedModstxtToolStripMenuItem";
+            removeMissingModsFromBlockedModstxtToolStripMenuItem.Size = new System.Drawing.Size(628, 44);
+            removeMissingModsFromBlockedModstxtToolStripMenuItem.Text = "Remove missing mods from BlockedMods.txt";
+            removeMissingModsFromBlockedModstxtToolStripMenuItem.Click += removeMissingModsFromBlockedModstxtToolStripMenuItem_Click;
             // 
             // toolStripSeparator17
             // 
@@ -2490,5 +2498,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Blocked;
         private System.Windows.Forms.ToolStripMenuItem deleteBlockedModstxtToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem blockedModsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem removeMissingModsFromBlockedModstxtToolStripMenuItem;
     }
 }
