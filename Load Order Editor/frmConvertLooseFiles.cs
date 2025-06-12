@@ -39,6 +39,8 @@ namespace Starfield_Tools.Load_Order_Editor
             if (string.IsNullOrEmpty(esm))
                 if (txtEsm.Text != string.Empty)
                 {
+                    if (txtEsm.Text.EndsWith(".esm"))
+                        txtEsm.Text = txtEsm.Text.Replace(".esm", "");
                     esm = txtEsm.Text;
 
                     if (!File.Exists(Path.Combine(frmLoadOrder.StarfieldGamePath, "Data", esm) + ".esm"))
