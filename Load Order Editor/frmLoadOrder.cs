@@ -297,11 +297,11 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             // Initialise profiles
             if (Properties.Settings.Default.ProfileOn)
             {
-/*#if DEBUG
-                // Check if profile matches Plugins.txt
-                if (!Tools.FileCompare(Path.Combine(Properties.Settings.Default.ProfileFolder, LastProfile), Path.Combine(Tools.StarfieldAppData, "Plugins.txt")))
-                    this.Text = Application.ProductName + " Plugins.txt mismatch";
-#endif*/
+                /*#if DEBUG
+                                // Check if profile matches Plugins.txt
+                                if (!Tools.FileCompare(Path.Combine(Properties.Settings.Default.ProfileFolder, LastProfile), Path.Combine(Tools.StarfieldAppData, "Plugins.txt")))
+                                    this.Text = Application.ProductName + " Plugins.txt mismatch";
+                #endif*/
                 toolStripMenuProfilesOn.Checked = true;
                 Profiles = true;
 
@@ -4625,6 +4625,12 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             
 #endif
             RefreshDataGrid();
+        }
+
+        private void modBackupsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(Properties.Settings.Default.BackupDirectory))
+                Tools.OpenFolder(Properties.Settings.Default.BackupDirectory);
         }
     }
 }

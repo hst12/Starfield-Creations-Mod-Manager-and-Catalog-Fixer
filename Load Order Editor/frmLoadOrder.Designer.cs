@@ -106,6 +106,7 @@
             toolStripMenuExploreGameDocs = new System.Windows.Forms.ToolStripMenuItem();
             sFSEPluginsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             profileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            modBackupsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             appAppDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuExploreCommon = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
@@ -826,7 +827,7 @@
             // 
             // exploreToolStripMenuItem
             // 
-            exploreToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { downloadsToolStripMenuItem, toolStripMenuExploreAppData, toolStripMenuExploreData, toolStripMenuExploreGameDocs, sFSEPluginsToolStripMenuItem, profileToolStripMenuItem, appAppDataToolStripMenuItem, toolStripMenuExploreCommon });
+            exploreToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { downloadsToolStripMenuItem, toolStripMenuExploreAppData, toolStripMenuExploreData, toolStripMenuExploreGameDocs, sFSEPluginsToolStripMenuItem, profileToolStripMenuItem, modBackupsToolStripMenuItem, appAppDataToolStripMenuItem, toolStripMenuExploreCommon });
             exploreToolStripMenuItem.Name = "exploreToolStripMenuItem";
             exploreToolStripMenuItem.Size = new System.Drawing.Size(504, 44);
             exploreToolStripMenuItem.Text = "Explore";
@@ -834,56 +835,63 @@
             // downloadsToolStripMenuItem
             // 
             downloadsToolStripMenuItem.Name = "downloadsToolStripMenuItem";
-            downloadsToolStripMenuItem.Size = new System.Drawing.Size(338, 44);
+            downloadsToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
             downloadsToolStripMenuItem.Text = "Downloads";
             downloadsToolStripMenuItem.Click += downloadsToolStripMenuItem_Click;
             // 
             // toolStripMenuExploreAppData
             // 
             toolStripMenuExploreAppData.Name = "toolStripMenuExploreAppData";
-            toolStripMenuExploreAppData.Size = new System.Drawing.Size(338, 44);
+            toolStripMenuExploreAppData.Size = new System.Drawing.Size(359, 44);
             toolStripMenuExploreAppData.Text = "Game AppData";
             toolStripMenuExploreAppData.Click += toolStripMenuExploreAppData_Click;
             // 
             // toolStripMenuExploreData
             // 
             toolStripMenuExploreData.Name = "toolStripMenuExploreData";
-            toolStripMenuExploreData.Size = new System.Drawing.Size(338, 44);
+            toolStripMenuExploreData.Size = new System.Drawing.Size(359, 44);
             toolStripMenuExploreData.Text = "Game Data";
             toolStripMenuExploreData.Click += toolStripMenuExploreData_Click;
             // 
             // toolStripMenuExploreGameDocs
             // 
             toolStripMenuExploreGameDocs.Name = "toolStripMenuExploreGameDocs";
-            toolStripMenuExploreGameDocs.Size = new System.Drawing.Size(338, 44);
+            toolStripMenuExploreGameDocs.Size = new System.Drawing.Size(359, 44);
             toolStripMenuExploreGameDocs.Text = "Game Documents";
             toolStripMenuExploreGameDocs.Click += toolStripMenuExploreGameDocs_Click;
             // 
             // sFSEPluginsToolStripMenuItem
             // 
             sFSEPluginsToolStripMenuItem.Name = "sFSEPluginsToolStripMenuItem";
-            sFSEPluginsToolStripMenuItem.Size = new System.Drawing.Size(338, 44);
+            sFSEPluginsToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
             sFSEPluginsToolStripMenuItem.Text = "SFSE Plugins";
             sFSEPluginsToolStripMenuItem.Click += sFSEPluginsToolStripMenuItem_Click;
             // 
             // profileToolStripMenuItem
             // 
             profileToolStripMenuItem.Name = "profileToolStripMenuItem";
-            profileToolStripMenuItem.Size = new System.Drawing.Size(338, 44);
+            profileToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
             profileToolStripMenuItem.Text = "Profiles";
             profileToolStripMenuItem.Click += profileToolStripMenuItem_Click;
+            // 
+            // modBackupsToolStripMenuItem
+            // 
+            modBackupsToolStripMenuItem.Name = "modBackupsToolStripMenuItem";
+            modBackupsToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+            modBackupsToolStripMenuItem.Text = "Mod Backups";
+            modBackupsToolStripMenuItem.Click += modBackupsToolStripMenuItem_Click;
             // 
             // appAppDataToolStripMenuItem
             // 
             appAppDataToolStripMenuItem.Name = "appAppDataToolStripMenuItem";
-            appAppDataToolStripMenuItem.Size = new System.Drawing.Size(338, 44);
+            appAppDataToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
             appAppDataToolStripMenuItem.Text = "App AppData";
             appAppDataToolStripMenuItem.Click += appAppDataToolStripMenuItem_Click;
             // 
             // toolStripMenuExploreCommon
             // 
             toolStripMenuExploreCommon.Name = "toolStripMenuExploreCommon";
-            toolStripMenuExploreCommon.Size = new System.Drawing.Size(338, 44);
+            toolStripMenuExploreCommon.Size = new System.Drawing.Size(359, 44);
             toolStripMenuExploreCommon.Text = "App Common";
             toolStripMenuExploreCommon.Click += toolStripMenuExploreCommon_Click;
             // 
@@ -2508,5 +2516,6 @@
         private System.Windows.Forms.ToolStripMenuItem blockedModsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem removeMissingModsFromBlockedModstxtToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem editLOOTUserlistyamlToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem modBackupsToolStripMenuItem;
     }
 }
