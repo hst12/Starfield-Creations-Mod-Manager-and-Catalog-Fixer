@@ -291,9 +291,17 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             if (Properties.Settings.Default.LOOTEnabled)
                 ReadLOOTGroups();
 
+            // Display Loose Files status
+            sbarCCC(looseFilesDisabledToolStripMenuItem.Checked ? "Loose files enabled" : "Loose files disabled");
+
             // Initialise profiles
             if (Properties.Settings.Default.ProfileOn)
             {
+/*#if DEBUG
+                // Check if profile matches Plugins.txt
+                if (!Tools.FileCompare(Path.Combine(Properties.Settings.Default.ProfileFolder, LastProfile), Path.Combine(Tools.StarfieldAppData, "Plugins.txt")))
+                    this.Text = Application.ProductName + " Plugins.txt mismatch";
+#endif*/
                 toolStripMenuProfilesOn.Checked = true;
                 Profiles = true;
 
@@ -344,10 +352,11 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 Properties.Settings.Default.AutoRestore = true;
                 MessageBox.Show(tempstr + "\nAuto Restore turned on\n\nYou can now play the game normally until the next time you want to update\n\n" +
                     "Remember to choose the Prepare for Creations Update option again before you update or add new mods", "Creations update complete");
+                if (log)
+                    activityLog.WriteLog("Creations update complete, backup status: " + BackupStatus);
             }
 
-            // Display Loose Files status
-            sbarCCC(looseFilesDisabledToolStripMenuItem.Checked ? "Loose files enabled" : "Loose files disabled");
+
 
             // Apply bold styling when ActiveOnly is enabled
             btnActiveOnly.Font = new Font(btnActiveOnly.Font, ActiveOnly ? FontStyle.Bold : FontStyle.Regular);
@@ -1630,7 +1639,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                     archiveFile.Extract(extractPath);
                     if (Directory.Exists(Path.Combine(extractPath, "fomod")))
                     {
-                        if (Tools.ConfirmAction("Attempt installation anyway?", "Fomod detected - mod will probably not install correctly", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                        if (Tools.ConfirmAction("Attempt installation anyway?", "Fomod detected - mod will probably not install correctly", MessageBoxButtons.YesNo,
+                            MessageBoxIcon.Question) != DialogResult.Yes)
                         {
                             if (Directory.Exists(extractPath))
                                 Directory.Delete(extractPath, true);
@@ -4041,11 +4051,15 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 Properties.Settings.Default.AutoCheck = true;
                 if (log)
                     activityLog.WriteLog("Creations Update started");
-                if (Tools.ConfirmAction("1. Run the game and update Creations mods.\n2. Don't Load a Save Game\n3. Quit the game and run this app again\n\n" +
+                if (Tools.ConfirmAction("1. Start the game and update Creations mods.\n2. Don't Load a Save Game\n3. Quit the game and run this app again\n\n" +
                     "To Cancel this option," +
                     " click this menu option again\n\nRun the game now?", "Steps to Update Creations Mods", MessageBoxButtons.YesNo, MessageBoxIcon.Question,
                     true) == DialogResult.Yes)
+                {
+                    if (log)
+                        activityLog.WriteLog("Creations Update started, running game now");
                     RunGame(); ;
+                }
             }
             else
             {
@@ -4593,6 +4607,25 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             {
                 MessageBox.Show("Error writing BlockedMods.txt: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void editLOOTUserlistyamlToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(Properties.Settings.Default.LOOTPath)) // Check if LOOT path is set
+                return;
+
+            string pathToFile = (Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"LOOT\games\Starfield\Userlist.yaml"));
+            Process.Start("explorer", pathToFile);
+            MessageBox.Show("Click OK to refresh");
+            ReadLOOTGroups();
+# if DEBUG
+            foreach (var item in Groups.plugins)
+            {
+                Debug.WriteLine(item.name);
+            }
+            
+#endif
+            RefreshDataGrid();
         }
     }
 }

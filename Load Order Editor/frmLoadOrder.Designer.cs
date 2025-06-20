@@ -116,6 +116,7 @@
             editContentCatalogtxtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             editBlockedModstxtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             removeMissingModsFromBlockedModstxtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            editLOOTUserlistyamlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator17 = new System.Windows.Forms.ToolStripSeparator();
             convertLooseFilesModToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator19 = new System.Windows.Forms.ToolStripSeparator();
@@ -893,7 +894,7 @@
             // 
             // toolStripMenuEditFiles
             // 
-            toolStripMenuEditFiles.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuEditPlugins, editStarfieldCustominiToolStripMenuItem, uIToEditStarfieldCustominiToolStripMenuItem, editContentCatalogtxtToolStripMenuItem, editBlockedModstxtToolStripMenuItem, removeMissingModsFromBlockedModstxtToolStripMenuItem });
+            toolStripMenuEditFiles.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuEditPlugins, editStarfieldCustominiToolStripMenuItem, uIToEditStarfieldCustominiToolStripMenuItem, editContentCatalogtxtToolStripMenuItem, editBlockedModstxtToolStripMenuItem, removeMissingModsFromBlockedModstxtToolStripMenuItem, editLOOTUserlistyamlToolStripMenuItem });
             toolStripMenuEditFiles.Name = "toolStripMenuEditFiles";
             toolStripMenuEditFiles.Size = new System.Drawing.Size(504, 44);
             toolStripMenuEditFiles.Text = "Edit Files";
@@ -939,6 +940,13 @@
             removeMissingModsFromBlockedModstxtToolStripMenuItem.Size = new System.Drawing.Size(628, 44);
             removeMissingModsFromBlockedModstxtToolStripMenuItem.Text = "Remove missing mods from BlockedMods.txt";
             removeMissingModsFromBlockedModstxtToolStripMenuItem.Click += removeMissingModsFromBlockedModstxtToolStripMenuItem_Click;
+            // 
+            // editLOOTUserlistyamlToolStripMenuItem
+            // 
+            editLOOTUserlistyamlToolStripMenuItem.Name = "editLOOTUserlistyamlToolStripMenuItem";
+            editLOOTUserlistyamlToolStripMenuItem.Size = new System.Drawing.Size(628, 44);
+            editLOOTUserlistyamlToolStripMenuItem.Text = "Edit LOOT Userlist.yaml";
+            editLOOTUserlistyamlToolStripMenuItem.Click += editLOOTUserlistyamlToolStripMenuItem_Click;
             // 
             // toolStripSeparator17
             // 
@@ -2499,5 +2507,6 @@
         private System.Windows.Forms.ToolStripMenuItem deleteBlockedModstxtToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem blockedModsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem removeMissingModsFromBlockedModstxtToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem editLOOTUserlistyamlToolStripMenuItem;
     }
 }

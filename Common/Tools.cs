@@ -295,7 +295,7 @@ namespace Starfield_Tools.Common // Various functions used by the app
             catch (Exception ex)
             {
 #if DEBUG
-        MessageBox.Show("Tools.FileCompare error: " + ex.Message);
+                MessageBox.Show("Tools.FileCompare error: " + ex.Message);
 #endif
                 return false;
             }
