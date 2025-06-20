@@ -4049,8 +4049,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 Properties.Settings.Default.CreationsUpdate = true;
                 Properties.Settings.Default.AutoRestore = false;
                 Properties.Settings.Default.AutoCheck = true;
-                if (log)
-                    activityLog.WriteLog("Creations Update started");
+
                 if (Tools.ConfirmAction("1. Start the game and update Creations mods.\n2. Don't Load a Save Game\n3. Quit the game and run this app again\n\n" +
                     "To Cancel this option," +
                     " click this menu option again\n\nRun the game now?", "Steps to Update Creations Mods", MessageBoxButtons.YesNo, MessageBoxIcon.Question,
