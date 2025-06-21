@@ -356,8 +356,6 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                     activityLog.WriteLog("Creations update complete, backup status: " + BackupStatus);
             }
 
-
-
             // Apply bold styling when ActiveOnly is enabled
             btnActiveOnly.Font = new Font(btnActiveOnly.Font, ActiveOnly ? FontStyle.Bold : FontStyle.Regular);
 
@@ -646,6 +644,9 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             progressBar1.Maximum = lines.Length;
             progressBar1.Value = 0;
             progressBar1.Show();
+
+            string previousGroup = null;
+
             foreach (var line in lines)
             {
                 // Skip empty lines, excluded lines or comments.
@@ -699,6 +700,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                     if (group != null)
                     {
                         row.Cells["Group"].Value = group.group;
+
                         // If a group URL exists, override our URL and description.
                         if (group.url?.FirstOrDefault() is { } urlInfo)
                         {
@@ -720,8 +722,21 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 // Special handling for Bethesda Game Studios mods.
                 if (pluginName.StartsWith("sfbgs", StringComparison.OrdinalIgnoreCase))
                 {
-                    string currentGroup = row.Cells["Group"].Value?.ToString() ?? "Bethesda Game Studios Creations";
-                    row.Cells["Group"].Value = $"{currentGroup} (Bethesda)";
+                    string currentGroupX = row.Cells["Group"].Value?.ToString() ?? "Bethesda Game Studios Creations";
+                    row.Cells["Group"].Value = $"{currentGroupX} (Bethesda)";
+                }
+
+                if (row.Cells["Index"].Visible) // Highlight index cells if visible
+                {
+                    string currentGroup = row.Cells["Group"].Value?.ToString();
+
+                    if (!string.Equals(currentGroup, previousGroup, StringComparison.OrdinalIgnoreCase))
+                    {
+                        row.Cells[0].Style.BackColor = Color.LightGoldenrodYellow; // Highlight only the first cell
+                        /*row.DefaultCellStyle.BackColor = Color.LightGoldenrodYellow;*/
+                    }
+
+                    previousGroup = currentGroup;
                 }
 
                 // Update required cells.
@@ -1919,7 +1934,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             }
 
             sbar3("Export done");
-            Process.Start("explorer.exe", exportDialog.FileName);
+            if (Tools.ConfirmAction("Open exported file", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                Process.Start("explorer.exe", exportDialog.FileName);
         }
 
         private void toolStripMenuDeleteLine_Click(object sender, EventArgs e)
@@ -4622,7 +4638,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             {
                 Debug.WriteLine(item.name);
             }
-            
+
 #endif
             RefreshDataGrid();
         }
@@ -4631,6 +4647,10 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
         {
             if (!string.IsNullOrEmpty(Properties.Settings.Default.BackupDirectory))
                 Tools.OpenFolder(Properties.Settings.Default.BackupDirectory);
+        }
+
+        private void exportModListToPDFToolStripMenuItem_Click(object sender, EventArgs e)
+        {
         }
     }
 }
