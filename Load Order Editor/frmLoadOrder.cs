@@ -1162,9 +1162,11 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             {
                 int rowIndex = (currentIndex + offset) % totalRows;
                 var cellValue = dataGridView1.Rows[rowIndex].Cells["PluginName"].Value;
+                var cellDescription = dataGridView1.Rows[rowIndex].Cells["Description"].Value;
                 string cellText = cellValue?.ToString().ToLowerInvariant() ?? string.Empty;
+                string cellDescriptionText = cellDescription?.ToString().ToLowerInvariant() ?? string.Empty;
 
-                if (cellText.Contains(searchQuery))
+                if (cellText.Contains(searchQuery)|| cellDescriptionText.Contains(searchQuery))
                 {
                     // Report the result.
                     string foundText = cellValue?.ToString() ?? "";

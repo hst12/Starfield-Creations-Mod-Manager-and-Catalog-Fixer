@@ -826,6 +826,7 @@
             exportModListToPDFToolStripMenuItem.Name = "exportModListToPDFToolStripMenuItem";
             exportModListToPDFToolStripMenuItem.Size = new System.Drawing.Size(504, 44);
             exportModListToPDFToolStripMenuItem.Text = "Export Mod List to PDF";
+            exportModListToPDFToolStripMenuItem.Visible = false;
             exportModListToPDFToolStripMenuItem.Click += exportModListToPDFToolStripMenuItem_Click;
             // 
             // toolStripSeparator2
