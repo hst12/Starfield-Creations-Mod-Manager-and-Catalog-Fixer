@@ -50,7 +50,10 @@ namespace Starfield_Tools
 
             if (Properties.Settings.Default.Log)
             {
-                activityLog = new ActivityLog(Path.Combine(Tools.LocalAppDataPath, "Activity Log.txt")); // Create activity log if enabled
+                tempstr = Properties.Settings.Default.LogFileDirectory;
+                if (tempstr == "")
+                    tempstr = Tools.LocalAppDataPath;
+                activityLog = new ActivityLog(Path.Combine(tempstr, "Activity Log.txt")); // Create activity log if enabled
                 log = true;
             }
 
@@ -1166,7 +1169,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 string cellText = cellValue?.ToString().ToLowerInvariant() ?? string.Empty;
                 string cellDescriptionText = cellDescription?.ToString().ToLowerInvariant() ?? string.Empty;
 
-                if (cellText.Contains(searchQuery)|| cellDescriptionText.Contains(searchQuery))
+                if (cellText.Contains(searchQuery) || cellDescriptionText.Contains(searchQuery))
                 {
                     // Report the result.
                     string foundText = cellValue?.ToString() ?? "";
@@ -1247,7 +1250,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SaveFileDialog saveDialog = new()
+            System.Windows.Forms.SaveFileDialog saveDialog = new()
             {
                 InitialDirectory = Properties.Settings.Default.ProfileFolder ??
                                    Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
@@ -1335,7 +1338,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             string profileFolder = Properties.Settings.Default.ProfileFolder
                                    ?? Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
-            OpenFileDialog openPlugins = new()
+            System.Windows.Forms.OpenFileDialog openPlugins = new()
             {
                 InitialDirectory = profileFolder,
                 Filter = "Txt File|*.txt",
@@ -1620,7 +1623,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 #endif
             if (string.IsNullOrEmpty(modFilePath))
             {
-                using (OpenFileDialog openMod = new OpenFileDialog
+                using (System.Windows.Forms.OpenFileDialog openMod = new System.Windows.Forms.OpenFileDialog
                 {
                     InitialDirectory = Properties.Settings.Default.DownloadsDirectory,
                     Filter = "Archive Files (*.zip;*.7z;*.rar)|*.zip;*.7z;*.rar|All Files (*.*)|*.*",
@@ -1882,7 +1885,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 
         private void toolStripMenuExportActive_Click(object sender, EventArgs e)
         {
-            var exportDialog = new SaveFileDialog
+            var exportDialog = new System.Windows.Forms.SaveFileDialog
             {
                 Filter = "Txt File|*.txt",
                 Title = "Export Active Plugins",
@@ -2584,7 +2587,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 
             CustomEXEFolder = Properties.Settings.Default.CustomEXE;
 
-            OpenFileDialog OpenEXE = new()
+            System.Windows.Forms.OpenFileDialog OpenEXE = new()
             {
                 InitialDirectory = CustomEXEFolder,
                 Filter = "exe File|*.exe",
@@ -3853,11 +3856,6 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             progressBar1.Width = 400; // Set the width of the progress bar
             progressBar1.Height = 50; // Set the height of the progress bar
             progressBar1.Location = new Point((this.ClientSize.Width - progressBar1.Width) / 2, (this.ClientSize.Height - progressBar1.Height) / 2);
-
-            /*if (Properties.Settings.Default.Log)
-            {
-                EnableLog();
-            }*/
         }
 
         private void toolStripMenuResetWindow_Click(object sender, EventArgs e)
@@ -3878,7 +3876,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
         {
             int i, j, ExportedLines = 0;
 
-            SaveFileDialog ExportActive = new()
+            System.Windows.Forms.SaveFileDialog ExportActive = new()
             {
                 Filter = "CSV File|*.csv",
                 Title = "Export to CSV",
@@ -4516,7 +4514,10 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 
         private void ShowLog() // Show Activity Log
         {
-            string pathToFile = Path.Combine(Tools.LocalAppDataPath, "Activity Log.txt");
+            tempstr= Properties.Settings.Default.LogFileDirectory;
+            if (tempstr == "")
+                tempstr = Tools.LocalAppDataPath;
+            string pathToFile = Path.Combine(tempstr, "Activity Log.txt");
             if (File.Exists(pathToFile))
                 Process.Start("explorer", pathToFile);
             else
@@ -4538,9 +4539,24 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             Tools.OpenUrl("https://www.nexusmods.com/games/starfield/mods?sort=updatedAt");
         }
 
+        /*private void DisableLog()
+        {
+            if (activityLog != null)
+            {
+                activityLog.Dispose();
+                activityLog = null;
+            }
+            log = false;
+            Properties.Settings.Default.Log = false;
+            toggleToolStripMenuItem.Checked = false;
+        }*/
+
         private void EnableLog()
         {
-            activityLog = new ActivityLog(Path.Combine(Tools.LocalAppDataPath, "Activity Log.txt"));
+            tempstr=Properties.Settings.Default.LogFileDirectory;
+            if ( tempstr=="")
+                tempstr = Tools.LocalAppDataPath;
+            activityLog = new ActivityLog(Path.Combine(tempstr, "Activity Log.txt"));
             log = true;
         }
 
@@ -4653,6 +4669,25 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 
         private void exportModListToPDFToolStripMenuItem_Click(object sender, EventArgs e)
         {
+        }
+
+        private void setDirectoryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var dialog = new FolderBrowserDialog())
+            {
+                dialog.Description = "Select a directory for the log file";
+                dialog.UseDescriptionForTitle = true; 
+                dialog.InitialDirectory = Properties.Settings.Default.LogFileDirectory;
+                DialogResult result = dialog.ShowDialog();
+
+                if (result != DialogResult.OK && !string.IsNullOrWhiteSpace(dialog.SelectedPath))
+                    return;
+
+                Properties.Settings.Default.LogFileDirectory = dialog.SelectedPath;
+                SaveSettings();
+                EnableLog();
+            }
+
         }
     }
 }

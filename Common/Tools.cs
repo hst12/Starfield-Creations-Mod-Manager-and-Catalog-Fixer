@@ -328,7 +328,7 @@ namespace Starfield_Tools.Common // Various functions used by the app
             MessageBox.Show("Please select the path to the game installation folder where Starfield.exe is located", "Select Game Path",
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            using (System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog())
             {
                 if (!string.IsNullOrEmpty(frmLoadOrder.StarfieldGamePath))
                     openFileDialog.InitialDirectory = frmLoadOrder.StarfieldGamePath;

@@ -656,5 +656,17 @@ namespace Starfield_Tools.Properties {
                 this["BlockedView"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LogFileDirectory {
+            get {
+                return ((string)(this["LogFileDirectory"]));
+            }
+            set {
+                this["LogFileDirectory"] = value;
+            }
+        }
     }
 }

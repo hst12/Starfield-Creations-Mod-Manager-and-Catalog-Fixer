@@ -208,6 +208,7 @@
             logToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toggleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            setDirectoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator44 = new System.Windows.Forms.ToolStripSeparator();
             disableAllWarningToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuGame = new System.Windows.Forms.ToolStripMenuItem();
@@ -1545,7 +1546,7 @@
             // 
             // logToolStripMenuItem
             // 
-            logToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toggleToolStripMenuItem, deleteToolStripMenuItem });
+            logToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toggleToolStripMenuItem, deleteToolStripMenuItem, setDirectoryToolStripMenuItem });
             logToolStripMenuItem.Name = "logToolStripMenuItem";
             logToolStripMenuItem.Size = new System.Drawing.Size(407, 44);
             logToolStripMenuItem.Text = "Logging";
@@ -1553,16 +1554,23 @@
             // toggleToolStripMenuItem
             // 
             toggleToolStripMenuItem.Name = "toggleToolStripMenuItem";
-            toggleToolStripMenuItem.Size = new System.Drawing.Size(219, 44);
+            toggleToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
             toggleToolStripMenuItem.Text = "Toggle";
             toggleToolStripMenuItem.Click += toggleToolStripMenuItem_Click;
             // 
             // deleteToolStripMenuItem
             // 
             deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            deleteToolStripMenuItem.Size = new System.Drawing.Size(219, 44);
+            deleteToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
             deleteToolStripMenuItem.Text = "Delete";
             deleteToolStripMenuItem.Click += deleteToolStripMenuItem_Click;
+            // 
+            // setDirectoryToolStripMenuItem
+            // 
+            setDirectoryToolStripMenuItem.Name = "setDirectoryToolStripMenuItem";
+            setDirectoryToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+            setDirectoryToolStripMenuItem.Text = "Set Directory";
+            setDirectoryToolStripMenuItem.Click += setDirectoryToolStripMenuItem_Click;
             // 
             // toolStripSeparator44
             // 
@@ -2527,5 +2535,6 @@
         private System.Windows.Forms.ToolStripMenuItem editLOOTUserlistyamlToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem modBackupsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exportModListToPDFToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem setDirectoryToolStripMenuItem;
     }
 }

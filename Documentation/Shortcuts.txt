@@ -34,7 +34,7 @@ Loot Autosort: Run LOOT with autosort parameter if installed. Turn on the Group 
 Press the Refresh button to see the changes.
 
 Refresh - F5 - discards unsaved changes. Use this function to update the display if necessary.
-Search - Click in the search box, type text to search for (mod filename only) and press enter. Press enter again to find the next match.
+Search - Click in the search box, type text to search for (mod filename or description if available) and press enter. Press enter again to find the next match.
 Search is case insensitive and any part of the filename can be searched for.
 
 View Menu
