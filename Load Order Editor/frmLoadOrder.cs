@@ -531,8 +531,31 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 
         private void KeyEvent(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.F5)
-                RefreshDataGrid();
+            switch (e.KeyCode)
+            {
+                /*case Keys.Enter:
+                    if (dataGridView1.Focused && !string.IsNullOrEmpty(txtSearchBox.Text))
+                        SearchMod();
+                    break;*/
+                    
+                /*case Keys.F3:
+                    if (dataGridView1.SelectedRows.Count > 0)
+                        SearchMod();
+                    break;*/
+
+                case Keys.F5:
+                    RefreshDataGrid();
+                    break;
+
+                case Keys.Escape:
+                    txtSearchBox.Clear();
+                    break;
+            }
+            if (e.Control && e.KeyCode == Keys.F)
+            {
+                txtSearchBox.Focus(); // Focus the search box when Ctrl+F is pressed
+                //SearchMod(); // Ctrl+F to search
+            }
         }
 
         private static bool CheckStarfieldCustom()
@@ -1879,8 +1902,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             Profiles = chkProfile.Checked;
             cmbProfile.Enabled = chkProfile.Checked;
 
-            if (chkProfile.Checked)
-                GetProfiles();
+            /*if (chkProfile.Checked)
+                GetProfiles();*/
         }
 
         private void toolStripMenuExportActive_Click(object sender, EventArgs e)
@@ -4514,7 +4537,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 
         private void ShowLog() // Show Activity Log
         {
-            tempstr= Properties.Settings.Default.LogFileDirectory;
+            tempstr = Properties.Settings.Default.LogFileDirectory;
             if (tempstr == "")
                 tempstr = Tools.LocalAppDataPath;
             string pathToFile = Path.Combine(tempstr, "Activity Log.txt");
@@ -4553,8 +4576,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 
         private void EnableLog()
         {
-            tempstr=Properties.Settings.Default.LogFileDirectory;
-            if ( tempstr=="")
+            tempstr = Properties.Settings.Default.LogFileDirectory;
+            if (tempstr == "")
                 tempstr = Tools.LocalAppDataPath;
             activityLog = new ActivityLog(Path.Combine(tempstr, "Activity Log.txt"));
             log = true;
@@ -4676,7 +4699,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             using (var dialog = new FolderBrowserDialog())
             {
                 dialog.Description = "Select a directory for the log file";
-                dialog.UseDescriptionForTitle = true; 
+                dialog.UseDescriptionForTitle = true;
                 dialog.InitialDirectory = Properties.Settings.Default.LogFileDirectory;
                 DialogResult result = dialog.ShowDialog();
 
@@ -4687,7 +4710,6 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 SaveSettings();
                 EnableLog();
             }
-
         }
     }
 }

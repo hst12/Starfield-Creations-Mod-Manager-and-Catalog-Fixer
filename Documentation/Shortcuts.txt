@@ -13,6 +13,8 @@ Run game - R
 Save Plugins - Ctrl-S
 Open Profile - Ctrl-O
 
+Ctrl-F - Search for mod by name or description
+
 Intall mods by dragging and dropping the zip file onto the mod list. Multiple files can be selected.
 
 Right-click on the mod list for context menu
@@ -34,8 +36,10 @@ Loot Autosort: Run LOOT with autosort parameter if installed. Turn on the Group 
 Press the Refresh button to see the changes.
 
 Refresh - F5 - discards unsaved changes. Use this function to update the display if necessary.
-Search - Click in the search box, type text to search for (mod filename or description if available) and press enter. Press enter again to find the next match.
-Search is case insensitive and any part of the filename can be searched for.
+
+Search (Ctrl-F) or click in the search box, type text to search for (mod filename or description if available) and press enter. Press enter again to find the next match.
+Press Escape to clear the search box contents
+Search is case insensitive and any part of the filename or description can be searched for.
 
 View Menu
 Columns: Some columns can be hidden or shown. Certain columns require a press of the Refresh button to update the display

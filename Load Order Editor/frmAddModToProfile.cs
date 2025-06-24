@@ -42,6 +42,7 @@ namespace Starfield_Tools.Load_Order_Editor
                     fileContents = File.ReadAllLines(Path.Combine(Properties.Settings.Default.ProfileFolder, item.ToString())).ToList();
                     fileContents.Remove("*" + ModName);
                     fileContents.Add(ModName); // Add the mod back without the * to indicate it is inactive
+                    fileContents = fileContents.Distinct().ToList(); // Avoid adding a duplicate
                     File.WriteAllLines(Path.Combine(Properties.Settings.Default.ProfileFolder, item.ToString()), fileContents);
                     if (log)
                         activityLog.WriteLog("Removed " + ModName + " from " + item.ToString() + " profile.");

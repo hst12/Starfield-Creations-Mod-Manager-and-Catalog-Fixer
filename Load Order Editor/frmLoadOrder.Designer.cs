@@ -1554,21 +1554,21 @@
             // toggleToolStripMenuItem
             // 
             toggleToolStripMenuItem.Name = "toggleToolStripMenuItem";
-            toggleToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+            toggleToolStripMenuItem.Size = new System.Drawing.Size(285, 44);
             toggleToolStripMenuItem.Text = "Toggle";
             toggleToolStripMenuItem.Click += toggleToolStripMenuItem_Click;
             // 
             // deleteToolStripMenuItem
             // 
             deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            deleteToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+            deleteToolStripMenuItem.Size = new System.Drawing.Size(285, 44);
             deleteToolStripMenuItem.Text = "Delete";
             deleteToolStripMenuItem.Click += deleteToolStripMenuItem_Click;
             // 
             // setDirectoryToolStripMenuItem
             // 
             setDirectoryToolStripMenuItem.Name = "setDirectoryToolStripMenuItem";
-            setDirectoryToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+            setDirectoryToolStripMenuItem.Size = new System.Drawing.Size(285, 44);
             setDirectoryToolStripMenuItem.Text = "Set Directory";
             setDirectoryToolStripMenuItem.Click += setDirectoryToolStripMenuItem_Click;
             // 
@@ -2057,7 +2057,7 @@
             txtSearchBox.Name = "txtSearchBox";
             txtSearchBox.Size = new System.Drawing.Size(96, 39);
             txtSearchBox.TabIndex = 17;
-            toolTip1.SetToolTip(txtSearchBox, "Search Box");
+            toolTip1.SetToolTip(txtSearchBox, "Ctrl-F to focus, Enter - Next match, Esc - Clear");
             txtSearchBox.KeyDown += txtSearchBox_KeyDown;
             // 
             // chkProfile
