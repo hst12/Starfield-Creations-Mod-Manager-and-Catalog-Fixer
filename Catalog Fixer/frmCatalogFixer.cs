@@ -350,8 +350,6 @@ namespace Starfield_Tools
                         toolStripStatusLabel1.Text = "Catalog OK";
                         CatalogStatus = toolStripStatusLabel1.Text;
                         richTextBox2.AppendText("\nCatalog OK\n");
-                        if (log)
-                            activityLog.WriteLog("Catalog OK");
                         return true;
                     }
                     else

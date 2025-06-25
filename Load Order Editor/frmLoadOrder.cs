@@ -369,7 +369,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             // Handle AutoUpdate logic
             if (AutoUpdate)
             {
-                int addedMods = AddMissing();
+                int changes = SyncPlugins();
+                /*int addedMods = AddMissing();
                 int removedMods = RemoveMissing();
                 int duplicates = RemoveDuplicates();
 
@@ -377,6 +378,16 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 {
                     sbar4($"Added: {addedMods}, Removed: {removedMods}, Duplicates: {duplicates}");
                     SavePlugins();
+
+                    if (AutoSort)
+                        RunLOOT(true);
+
+                    InitDataGrid();
+                }*/
+                if (changes > 0)
+                {
+                    sbar4($"Changes: {changes}");
+                    /*SavePlugins();*/
 
                     if (AutoSort)
                         RunLOOT(true);
@@ -537,7 +548,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                     if (dataGridView1.Focused && !string.IsNullOrEmpty(txtSearchBox.Text))
                         SearchMod();
                     break;*/
-                    
+
                 /*case Keys.F3:
                     if (dataGridView1.SelectedRows.Count > 0)
                         SearchMod();
@@ -1574,18 +1585,139 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             return removedFiles;
         }
 
+        private int SyncPlugins()
+        {
+            // 1) Validate game path once
+            if (!CheckGamePath() || string.IsNullOrEmpty(StarfieldGamePath))
+                return 0;
+
+            // 2) Gather all on-disk .esm + .esp plugin filenames
+            var pluginFiles = tools.GetPluginList();
+            string dataDir = Path.Combine(StarfieldGamePath, "Data");
+            try
+            {
+                pluginFiles.AddRange(
+                    Directory.EnumerateFiles(dataDir, "*.esp", SearchOption.TopDirectoryOnly)
+                             .Select(Path.GetFileName)
+                );
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"Error reading plugin files: {ex.Message}",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+                return 0;
+            }
+
+            var onDisk = new HashSet<string>(pluginFiles);
+
+            // 3) Remove duplicate rows in the grid (keep the first occurrence)
+            int dupRemoved = 0;
+            var duplicates = dataGridView1.Rows
+                .Cast<DataGridViewRow>()
+                .Select(r => r.Cells["PluginName"].Value as string)
+                .Where(n => !string.IsNullOrEmpty(n))
+                .GroupBy(n => n)
+                .Where(g => g.Count() > 1)
+                .Select(g => g.Key);
+
+            foreach (var name in duplicates)
+            {
+                // take all but the first row with this name
+                var rowsToDrop = dataGridView1.Rows
+                    .Cast<DataGridViewRow>()
+                    .Where(r => (r.Cells["PluginName"].Value as string) == name)
+                    .Skip(1)
+                    .ToList();
+
+                foreach (var row in rowsToDrop)
+                {
+                    dataGridView1.Rows.Remove(row);
+                    dupRemoved++;
+                    if (log)
+                        activityLog.WriteLog($"Removing duplicate entry {name}");
+                }
+            }
+
+            // 4) Rehydrate the set of what's currently in the grid
+            var inGrid = new HashSet<string>(
+                dataGridView1.Rows
+                    .Cast<DataGridViewRow>()
+                    .Select(r => r.Cells["PluginName"].Value as string)
+                    .Where(n => !string.IsNullOrEmpty(n))
+            );
+
+            // 5) Compute which to add / remove
+            var toAdd = onDisk.Except(inGrid).Except(tools.BethFiles).ToList();
+            var toRemove = inGrid.Except(onDisk).Union(tools.BethFiles).ToList();
+
+            int added = 0;
+            int removed = 0;
+
+            // 6) Add new entries
+            foreach (var file in toAdd)
+            {
+                int idx = dataGridView1.Rows.Add();
+                var row = dataGridView1.Rows[idx];
+
+                row.Cells["ModEnabled"].Value = file.EndsWith(".esm")
+                    && Properties.Settings.Default.ActivateNew;
+                row.Cells["PluginName"].Value = file;
+
+                if (log)
+                    activityLog.WriteLog($"Adding {file} to Plugins.txt");
+
+                added++;
+            }
+
+            // 7) Remove vanished or base‐game entries
+            foreach (var file in toRemove)
+            {
+                var rowsToDrop = dataGridView1.Rows
+                    .Cast<DataGridViewRow>()
+                    .Where(r => (r.Cells["PluginName"].Value as string) == file)
+                    .ToList();
+
+                foreach (var row in rowsToDrop)
+                {
+                    dataGridView1.Rows.Remove(row);
+                    if (log)
+                        activityLog.WriteLog($"Removing {file} from Plugins.txt");
+                    removed++;
+                }
+            }
+
+            // 8) Persist + summary log
+            int totalChanges = dupRemoved + added + removed;
+            if (totalChanges > 0)
+            {
+                if (log)
+                    activityLog.WriteLog($"Plugins added: {added}, removed: {removed}, duplicates removed: {dupRemoved}");
+                isModified = true;
+                SavePlugins();
+            }
+
+            return totalChanges;
+        }
+
         private int AddRemove()
         {
-            int ReturnStatus = AddMissing() + RemoveMissing();
-            if (ReturnStatus > 0)
-                SavePlugins();
+            /* int ReturnStatus = AddMissing() + RemoveMissing();
+             if (ReturnStatus > 0)
+                 SavePlugins();
 
-            return ReturnStatus;
+             return ReturnStatus;
+            */
+            return SyncPlugins();
         }
 
         private void toolStripMenuAutoClean_Click(object sender, EventArgs e)
         {
-            sbar3($"Changes made: {AddRemove().ToString()}");
+            /*sbar3($"Changes made: {AddRemove().ToString()}");*/
+            sbar3($"Changes made: {SyncPlugins().ToString()}");
         }
 
         private void SaveWindowSettings()
@@ -2230,7 +2362,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 
         private void toolStripMenAddRemoveContext_Click(object sender, EventArgs e)
         {
-            AddRemove();
+            /*AddRemove();*/
+            SyncPlugins();
         }
 
         private void toolStripMenuBGSStarfield_Click(object sender, EventArgs e)
@@ -2711,11 +2844,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                     return true;
                 }
                 else
-                {
-                    if (log)
-                        activityLog.WriteLog("StarfieldCustom.ini matches recommended default");
                     return false;
-                }
             }
             catch (Exception ex)
             {
@@ -2874,7 +3003,11 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             if (Delccc())
                 ChangeCount++;
             if (ChangeCount > 0)
+            {
                 sbar3(ChangeCount + " Change(s) made to Vortex created files");
+                if (log)
+                    activityLog.WriteLog($"{ChangeCount} Vortex changes undone");
+            }
             return ChangeCount;
         }
 
@@ -2885,7 +3018,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 
         private void UpdatePlugins()
         {
-            int changes = AddRemove() + RemoveDuplicates();
+            /*int changes = AddRemove() + RemoveDuplicates();*/
+            int changes = SyncPlugins();
             if (AutoSort && changes > 0)
                 RunLOOT(true);
 
@@ -3333,6 +3467,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                     activityLog.WriteLog("Enabling all settings");
                 ResetDefaults();
                 ShowRecommendedColumns();
+                modStatsToolStripMenuItem.Checked = true;
+                Properties.Settings.Default.ModStats = true;
             }
             if (!ActiveOnly)
                 ActiveOnlyToggle();
@@ -4431,46 +4567,69 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 
         private void UpdateAllProfiles()
         {
-            string activeProfile = cmbProfile.SelectedItem.ToString();
-            bool activeStatus = ActiveOnly, profileChanges = Properties.Settings.Default.CompareProfiles;
-            int changes = 0;
+            // Cache current UI settings
+            var activeProfile = cmbProfile.SelectedItem?.ToString();
+            bool wasActiveOnly = ActiveOnly;
+            bool wasCompareMode = Properties.Settings.Default.CompareProfiles;
+            int totalChanges = 0;
 
             if (log)
                 activityLog.WriteLog("Updating all profiles");
 
+            // Temporarily disable CompareProfiles and ActiveOnly filters
             Properties.Settings.Default.CompareProfiles = false;
-            SaveSettings();
-
             if (ActiveOnly)
                 ActiveOnlyToggle();
 
-            if (cmbProfile.Items.Count == 0 || cmbProfile.SelectedItem == null)
+            // Grab a snapshot of profile names
+            var profiles = cmbProfile.Items
+                                      .Cast<object>()
+                                      .Select(o => o.ToString())
+                                      .Where(n => !string.IsNullOrEmpty(n))
+                                      .ToArray();
+
+            if (profiles.Length == 0 || activeProfile == null)
             {
                 MessageBox.Show("No valid profiles found");
                 if (log)
                     activityLog.WriteLog("No valid profiles found");
+
+                // Restore original state
+                if (wasActiveOnly) ActiveOnlyToggle();
+                Properties.Settings.Default.CompareProfiles = wasCompareMode;
                 return;
             }
 
-            foreach (var item in cmbProfile.Items)
+            // Profile folder path
+            string folder = Properties.Settings.Default.ProfileFolder;
+
+            // Iterate once per profile
+            foreach (var name in profiles)
             {
-                SwitchProfile(Path.Combine(Properties.Settings.Default.ProfileFolder, item.ToString()));
-                SaveSettings();
+                string path = Path.Combine(folder, name);
+                SwitchProfile(path);
                 RefreshDataGrid();
-                changes += AddRemove() + RemoveDuplicates();
+
+                totalChanges += SyncPlugins();
+
                 if (AutoSort)
                     RunLOOT(true);
             }
-            SwitchProfile(Path.Combine(Properties.Settings.Default.ProfileFolder, activeProfile));
-            SaveSettings();
+
+            // Restore the original profile & UI state
+            SwitchProfile(Path.Combine(folder, activeProfile));
             RefreshDataGrid();
-            if (activeStatus)
+
+            if (wasActiveOnly)
                 ActiveOnlyToggle();
 
-            Properties.Settings.Default.CompareProfiles = profileChanges;
-            sbar3($"Changes made: {changes}");
+            // Restore CompareProfiles and persist settings once
+            Properties.Settings.Default.CompareProfiles = wasCompareMode;
+            SaveSettings();
+
+            sbar3($"Changes made: {totalChanges}");
             if (log)
-                activityLog.WriteLog($"Update All Profiles Changes made: {changes}");
+                activityLog.WriteLog($"UpdateAllProfiles – total changes: {totalChanges}");
         }
 
         private static void GetSteamGamePath()
