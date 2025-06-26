@@ -91,7 +91,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             {
                 // Check the catalog
                 tempstr = StarfieldTools.CatalogStatus;
-                sbar4(tempstr);
+                /*sbar4(tempstr);*/
                 if (tempstr != null && StarfieldTools.CatalogStatus.Contains("Error"))
                     StarfieldTools.Show(); // Show catalog fixer if catalog broken
             }
@@ -370,20 +370,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             if (AutoUpdate)
             {
                 int changes = SyncPlugins();
-                /*int addedMods = AddMissing();
-                int removedMods = RemoveMissing();
-                int duplicates = RemoveDuplicates();
 
-                if (addedMods + removedMods > 0)
-                {
-                    sbar4($"Added: {addedMods}, Removed: {removedMods}, Duplicates: {duplicates}");
-                    SavePlugins();
-
-                    if (AutoSort)
-                        RunLOOT(true);
-
-                    InitDataGrid();
-                }*/
                 if (changes > 0)
                 {
                     sbar4($"Changes: {changes}");
@@ -630,8 +617,6 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 
                 foreach (var kvp in data)
                 {
-                    /*try
-                    {*/
                     var item = kvp.Value;
                     var files = item.Files;
 
@@ -647,14 +632,6 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                     TimeStamp.Add(item.Timestamp);
                     CreationsID.Add(kvp.Key);
                     FileSize.Add(item.FilesSize);
-                    /*}
-                    catch (Exception ex)
-                    {
-                        sbar(ex.Message);
-#if DEBUG
-                        MessageBox.Show(ex.Message);
-#endif
-                    }*/
                 }
             }
             catch (Exception ex)
@@ -726,9 +703,11 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                     url = $"https://creations.bethesda.net/en/starfield/details/{(modID.Length > 3 ? modID[3..] : modID)}";
                 }
 
-                // Add new row.
-                var newRowIndex = dataGridView1.Rows.Add();
-                var row = dataGridView1.Rows[newRowIndex];
+                // Buffer the row before adding.
+                List<DataGridViewRow> rowBuffer = new List<DataGridViewRow>();
+
+                var row = new DataGridViewRow();
+                row.CreateCells(dataGridView1); // Create cells based on current column structure
 
                 // Update group information if available.
                 if (!string.IsNullOrEmpty(LOOTPath) && Groups.groups != null && isGroupVisible)
@@ -736,9 +715,9 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                     var group = Groups.plugins.FirstOrDefault(p => p.name.Equals(pluginName, StringComparison.OrdinalIgnoreCase));
                     if (group != null)
                     {
-                        row.Cells["Group"].Value = group.group;
+                        row.Cells[4].Value = group.group; // Group
 
-                        // If a group URL exists, override our URL and description.
+                        // If a group URL exists, override URL and description.
                         if (group.url?.FirstOrDefault() is { } urlInfo)
                         {
                             url = urlInfo.link;
@@ -751,7 +730,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 if (blockedMods.Contains(pluginName))
                 {
                     modEnabled = false;
-                    row.Cells["Blocked"].Value = true;
+                    row.Cells[13].Value = true; // Blocked
                 }
 
                 EnabledCount += modEnabled ? 1 : 0;
@@ -759,13 +738,13 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 // Special handling for Bethesda Game Studios mods.
                 if (pluginName.StartsWith("sfbgs", StringComparison.OrdinalIgnoreCase))
                 {
-                    string currentGroupX = row.Cells["Group"].Value?.ToString() ?? "Bethesda Game Studios Creations";
-                    row.Cells["Group"].Value = $"{currentGroupX} (Bethesda)";
+                    string currentGroupX = row.Cells[4].Value?.ToString() ?? "Bethesda Game Studios Creations"; //Group = column 4
+                    row.Cells[4].Value = $"{currentGroupX} (Bethesda)";
                 }
 
-                if (row.Cells["Index"].Visible) // Highlight index cells if visible
+                if (row.Cells[0].Visible) // Highlight index cells if visible
                 {
-                    string currentGroup = row.Cells["Group"].Value?.ToString();
+                    string currentGroup = row.Cells[4].Value?.ToString(); // Group = column 4
 
                     if (!string.Equals(currentGroup, previousGroup, StringComparison.OrdinalIgnoreCase))
                     {
@@ -777,30 +756,34 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 }
 
                 // Update required cells.
-                row.Cells["ModEnabled"].Value = modEnabled;
-                row.Cells["PluginName"].Value = pluginName;
-                row.Cells["CreationsID"].Value = modID;
-                row.Cells["URL"].Value = url;
+                
+                row.Cells[1].Value = modEnabled; // Enabled = column 1
+                row.Cells[2].Value = pluginName; // PluginName = column 2
+                row.Cells[10].Value = modID; // CreationsID = column 10
+                row.Cells[12].Value = url; // URL = column 12
 
                 // Update additional columns if visible
                 if (isDescriptionVisible)
-                    row.Cells["Description"].Value = description;
+                    row.Cells[3].Value = description; // Description = column 3
                 if (isVersionVisible)
-                    row.Cells["Version"].Value = modVersion;
+                    row.Cells[5].Value = modVersion; // Version = column 5
                 if (isAuthorVersionVisible)
-                    row.Cells["AuthorVersion"].Value = authorVersion;
+                    row.Cells[6].Value = authorVersion; // AuthorVersion = column 6
                 if (isTimeStampVisible)
-                    row.Cells["TimeStamp"].Value = modTimeStamp;
+                    row.Cells[7].Value = modTimeStamp; // TimeStamp = column 7
                 if (isAchievementsVisible)
-                    row.Cells["Achievements"].Value = aSafe;
+                    row.Cells[8].Value = aSafe; // Achievements = column 8
                 if (isFilesVisible)
-                    row.Cells["Files"].Value = modFiles;
+                    row.Cells[9].Value = modFiles; // Files = column 9
                 if (isFileSizeVisible)
-                    row.Cells["FileSize"].Value = modFileSize != 0 ? modFileSize : null;
+                    row.Cells[11].Value = modFileSize != 0 ? modFileSize : null; // FileSize = column 11
                 if (isIndexVisible)
-                    row.Cells["Index"].Value = IndexCount++;
-            } // End of main loop
+                    row.Cells[0].Value = IndexCount++; // Index = column 0
 
+                rowBuffer.Add(row);
+                dataGridView1.Rows.AddRange(rowBuffer.ToArray()); // Add all rows in one operation
+            } // End of main loop
+            dataGridView1.ResumeLayout(); // Resume layout
             progressBar1.Value = progressBar1.Maximum;
             dataGridView1.ResumeLayout(); // Resume layout after all rows have been processed.
             progressBar1.Hide();
