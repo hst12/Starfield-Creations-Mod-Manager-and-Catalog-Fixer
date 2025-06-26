@@ -756,7 +756,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 }
 
                 // Update required cells.
-                
+
                 row.Cells[1].Value = modEnabled; // Enabled = column 1
                 row.Cells[2].Value = pluginName; // PluginName = column 2
                 row.Cells[10].Value = modID; // CreationsID = column 10
@@ -4852,6 +4852,26 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 SaveSettings();
                 EnableLog();
             }
+        }
+
+        private void showAllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (DataGridViewColumn column in dataGridView1.Columns)
+            {
+                column.Visible = true;
+            }
+            SetColumnVisibility(true, timeStampToolStripMenuItem, dataGridView1.Columns["TimeStamp"]);
+            SetColumnVisibility(true, toolStripMenuAchievements, dataGridView1.Columns["Achievements"]);
+            SetColumnVisibility(true, toolStripMenuCreationsID, dataGridView1.Columns["CreationsID"]);
+            SetColumnVisibility(true, toolStripMenuFiles, dataGridView1.Columns["Files"]);
+            SetColumnVisibility(true, toolStripMenuGroup, dataGridView1.Columns["Group"]);
+            SetColumnVisibility(true, toolStripMenuIndex, dataGridView1.Columns["Index"]);
+            SetColumnVisibility(true, toolStripMenuFileSize, dataGridView1.Columns["FileSize"]);
+            SetColumnVisibility(true, uRLToolStripMenuItem, dataGridView1.Columns["URL"]);
+            SetColumnVisibility(true, toolStripMenuVersion, dataGridView1.Columns["Version"]);
+            SetColumnVisibility(true, toolStripMenuAuthorVersion, dataGridView1.Columns["AuthorVersion"]);
+            SetColumnVisibility(true, toolStripMenuDescription, dataGridView1.Columns["Description"]);
+            SetColumnVisibility(true, blockedToolStripMenuItem, dataGridView1.Columns["Blocked"]);
         }
     }
 }
