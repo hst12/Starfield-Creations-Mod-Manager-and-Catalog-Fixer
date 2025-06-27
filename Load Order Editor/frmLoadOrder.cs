@@ -863,10 +863,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 sbar("Hiding inactive mods...");
                 statusStrip1.Refresh();
                 foreach (DataGridViewRow row in dataGridView1.Rows)
-                {
                     if (!(bool)row.Cells["ModEnabled"].Value)
                         row.Visible = false;
-                }
             }
 
             sbar(StatText);
@@ -3459,6 +3457,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 
         private void disableAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (ActiveOnly)
+                ActiveOnlyToggle();
             ChangeSettings(false);
             if (log)
                 activityLog.WriteLog("Disabling all settings");
