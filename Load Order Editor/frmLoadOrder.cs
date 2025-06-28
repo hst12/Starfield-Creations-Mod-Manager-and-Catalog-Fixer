@@ -14,6 +14,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 using YamlDotNet.Serialization;
 using File = System.IO.File;
 
@@ -661,6 +662,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 
             string previousGroup = null;
 
+            List<DataGridViewRow> rowBuffer = new List<DataGridViewRow>();
+
             foreach (var line in lines)
             {
                 // Skip empty lines, excluded lines or comments.
@@ -704,7 +707,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 }
 
                 // Buffer the row before adding.
-                List<DataGridViewRow> rowBuffer = new List<DataGridViewRow>();
+                //List<DataGridViewRow> rowBuffer = new List<DataGridViewRow>();
 
                 var row = new DataGridViewRow();
                 row.CreateCells(dataGridView1); // Create cells based on current column structure
@@ -781,9 +784,11 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                     row.Cells[0].Value = IndexCount++; // Index = column 0
 
                 rowBuffer.Add(row);
-                dataGridView1.Rows.AddRange(rowBuffer.ToArray()); // Add all rows in one operation
+                //dataGridView1.Rows.AddRange(rowBuffer.ToArray()); // Add all rows in one operation
             } // End of main loop
-            dataGridView1.ResumeLayout(); // Resume layout
+            foreach (var row in rowBuffer)
+                dataGridView1.Rows.AddRange(row);
+
             progressBar1.Value = progressBar1.Maximum;
             dataGridView1.ResumeLayout(); // Resume layout after all rows have been processed.
             progressBar1.Hide();
@@ -811,15 +816,11 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                     List<string> suffixes = new(Tools.Suffixes);
 
                     directory = Path.Combine(StarfieldGamePath, "Data");
-
                     ba2Count = Directory.EnumerateFiles(directory, "*.ba2").Count();
-
                     esmCount = Directory.EnumerateFiles(directory, "*.esm").Count();
-
                     espCount = Directory.EnumerateFiles(directory, "*.esp")
                         .Select(file => Path.GetFileNameWithoutExtension(file)?.ToLower())
                         .Count(plugin => plugins.Contains(plugin));
-
                     mainCount = Directory.EnumerateFiles(directory, "* - main*.ba2")
                         .Select(file => Path.GetFileNameWithoutExtension(file)?.ToLower())
                         .Select(file => file.Replace(" - main", string.Empty)) // Remove "- main" suffix for matching
@@ -835,6 +836,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                     if (espCount > 0)
                         StatText += $", esp files: {espCount}";
 
+                    Debug.Assert(dataGridView1.RowCount - CreationsPlugin.Count >= 0, "Plugins mismatch");
                     if (dataGridView1.RowCount - CreationsPlugin.Count < 0)
                     {
                         sbar4("Catalog/Plugins mismatch - Run game to solve");
@@ -868,6 +870,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             }
 
             sbar(StatText);
+            dataGridView1.ResumeLayout(); // Resume layout
             dataGridView1.EndEdit();
         }
 
@@ -1568,10 +1571,13 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 
         private int SyncPlugins()
         {
-            // 1) Validate game path once
+            // 1) Validate game path
             if (!CheckGamePath() || string.IsNullOrEmpty(StarfieldGamePath))
                 return 0;
 
+            sbar3("Updating...");
+            statusStrip1.Refresh();
+            dataGridView1.SuspendLayout();
             // 2) Gather all on-disk .esm + .esp plugin filenames
             var pluginFiles = tools.GetPluginList();
             string dataDir = Path.Combine(StarfieldGamePath, "Data");
@@ -1654,7 +1660,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 added++;
             }
 
-            // 7) Remove vanished or base‐game entries
+            // 7) Remove deleted mods or base‐game entries
+            var counter = dataGridView1.Rows.Count;
             foreach (var file in toRemove)
             {
                 var rowsToDrop = dataGridView1.Rows
@@ -1664,7 +1671,11 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 
                 foreach (var row in rowsToDrop)
                 {
+                    counter--;
+                    sbar($"Removing {counter.ToString()}");
+                    statusStrip1.Refresh();
                     dataGridView1.Rows.Remove(row);
+
                     if (log)
                         activityLog.WriteLog($"Removing {file} from Plugins.txt");
                     removed++;
@@ -1681,6 +1692,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 SavePlugins();
             }
 
+            sbar3("");
+            dataGridView1.ResumeLayout();
             return totalChanges;
         }
 
@@ -3433,6 +3446,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             Properties.Settings.Default.CompareProfiles = NewSetting;
             Properties.Settings.Default.ActivateNew = NewSetting;
             Properties.Settings.Default.LOOTEnabled = NewSetting;
+            Properties.Settings.Default.ModStats = NewSetting;
 
             SaveSettings();
             SetMenus();
@@ -4112,7 +4126,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 
         private void ShowRecommendedColumns()
         {
-            var items = new[]
+            var enableItems = new[]
        {
     ("Group", toolStripMenuGroup),
     ("Version", toolStripMenuVersion),
@@ -4120,11 +4134,27 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
     ("Description", toolStripMenuDescription),
     ("Blocked", blockedToolStripMenuItem)
 };
+            var disableItems = new[]
+            {
+                ("TimeStamp", timeStampToolStripMenuItem),
+                ("Achievements", toolStripMenuAchievements),
+                ("CreationsID", toolStripMenuCreationsID),
+                ("Files", toolStripMenuFiles),
+                ("Index", toolStripMenuIndex),
+                ("FileSize", toolStripMenuFileSize),
+                ("URL", uRLToolStripMenuItem)
+            };
 
-            foreach (var (columnName, menuItem) in items)
+            foreach (var (columnName, menuItem) in enableItems)
             {
                 SetColumnVisibility(true, menuItem, dataGridView1.Columns[columnName]);
                 Properties.Settings.Default[columnName] = true;
+            }
+
+            foreach (var (columnName, menuItem) in disableItems)
+            {
+                SetColumnVisibility(false, menuItem, dataGridView1.Columns[columnName]);
+                Properties.Settings.Default[columnName] = false;
             }
 
             RefreshDataGrid();
