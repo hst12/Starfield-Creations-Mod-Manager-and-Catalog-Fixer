@@ -14,7 +14,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
 using YamlDotNet.Serialization;
 using File = System.IO.File;
 
@@ -606,10 +605,10 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             btnSave.Enabled = true;
             saveToolStripMenuItem.Enabled = true;
 
+            dataGridView1.SuspendLayout(); // Suspend UI updates to avoid redraw for every row addition.
             dataGridView1.Rows.Clear();
             SetColumnVisibility(false, toolStripMenuCreationsID, dataGridView1.Columns["CreationsID"]); // Temporarily turn off these columns
             SetColumnVisibility(false, uRLToolStripMenuItem, dataGridView1.Columns["URL"]);
-            dataGridView1.SuspendLayout(); // Suspend UI updates to avoid redraw for every row addition.
 
             try
             {
@@ -784,13 +783,11 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                     row.Cells[0].Value = IndexCount++; // Index = column 0
 
                 rowBuffer.Add(row);
-                //dataGridView1.Rows.AddRange(rowBuffer.ToArray()); // Add all rows in one operation
             } // End of main loop
             foreach (var row in rowBuffer)
                 dataGridView1.Rows.AddRange(row);
 
             progressBar1.Value = progressBar1.Maximum;
-            dataGridView1.ResumeLayout(); // Resume layout after all rows have been processed.
             progressBar1.Hide();
 
             // -- Process mod stats if the Starfield game path is set --
@@ -2598,7 +2595,16 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 
         private void toolStripMenuExploreGameDocs_Click(object sender, EventArgs e)
         {
-            Tools.OpenFolder(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"My Games\Starfield"));
+            try
+            {
+                Tools.OpenFolder(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"My Games\Starfield"));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Run the game to correct this", "Error opening Starfield game documents folder");
+                if (log)
+                    activityLog.WriteLog("Error opening Starfield game documents folder: " + ex.Message);
+            }
         }
 
         private bool Delccc()
@@ -3144,7 +3150,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 
         private void ActiveOnlyToggle()
         {
-            ActiveOnly = activeOnlyToolStripMenuItem.Checked = !activeOnlyToolStripMenuItem.Checked;
+            ActiveOnly = !activeOnlyToolStripMenuItem.Checked;
+            activeOnlyToolStripMenuItem.Checked = ActiveOnly;
             Properties.Settings.Default.ActiveOnly = ActiveOnly;
 
             sbar4("Loading...");
@@ -3152,13 +3159,15 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 
             bool showAll = !ActiveOnly;
 
-            dataGridView1.Rows.Cast<DataGridViewRow>()
-                .ToList()
-                .ForEach(row => row.Visible = showAll || (row.Cells["ModEnabled"].Value as bool? ?? false));
-
+            dataGridView1.SuspendLayout();
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                var isEnabled = row.Cells["ModEnabled"].Value as bool? ?? false;
+                row.Visible = showAll || isEnabled;
+            }
+            dataGridView1.ResumeLayout();
             sbar4(showAll ? "All mods shown" : "Active mods only");
 
-            // Set button to bold for active
             btnActiveOnly.Font = new Font(btnActiveOnly.Font, ActiveOnly ? FontStyle.Bold : FontStyle.Regular);
         }
 
@@ -4269,7 +4278,14 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 
         private void profileToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Tools.OpenFolder(Properties.Settings.Default.ProfileFolder);
+            try
+            {
+                Tools.OpenFolder(Properties.Settings.Default.ProfileFolder);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error opening profile folder: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private async void frmLoadOrder_KeyDown(object sender, KeyEventArgs e)
@@ -4860,6 +4876,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
         {
             if (!string.IsNullOrEmpty(Properties.Settings.Default.BackupDirectory))
                 Tools.OpenFolder(Properties.Settings.Default.BackupDirectory);
+            else
+                MessageBox.Show("Backup directory will be set after backing up a mod", "Backup Directory Not Set", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
         private void exportModListToPDFToolStripMenuItem_Click(object sender, EventArgs e)
