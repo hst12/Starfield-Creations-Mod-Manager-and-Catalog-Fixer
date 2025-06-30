@@ -572,7 +572,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 activityLog.WriteLog($"InitDatagrid called from {frame.GetMethod().Name}");
             }
 #endif
-            int EnabledCount = 0, IndexCount = 1, esmCount = 0, espCount = 0, ba2Count, mainCount, i, versionDelimiter, dotIndex;
+            int EnabledCount = 0, IndexCount = 1, esmCount = 0, espCount = 0, ba2Count, mainCount = 0, i, versionDelimiter, dotIndex;
             string loText = Path.Combine(Tools.StarfieldAppData, "Plugins.txt"),
                    LOOTPath = Properties.Settings.Default.LOOTPath,
                    StatText = "", directory, pluginName, rawVersion;
@@ -787,9 +787,6 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             foreach (var row in rowBuffer)
                 dataGridView1.Rows.AddRange(row);
 
-            progressBar1.Value = progressBar1.Maximum;
-            progressBar1.Hide();
-
             // -- Process mod stats if the Starfield game path is set --
             if (!string.IsNullOrEmpty(StarfieldGamePath) && Properties.Settings.Default.ModStats)
             {
@@ -818,10 +815,19 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                     espCount = Directory.EnumerateFiles(directory, "*.esp")
                         .Select(file => Path.GetFileNameWithoutExtension(file)?.ToLower())
                         .Count(plugin => plugins.Contains(plugin));
-                    mainCount = Directory.EnumerateFiles(directory, "* - main*.ba2")
-                        .Select(file => Path.GetFileNameWithoutExtension(file)?.ToLower())
-                        .Select(file => file.Replace(" - main", string.Empty)) // Remove "- main" suffix for matching
-                        .Count(mod => plugins.Contains(mod));
+
+                    foreach (string file in Directory.EnumerateFiles(directory, "* - main*.ba2")) // Count main archives
+                    {
+                        string? filename = Path.GetFileNameWithoutExtension(file)?.ToLower();
+                        if (filename != null)
+                        {
+                            string modName = filename.Replace(" - main", string.Empty);
+                            if (plugins.Contains(modName))
+                            {
+                                mainCount++;
+                            }
+                        }
+                    }
 
                     i = Directory.EnumerateFiles(directory, "* - texture*.ba2").Select(file => Path.GetFileNameWithoutExtension(file)?.ToLower())
                     .Select(file => file.Replace(" - textures", string.Empty)) // Remove "- textures" suffix for matching
@@ -865,6 +871,9 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                     if (!(bool)row.Cells["ModEnabled"].Value)
                         row.Visible = false;
             }
+
+            progressBar1.Value = progressBar1.Maximum;
+            progressBar1.Hide();
 
             sbar(StatText);
             dataGridView1.ResumeLayout(); // Resume layout
@@ -3485,6 +3494,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             ChangeSettings(false);
             if (log)
                 activityLog.WriteLog("Disabling all settings");
+            disableAllWarnings();
             sbar5("");
         }
 
@@ -4026,6 +4036,13 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
         private void toolStripMenuResetWindow_Click(object sender, EventArgs e)
         {
             ResetWindowSize();
+        }
+
+        private void disableAllWarnings()
+        {
+            disableAllWarningToolStripMenuItem.Checked = Properties.Settings.Default.NoWarn = NoWarn = false;
+            if (log)
+                activityLog.WriteLog("Disable all warnings set to " + NoWarn.ToString());
         }
 
         private void disableAllWarningToolStripMenuItem_Click(object sender, EventArgs e)
@@ -4600,13 +4617,15 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             var activeProfile = cmbProfile.SelectedItem?.ToString();
             bool wasActiveOnly = ActiveOnly;
             bool wasCompareMode = Properties.Settings.Default.CompareProfiles;
+            bool wasModStats = Properties.Settings.Default.ModStats;
             int totalChanges = 0;
 
             if (log)
                 activityLog.WriteLog("Updating all profiles");
 
-            // Temporarily disable CompareProfiles and ActiveOnly filters
+            // Temporarily disable CompareProfiles, ModStats and ActiveOnly filters
             Properties.Settings.Default.CompareProfiles = false;
+            Properties.Settings.Default.ModStats = false;
             if (ActiveOnly)
                 ActiveOnlyToggle();
 
@@ -4652,8 +4671,9 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             if (wasActiveOnly)
                 ActiveOnlyToggle();
 
-            // Restore CompareProfiles and persist settings once
+            // Restore CompareProfiles and persist settings
             Properties.Settings.Default.CompareProfiles = wasCompareMode;
+            Properties.Settings.Default.ModStats = wasModStats;
             SaveSettings();
 
             sbar3($"Changes made: {totalChanges}");

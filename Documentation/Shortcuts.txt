@@ -15,7 +15,7 @@ Open Profile - Ctrl-O
 
 Ctrl-F - Search for mod by name or description
 
-Intall mods by dragging and dropping the zip file onto the mod list. Multiple files can be selected.
+Install mods by dragging and dropping the zip file onto the mod list. Multiple files can be selected.
 
 Right-click on the mod list for context menu
 
@@ -25,6 +25,8 @@ Install mod from zip file - won't work for mods that have loose files.
 Archive mod - Zips up the files for a mod and copies them to a specified folder. The mod can be uninstalled at this point and re-installed later from the folder chosen.
 
 Un-install (delete) mod
+
+Block mods to prevent activation. This helps with Creations mods that always download even if you've unsubscribed from them.
 
 Add/Remove function checks game folder for installed mods and adds them to plugins.txt or removes deleted mods from Plugins.txt
 
