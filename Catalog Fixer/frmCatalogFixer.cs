@@ -181,7 +181,14 @@ namespace Starfield_Tools
         private void btnDelete_Click(object sender, EventArgs e)
         {
             if (Tools.ConfirmAction("Are you Sure?", "Delete ContentCatalog.txt", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                File.Delete(Tools.GetCatalogPath());
+                try
+                {
+                    File.Delete(Tools.GetCatalogPath());
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}", "Delete failed");
+                }
         }
 
         private void btnLoad_Click(object sender, EventArgs e)
@@ -223,7 +230,17 @@ namespace Starfield_Tools
             // Hack the Bethesda header back in
             json = Tools.MakeHeader() + json[1..];
 
-            File.WriteAllText(Tools.GetCatalogPath(), json); // Write updated catalog
+            try
+            {
+                File.WriteAllText(Tools.GetCatalogPath(), json); // Write updated catalog
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}", "Catalog Reset failed");
+                if (log)
+                    activityLog.WriteLog($"Error: {ex.Message} Catalog Reset failed");
+                return;
+            }
             DisplayCatalog();
             toolStripStatusLabel1.Text = "Version numbers reset";
         }
@@ -331,7 +348,7 @@ namespace Starfield_Tools
                     // Check the entire version string for invalid characters (anything other than letters, digits, or '.')
                     foreach (char c in versionStr)
                     {
-                        if (!char.IsLetterOrDigit(c) && c != '.' && c!='\\' && c!=' ')
+                        if (!char.IsLetterOrDigit(c) && c != '.' && c != '\\' && c != ' ')
                         {
                             errorCount++;
                             richTextBox2.AppendText($"Non numeric version number detected in {creation.Title} - {c}\n");

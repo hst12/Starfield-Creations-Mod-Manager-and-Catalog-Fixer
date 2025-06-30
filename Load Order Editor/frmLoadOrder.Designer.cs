@@ -220,6 +220,8 @@
             gameVersionSFSEToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator24 = new System.Windows.Forms.ToolStripSeparator();
             toolStripMenuCustom = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripSeparator47 = new System.Windows.Forms.ToolStripSeparator();
+            gameSelectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuMods = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuEnableAll = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuDisableAll = new System.Windows.Forms.ToolStripMenuItem();
@@ -1592,7 +1594,7 @@
             // 
             // toolStripMenuGame
             // 
-            toolStripMenuGame.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuRun, toolStripSeparator16, toolStripMenuSteam, toolStripMenuMS, gameVersionSFSEToolStripMenuItem, toolStripSeparator24, toolStripMenuCustom });
+            toolStripMenuGame.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuRun, toolStripSeparator16, toolStripMenuSteam, toolStripMenuMS, gameVersionSFSEToolStripMenuItem, toolStripSeparator24, toolStripMenuCustom, toolStripSeparator47, gameSelectToolStripMenuItem });
             toolStripMenuGame.Name = "toolStripMenuGame";
             toolStripMenuGame.Size = new System.Drawing.Size(96, 38);
             toolStripMenuGame.Text = "Game";
@@ -1644,6 +1646,18 @@
             toolStripMenuCustom.Size = new System.Drawing.Size(400, 44);
             toolStripMenuCustom.Text = "Game Version - Custom";
             toolStripMenuCustom.Click += toolStripMenuCustom_Click;
+            // 
+            // toolStripSeparator47
+            // 
+            toolStripSeparator47.Name = "toolStripSeparator47";
+            toolStripSeparator47.Size = new System.Drawing.Size(397, 6);
+            // 
+            // gameSelectToolStripMenuItem
+            // 
+            gameSelectToolStripMenuItem.Name = "gameSelectToolStripMenuItem";
+            gameSelectToolStripMenuItem.Size = new System.Drawing.Size(400, 44);
+            gameSelectToolStripMenuItem.Text = "Game Select";
+            gameSelectToolStripMenuItem.Click += gameSelectToolStripMenuItem_Click;
             // 
             // toolStripMenuMods
             // 
@@ -2543,5 +2557,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn URL;
         private System.Windows.Forms.DataGridViewTextBoxColumn Blocked;
         private System.Windows.Forms.ToolStripMenuItem showAllToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem gameSelectToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator47;
     }
 }

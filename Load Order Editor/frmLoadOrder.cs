@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using Microsoft.VisualBasic.Logging;
+using Microsoft.Win32;
 using Narod.SteamGameFinder;
 using SevenZipExtractor;
 using Starfield_Tools.Common;
@@ -100,24 +101,30 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
             try
             {
-                string LooseFilesDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"My Games\Starfield"), // Check if loose files are enabled
-filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
-                var StarfieldCustomINI = File.ReadAllLines(filePath);
-                foreach (var lines in StarfieldCustomINI)
+                // Check if loose files are enabled
+                string LooseFilesDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"My Games\Starfield"),
+                    filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
+                if (File.Exists(filePath))
                 {
-                    if (lines.Contains("bInvalidateOlderFiles"))
+                    var StarfieldCustomINI = File.ReadAllLines(filePath);
+                    foreach (var lines in StarfieldCustomINI)
                     {
-                        Properties.Settings.Default.LooseFiles = true;
-                        //SaveSettings();
-                        LooseFiles = true;
-                        break;
+                        if (lines.Contains("bInvalidateOlderFiles"))
+                        {
+                            Properties.Settings.Default.LooseFiles = true;
+                            //SaveSettings();
+                            LooseFiles = true;
+                            break;
+                        }
                     }
                 }
             }
             catch (Exception ex)
             {
+                if (log)
+                    activityLog.WriteLog("Error reading file" + ex.Message);
 #if DEBUG
-                MessageBox.Show(ex.Message, "Error opening StarfieldCustom.ini");
+                MessageBox.Show(ex.Message, "Error opening file");
 #endif
             }
 
@@ -254,6 +261,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             }
             catch (Exception ex)
             {
+                if (log)
+                    activityLog.WriteLog("Error creating BlockedMods.txt: " + ex.Message);
                 MessageBox.Show(ex.Message);
             }
 
@@ -278,6 +287,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             }
             catch (Exception ex)
             {
+                if (log)
+                    activityLog.WriteLog("Error backing up Plugins.txt: " + ex.Message);
 #if DEBUG
                 MessageBox.Show(ex.Message, "Error backing up Plugins.txt");
 #endif
@@ -400,13 +411,14 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 {
                     // Insert message at the top of the file
                     string[] existingLines = File.Exists(logFilePath) ? File.ReadAllLines(logFilePath) : new string[0];
+
                     List<string> updatedLines = new List<string> { DateTime.Now.ToString() + ": " + message }; // Prepend the new entry
                     updatedLines.AddRange(existingLines);
                     File.WriteAllLines(logFilePath, updatedLines);
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Error writing to log file: {ex.Message}");
+                    MessageBox.Show($"Error writing to log file: {ex.Message}");
                 }
             }
 
@@ -524,6 +536,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 MessageBox.Show(ex.Message, "Yaml decoding error\nLOOT userlist.yaml possibly corrupt", MessageBoxButtons.OK, MessageBoxIcon.Stop);
 #endif
                 sbar3(ex.Message);
+                if (log)
+                    activityLog.WriteLog("Error decoding LOOT userlist.yaml: " + ex.Message);
             }
         }
 
@@ -639,6 +653,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 #if DEBUG
                 MessageBox.Show(ex.Message);
 #endif
+                if (log)
+                    activityLog.WriteLog("Error reading catalog: " + ex.Message);
                 sbar(ex.Message);
             }
 
@@ -848,6 +864,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 }
                 catch (Exception ex)
                 {
+
                     sbar("Starfield path needs to be set for mod stats");
 #if DEBUG
                     MessageBox.Show(ex.Message);
@@ -910,6 +927,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             }
             catch (Exception ex)
             {
+                if (log)
+                    activityLog.WriteLog("Error reading profiles: " + ex.Message);
                 MessageBox.Show(ex.Message);
             }
         }
@@ -952,6 +971,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             }
             catch (Exception ex)
             {
+                if (log)
+                    activityLog.WriteLog($"Error saving plugins file {PluginFileName}: {ex.Message}");
                 MessageBox.Show(ex.Message, "Error saving plugins file", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                 FileInfo fileInfo = new FileInfo(PluginFileName);
@@ -1052,6 +1073,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             }
             catch (Exception ex)
             {
+                if (log)
+                    activityLog.WriteLog($"Backup of {Path.GetFileName(sourceFileName)} failed: {ex.Message}");
                 MessageBox.Show($"Error: {ex.Message}", "Backup failed");
             }
         }
@@ -1369,6 +1392,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             }
             catch (Exception ex)
             {
+                if (log)
+                    activityLog.WriteLog($"Error switching profile: {ex.Message}");
                 sbar2("Error switching profile");
                 MessageBox.Show(ex.Message, "Error switching profile", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -1613,6 +1638,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             }
             catch (Exception ex)
             {
+                if (log)
+                    activityLog.WriteLog($"Error reading plugin files: {ex.Message}");
                 MessageBox.Show(
                     $"Error reading plugin files: {ex.Message}",
                     "Error",
@@ -1785,7 +1812,11 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             if (Directory.Exists(extractPath))
             {
                 try { Directory.Delete(extractPath, true); }
-                catch { /* Optionally log or ignore cleanup errors */ }
+                catch (Exception ex)
+                {
+                    if (log)
+                        activityLog.WriteLog($"Error deleting temp directory: {ex.Message}");
+                }
             }
 
             // Obtain the mod file path either from the parameter or by showing a file dialog.
@@ -1872,6 +1903,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             }
             catch (Exception ex)
             {
+                if (log)
+                    activityLog.WriteLog($"Error extracting mod: {ex.Message}");
                 MessageBox.Show(ex.Message);
                 loadScreen.Close();
                 return;
@@ -1900,6 +1933,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             }
             catch (Exception ex)
             {
+                if (log)
+                    activityLog.WriteLog($"Error installing SFSE mod: {ex.Message}");
                 MessageBox.Show($"An error occurred: {ex.Message}");
             }
 
@@ -2654,6 +2689,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             }
             catch (Exception ex)
             {
+                if (log)
+                    activityLog.WriteLog("Error deleting Starfield.ccc: " + ex.Message);
 #if DEBUG
                 MessageBox.Show(ex.Message);
 #endif
@@ -3539,6 +3576,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             }
             catch (Exception ex)
             {
+                if (log)
+                    activityLog.WriteLog("Error reading StarfieldCustom.ini: " + ex.Message);
 #if DEBUG
                 MessageBox.Show(ex.Message);
 #endif
@@ -3936,6 +3975,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             }
             catch (Exception ex)
             {
+                if (log)
+                    activityLog.WriteLog("Error checking archives: " + ex.Message);
                 MessageBox.Show("Error: " + ex.Message);
                 return 0;
             }
@@ -3993,6 +4034,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             }
             catch (Exception ex)
             {
+                if (log)
+                    activityLog.WriteLog("Error adding mod to profile: " + ex.Message);
 #if DEBUG
                 MessageBox.Show("Error: " + ex.Message);
 #endif
@@ -4118,6 +4161,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 }
                 catch (Exception ex)
                 {
+                    if (log)
+                        activityLog.WriteLog("Error while exporting data: " + ex.Message);
                     MessageBox.Show("Error while exporting data: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
 
@@ -4709,7 +4754,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             }
             catch (Exception ex)
             {
-                //sbar3(ex.Message);
+
 #if DEBUG
                 MessageBox.Show(ex.Message);
 #endif
@@ -4957,6 +5002,13 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             SetColumnVisibility(true, toolStripMenuAuthorVersion, dataGridView1.Columns["AuthorVersion"]);
             SetColumnVisibility(true, toolStripMenuDescription, dataGridView1.Columns["Description"]);
             SetColumnVisibility(true, blockedToolStripMenuItem, dataGridView1.Columns["Blocked"]);
+        }
+
+        private void gameSelectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmGameSelect gameSelectForm = new frmGameSelect();
+            gameSelectForm.StartPosition = FormStartPosition.CenterScreen;
+            gameSelectForm.Show();
         }
     }
 }

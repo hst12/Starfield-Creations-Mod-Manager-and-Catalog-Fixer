@@ -668,5 +668,17 @@ namespace Starfield_Tools.Properties {
                 this["LogFileDirectory"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int GameSelect {
+            get {
+                return ((int)(this["GameSelect"]));
+            }
+            set {
+                this["GameSelect"] = value;
+            }
+        }
     }
 }

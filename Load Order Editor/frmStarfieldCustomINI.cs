@@ -64,7 +64,7 @@ bForcePhotoModeLoadScreen=1");
             {
                 INILines.Add(@"
 [Archive]
-bInvalidateOlderFiles=");
+bInvalidateOlderFiles=1");
             }
 
             if (chkPapyrusLogging.Checked)
