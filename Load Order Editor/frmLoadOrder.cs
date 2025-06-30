@@ -927,24 +927,43 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 return;
             }
 
-            using (StreamWriter writer = new(PluginFileName))
+            try
             {
-                writer.WriteLine("# This file is used by Starfield to keep track of your downloaded content.");
-                writer.WriteLine("# Please do not modify this file.");
-
-                foreach (DataGridViewRow row in dataGridView1.Rows)
+                using (StreamWriter writer = new(PluginFileName))
                 {
-                    var pluginName = row.Cells["PluginName"].Value as string;
-                    if (string.IsNullOrEmpty(pluginName))
-                        continue;
+                    writer.WriteLine("# This file is used by Starfield to keep track of your downloaded content.");
+                    writer.WriteLine("# Please do not modify this file.");
 
-                    bool modEnabled = row.Cells["ModEnabled"].Value as bool? ?? false;
+                    foreach (DataGridViewRow row in dataGridView1.Rows)
+                    {
+                        var pluginName = row.Cells["PluginName"].Value as string;
+                        if (string.IsNullOrEmpty(pluginName))
+                            continue;
 
-                    // Disable mod if it exists in BlockedMods
-                    modEnabled &= !Tools.BlockedMods().Contains(pluginName);
+                        bool modEnabled = row.Cells["ModEnabled"].Value as bool? ?? false;
 
-                    writer.Write(modEnabled ? "*" : "");
-                    writer.WriteLine(pluginName);
+                        // Disable mod if it exists in BlockedMods
+                        modEnabled &= !Tools.BlockedMods().Contains(pluginName);
+
+                        writer.Write(modEnabled ? "*" : "");
+                        writer.WriteLine(pluginName);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error saving plugins file", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                FileInfo fileInfo = new FileInfo(PluginFileName);
+
+                if (fileInfo.Exists)
+                {
+                    bool isReadOnly = fileInfo.IsReadOnly;
+                    MessageBox.Show($"{PluginFileName} is read-only", "Unable to save plugins", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    MessageBox.Show($"{PluginFileName} does not exist.");
                 }
             }
 
@@ -1351,9 +1370,7 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             catch (Exception ex)
             {
                 sbar2("Error switching profile");
-#if DEBUG
-                MessageBox.Show(ex.Message);
-#endif
+                MessageBox.Show(ex.Message, "Error switching profile", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -2398,8 +2415,8 @@ filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
 
         private void btnQuit_Click(object sender, EventArgs e)
         {
-            if (isModified)
-                SavePlugins();
+            /* if (isModified)
+                 SavePlugins();*/
             //SaveSettings();
             System.Windows.Forms.Application.Exit();
         }
