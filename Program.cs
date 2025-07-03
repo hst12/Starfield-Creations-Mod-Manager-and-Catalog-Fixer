@@ -12,6 +12,10 @@ namespace Starfield_Tools
         [STAThread]
         static void Main(string[] args)
         {
+
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.SetHighDpiMode(HighDpiMode.PerMonitorV2);
             Process currentProcess = Process.GetCurrentProcess();
             var runningProcesses = Process.GetProcessesByName(currentProcess.ProcessName);
 
@@ -20,9 +24,6 @@ namespace Starfield_Tools
                 MessageBox.Show("Another instance is already running!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.SetHighDpiMode(HighDpiMode.PerMonitorV2);
             Application.Run(new frmLoadOrder(""));
         }
     }

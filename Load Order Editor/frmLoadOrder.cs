@@ -766,7 +766,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
                     if (!string.Equals(currentGroup, previousGroup, StringComparison.OrdinalIgnoreCase))
                     {
-                        row.Cells[0].Style.BackColor = Color.LightGoldenrodYellow; // Highlight only the first cell
+                        row.Cells[0].Style.BackColor = Color.Gray; // Highlight only the first cell
                         /*row.DefaultCellStyle.BackColor = Color.LightGoldenrodYellow;*/
                     }
 
