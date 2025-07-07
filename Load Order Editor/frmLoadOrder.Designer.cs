@@ -96,6 +96,9 @@
             mnuBackupBlockedMods = new System.Windows.Forms.ToolStripMenuItem();
             mnuRestoreBlockedMods = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator41 = new System.Windows.Forms.ToolStripSeparator();
+            backupContentCatalogtxtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            restoreContentCatalogtxtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripSeparator48 = new System.Windows.Forms.ToolStripSeparator();
             toolStripMenuExportActive = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuExportCSV = new System.Windows.Forms.ToolStripMenuItem();
             exportModListToPDFToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -692,7 +695,7 @@
             // 
             // fileToolStripMenuItem
             // 
-            fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { newToolStripMenuItem, openToolStripMenuItem, saveToolStripMenuItem, saveAsToolStripMenuItem, toolStripSeparator, toolStripMenuBackup, toolStripMenuRestore, toolStripSeparator40, backupProfilesToolStripMenuItem, restoreProfilesToolStripMenuItem, toolStripSeparator1, updateAllProfilesToolStripMenuItem, toolStripSeparator43, mnuBackupBlockedMods, mnuRestoreBlockedMods, toolStripSeparator41, toolStripMenuExportActive, toolStripMenuExportCSV, exportModListToPDFToolStripMenuItem, toolStripSeparator2, exploreToolStripMenuItem, toolStripSeparator3, toolStripMenuEditFiles, toolStripSeparator17, convertLooseFilesModToolStripMenuItem, toolStripSeparator19, resetDeleteFilesToolStripMenuItem, toolStripSeparator46, exitToolStripMenuItem });
+            fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { newToolStripMenuItem, openToolStripMenuItem, saveToolStripMenuItem, saveAsToolStripMenuItem, toolStripSeparator, toolStripMenuBackup, toolStripMenuRestore, toolStripSeparator40, backupProfilesToolStripMenuItem, restoreProfilesToolStripMenuItem, toolStripSeparator1, updateAllProfilesToolStripMenuItem, toolStripSeparator43, mnuBackupBlockedMods, mnuRestoreBlockedMods, toolStripSeparator41, backupContentCatalogtxtToolStripMenuItem, restoreContentCatalogtxtToolStripMenuItem, toolStripSeparator48, toolStripMenuExportActive, toolStripMenuExportCSV, exportModListToPDFToolStripMenuItem, toolStripSeparator2, exploreToolStripMenuItem, toolStripSeparator3, toolStripMenuEditFiles, toolStripSeparator17, convertLooseFilesModToolStripMenuItem, toolStripSeparator19, resetDeleteFilesToolStripMenuItem, toolStripSeparator46, exitToolStripMenuItem });
             fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             fileToolStripMenuItem.Size = new System.Drawing.Size(71, 38);
             fileToolStripMenuItem.Text = "&File";
@@ -809,6 +812,25 @@
             toolStripSeparator41.Name = "toolStripSeparator41";
             toolStripSeparator41.Size = new System.Drawing.Size(501, 6);
             // 
+            // backupContentCatalogtxtToolStripMenuItem
+            // 
+            backupContentCatalogtxtToolStripMenuItem.Name = "backupContentCatalogtxtToolStripMenuItem";
+            backupContentCatalogtxtToolStripMenuItem.Size = new System.Drawing.Size(504, 44);
+            backupContentCatalogtxtToolStripMenuItem.Text = "Backup ContentCatalog.txt";
+            backupContentCatalogtxtToolStripMenuItem.Click += backupContentCatalogtxtToolStripMenuItem_Click;
+            // 
+            // restoreContentCatalogtxtToolStripMenuItem
+            // 
+            restoreContentCatalogtxtToolStripMenuItem.Name = "restoreContentCatalogtxtToolStripMenuItem";
+            restoreContentCatalogtxtToolStripMenuItem.Size = new System.Drawing.Size(504, 44);
+            restoreContentCatalogtxtToolStripMenuItem.Text = "Restore ContentCatalog.txt";
+            restoreContentCatalogtxtToolStripMenuItem.Click += restoreContentCatalogtxtToolStripMenuItem_Click;
+            // 
+            // toolStripSeparator48
+            // 
+            toolStripSeparator48.Name = "toolStripSeparator48";
+            toolStripSeparator48.Size = new System.Drawing.Size(501, 6);
+            // 
             // toolStripMenuExportActive
             // 
             toolStripMenuExportActive.Name = "toolStripMenuExportActive";
@@ -828,8 +850,7 @@
             exportModListToPDFToolStripMenuItem.Name = "exportModListToPDFToolStripMenuItem";
             exportModListToPDFToolStripMenuItem.Size = new System.Drawing.Size(504, 44);
             exportModListToPDFToolStripMenuItem.Text = "Export Mod List to PDF";
-            exportModListToPDFToolStripMenuItem.Visible = false;
-            exportModListToPDFToolStripMenuItem.Click += exportModListToPDFToolStripMenuItem_Click;
+            exportModListToPDFToolStripMenuItem.Click += toolStripMenuExportPDF_Click;
             // 
             // toolStripSeparator2
             // 
@@ -1657,6 +1678,7 @@
             gameSelectToolStripMenuItem.Name = "gameSelectToolStripMenuItem";
             gameSelectToolStripMenuItem.Size = new System.Drawing.Size(400, 44);
             gameSelectToolStripMenuItem.Text = "Game Select";
+            gameSelectToolStripMenuItem.Visible = false;
             gameSelectToolStripMenuItem.Click += gameSelectToolStripMenuItem_Click;
             // 
             // toolStripMenuMods
@@ -2559,5 +2581,8 @@
         private System.Windows.Forms.ToolStripMenuItem showAllToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem gameSelectToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator47;
+        private System.Windows.Forms.ToolStripMenuItem backupContentCatalogtxtToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem restoreContentCatalogtxtToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator48;
     }
 }

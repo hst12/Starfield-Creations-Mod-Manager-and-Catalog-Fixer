@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualBasic.Logging;
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 using Narod.SteamGameFinder;
 using SevenZipExtractor;
 using Starfield_Tools.Common;
@@ -242,9 +241,9 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                (colorMode == SystemColorMode.System && System.Windows.Forms.Application.SystemColorMode == SystemColorMode.Dark))
             {
                 dataGridView1.EnableHeadersVisualStyles = false;
-                dataGridView1.DefaultCellStyle.SelectionBackColor = Color.Green; // Background color of selected cells
-                dataGridView1.DefaultCellStyle.SelectionForeColor = Color.White; // Text color of selected cells
-                statusStrip1.BackColor = Color.Black;
+                dataGridView1.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.Green; // Background color of selected cells
+                dataGridView1.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.White; // Text color of selected cells
+                statusStrip1.BackColor = System.Drawing.Color.Black;
             }
             else
             {
@@ -371,7 +370,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             }
 
             // Apply bold styling when ActiveOnly is enabled
-            btnActiveOnly.Font = new Font(btnActiveOnly.Font, ActiveOnly ? FontStyle.Bold : FontStyle.Regular);
+            btnActiveOnly.Font = new System.Drawing.Font(btnActiveOnly.Font, ActiveOnly ? FontStyle.Bold : FontStyle.Regular);
 
             // Reset defaults if AutoReset is enabled
             if (Properties.Settings.Default.AutoReset)
@@ -710,8 +709,36 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                     if (versionDelimiter > 0)
                     {
                         authorVersion = rawVersion[(versionDelimiter + 1)..];
-                        if (double.TryParse(rawVersion[..versionDelimiter], out double seconds))
-                            modVersion = start.AddSeconds(seconds).Date.ToString("yyyy-MM-dd");
+
+                        /*if (double.TryParse(rawVersion[..versionDelimiter], out double seconds))
+                            modVersion = start.AddSeconds(seconds).Date.ToString("yyyy-MM-dd");*/
+
+                        try
+                        {
+                            if (versionDelimiter > 0 && versionDelimiter <= rawVersion.Length)
+                            {
+                                string timePart = rawVersion[..versionDelimiter];
+                                if (double.TryParse(timePart, out double seconds))
+                                {
+                                    modVersion = start.AddSeconds(seconds).Date.ToString("yyyy-MM-dd");
+                                }
+                                else
+                                {
+                                    // Handle failed parsing
+                                    modVersion = "Invalid version format";
+                                }
+                            }
+                            else
+                            {
+                                // Handle unexpected delimiter position
+                                modVersion = "Delimiter out of bounds";
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            // Log or handle unexpected exceptions
+                            modVersion = $"Error: {ex.Message}";
+                        }
                     }
                     modFiles = CreationsFiles[idx];
                     aSafe = AchievementSafe[idx] ? "Yes" : "";
@@ -766,7 +793,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
                     if (!string.Equals(currentGroup, previousGroup, StringComparison.OrdinalIgnoreCase))
                     {
-                        row.Cells[0].Style.BackColor = Color.Gray; // Highlight only the first cell
+                        row.Cells[0].Style.BackColor = System.Drawing.Color.Gray; // Highlight only the first cell
                         /*row.DefaultCellStyle.BackColor = Color.LightGoldenrodYellow;*/
                     }
 
@@ -859,12 +886,11 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                     if (dataGridView1.RowCount - CreationsPlugin.Count < 0)
                     {
                         sbar4("Catalog/Plugins mismatch - Run game to solve");
-                        MessageBox.Show("Catalog/Plugins mismatch - Run game to solve");
+                        //MessageBox.Show("Catalog/Plugins mismatch - Run game to solve");
                     }
                 }
                 catch (Exception ex)
                 {
-
                     sbar("Starfield path needs to be set for mod stats");
 #if DEBUG
                     MessageBox.Show(ex.Message);
@@ -1166,7 +1192,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
         private void dataGridView1_Sorted(object sender, EventArgs e)
         {
             sbar("Plugins sorted - saving changes disabled - Refresh to enable saving");
-            toolStripStatusStats.ForeColor = Color.Red;
+            toolStripStatusStats.ForeColor = System.Drawing.Color.Red;
             btnSave.Enabled = false;
             saveToolStripMenuItem.Enabled = false;
             GridSorted = true;
@@ -2175,7 +2201,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             if (rowIndexFromMouseDown != -1)
             {
                 // Remember the point where the mouse down occurred
-                Size dragSize = SystemInformation.DragSize;
+                System.Drawing.Size dragSize = SystemInformation.DragSize;
                 dragBoxFromMouseDown = new Rectangle(new Point(e.X - (dragSize.Width / 2), e.Y - (dragSize.Height / 2)), dragSize);
             }
             else
@@ -3231,7 +3257,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             dataGridView1.ResumeLayout();
             sbar4(showAll ? "All mods shown" : "Active mods only");
 
-            btnActiveOnly.Font = new Font(btnActiveOnly.Font, ActiveOnly ? FontStyle.Bold : FontStyle.Regular);
+            btnActiveOnly.Font = new System.Drawing.Font(btnActiveOnly.Font, ActiveOnly ? FontStyle.Bold : FontStyle.Regular);
         }
 
         private void activeOnlyToolStripMenuItem_Click(object sender, EventArgs e)
@@ -4081,7 +4107,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
             if (this.Width < minWidth || this.Height < minHeight)
             {
-                this.Size = new Size(minWidth, minHeight);
+                this.Size = new System.Drawing.Size(minWidth, minHeight);
                 this.Location = new Point(
         (Screen.PrimaryScreen.WorkingArea.Width - this.Width) / 2,
         (Screen.PrimaryScreen.WorkingArea.Height - this.Height) / 2
@@ -4754,7 +4780,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             }
             catch (Exception ex)
             {
-
 #if DEBUG
                 MessageBox.Show(ex.Message);
 #endif
@@ -4962,7 +4987,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 MessageBox.Show("Backup directory will be set after backing up a mod", "Backup Directory Not Set", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
-        private void exportModListToPDFToolStripMenuItem_Click(object sender, EventArgs e)
+        private void toolStripMenuExportPDF_Click(object sender, EventArgs e)
         {
         }
 
@@ -5009,6 +5034,61 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             frmGameSelect gameSelectForm = new frmGameSelect();
             gameSelectForm.StartPosition = FormStartPosition.CenterScreen;
             gameSelectForm.Show();
+        }
+
+        private void backupContentCatalogtxtToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using FolderBrowserDialog folderBrowserDialog = new();
+            folderBrowserDialog.Description = "Choose folder to use to backup ContentCatalog.txt";
+            folderBrowserDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments); // Set initial directory to Documents Directory
+            if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+            {
+                string selectedFolderPath = folderBrowserDialog.SelectedPath;
+                string FilePath = Path.Combine(Tools.StarfieldAppData, "ContentCatalog.txt");
+                string destinationPath = Path.Combine(selectedFolderPath, "ContentCatalog.txt");
+                if (!File.Exists(FilePath))
+                {
+                    MessageBox.Show("ContentCatalog.txt not found");
+                    return;
+                }
+                File.Copy(FilePath, destinationPath, true);
+                sbar3("ContentCatalog.txt backed up successfully.");
+                if (log)
+                    activityLog.WriteLog($"ContentCatalog.txt backed up to {selectedFolderPath}");
+            }
+        }
+
+        private void restoreContentCatalogtxtToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using FolderBrowserDialog folderBrowserDialog = new();
+            folderBrowserDialog.Description = "Choose folder to restore ContentCatalog.txt from";
+            folderBrowserDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments); // Set initial directory to Documents Directory
+            if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+            {
+                string selectedFolderPath = folderBrowserDialog.SelectedPath;
+
+                string backupFilePath = Path.Combine(selectedFolderPath, "ContentCatalog.txt");
+                string destinationPath = Path.Combine(Tools.StarfieldAppData, "ContentCatalog.txt");
+
+                if (!File.Exists(backupFilePath))
+                {
+                    MessageBox.Show("ContentCatalog.txt not found in the selected folder.");
+                    return;
+                }
+
+                try
+                {
+                    File.Copy(backupFilePath, destinationPath, true);
+                    RefreshDataGrid();
+                    sbar3("ContentCatalog.txt restored successfully.");
+                    if (log)
+                        activityLog.WriteLog($"ContentCatalog.txt restored from {selectedFolderPath}");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"An error occurred while restoring ContentCatalog.txt: {ex.Message}", "Restore Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
     }
 }
