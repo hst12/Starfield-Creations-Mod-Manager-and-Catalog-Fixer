@@ -1,5 +1,8 @@
 ﻿using Microsoft.Win32;
 using Narod.SteamGameFinder;
+using QuestPDF.Fluent;
+using QuestPDF.Helpers;
+using QuestPDF.Infrastructure;
 using SevenZipExtractor;
 using Starfield_Tools.Common;
 using Starfield_Tools.Load_Order_Editor;
@@ -2664,8 +2667,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void toolStripMenuEditPlugins_Click(object sender, EventArgs e)
         {
-            string pathToFile = (Path.Combine(Tools.StarfieldAppData, "Plugins.txt"));
-            Process.Start("explorer", pathToFile);
+            Tools.OpenFile(Path.Combine(Tools.StarfieldAppData, "Plugins.txt"));
         }
 
         private void toolStripMenuGroup_Click(object sender, EventArgs e)
@@ -2951,14 +2953,12 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void editStarfieldCustominiToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string pathToFile = (Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"My Games\Starfield\StarfieldCustom.ini"));
-            Process.Start("explorer", pathToFile);
+            Tools.OpenFile(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"My Games\Starfield\StarfieldCustom.ini"));
         }
 
         private void editContentCatalogtxtToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string pathToFile = Tools.GetCatalogPath();
-            Process.Start("explorer", pathToFile);
+            Tools.OpenFile(Tools.GetCatalogPath());
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -4286,8 +4286,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void editBlockedModstxtToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string pathToFile = (Path.Combine(Tools.LocalAppDataPath, "BlockedMods.txt"));
-            Process.Start("explorer", pathToFile);
+            Tools.OpenFile(Path.Combine(Tools.LocalAppDataPath, "BlockedMods.txt"));
             MessageBox.Show("Click OK to refresh");
             isModified = true;
             RefreshDataGrid();
@@ -4965,8 +4964,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             if (string.IsNullOrEmpty(Properties.Settings.Default.LOOTPath)) // Check if LOOT path is set
                 return;
 
-            string pathToFile = (Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"LOOT\games\Starfield\Userlist.yaml"));
-            Process.Start("explorer", pathToFile);
+            Tools.OpenFile(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"LOOT\games\Starfield\Userlist.yaml"));
             MessageBox.Show("Click OK to refresh");
             ReadLOOTGroups();
 # if DEBUG
@@ -4985,10 +4983,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 Tools.OpenFolder(Properties.Settings.Default.BackupDirectory);
             else
                 MessageBox.Show("Backup directory will be set after backing up a mod", "Backup Directory Not Set", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-        }
-
-        private void toolStripMenuExportPDF_Click(object sender, EventArgs e)
-        {
         }
 
         private void setDirectoryToolStripMenuItem_Click(object sender, EventArgs e)
@@ -5089,6 +5083,132 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                     MessageBox.Show($"An error occurred while restoring ContentCatalog.txt: {ex.Message}", "Restore Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
+        }
+
+        private void mnuExportPDF_Click(object sender, EventArgs e)
+        {
+            var tableData = new List<List<string>>();
+
+            var visibleColumns = dataGridView1.Columns
+    .Cast<DataGridViewColumn>()
+    .Where(col => col.Visible && (!ActiveOnly || col.Name != "ModEnabled"))
+    .ToList();
+
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                if (!row.IsNewRow && row.Visible)
+                {
+                    var rowData = new List<string>();
+
+                    foreach (var column in visibleColumns)
+                    {
+                        var cell = row.Cells[column.Index];
+                        rowData.Add(cell.Value?.ToString() ?? "");
+                    }
+
+                    tableData.Add(rowData);
+                }
+            }
+
+            var columnWidths = new List<int>();
+
+            using (Graphics g = dataGridView1.CreateGraphics())
+            {
+                foreach (var column in visibleColumns)
+                {
+                    // Prefer DefaultCellStyle.Font or fallback to grid's font
+                    var font = column.DefaultCellStyle.Font ?? dataGridView1.Font;
+                    int maxWidth = TextRenderer.MeasureText(g, column.HeaderText ?? "", font).Width;
+
+                    foreach (DataGridViewRow row in dataGridView1.Rows)
+                    {
+                        if (!row.IsNewRow && row.Visible)
+                        {
+                            string value = row.Cells[column.Index].Value?.ToString() ?? "";
+                            int cellWidth = TextRenderer.MeasureText(g, value, font).Width;
+                            maxWidth = Math.Max(maxWidth, cellWidth);
+                        }
+                    }
+
+                    // Add padding and optionally clamp
+                    columnWidths.Add(Math.Min(maxWidth + 12, 300)); // cap to 300pt max width
+                }
+            }
+
+            // Generate PDF
+            QuestPDF.Settings.License = LicenseType.Community;
+
+            //QuestPDF.Settings.EnableDebugging = true;
+
+            // Prompt for file name and path
+            System.Windows.Forms.SaveFileDialog ExportActive = new()
+            {
+                Filter = "PDF File|*.pdf",
+                Title = "Export to PDF",
+                FileName = "Plugins.pdf",
+            };
+
+            DialogResult dlgResult = ExportActive.ShowDialog();
+            if (dlgResult == DialogResult.OK)
+            {
+                Document.Create(container =>
+            {
+                container.Page(page =>
+                {
+                    page.MaxSize(PageSizes.A0.Landscape());
+
+                    page.Margin(20);
+                    page.DefaultTextStyle(x => x.FontSize(12));
+                    page.Footer().AlignRight().Text($"Exported on {DateTime.Now:yyyy-MM-dd}").FontSize(8).FontColor(Colors.Grey.Darken2);
+                    //page.DefaultTextStyle(x => x.FontSize(10));
+
+                    page.Content().Column(col =>
+                    {
+                        col.Item().Text($"Mod List Export - {cmbProfile.Text}").FontSize(28).Bold().FontColor(Colors.Blue.Medium).Underline().AlignCenter();
+                        col.Item().Table(table =>
+                        {
+                            // Define columns
+                            table.ColumnsDefinition(columns =>
+                            {
+                                foreach (var width in columnWidths)
+                                {
+                                    columns.ConstantColumn(width);
+                                }
+                            });
+
+                            // Header row
+                            table.Header(header =>
+                            {
+                                foreach (DataGridViewColumn column in visibleColumns)
+                                {
+                                    header.Cell().Element(c => c.Background(Colors.Blue.Lighten3).BorderBottom(2).BorderColor(Colors.Blue.Medium).PaddingVertical(5)
+                                        .PaddingHorizontal(8)).Text(text => text.Span(column.HeaderText).Bold());
+                                }
+                            });
+
+                            // Data rows
+                            foreach (var row in tableData)
+                            {
+                                foreach (var cell in row)
+                                {
+                                    table.Cell().Element(CellStyle).Text(cell);
+                                }
+                            }
+
+                            // Styling helper
+                            static IContainer CellStyle(IContainer container) => container
+                                .Padding(5)
+                                .BorderBottom(1)
+                                .BorderColor(Colors.Grey.Lighten2);
+                        });
+                    });
+                });
+            }).GeneratePdf(ExportActive.FileName);
+            }
+
+            // Open the PDF if the user confirms
+            if (Tools.ConfirmAction("Open PDF", "Open the exported file", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                Tools.OpenFile(ExportActive.FileName);
         }
     }
 }
