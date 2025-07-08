@@ -101,7 +101,7 @@
             toolStripSeparator48 = new System.Windows.Forms.ToolStripSeparator();
             toolStripMenuExportActive = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuExportCSV = new System.Windows.Forms.ToolStripMenuItem();
-            exportModListToPDFToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            mnuExportPDF = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             exploreToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             downloadsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -695,7 +695,7 @@
             // 
             // fileToolStripMenuItem
             // 
-            fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { newToolStripMenuItem, openToolStripMenuItem, saveToolStripMenuItem, saveAsToolStripMenuItem, toolStripSeparator, toolStripMenuBackup, toolStripMenuRestore, toolStripSeparator40, backupProfilesToolStripMenuItem, restoreProfilesToolStripMenuItem, toolStripSeparator1, updateAllProfilesToolStripMenuItem, toolStripSeparator43, mnuBackupBlockedMods, mnuRestoreBlockedMods, toolStripSeparator41, backupContentCatalogtxtToolStripMenuItem, restoreContentCatalogtxtToolStripMenuItem, toolStripSeparator48, toolStripMenuExportActive, toolStripMenuExportCSV, exportModListToPDFToolStripMenuItem, toolStripSeparator2, exploreToolStripMenuItem, toolStripSeparator3, toolStripMenuEditFiles, toolStripSeparator17, convertLooseFilesModToolStripMenuItem, toolStripSeparator19, resetDeleteFilesToolStripMenuItem, toolStripSeparator46, exitToolStripMenuItem });
+            fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { newToolStripMenuItem, openToolStripMenuItem, saveToolStripMenuItem, saveAsToolStripMenuItem, toolStripSeparator, toolStripMenuBackup, toolStripMenuRestore, toolStripSeparator40, backupProfilesToolStripMenuItem, restoreProfilesToolStripMenuItem, toolStripSeparator1, updateAllProfilesToolStripMenuItem, toolStripSeparator43, mnuBackupBlockedMods, mnuRestoreBlockedMods, toolStripSeparator41, backupContentCatalogtxtToolStripMenuItem, restoreContentCatalogtxtToolStripMenuItem, toolStripSeparator48, toolStripMenuExportActive, toolStripMenuExportCSV, mnuExportPDF, toolStripSeparator2, exploreToolStripMenuItem, toolStripSeparator3, toolStripMenuEditFiles, toolStripSeparator17, convertLooseFilesModToolStripMenuItem, toolStripSeparator19, resetDeleteFilesToolStripMenuItem, toolStripSeparator46, exitToolStripMenuItem });
             fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             fileToolStripMenuItem.Size = new System.Drawing.Size(71, 38);
             fileToolStripMenuItem.Text = "&File";
@@ -845,12 +845,12 @@
             toolStripMenuExportCSV.Text = "Export Mods to CSV";
             toolStripMenuExportCSV.Click += toolStripMenuExportCSV_Click;
             // 
-            // exportModListToPDFToolStripMenuItem
+            // mnuExportPDF
             // 
-            exportModListToPDFToolStripMenuItem.Name = "exportModListToPDFToolStripMenuItem";
-            exportModListToPDFToolStripMenuItem.Size = new System.Drawing.Size(504, 44);
-            exportModListToPDFToolStripMenuItem.Text = "Export Mod List to PDF";
-            exportModListToPDFToolStripMenuItem.Click += toolStripMenuExportPDF_Click;
+            mnuExportPDF.Name = "mnuExportPDF";
+            mnuExportPDF.Size = new System.Drawing.Size(504, 44);
+            mnuExportPDF.Text = "Export Mods to PDF";
+            mnuExportPDF.Click += mnuExportPDF_Click;
             // 
             // toolStripSeparator2
             // 
@@ -2562,7 +2562,7 @@
         private System.Windows.Forms.ToolStripMenuItem removeMissingModsFromBlockedModstxtToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem editLOOTUserlistyamlToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem modBackupsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem exportModListToPDFToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem mnuExportPDF;
         private System.Windows.Forms.ToolStripMenuItem setDirectoryToolStripMenuItem;
         private System.Windows.Forms.DataGridViewTextBoxColumn Index;
         private System.Windows.Forms.DataGridViewCheckBoxColumn ModEnabled;

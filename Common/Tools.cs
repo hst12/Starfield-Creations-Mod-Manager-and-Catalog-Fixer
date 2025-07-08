@@ -532,5 +532,17 @@ namespace Starfield_Tools.Common // Various functions used by the app
         {
             Process.Start(new ProcessStartInfo(folder) { UseShellExecute = true });
         }
+
+        public static void OpenFile(string file)
+        {
+            if (File.Exists(file))
+            {
+                Process.Start(new ProcessStartInfo(file) { UseShellExecute = true });
+            }
+            else
+            {
+                MessageBox.Show("File not found: " + file, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
 }

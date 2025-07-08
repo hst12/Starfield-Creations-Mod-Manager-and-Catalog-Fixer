@@ -110,6 +110,7 @@
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Narod.SteamGameFinder" Version="1.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="QuestPDF" Version="2025.7.0" />
     <PackageReference Include="SevenZipExtractor" Version="1.0.19" />
     <PackageReference Include="YamlDotNet" Version="16.3.0" />
   </ItemGroup>

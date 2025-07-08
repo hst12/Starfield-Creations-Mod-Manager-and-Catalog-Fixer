@@ -1,5 +1,8 @@
 ﻿using Microsoft.Win32;
 using Narod.SteamGameFinder;
+using QuestPDF.Fluent;
+using QuestPDF.Helpers;
+using QuestPDF.Infrastructure;
 using SevenZipExtractor;
 using Starfield_Tools.Common;
 using Starfield_Tools.Load_Order_Editor;
@@ -2664,8 +2667,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void toolStripMenuEditPlugins_Click(object sender, EventArgs e)
         {
-            string pathToFile = (Path.Combine(Tools.StarfieldAppData, "Plugins.txt"));
-            Process.Start("explorer", pathToFile);
+            Tools.OpenFile(Path.Combine(Tools.StarfieldAppData, "Plugins.txt"));
         }
 
         private void toolStripMenuGroup_Click(object sender, EventArgs e)
@@ -2951,14 +2953,12 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void editStarfieldCustominiToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string pathToFile = (Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"My Games\Starfield\StarfieldCustom.ini"));
-            Process.Start("explorer", pathToFile);
+            Tools.OpenFile(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"My Games\Starfield\StarfieldCustom.ini"));
         }
 
         private void editContentCatalogtxtToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string pathToFile = Tools.GetCatalogPath();
-            Process.Start("explorer", pathToFile);
+            Tools.OpenFile(Tools.GetCatalogPath());
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -4286,8 +4286,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void editBlockedModstxtToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string pathToFile = (Path.Combine(Tools.LocalAppDataPath, "BlockedMods.txt"));
-            Process.Start("explorer", pathToFile);
+            Tools.OpenFile(Path.Combine(Tools.LocalAppDataPath, "BlockedMods.txt"));
             MessageBox.Show("Click OK to refresh");
             isModified = true;
             RefreshDataGrid();
@@ -4965,8 +4964,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             if (string.IsNullOrEmpty(Properties.Settings.Default.LOOTPath)) // Check if LOOT path is set
                 return;
 
-            string pathToFile = (Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"LOOT\games\Starfield\Userlist.yaml"));
-            Process.Start("explorer", pathToFile);
+            Tools.OpenFile(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"LOOT\games\Starfield\Userlist.yaml"));
             MessageBox.Show("Click OK to refresh");
             ReadLOOTGroups();
 # if DEBUG
@@ -4985,10 +4983,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 Tools.OpenFolder(Properties.Settings.Default.BackupDirectory);
             else
                 MessageBox.Show("Backup directory will be set after backing up a mod", "Backup Directory Not Set", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-        }
-
-        private void toolStripMenuExportPDF_Click(object sender, EventArgs e)
-        {
         }
 
         private void setDirectoryToolStripMenuItem_Click(object sender, EventArgs e)
@@ -5089,6 +5083,112 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                     MessageBox.Show($"An error occurred while restoring ContentCatalog.txt: {ex.Message}", "Restore Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
+        }
+
+        private void mnuExportPDF_Click(object sender, EventArgs e)
+        {
+            var tableData = new List<List<string>>();
+            var visibleColumns = dataGridView1.Columns
+    .Cast<DataGridViewColumn>()
+    .Where(col => col.Visible)
+    .ToList();
+
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                if (!row.IsNewRow && row.Visible)
+                {
+                    var rowData = new List<string>();
+
+                    foreach (var column in visibleColumns)
+                    {
+                        var cell = row.Cells[column.Index];
+                        rowData.Add(cell.Value?.ToString() ?? "");
+                    }
+
+                    tableData.Add(rowData);
+                }
+            }
+
+            var headerWidths = new List<int>();
+            using (Graphics g = dataGridView1.CreateGraphics())
+            {
+                foreach (DataGridViewColumn column in visibleColumns)
+                {
+                    var text = column.HeaderText;
+                    var font = dataGridView1.Font; // Or column.HeaderCell.Style.Font if customized
+                    var size = TextRenderer.MeasureText(g, text, font);
+                    headerWidths.Add(size.Width);
+                }
+            }
+
+            // Generate PDF
+            QuestPDF.Settings.License = LicenseType.Community;
+
+            // Prompt for file name and path
+            System.Windows.Forms.SaveFileDialog ExportActive = new()
+            {
+                Filter = "PDF File|*.pdf",
+                Title = "Export to PDF",
+                FileName = "Plugins.pdf",
+            };
+
+            DialogResult dlgResult = ExportActive.ShowDialog();
+            if (dlgResult == DialogResult.OK)
+            {
+                Document.Create(container =>
+            {
+                container.Page(page =>
+                {
+                    page.Size(PageSizes.A4.Landscape());
+                    page.Margin(20);
+                    //page.DefaultTextStyle(x => x.FontSize(10));
+                    page.Content().Column(col =>
+                    {
+                        col.Item().Text($"Mod List Export - {cmbProfile.Text}").FontSize(20).Bold().AlignCenter();
+                        col.Item().Table(table =>
+                        {
+                            // Define columns
+                            table.ColumnsDefinition(columns =>
+                            {
+                                foreach (var width in headerWidths)
+                                {
+                                    columns.ConstantColumn(width);
+                                }
+                            });
+
+                            // Header row
+                            table.Header(header =>
+                            {
+                                //foreach (DataGridViewColumn column in dataGridView1.Columns)
+                                foreach (DataGridViewColumn column in visibleColumns)
+                                {
+                                    header.Cell().Element(CellStyle).Text(column.HeaderText);
+                                }
+                            });
+
+                            // Data rows
+                            foreach (var row in tableData)
+                            {
+                                foreach (var cell in row)
+                                {
+                                    table.Cell().Element(CellStyle).Text(cell);
+                                }
+                            }
+
+                            // Styling helper
+                            static IContainer CellStyle(IContainer container) => container
+                                .Padding(5)
+                                .BorderBottom(1)
+                                .BorderColor(Colors.Grey.Lighten2);
+                        });
+                    });
+                });
+            }).GeneratePdf(ExportActive.FileName);
+            }
+
+            // Open the PDF if the user confirms
+            if (Tools.ConfirmAction("Open PDF", "Open the exported file", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                Tools.OpenFile(ExportActive.FileName);
         }
     }
 }
