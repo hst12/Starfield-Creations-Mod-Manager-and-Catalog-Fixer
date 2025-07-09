@@ -5088,17 +5088,33 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
         private void mnuExportPDF_Click(object sender, EventArgs e)
         {
             var tableData = new List<List<string>>();
+            var groupData = new List<string>(); // Store group information separately
 
             var visibleColumns = dataGridView1.Columns
-    .Cast<DataGridViewColumn>()
-    .Where(col => col.Visible && (!ActiveOnly || col.Name != "ModEnabled"))
-    .ToList();
+                .Cast<DataGridViewColumn>()
+                .Where(col => col.Visible && (!ActiveOnly || col.Name != "ModEnabled"))
+                .ToList();
+
+            // Find and remove the group column from visible columns
+            var groupColumn = visibleColumns.FirstOrDefault(col => col.Name.ToLower().Contains("group") || col.HeaderText.ToLower().Contains("group"));
+            if (groupColumn != null)
+            {
+                visibleColumns.Remove(groupColumn);
+            }
 
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
                 if (!row.IsNewRow && row.Visible)
                 {
                     var rowData = new List<string>();
+
+                    // Store group information
+                    string groupValue = "";
+                    if (groupColumn != null)
+                    {
+                        groupValue = row.Cells[groupColumn.Index].Value?.ToString() ?? "";
+                    }
+                    groupData.Add(groupValue);
 
                     foreach (var column in visibleColumns)
                     {
@@ -5108,6 +5124,25 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
                     tableData.Add(rowData);
                 }
+            }
+
+            // Group the data by group value while preserving order
+            var groupedData = new Dictionary<string, List<List<string>>>();
+            var groupOrder = new List<string>(); // Track the order of groups as they appear
+
+            for (int i = 0; i < tableData.Count; i++)
+            {
+                string group = groupData[i];
+                if (string.IsNullOrEmpty(group))
+                    group = "Ungrouped";
+
+                if (!groupedData.ContainsKey(group))
+                {
+                    groupedData[group] = new List<List<string>>();
+                    groupOrder.Add(group); // Track the first occurrence of each group
+                }
+
+                groupedData[group].Add(tableData[i]);
             }
 
             var columnWidths = new List<int>();
@@ -5152,58 +5187,84 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             if (dlgResult == DialogResult.OK)
             {
                 Document.Create(container =>
-            {
-                container.Page(page =>
                 {
-                    page.MaxSize(PageSizes.A0.Landscape());
-
-                    page.Margin(20);
-                    page.DefaultTextStyle(x => x.FontSize(12));
-                    page.Footer().AlignRight().Text($"Exported on {DateTime.Now:yyyy-MM-dd}").FontSize(8).FontColor(Colors.Grey.Darken2);
-                    //page.DefaultTextStyle(x => x.FontSize(10));
-
-                    page.Content().Column(col =>
+                    container.Page(page =>
                     {
-                        col.Item().Text($"Mod List Export - {cmbProfile.Text}").FontSize(28).Bold().FontColor(Colors.Blue.Medium).Underline().AlignCenter();
-                        col.Item().Table(table =>
+                        page.MaxSize(PageSizes.A0.Landscape());
+                        page.Margin(20);
+                        page.DefaultTextStyle(x => x.FontSize(12));
+                        page.Footer().AlignRight().Text($"Exported on {DateTime.Now:yyyy-MM-dd}").FontSize(8).FontColor(Colors.Grey.Darken2);
+
+                        page.Content().Column(col =>
                         {
-                            // Define columns
-                            table.ColumnsDefinition(columns =>
+                            // Main title on first page
+                            col.Item().Text($"Mod List Export - {cmbProfile.Text}").FontSize(28).Bold().FontColor(Colors.Blue.Medium).Underline().AlignCenter();
+
+                            // Create sections for each group
+                            var groupColors = new[]
                             {
-                                foreach (var width in columnWidths)
+                Colors.Blue.Darken1,
+                Colors.Green.Darken1,
+                Colors.Purple.Darken1,
+                Colors.Orange.Darken1,
+                Colors.Red.Darken1,
+                Colors.Teal.Darken1,
+                Colors.Indigo.Darken1,
+                Colors.Brown.Darken1
+            };
+
+                            // Create one continuous table with all data
+                            col.Item().Table(table =>
+                            {
+                                // Define columns
+                                table.ColumnsDefinition(columns =>
                                 {
-                                    columns.ConstantColumn(width);
+                                    foreach (var width in columnWidths)
+                                    {
+                                        columns.ConstantColumn(width);
+                                    }
+                                });
+
+                                // Header row that will repeat on each page
+                                table.Header(header =>
+                                {
+                                    foreach (DataGridViewColumn column in visibleColumns)
+                                    {
+                                        header.Cell().Element(c => c.Background(Colors.Grey.Lighten4).BorderBottom(2).BorderColor(Colors.Blue.Darken1).PaddingVertical(5)
+                                            .PaddingHorizontal(8)).Text(text => text.Span(column.HeaderText).Bold().FontColor(Colors.Blue.Darken1));
+                                    }
+                                });
+
+                                // Data rows for all groups - iterate in original order
+                                int colorIndex = 0;
+                                foreach (var groupName in groupOrder)
+                                {
+                                    var headerColor = groupColors[colorIndex % groupColors.Length];
+                                    colorIndex++;
+
+                                    // Group subheading row
+                                    table.Cell().ColumnSpan((uint)visibleColumns.Count).Element(c => c.Background(Colors.Grey.Lighten5).BorderBottom(1).BorderColor(headerColor).PaddingVertical(8)
+                                        .PaddingHorizontal(8)).Text(text => text.Span(groupName).FontSize(16).Bold().FontColor(headerColor));
+
+                                    // Data rows for this group
+                                    foreach (var row in groupedData[groupName])
+                                    {
+                                        foreach (var cell in row)
+                                        {
+                                            table.Cell().Element(CellStyle).Text(cell);
+                                        }
+                                    }
                                 }
+
+                                // Styling helper
+                                static IContainer CellStyle(IContainer container) => container
+                                    .Padding(5)
+                                    .BorderBottom(1)
+                                    .BorderColor(Colors.Grey.Lighten2);
                             });
-
-                            // Header row
-                            table.Header(header =>
-                            {
-                                foreach (DataGridViewColumn column in visibleColumns)
-                                {
-                                    header.Cell().Element(c => c.Background(Colors.Blue.Lighten3).BorderBottom(2).BorderColor(Colors.Blue.Medium).PaddingVertical(5)
-                                        .PaddingHorizontal(8)).Text(text => text.Span(column.HeaderText).Bold());
-                                }
-                            });
-
-                            // Data rows
-                            foreach (var row in tableData)
-                            {
-                                foreach (var cell in row)
-                                {
-                                    table.Cell().Element(CellStyle).Text(cell);
-                                }
-                            }
-
-                            // Styling helper
-                            static IContainer CellStyle(IContainer container) => container
-                                .Padding(5)
-                                .BorderBottom(1)
-                                .BorderColor(Colors.Grey.Lighten2);
                         });
                     });
-                });
-            }).GeneratePdf(ExportActive.FileName);
+                }).GeneratePdf(ExportActive.FileName);
             }
 
             // Open the PDF if the user confirms
