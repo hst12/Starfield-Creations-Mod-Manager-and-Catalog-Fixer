@@ -4961,20 +4961,26 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void editLOOTUserlistyamlToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(Properties.Settings.Default.LOOTPath)) // Check if LOOT path is set
+            string LOOTPath = Properties.Settings.Default.LOOTPath;
+            if (string.IsNullOrEmpty(LOOTPath)) // Check if LOOT path is set
                 return;
 
-            Tools.OpenFile(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"LOOT\games\Starfield\Userlist.yaml"));
-            MessageBox.Show("Click OK to refresh");
+            /*Tools.OpenFile(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"LOOT\games\Starfield\Userlist.yaml"));
+            MessageBox.Show("Click OK to refresh");*/
             ReadLOOTGroups();
-# if DEBUG
-            foreach (var item in Groups.plugins)
+#if DEBUG
+            /*if (Groups.groups != null)
             {
+                foreach (var group in Groups.groups)
+                    Debug.WriteLine($"Found group: {group.name}");
+            }*/
+
+            var x=Groups.groups.OrderBy(g => g.name).ToList();
+            foreach (var item in x)
                 Debug.WriteLine(item.name);
-            }
 
 #endif
-            RefreshDataGrid();
+            //RefreshDataGrid();
         }
 
         private void modBackupsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -5173,8 +5179,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             // Generate PDF
             QuestPDF.Settings.License = LicenseType.Community;
 
-            //QuestPDF.Settings.EnableDebugging = true;
-
             // Prompt for file name and path
             System.Windows.Forms.SaveFileDialog ExportActive = new()
             {
@@ -5192,26 +5196,27 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                     {
                         page.MaxSize(PageSizes.A0.Landscape());
                         page.Margin(20);
-                        page.DefaultTextStyle(x => x.FontSize(12));
-                        page.Footer().AlignRight().Text($"Exported on {DateTime.Now:yyyy-MM-dd}").FontSize(8).FontColor(Colors.Grey.Darken2);
+                        page.DefaultTextStyle(x => x.FontSize(12).FontColor(Colors.Black));
+                        page.Footer().AlignRight().Text($"Exported on {DateTime.Now:yyyy-MM-dd}").FontSize(8).FontColor(Colors.Grey.Darken1);
 
                         page.Content().Column(col =>
                         {
-                            // Main title on first page
-                            col.Item().Text($"Mod List Export - {cmbProfile.Text}").FontSize(28).Bold().FontColor(Colors.Blue.Medium).Underline().AlignCenter();
+                            // Main title on first page - using professional navy blue
+                            col.Item().Text($"Mod List Export - {cmbProfile.Text}").FontSize(28).Bold().FontColor(Colors.Blue.Darken2).AlignCenter();
+                            col.Item().PaddingBottom(20);
 
-                            // Create sections for each group
+                            // Define single color per group - using professional, high-contrast colors
                             var groupColors = new[]
                             {
-                Colors.Blue.Darken1,
-                Colors.Green.Darken1,
-                Colors.Purple.Darken1,
-                Colors.Orange.Darken1,
-                Colors.Red.Darken1,
-                Colors.Teal.Darken1,
-                Colors.Indigo.Darken1,
-                Colors.Brown.Darken1
-            };
+                        Colors.Blue.Darken2,      // Professional navy
+                        Colors.Green.Darken2,     // Forest green
+                        Colors.Purple.Darken2,    // Deep purple
+                        Colors.Orange.Darken2,    // Burnt orange
+                        Colors.Red.Darken2,       // Dark red
+                        Colors.Teal.Darken2,      // Dark teal
+                        Colors.Brown.Darken2,     // Dark brown
+                        Colors.Indigo.Darken2     // Deep indigo
+                    };
 
                             // Create one continuous table with all data
                             col.Item().Table(table =>
@@ -5230,8 +5235,12 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                                 {
                                     foreach (DataGridViewColumn column in visibleColumns)
                                     {
-                                        header.Cell().Element(c => c.Background(Colors.Grey.Lighten4).BorderBottom(2).BorderColor(Colors.Blue.Darken1).PaddingVertical(5)
-                                            .PaddingHorizontal(8)).Text(text => text.Span(column.HeaderText).Bold().FontColor(Colors.Blue.Darken1));
+                                        header.Cell().Element(c => c.Background(Colors.Grey.Lighten3)
+                                            .BorderBottom(2)
+                                            .BorderColor(Colors.Blue.Darken2)
+                                            .PaddingVertical(8)
+                                            .PaddingHorizontal(8))
+                                            .Text(text => text.Span(column.HeaderText).Bold().FontColor(Colors.Blue.Darken2));
                                     }
                                 });
 
@@ -5239,28 +5248,32 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                                 int colorIndex = 0;
                                 foreach (var groupName in groupOrder)
                                 {
-                                    var headerColor = groupColors[colorIndex % groupColors.Length];
+                                    var groupColor = groupColors[colorIndex % groupColors.Length];
                                     colorIndex++;
 
-                                    // Group subheading row
-                                    table.Cell().ColumnSpan((uint)visibleColumns.Count).Element(c => c.Background(Colors.Grey.Lighten5).BorderBottom(1).BorderColor(headerColor).PaddingVertical(8)
-                                        .PaddingHorizontal(8)).Text(text => text.Span(groupName).FontSize(16).Bold().FontColor(headerColor));
+                                    // Group subheading row - single color background with white text
+                                    table.Cell().ColumnSpan((uint)visibleColumns.Count)
+                                        .Element(c => c.Background(groupColor)
+                                            .PaddingVertical(10)
+                                            .PaddingHorizontal(12))
+                                        .Text(text => text.Span(groupName).FontSize(16).Bold().FontColor(Colors.White));
 
-                                    // Data rows for this group
+                                    // Data rows for this group - black text on white background
                                     foreach (var row in groupedData[groupName])
                                     {
                                         foreach (var cell in row)
                                         {
-                                            table.Cell().Element(CellStyle).Text(cell);
+                                            table.Cell().Element(CellStyle).Text(text => text.Span(cell).FontColor(Colors.Black));
                                         }
                                     }
                                 }
 
-                                // Styling helper
+                                // Styling helper for data cells - clean white background with subtle borders
                                 static IContainer CellStyle(IContainer container) => container
-                                    .Padding(5)
-                                    .BorderBottom(1)
-                                    .BorderColor(Colors.Grey.Lighten2);
+                                    .Background(Colors.White)
+                                    .Padding(8)
+                                    //.BorderBottom(1)
+                                    .BorderColor(Colors.Grey.Lighten1);
                             });
                         });
                     });
