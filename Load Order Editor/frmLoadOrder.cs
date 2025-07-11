@@ -2119,7 +2119,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 GetProfiles();*/
         }
 
-        private void toolStripMenuExportActive_Click(object sender, EventArgs e)
+        private void toolStripMenuExportMods_Click(object sender, EventArgs e)
         {
             var exportDialog = new System.Windows.Forms.SaveFileDialog
             {
@@ -2136,7 +2136,8 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
-                if (row.Cells["ModEnabled"].Value is bool enabled && enabled)
+                //if (row.Cells["ModEnabled"].Value is bool enabled && enabled)
+                if (row.Visible)
                 {
                     string group = row.Cells["Group"].Value?.ToString();
                     if (!string.IsNullOrEmpty(group) && group != currentGroup)
@@ -3563,6 +3564,9 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 modStatsToolStripMenuItem.Checked = true;
                 Properties.Settings.Default.ModStats = true;
             }
+            if (Properties.Settings.Default.LOOTEnabled)
+                ReadLOOTGroups();
+
             if (!ActiveOnly)
                 ActiveOnlyToggle();
         }
@@ -4204,6 +4208,11 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
         {
             toolStripMenuLOOTToggle.Checked = !toolStripMenuLOOTToggle.Checked;
             Properties.Settings.Default.LOOTEnabled = toolStripMenuLOOTToggle.Checked;
+            if (toolStripMenuLOOTToggle.Checked)
+            {
+                ReadLOOTGroups();
+                InitDataGrid();
+            }
         }
 
         private void toolStripMenuDescription_Click(object sender, EventArgs e)
@@ -5201,11 +5210,11 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
                         page.Content().Column(col =>
                         {
-                            // Main title on first page - using professional navy blue
-                            col.Item().Text($"Mod List Export - {cmbProfile.Text}").FontSize(28).Bold().FontColor(Colors.Blue.Darken2).AlignCenter();
+                            // Main title on first page
+                            col.Item().Text($"Mod List Export {cmbProfile.Text}").FontSize(28).Bold().FontColor(Colors.Blue.Darken2).AlignCenter();
                             col.Item().PaddingBottom(20);
 
-                            // Define single color per group - using professional, high-contrast colors
+                            // Define single color per group
                             var groupColors = new[]
                             {
                         Colors.Blue.Darken2,      // Professional navy
@@ -5256,7 +5265,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                                         .Element(c => c.Background(groupColor)
                                             .PaddingVertical(10)
                                             .PaddingHorizontal(12))
-                                        .Text(text => text.Span(groupName).FontSize(16).Bold().FontColor(Colors.White));
+                                        .Text(text => text.Span(groupName).FontSize(12).Bold().FontColor(Colors.White));
 
                                     // Data rows for this group - black text on white background
                                     foreach (var row in groupedData[groupName])

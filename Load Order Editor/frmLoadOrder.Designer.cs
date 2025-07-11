@@ -835,8 +835,8 @@
             // 
             toolStripMenuExportActive.Name = "toolStripMenuExportActive";
             toolStripMenuExportActive.Size = new System.Drawing.Size(504, 44);
-            toolStripMenuExportActive.Text = "Export Active Mods to Text File";
-            toolStripMenuExportActive.Click += toolStripMenuExportActive_Click;
+            toolStripMenuExportActive.Text = "Export Mods to Text File";
+            toolStripMenuExportActive.Click += toolStripMenuExportMods_Click;
             // 
             // toolStripMenuExportCSV
             // 
