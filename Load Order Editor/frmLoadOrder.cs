@@ -47,6 +47,7 @@ namespace Starfield_Tools
             InitializeComponent();
 #if DEBUG
             this.Text = Application.ProductName + " " + File.ReadAllText(Path.Combine(Tools.CommonFolder, "App Version.txt")) + " Debug";
+            testToolStripMenuItem.Visible = true; // Show test menu in debug mode
 #endif
 
             LastProfile ??= Properties.Settings.Default.LastProfile;
@@ -4984,7 +4985,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                     Debug.WriteLine($"Found group: {group.name}");
             }*/
 
-            var x=Groups.groups.OrderBy(g => g.name).ToList();
+            var x = Groups.groups.OrderBy(g => g.name).ToList();
             foreach (var item in x)
                 Debug.WriteLine(item.name);
 
@@ -5292,6 +5293,16 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             // Open the PDF if the user confirms
             if (Tools.ConfirmAction("Open PDF", "Open the exported file", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 Tools.OpenFile(ExportActive.FileName);
+        }
+
+        private void generateReadfileTextToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            List<string> pluginFiles = tools.GetPluginList(); // Add .esm files
+            using (StreamWriter writer = new("Z:\\readfile.txt"))
+            {
+                foreach (var plugin in pluginFiles)
+                    writer.WriteLine($"readfile \"{Path.Combine(StarfieldGamePath, "Data", Path.GetFileNameWithoutExtension(plugin))}*\" /h");
+            }
         }
     }
 }

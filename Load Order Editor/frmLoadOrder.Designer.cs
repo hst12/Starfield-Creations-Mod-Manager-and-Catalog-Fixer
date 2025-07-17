@@ -267,6 +267,8 @@
             toolStripMenuShortcuts = new System.Windows.Forms.ToolStripMenuItem();
             documentationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            generateReadfileTextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             btnUp = new System.Windows.Forms.Button();
@@ -685,7 +687,7 @@
             // menuStrip1
             // 
             menuStrip1.ImageScalingSize = new System.Drawing.Size(32, 32);
-            menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { fileToolStripMenuItem, editToolStripMenuItem, viewToolStripMenuItem, toolsToolStripMenuItem, toolStripMenuGame, toolStripMenuMods, toolStripMenuLinks, helpToolStripMenuItem });
+            menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { fileToolStripMenuItem, editToolStripMenuItem, viewToolStripMenuItem, toolsToolStripMenuItem, toolStripMenuGame, toolStripMenuMods, toolStripMenuLinks, helpToolStripMenuItem, testToolStripMenuItem });
             menuStrip1.Location = new System.Drawing.Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Padding = new System.Windows.Forms.Padding(3, 1, 0, 1);
@@ -1584,7 +1586,7 @@
             // 
             toggleToolStripMenuItem.Name = "toggleToolStripMenuItem";
             toggleToolStripMenuItem.Size = new System.Drawing.Size(285, 44);
-            toggleToolStripMenuItem.Text = "Toggle";
+            toggleToolStripMenuItem.Text = "Enable";
             toggleToolStripMenuItem.Click += toggleToolStripMenuItem_Click;
             // 
             // deleteToolStripMenuItem
@@ -1965,6 +1967,21 @@
             aboutToolStripMenuItem.Size = new System.Drawing.Size(419, 44);
             aboutToolStripMenuItem.Text = "&About / Readme.txt";
             aboutToolStripMenuItem.Click += aboutToolStripMenuItem_Click;
+            // 
+            // testToolStripMenuItem
+            // 
+            testToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { generateReadfileTextToolStripMenuItem });
+            testToolStripMenuItem.Name = "testToolStripMenuItem";
+            testToolStripMenuItem.Size = new System.Drawing.Size(76, 38);
+            testToolStripMenuItem.Text = "Test";
+            testToolStripMenuItem.Visible = false;
+            // 
+            // generateReadfileTextToolStripMenuItem
+            // 
+            generateReadfileTextToolStripMenuItem.Name = "generateReadfileTextToolStripMenuItem";
+            generateReadfileTextToolStripMenuItem.Size = new System.Drawing.Size(383, 44);
+            generateReadfileTextToolStripMenuItem.Text = "Generate Readfile text";
+            generateReadfileTextToolStripMenuItem.Click += generateReadfileTextToolStripMenuItem_Click;
             // 
             // tableLayoutPanel2
             // 
@@ -2584,5 +2601,7 @@
         private System.Windows.Forms.ToolStripMenuItem backupContentCatalogtxtToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem restoreContentCatalogtxtToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator48;
+        private System.Windows.Forms.ToolStripMenuItem testToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem generateReadfileTextToolStripMenuItem;
     }
 }
