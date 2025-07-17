@@ -484,6 +484,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             blockedModsToolStripMenuItem.Checked = settings.BlockedView;
             if (Properties.Settings.Default.VortexPath != "")
                 vortexToolStripMenuItem.Visible = true;
+            runProgramToolStripMenuItem.Checked = settings.RunProgram;
         }
 
         private void SetupColumns()
@@ -2418,6 +2419,12 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
         private void RunGame()
         {
             bool result;
+
+            tempstr = Properties.Settings.Default.RunProgramPath;
+            if (Properties.Settings.Default.RunProgram && !string.IsNullOrEmpty(tempstr))
+                if (Process.GetProcessesByName(Path.GetFileNameWithoutExtension(tempstr)).Length == 0)
+                    Process.Start(tempstr); // Start the configured program before running the game.
+
             Properties.Settings.Default.GameVersion = GameVersion;
             SaveSettings();
             Form SS = new frmSplashScreen();
@@ -5304,6 +5311,21 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 foreach (var plugin in pluginFiles)
                     writer.WriteLine($"readfile \"{Path.Combine(StarfieldGamePath, "Data", Path.GetFileNameWithoutExtension(plugin))}*\" /h");
             }
+        }
+
+        private void runProgramToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            runProgramToolStripMenuItem.Checked = Properties.Settings.Default.RunProgram = !runProgramToolStripMenuItem.Checked;
+        }
+
+        private void programOptionsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            openFileDialog1.Title = "Select the program to run";
+            if (!string.IsNullOrEmpty(Properties.Settings.Default.RunProgramPath))
+                openFileDialog1.InitialDirectory = Path.GetDirectoryName(Properties.Settings.Default.RunProgramPath);
+            openFileDialog1.ShowDialog();
+            if (!string.IsNullOrEmpty(openFileDialog1.FileName))
+                Properties.Settings.Default.RunProgramPath = openFileDialog1.FileName;
         }
     }
 }

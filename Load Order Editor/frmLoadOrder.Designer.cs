@@ -183,7 +183,6 @@
             toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator18 = new System.Windows.Forms.ToolStripSeparator();
-            toolStripMenuSetPath = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator14 = new System.Windows.Forms.ToolStripSeparator();
             toolStripMenuLootPath = new System.Windows.Forms.ToolStripMenuItem();
             vortexPathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -225,6 +224,10 @@
             toolStripMenuCustom = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator47 = new System.Windows.Forms.ToolStripSeparator();
             gameSelectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripMenuGameLaunchOptions = new System.Windows.Forms.ToolStripMenuItem();
+            runProgramToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            programOptionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripMenuSetPath = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuMods = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuEnableAll = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuDisableAll = new System.Windows.Forms.ToolStripMenuItem();
@@ -1383,7 +1386,7 @@
             // 
             // toolsToolStripMenuItem
             // 
-            toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { optionsToolStripMenuItem, toolStripSeparator18, toolStripMenuSetPath, toolStripSeparator14, toolStripMenuLootPath, vortexPathToolStripMenuItem, modOrganizer2PathToolStripMenuItem, toolStripSeparator13, toolStripMenuLoadingScreen, toolStripMenuLoadScreenPreview, resetLoadScreenToolStripMenuItem, toolStripSeparator20, toolStripMenuCatalog, toolStripSeparator21, toolStripMenuProfilesOn, compareProfilesToolStripMenuItem, toolStripSeparator23, toolStripMenuAutoDelccc, autoResetToolStripMenuItem, toolStripSeparator22, autoUpdateModsToolStripMenuItem, activateNewModsToolStripMenuItem, toolStripMenuLOOTToggle, autoSortToolStripMenuItem, toolStripSeparator27, enableAllToolStripMenuItem, disableAllToolStripMenuItem, toolStripSeparator5, logToolStripMenuItem, toolStripSeparator44, disableAllWarningToolStripMenuItem });
+            toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { optionsToolStripMenuItem, toolStripSeparator18, toolStripSeparator14, toolStripMenuLootPath, vortexPathToolStripMenuItem, modOrganizer2PathToolStripMenuItem, toolStripSeparator13, toolStripMenuLoadingScreen, toolStripMenuLoadScreenPreview, resetLoadScreenToolStripMenuItem, toolStripSeparator20, toolStripMenuCatalog, toolStripSeparator21, toolStripMenuProfilesOn, compareProfilesToolStripMenuItem, toolStripSeparator23, toolStripMenuAutoDelccc, autoResetToolStripMenuItem, toolStripSeparator22, autoUpdateModsToolStripMenuItem, activateNewModsToolStripMenuItem, toolStripMenuLOOTToggle, autoSortToolStripMenuItem, toolStripSeparator27, enableAllToolStripMenuItem, disableAllToolStripMenuItem, toolStripSeparator5, logToolStripMenuItem, toolStripSeparator44, disableAllWarningToolStripMenuItem });
             toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             toolsToolStripMenuItem.Size = new System.Drawing.Size(89, 38);
             toolsToolStripMenuItem.Text = "&Tools";
@@ -1399,14 +1402,6 @@
             // 
             toolStripSeparator18.Name = "toolStripSeparator18";
             toolStripSeparator18.Size = new System.Drawing.Size(404, 6);
-            // 
-            // toolStripMenuSetPath
-            // 
-            toolStripMenuSetPath.Image = (System.Drawing.Image)resources.GetObject("toolStripMenuSetPath.Image");
-            toolStripMenuSetPath.Name = "toolStripMenuSetPath";
-            toolStripMenuSetPath.Size = new System.Drawing.Size(407, 44);
-            toolStripMenuSetPath.Text = "Starfield path";
-            toolStripMenuSetPath.Click += toolStripMenuSetPath_Click;
             // 
             // toolStripSeparator14
             // 
@@ -1617,7 +1612,7 @@
             // 
             // toolStripMenuGame
             // 
-            toolStripMenuGame.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuRun, toolStripSeparator16, toolStripMenuSteam, toolStripMenuMS, gameVersionSFSEToolStripMenuItem, toolStripSeparator24, toolStripMenuCustom, toolStripSeparator47, gameSelectToolStripMenuItem });
+            toolStripMenuGame.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuRun, toolStripSeparator16, toolStripMenuSteam, toolStripMenuMS, gameVersionSFSEToolStripMenuItem, toolStripSeparator24, toolStripMenuCustom, toolStripSeparator47, gameSelectToolStripMenuItem, toolStripMenuGameLaunchOptions, toolStripMenuSetPath });
             toolStripMenuGame.Name = "toolStripMenuGame";
             toolStripMenuGame.Size = new System.Drawing.Size(96, 38);
             toolStripMenuGame.Text = "Game";
@@ -1682,6 +1677,35 @@
             gameSelectToolStripMenuItem.Text = "Game Select";
             gameSelectToolStripMenuItem.Visible = false;
             gameSelectToolStripMenuItem.Click += gameSelectToolStripMenuItem_Click;
+            // 
+            // toolStripMenuGameLaunchOptions
+            // 
+            toolStripMenuGameLaunchOptions.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { runProgramToolStripMenuItem, programOptionsToolStripMenuItem });
+            toolStripMenuGameLaunchOptions.Name = "toolStripMenuGameLaunchOptions";
+            toolStripMenuGameLaunchOptions.Size = new System.Drawing.Size(400, 44);
+            toolStripMenuGameLaunchOptions.Text = "Game Launch Options";
+            // 
+            // runProgramToolStripMenuItem
+            // 
+            runProgramToolStripMenuItem.Name = "runProgramToolStripMenuItem";
+            runProgramToolStripMenuItem.Size = new System.Drawing.Size(308, 44);
+            runProgramToolStripMenuItem.Text = "Run Program";
+            runProgramToolStripMenuItem.Click += runProgramToolStripMenuItem_Click;
+            // 
+            // programOptionsToolStripMenuItem
+            // 
+            programOptionsToolStripMenuItem.Name = "programOptionsToolStripMenuItem";
+            programOptionsToolStripMenuItem.Size = new System.Drawing.Size(308, 44);
+            programOptionsToolStripMenuItem.Text = "Select Program";
+            programOptionsToolStripMenuItem.Click += programOptionsToolStripMenuItem_Click;
+            // 
+            // toolStripMenuSetPath
+            // 
+            toolStripMenuSetPath.Image = (System.Drawing.Image)resources.GetObject("toolStripMenuSetPath.Image");
+            toolStripMenuSetPath.Name = "toolStripMenuSetPath";
+            toolStripMenuSetPath.Size = new System.Drawing.Size(400, 44);
+            toolStripMenuSetPath.Text = "Game Path";
+            toolStripMenuSetPath.Click += toolStripMenuSetPath_Click;
             // 
             // toolStripMenuMods
             // 
@@ -2379,7 +2403,6 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuDeleteLine;
         private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuSetPath;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator14;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuGame;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuRun;
@@ -2603,5 +2626,9 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator48;
         private System.Windows.Forms.ToolStripMenuItem testToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem generateReadfileTextToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuGameLaunchOptions;
+        private System.Windows.Forms.ToolStripMenuItem runProgramToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem programOptionsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuSetPath;
     }
 }

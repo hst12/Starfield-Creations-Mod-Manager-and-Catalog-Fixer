@@ -680,5 +680,29 @@ namespace Starfield_Tools.Properties {
                 this["GameSelect"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool RunProgram {
+            get {
+                return ((bool)(this["RunProgram"]));
+            }
+            set {
+                this["RunProgram"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string RunProgramPath {
+            get {
+                return ((string)(this["RunProgramPath"]));
+            }
+            set {
+                this["RunProgramPath"] = value;
+            }
+        }
     }
 }
