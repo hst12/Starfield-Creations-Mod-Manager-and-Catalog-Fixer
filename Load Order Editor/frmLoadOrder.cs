@@ -5322,7 +5322,10 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
         {
             openFileDialog1.Title = "Select the program to run";
             if (!string.IsNullOrEmpty(Properties.Settings.Default.RunProgramPath))
+            {
                 openFileDialog1.InitialDirectory = Path.GetDirectoryName(Properties.Settings.Default.RunProgramPath);
+                openFileDialog1.FileName=Path.GetFileName(Properties.Settings.Default.RunProgramPath);
+            }
             openFileDialog1.ShowDialog();
             if (!string.IsNullOrEmpty(openFileDialog1.FileName))
                 Properties.Settings.Default.RunProgramPath = openFileDialog1.FileName;
