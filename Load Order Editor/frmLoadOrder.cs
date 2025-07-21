@@ -5324,11 +5324,32 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             if (!string.IsNullOrEmpty(Properties.Settings.Default.RunProgramPath))
             {
                 openFileDialog1.InitialDirectory = Path.GetDirectoryName(Properties.Settings.Default.RunProgramPath);
-                openFileDialog1.FileName=Path.GetFileName(Properties.Settings.Default.RunProgramPath);
+                openFileDialog1.FileName = Path.GetFileName(Properties.Settings.Default.RunProgramPath);
             }
             openFileDialog1.ShowDialog();
             if (!string.IsNullOrEmpty(openFileDialog1.FileName))
                 Properties.Settings.Default.RunProgramPath = openFileDialog1.FileName;
+        }
+
+        private void modContentsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string modName = string.Empty;
+
+            if (dataGridView1.CurrentRow == null || dataGridView1.CurrentRow.IsNewRow)
+            {
+                MessageBox.Show("Please select a mod first.");
+                return;
+            }
+
+            var selectedRows = dataGridView1.SelectedRows.Cast<DataGridViewRow>().ToList();
+
+            foreach (DataGridViewRow row in selectedRows)
+            {
+                modName = row.Cells["PluginName"].Value.ToString();
+
+                frmModContents fmc = new(modName);
+                fmc.Show();
+            }
         }
     }
 }
