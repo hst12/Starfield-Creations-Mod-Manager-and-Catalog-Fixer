@@ -5215,7 +5215,17 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                         page.MaxSize(PageSizes.A0.Landscape());
                         page.Margin(20);
                         page.DefaultTextStyle(x => x.FontSize(12).FontColor(Colors.Black));
-                        page.Footer().AlignRight().Text($"Exported on {DateTime.Now:yyyy-MM-dd}").FontSize(8).FontColor(Colors.Grey.Darken1);
+
+                        //page.Footer().AlignRight().Text($"Exported on {DateTime.Now:yyyy-MM-dd}").FontSize(8).FontColor(Colors.Grey.Darken1);
+
+                        page.Footer().AlignLeft().Text(text =>
+                        {
+                            text.Span($"Exported on {DateTime.Now:yyyy-MM-dd}").FontSize(8).FontColor(Colors.Grey.Darken1);
+                            text.Span(" - Page ").FontSize(8).FontColor(Colors.Grey.Darken1);
+                            text.CurrentPageNumber().FontSize(8).FontColor(Colors.Grey.Darken1);
+                            text.Span(" of ").FontSize(8).FontColor(Colors.Grey.Darken1);
+                            text.TotalPages().FontSize(8).FontColor(Colors.Grey.Darken1);
+                        });
 
                         page.Content().Column(col =>
                         {

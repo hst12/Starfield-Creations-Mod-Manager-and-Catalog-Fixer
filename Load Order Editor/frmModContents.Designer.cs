@@ -40,7 +40,7 @@
             btnOK.Name = "btnOK";
             btnOK.Size = new System.Drawing.Size(150, 46);
             btnOK.TabIndex = 0;
-            btnOK.Text = "Ok";
+            btnOK.Text = "Close";
             btnOK.UseVisualStyleBackColor = true;
             btnOK.Click += btnOK_Click;
             // 

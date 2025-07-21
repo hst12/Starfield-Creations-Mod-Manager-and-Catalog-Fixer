@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Starfield_Tools.Load_Order_Editor
@@ -48,21 +49,18 @@ namespace Starfield_Tools.Load_Order_Editor
 
         private void btnShowArchives_Click(object sender, EventArgs e)
         {
-            if (!File.Exists(Path.Combine(frmLoadOrder.StarfieldGamePath, @"Tools\Archive2", "Archive2.exe"))) // Check if Archive2.exe exists
+            string archive2Path = Path.Combine(frmLoadOrder.StarfieldGamePath, "Tools", "Archive2", "Archive2.exe");
+
+            if (!File.Exists(archive2Path)) // Check if Archive2.exe exists
             {
                 MessageBox.Show("Install the Creation Kit.", "Archive2.exe not found", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            string archive2Path = Path.Combine(frmLoadOrder.StarfieldGamePath, "Tools", "Archive2", "Archive2.exe");
-
-            foreach (var file in files)
+            foreach (var file in files.Where(f => f.EndsWith(".ba2")))
             {
-                if (file.EndsWith(".ba2"))
-                {
-                    string cmdLine = "\"" + Path.Combine(frmLoadOrder.StarfieldGamePath, "Data", file) + "\"";
-                    System.Diagnostics.Process.Start(archive2Path, cmdLine);
-                }
+                string cmdLine = "\"" + Path.Combine(frmLoadOrder.StarfieldGamePath, "Data", file) + "\"";
+                System.Diagnostics.Process.Start(archive2Path, cmdLine);
             }
         }
     }
