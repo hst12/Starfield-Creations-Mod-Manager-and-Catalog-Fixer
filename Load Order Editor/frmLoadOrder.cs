@@ -5216,8 +5216,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                         page.Margin(20);
                         page.DefaultTextStyle(x => x.FontSize(12).FontColor(Colors.Black));
 
-                        //page.Footer().AlignRight().Text($"Exported on {DateTime.Now:yyyy-MM-dd}").FontSize(8).FontColor(Colors.Grey.Darken1);
-
                         page.Footer().AlignLeft().Text(text =>
                         {
                             text.Span($"Exported on {DateTime.Now:yyyy-MM-dd}").FontSize(8).FontColor(Colors.Grey.Darken1);

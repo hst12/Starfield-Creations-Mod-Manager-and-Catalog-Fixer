@@ -325,9 +325,6 @@ namespace Starfield_Tools.Common // Various functions used by the app
 
         public string SetStarfieldGamePath() // Prompt for Starfield game path
         {
-            /*MessageBox.Show("Please select the path to the game installation folder where Starfield.exe is located", "Select Game Path",
-                MessageBoxButtons.OK, MessageBoxIcon.Information);*/
-
             using (System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog())
             {
                 if (!string.IsNullOrEmpty(frmLoadOrder.StarfieldGamePath))
@@ -364,7 +361,7 @@ namespace Starfield_Tools.Common // Various functions used by the app
         public string SetStarfieldGamePathMS()
         {
             string selectedPath = Properties.Settings.Default.GamePathMS;
-            MessageBox.Show("Please select the path to the game installation folder where Starfield.exe is located", "Select Game Path", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("Please select the path to the game installation folder where Starfield.exe is located", "Select Game Path - Choose the Content Folder", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             using (FolderBrowserDialog folderBrowserDialog = new())
             {
