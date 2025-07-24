@@ -3757,7 +3757,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             string url;
 
             if (Tools.ConfirmAction("Are you sure you want to open all mod web pages?", "This might take a while and a lot of memory",
-                MessageBoxButtons.YesNo) == DialogResult.Yes)
+                MessageBoxButtons.YesNo) == DialogResult.Yes || NoWarn)
             {
                 for (i = 0; i < dataGridView1.RowCount; i++)
                 {
@@ -3919,7 +3919,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                     Application.DoEvents();
 
                     if (row.Cells["PluginName"].Value is not string ModNameRaw) continue;
-                    string ModName = ModNameRaw[..ModNameRaw.IndexOf('.')]; // Get current mod name
+                    string ModName = ModNameRaw[..ModNameRaw.LastIndexOf('.')]; // Get current mod name
                     string ModFile = Path.Combine(directoryPath, ModName); // Add esp, esm, and archives to files list
 
                     if (File.Exists(ModFile + ".esp"))
@@ -4986,8 +4986,8 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             if (string.IsNullOrEmpty(LOOTPath)) // Check if LOOT path is set
                 return;
 
-            /*Tools.OpenFile(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"LOOT\games\Starfield\Userlist.yaml"));
-            MessageBox.Show("Click OK to refresh");*/
+            Tools.OpenFile(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"LOOT\games\Starfield\Userlist.yaml"));
+            MessageBox.Show("Click OK to refresh");
             ReadLOOTGroups();
 #if DEBUG
             /*if (Groups.groups != null)
@@ -5001,7 +5001,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 Debug.WriteLine(item.name);
 
 #endif
-            //RefreshDataGrid();
+            RefreshDataGrid();
         }
 
         private void modBackupsToolStripMenuItem_Click(object sender, EventArgs e)
