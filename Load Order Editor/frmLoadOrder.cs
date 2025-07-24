@@ -350,6 +350,9 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
                     InstallMod(strippedCommandLine);
                 }
+
+                if (arg.Equals("-hst"))
+                    testToolStripMenuItem.Visible = true;
             }
 
             cmbProfile.Enabled = Profiles;
@@ -1315,13 +1318,13 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void toolStripMenuEnableAll_Click(object sender, EventArgs e)
         {
-            if (Tools.ConfirmAction("This will reset your current load order", "Enable all mods?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            if (Tools.ConfirmAction("This will reset your current load order", "Enable all mods?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes || NoWarn)
                 EnableAll();
         }
 
         private void toolStripMenuDisableAll_Click(object sender, EventArgs e)
         {
-            if (Tools.ConfirmAction("This will reset your current load order", "Disable all mods?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            if (Tools.ConfirmAction("This will reset your current load order", "Disable all mods?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes || NoWarn)
                 DisableAll();
         }
 
@@ -2261,7 +2264,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             {
                 // Get the mod name from the PluginName cell (before the first dot).
                 string pluginName = row.Cells["PluginName"].Value?.ToString() ?? string.Empty;
-                int dotIndex = pluginName.IndexOf('.');
+                int dotIndex = pluginName.LastIndexOf('.');
                 if (dotIndex < 0)
                     continue;
 
@@ -5319,6 +5322,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 foreach (var plugin in pluginFiles)
                     writer.WriteLine($"readfile \"{Path.Combine(StarfieldGamePath, "Data", Path.GetFileNameWithoutExtension(plugin))}*\" /h");
             }
+            sbar("Readfile generation complete");
         }
 
         private void runProgramToolStripMenuItem_Click(object sender, EventArgs e)
