@@ -214,6 +214,9 @@
             deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             setDirectoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator44 = new System.Windows.Forms.ToolStripSeparator();
+            advancedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            generateReadfileTextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripSeparator40 = new System.Windows.Forms.ToolStripSeparator();
             disableAllWarningToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuGame = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuRun = new System.Windows.Forms.ToolStripMenuItem();
@@ -272,7 +275,6 @@
             documentationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            generateReadfileTextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             btnUp = new System.Windows.Forms.Button();
@@ -1131,7 +1133,7 @@
             // 
             savesToolStripMenuItem.Name = "savesToolStripMenuItem";
             savesToolStripMenuItem.Size = new System.Drawing.Size(346, 44);
-            savesToolStripMenuItem.Text = "Saves";
+            savesToolStripMenuItem.Text = "Saved Games";
             savesToolStripMenuItem.Click += savesToolStripMenuItem_Click;
             // 
             // restoreToolStripMenuItem
@@ -1144,28 +1146,28 @@
             // toolStripMenuRestore
             // 
             toolStripMenuRestore.Name = "toolStripMenuRestore";
-            toolStripMenuRestore.Size = new System.Drawing.Size(359, 44);
+            toolStripMenuRestore.Size = new System.Drawing.Size(346, 44);
             toolStripMenuRestore.Text = "Plugins.txt";
             toolStripMenuRestore.Click += toolStripMenuRestore_Click;
             // 
             // restoreProfilesToolStripMenuItem
             // 
             restoreProfilesToolStripMenuItem.Name = "restoreProfilesToolStripMenuItem";
-            restoreProfilesToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+            restoreProfilesToolStripMenuItem.Size = new System.Drawing.Size(346, 44);
             restoreProfilesToolStripMenuItem.Text = "Profiles";
             restoreProfilesToolStripMenuItem.Click += restoreProfilesToolStripMenuItem_Click;
             // 
             // mnuRestoreBlockedMods
             // 
             mnuRestoreBlockedMods.Name = "mnuRestoreBlockedMods";
-            mnuRestoreBlockedMods.Size = new System.Drawing.Size(359, 44);
+            mnuRestoreBlockedMods.Size = new System.Drawing.Size(346, 44);
             mnuRestoreBlockedMods.Text = "BlockedMods.txt";
             mnuRestoreBlockedMods.Click += mnuRestoreBlockedMods_Click;
             // 
             // restoreContentCatalogtxtToolStripMenuItem
             // 
             restoreContentCatalogtxtToolStripMenuItem.Name = "restoreContentCatalogtxtToolStripMenuItem";
-            restoreContentCatalogtxtToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+            restoreContentCatalogtxtToolStripMenuItem.Size = new System.Drawing.Size(346, 44);
             restoreContentCatalogtxtToolStripMenuItem.Text = "ContentCatalog.txt";
             restoreContentCatalogtxtToolStripMenuItem.Click += restoreContentCatalogtxtToolStripMenuItem_Click;
             // 
@@ -1405,7 +1407,7 @@
             // 
             // toolsToolStripMenuItem
             // 
-            toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { optionsToolStripMenuItem, toolStripSeparator14, toolStripMenuLootPath, vortexPathToolStripMenuItem, modOrganizer2PathToolStripMenuItem, toolStripSeparator13, toolStripMenuLoadingScreen, toolStripMenuLoadScreenPreview, resetLoadScreenToolStripMenuItem, toolStripSeparator20, toolStripMenuCatalog, toolStripSeparator21, toolStripMenuProfilesOn, compareProfilesToolStripMenuItem, toolStripSeparator23, toolStripMenuAutoDelccc, autoResetToolStripMenuItem, toolStripSeparator22, autoUpdateModsToolStripMenuItem, activateNewModsToolStripMenuItem, toolStripMenuLOOTToggle, autoSortToolStripMenuItem, toolStripSeparator27, enableAllToolStripMenuItem, disableAllToolStripMenuItem, toolStripSeparator5, logToolStripMenuItem, toolStripSeparator44, disableAllWarningToolStripMenuItem });
+            toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { optionsToolStripMenuItem, toolStripSeparator14, toolStripMenuLootPath, vortexPathToolStripMenuItem, modOrganizer2PathToolStripMenuItem, toolStripSeparator13, toolStripMenuLoadingScreen, toolStripMenuLoadScreenPreview, resetLoadScreenToolStripMenuItem, toolStripSeparator20, toolStripMenuCatalog, toolStripSeparator21, toolStripMenuProfilesOn, compareProfilesToolStripMenuItem, toolStripSeparator23, toolStripMenuAutoDelccc, autoResetToolStripMenuItem, toolStripSeparator22, autoUpdateModsToolStripMenuItem, activateNewModsToolStripMenuItem, toolStripMenuLOOTToggle, autoSortToolStripMenuItem, toolStripSeparator27, enableAllToolStripMenuItem, disableAllToolStripMenuItem, toolStripSeparator5, logToolStripMenuItem, toolStripSeparator44, advancedToolStripMenuItem, toolStripSeparator40, disableAllWarningToolStripMenuItem });
             toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             toolsToolStripMenuItem.Size = new System.Drawing.Size(89, 38);
             toolsToolStripMenuItem.Text = "&Tools";
@@ -1616,6 +1618,25 @@
             // 
             toolStripSeparator44.Name = "toolStripSeparator44";
             toolStripSeparator44.Size = new System.Drawing.Size(404, 6);
+            // 
+            // advancedToolStripMenuItem
+            // 
+            advancedToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { generateReadfileTextToolStripMenuItem });
+            advancedToolStripMenuItem.Name = "advancedToolStripMenuItem";
+            advancedToolStripMenuItem.Size = new System.Drawing.Size(407, 44);
+            advancedToolStripMenuItem.Text = "Advanced";
+            // 
+            // generateReadfileTextToolStripMenuItem
+            // 
+            generateReadfileTextToolStripMenuItem.Name = "generateReadfileTextToolStripMenuItem";
+            generateReadfileTextToolStripMenuItem.Size = new System.Drawing.Size(496, 44);
+            generateReadfileTextToolStripMenuItem.Text = "Generate Readfile pre-cache text";
+            generateReadfileTextToolStripMenuItem.Click += generateReadfileTextToolStripMenuItem_Click;
+            // 
+            // toolStripSeparator40
+            // 
+            toolStripSeparator40.Name = "toolStripSeparator40";
+            toolStripSeparator40.Size = new System.Drawing.Size(404, 6);
             // 
             // disableAllWarningToolStripMenuItem
             // 
@@ -2008,18 +2029,10 @@
             // 
             // testToolStripMenuItem
             // 
-            testToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { generateReadfileTextToolStripMenuItem });
             testToolStripMenuItem.Name = "testToolStripMenuItem";
             testToolStripMenuItem.Size = new System.Drawing.Size(76, 38);
             testToolStripMenuItem.Text = "Test";
             testToolStripMenuItem.Visible = false;
-            // 
-            // generateReadfileTextToolStripMenuItem
-            // 
-            generateReadfileTextToolStripMenuItem.Name = "generateReadfileTextToolStripMenuItem";
-            generateReadfileTextToolStripMenuItem.Size = new System.Drawing.Size(383, 44);
-            generateReadfileTextToolStripMenuItem.Text = "Generate Readfile text";
-            generateReadfileTextToolStripMenuItem.Click += generateReadfileTextToolStripMenuItem_Click;
             // 
             // tableLayoutPanel2
             // 
@@ -2626,7 +2639,6 @@
         private System.Windows.Forms.ToolStripMenuItem gameSelectToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator47;
         private System.Windows.Forms.ToolStripMenuItem testToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem generateReadfileTextToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuGameLaunchOptions;
         private System.Windows.Forms.ToolStripMenuItem runProgramToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem programOptionsToolStripMenuItem;
@@ -2645,5 +2657,8 @@
         private System.Windows.Forms.ToolStripMenuItem mnuRestoreBlockedMods;
         private System.Windows.Forms.ToolStripMenuItem restoreContentCatalogtxtToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem advancedToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem generateReadfileTextToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator40;
     }
 }

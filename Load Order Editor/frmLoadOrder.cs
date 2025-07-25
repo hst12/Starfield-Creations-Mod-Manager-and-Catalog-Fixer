@@ -408,7 +408,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             public ActivityLog(string filePath)
             {
                 logFilePath = filePath;
-                WriteLog("Starting log\n");
+                WriteLog($"Starting log - {logFilePath}\n");
             }
 
             public void WriteLog(string message)
@@ -1113,8 +1113,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 MessageBox.Show($"Error: {ex.Message}", "Backup failed");
             }
         }
-
-
 
         private void RestorePlugins()
         {
@@ -5313,8 +5311,24 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void generateReadfileTextToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            string readFilePath;
+
+            System.Windows.Forms.SaveFileDialog saveDialog = new()
+            {
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                Filter = "Txt File|*.txt",
+                Title = "Generate Readfile commands",
+                FileName = "readfile.txt"
+            };
+
+            if (saveDialog.ShowDialog() != DialogResult.OK || string.IsNullOrEmpty(saveDialog.FileName))
+            {
+                sbar("Readfile generation cancelled");
+                return;
+            }
+
             List<string> pluginFiles = tools.GetPluginList(); // Add .esm files
-            using (StreamWriter writer = new("Z:\\readfile.txt"))
+            using (StreamWriter writer = new(saveDialog.FileName))
             {
                 foreach (var plugin in pluginFiles)
                     writer.WriteLine($"readfile \"{Path.Combine(StarfieldGamePath, "Data", Path.GetFileNameWithoutExtension(plugin))}*\" /h");
@@ -5363,7 +5377,15 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void savesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            string savesPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", "Starfield", "Saves");
+            if (Directory.Exists(savesPath))
+            {
+                Tools.OpenFolder(savesPath);
+            }
+            else
+            {
+                MessageBox.Show("Save game directory not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }
