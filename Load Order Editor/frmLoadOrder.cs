@@ -1102,7 +1102,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             try
             {
                 File.Copy(sourceFileName, destFileName, true); // overwrite
-                sbar2("Backup done");
+                sbar("Plugins.txt backed up");
                 if (log)
                     activityLog.WriteLog($"Backup of {Path.GetFileName(sourceFileName)} done to {Path.GetFileName(destFileName)}");
             }
@@ -1114,10 +1114,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             }
         }
 
-        private void btnBackupPlugins_Click(object sender, EventArgs e)
-        {
-            BackupPlugins();
-        }
+
 
         private void RestorePlugins()
         {
@@ -1132,7 +1129,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
                 toolStripStatusStats.ForeColor = DefaultForeColor;
                 SavePlugins();
-                sbar2("Restore done");
+                sbar("Restore done");
                 if (log)
                     activityLog.WriteLog($"Restore of {Path.GetFileName(sourceFileName)} done to {Path.GetFileName(destFileName)}");
             }
@@ -4609,7 +4606,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 if (log)
                     activityLog.WriteLog($"Backed up {item} to backup folder {destinationPath}.");
             }
-            sbar3("Profiles backed up to Backup folder");
+            sbar("Profiles backed up to Backup folder");
         }
 
         private void restoreProfilesToolStripMenuItem_Click(object sender, EventArgs e) // Restore profiles from Backup folder
@@ -4622,7 +4619,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
             if (Tools.ConfirmAction("Restore Backup", "Restore Backup", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.Cancel)
             {
-                sbar3("Restore cancelled");
+                sbar("Restore cancelled");
                 return;
             }
 
@@ -4636,12 +4633,12 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                     if (log)
                         activityLog.WriteLog($"Restored {item} from backup folder {destinationPath}.");
                 }
-                sbar3("Profiles restored from Backup folder");
+                sbar("Profiles restored from Backup folder");
                 RefreshDataGrid();
             }
             else
             {
-                sbar3("No backup folder found");
+                sbar("No backup folder found");
             }
         }
 
@@ -4661,7 +4658,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                     return;
                 }
                 File.Copy(blockedModsFilePath, destinationPath, true);
-                sbar3("BlockedMods.txt backed up successfully.");
+                sbar("BlockedMods.txt backed up successfully.");
                 if (log)
                     activityLog.WriteLog($"BlockedMods.txt backed up to {selectedFolderPath}");
             }
@@ -4689,7 +4686,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 {
                     File.Copy(backupFilePath, destinationPath, true);
                     RefreshDataGrid();
-                    sbar3("BlockedMods.txt restored successfully.");
+                    sbar("BlockedMods.txt restored successfully.");
                     if (log)
                         activityLog.WriteLog($"BlockedMods.txt restored from {selectedFolderPath}");
                 }
@@ -5073,7 +5070,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                     return;
                 }
                 File.Copy(FilePath, destinationPath, true);
-                sbar3("ContentCatalog.txt backed up successfully.");
+                sbar("ContentCatalog.txt backed up.");
                 if (log)
                     activityLog.WriteLog($"ContentCatalog.txt backed up to {selectedFolderPath}");
             }
@@ -5101,7 +5098,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 {
                     File.Copy(backupFilePath, destinationPath, true);
                     RefreshDataGrid();
-                    sbar3("ContentCatalog.txt restored successfully.");
+                    sbar("ContentCatalog.txt restored successfully.");
                     if (log)
                         activityLog.WriteLog($"ContentCatalog.txt restored from {selectedFolderPath}");
                 }
@@ -5362,6 +5359,11 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 frmModContents fmc = new(modName);
                 fmc.Show();
             }
+        }
+
+        private void savesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
