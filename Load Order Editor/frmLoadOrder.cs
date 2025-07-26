@@ -95,7 +95,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             {
                 // Check the catalog
                 tempstr = StarfieldTools.CatalogStatus;
-                /*sbar4(tempstr);*/
                 if (tempstr != null && StarfieldTools.CatalogStatus.Contains("Error"))
                     StarfieldTools.Show(); // Show catalog fixer if catalog broken
             }
@@ -1777,16 +1776,14 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             return totalChanges;
         }
 
-        private int AddRemove()
+        /*private int AddRemove()
         {
-            /* int ReturnStatus = AddMissing() + RemoveMissing();
+            int ReturnStatus = AddMissing() + RemoveMissing();
              if (ReturnStatus > 0)
                  SavePlugins();
 
              return ReturnStatus;
-            */
-            return SyncPlugins();
-        }
+        }*/
 
         private void toolStripMenuAutoClean_Click(object sender, EventArgs e)
         {
@@ -5311,14 +5308,12 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void generateReadfileTextToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string readFilePath;
-
             System.Windows.Forms.SaveFileDialog saveDialog = new()
             {
                 InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                Filter = "Txt File|*.txt",
+                Filter = "Cmd File|*.cmd",
                 Title = "Generate Readfile commands",
-                FileName = "readfile.txt"
+                FileName = "Starfield Readfile.cmd"
             };
 
             if (saveDialog.ShowDialog() != DialogResult.OK || string.IsNullOrEmpty(saveDialog.FileName))
@@ -5327,12 +5322,17 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 return;
             }
 
-            List<string> pluginFiles = tools.GetPluginList(); // Add .esm files
+            List<string> pluginFiles = tools.GetPluginList().Select(Path.GetFileNameWithoutExtension).ToList(); // Add .esm files
+
+            var readFileOther = File.ReadAllLines(Path.Combine(Tools.CommonFolder, "ReadFile.txt")).Where(x => !x.StartsWith("rem ")).ToList();
+            var readFileItems = pluginFiles.Concat(readFileOther).ToList();
             using (StreamWriter writer = new(saveDialog.FileName))
             {
-                foreach (var plugin in pluginFiles)
-                    writer.WriteLine($"readfile \"{Path.Combine(StarfieldGamePath, "Data", Path.GetFileNameWithoutExtension(plugin))}*\" /h");
+                foreach (var plugin in readFileItems)
+                    writer.WriteLine($"readfile \"{Path.Combine(StarfieldGamePath, "Data", plugin)}*\" /h");
             }
+            if (Tools.ConfirmAction("Readfile generation complete", "Open file?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                Tools.OpenFile(saveDialog.FileName);
             sbar("Readfile generation complete");
         }
 

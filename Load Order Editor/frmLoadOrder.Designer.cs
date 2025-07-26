@@ -107,11 +107,12 @@
             toolStripMenuEditFiles = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuEditPlugins = new System.Windows.Forms.ToolStripMenuItem();
             editStarfieldCustominiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            uIToEditStarfieldCustominiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             editContentCatalogtxtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             editBlockedModstxtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             removeMissingModsFromBlockedModstxtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             editLOOTUserlistyamlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripSeparator41 = new System.Windows.Forms.ToolStripSeparator();
+            uIToEditStarfieldCustominiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator17 = new System.Windows.Forms.ToolStripSeparator();
             convertLooseFilesModToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator19 = new System.Windows.Forms.ToolStripSeparator();
@@ -878,7 +879,7 @@
             // 
             // toolStripMenuEditFiles
             // 
-            toolStripMenuEditFiles.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuEditPlugins, editStarfieldCustominiToolStripMenuItem, uIToEditStarfieldCustominiToolStripMenuItem, editContentCatalogtxtToolStripMenuItem, editBlockedModstxtToolStripMenuItem, removeMissingModsFromBlockedModstxtToolStripMenuItem, editLOOTUserlistyamlToolStripMenuItem });
+            toolStripMenuEditFiles.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuEditPlugins, editStarfieldCustominiToolStripMenuItem, editContentCatalogtxtToolStripMenuItem, editBlockedModstxtToolStripMenuItem, removeMissingModsFromBlockedModstxtToolStripMenuItem, editLOOTUserlistyamlToolStripMenuItem, toolStripSeparator41, uIToEditStarfieldCustominiToolStripMenuItem });
             toolStripMenuEditFiles.Name = "toolStripMenuEditFiles";
             toolStripMenuEditFiles.Size = new System.Drawing.Size(504, 44);
             toolStripMenuEditFiles.Text = "Edit Files";
@@ -896,13 +897,6 @@
             editStarfieldCustominiToolStripMenuItem.Size = new System.Drawing.Size(628, 44);
             editStarfieldCustominiToolStripMenuItem.Text = "Edit StarfieldCustom.ini";
             editStarfieldCustominiToolStripMenuItem.Click += editStarfieldCustominiToolStripMenuItem_Click;
-            // 
-            // uIToEditStarfieldCustominiToolStripMenuItem
-            // 
-            uIToEditStarfieldCustominiToolStripMenuItem.Name = "uIToEditStarfieldCustominiToolStripMenuItem";
-            uIToEditStarfieldCustominiToolStripMenuItem.Size = new System.Drawing.Size(628, 44);
-            uIToEditStarfieldCustominiToolStripMenuItem.Text = "StarfieldCustom.ini Editor";
-            uIToEditStarfieldCustominiToolStripMenuItem.Click += uIToEditStarfieldCustominiToolStripMenuItem_Click;
             // 
             // editContentCatalogtxtToolStripMenuItem
             // 
@@ -931,6 +925,18 @@
             editLOOTUserlistyamlToolStripMenuItem.Size = new System.Drawing.Size(628, 44);
             editLOOTUserlistyamlToolStripMenuItem.Text = "Edit LOOT Userlist.yaml";
             editLOOTUserlistyamlToolStripMenuItem.Click += editLOOTUserlistyamlToolStripMenuItem_Click;
+            // 
+            // toolStripSeparator41
+            // 
+            toolStripSeparator41.Name = "toolStripSeparator41";
+            toolStripSeparator41.Size = new System.Drawing.Size(625, 6);
+            // 
+            // uIToEditStarfieldCustominiToolStripMenuItem
+            // 
+            uIToEditStarfieldCustominiToolStripMenuItem.Name = "uIToEditStarfieldCustominiToolStripMenuItem";
+            uIToEditStarfieldCustominiToolStripMenuItem.Size = new System.Drawing.Size(628, 44);
+            uIToEditStarfieldCustominiToolStripMenuItem.Text = "StarfieldCustom.ini Editor";
+            uIToEditStarfieldCustominiToolStripMenuItem.Click += uIToEditStarfieldCustominiToolStripMenuItem_Click;
             // 
             // toolStripSeparator17
             // 
@@ -2660,5 +2666,6 @@
         private System.Windows.Forms.ToolStripMenuItem advancedToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem generateReadfileTextToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator40;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator41;
     }
 }
