@@ -5308,6 +5308,13 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void generateReadfileTextToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            string readfilePath = Properties.Settings.Default.ReadfilePath;
+
+            if (string.IsNullOrEmpty(readfilePath))
+            {
+                MessageBox.Show("Please set the readfile.exe path in Settings first.", "Readfile Path Not Set", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
             System.Windows.Forms.SaveFileDialog saveDialog = new()
             {
                 InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
@@ -5329,7 +5336,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             using (StreamWriter writer = new(saveDialog.FileName))
             {
                 foreach (var plugin in readFileItems)
-                    writer.WriteLine($"readfile \"{Path.Combine(StarfieldGamePath, "Data", plugin)}*\" /h");
+                    writer.WriteLine($"{readfilePath} \"{Path.Combine(StarfieldGamePath, "Data", plugin)}*\" /h");
             }
             if (Tools.ConfirmAction("Readfile generation complete", "Open file?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 Tools.OpenFile(saveDialog.FileName);
@@ -5385,6 +5392,25 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             else
             {
                 MessageBox.Show("Save game directory not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void readfilePathToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            System.Windows.Forms.OpenFileDialog openReadfile = new()
+            {
+                InitialDirectory = Properties.Settings.Default.ReadfilePath,
+                Filter = "Exe Files|*.exe",
+                Title = "Locate readfile.exe"
+            };
+
+            if (openReadfile.ShowDialog() == DialogResult.OK && !string.IsNullOrEmpty(openReadfile.FileName))
+            {
+                Properties.Settings.Default.ReadfilePath = openReadfile.FileName;
+                SaveSettings();
+                sbar("Readfile path set to: " + openReadfile.FileName);
+                if (log)
+                    activityLog.WriteLog("Readfile path set to: " + openReadfile.FileName);
             }
         }
     }

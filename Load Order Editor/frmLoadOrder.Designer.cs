@@ -216,7 +216,9 @@
             setDirectoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator44 = new System.Windows.Forms.ToolStripSeparator();
             advancedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            readfileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             generateReadfileTextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            readfilePathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator40 = new System.Windows.Forms.ToolStripSeparator();
             disableAllWarningToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuGame = new System.Windows.Forms.ToolStripMenuItem();
@@ -1627,17 +1629,31 @@
             // 
             // advancedToolStripMenuItem
             // 
-            advancedToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { generateReadfileTextToolStripMenuItem });
+            advancedToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { readfileToolStripMenuItem });
             advancedToolStripMenuItem.Name = "advancedToolStripMenuItem";
             advancedToolStripMenuItem.Size = new System.Drawing.Size(407, 44);
             advancedToolStripMenuItem.Text = "Advanced";
             // 
+            // readfileToolStripMenuItem
+            // 
+            readfileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { generateReadfileTextToolStripMenuItem, readfilePathToolStripMenuItem });
+            readfileToolStripMenuItem.Name = "readfileToolStripMenuItem";
+            readfileToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+            readfileToolStripMenuItem.Text = "Readfile";
+            // 
             // generateReadfileTextToolStripMenuItem
             // 
             generateReadfileTextToolStripMenuItem.Name = "generateReadfileTextToolStripMenuItem";
-            generateReadfileTextToolStripMenuItem.Size = new System.Drawing.Size(496, 44);
-            generateReadfileTextToolStripMenuItem.Text = "Generate Readfile pre-cache text";
+            generateReadfileTextToolStripMenuItem.Size = new System.Drawing.Size(555, 44);
+            generateReadfileTextToolStripMenuItem.Text = "Generate Readfile pre-cache batch file";
             generateReadfileTextToolStripMenuItem.Click += generateReadfileTextToolStripMenuItem_Click;
+            // 
+            // readfilePathToolStripMenuItem
+            // 
+            readfilePathToolStripMenuItem.Name = "readfilePathToolStripMenuItem";
+            readfilePathToolStripMenuItem.Size = new System.Drawing.Size(555, 44);
+            readfilePathToolStripMenuItem.Text = "Readfile Path";
+            readfilePathToolStripMenuItem.Click += readfilePathToolStripMenuItem_Click;
             // 
             // toolStripSeparator40
             // 
@@ -2664,8 +2680,10 @@
         private System.Windows.Forms.ToolStripMenuItem restoreContentCatalogtxtToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem advancedToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem generateReadfileTextToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator40;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator41;
+        private System.Windows.Forms.ToolStripMenuItem readfileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem generateReadfileTextToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem readfilePathToolStripMenuItem;
     }
 }
