@@ -4911,8 +4911,9 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             {
                 frmCLF.ShowDialog(this);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                MessageBox.Show($"Error converting loose files. {ex.Message}.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             if (returnStatus > 0)
@@ -5306,35 +5307,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 Tools.OpenFile(ExportActive.FileName);
         }
 
-        private void generateReadfileTextToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            System.Windows.Forms.SaveFileDialog saveDialog = new()
-            {
-                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                Filter = "Cmd File|*.cmd",
-                Title = "Generate Readfile commands",
-                FileName = "Starfield Readfile.cmd"
-            };
-
-            if (saveDialog.ShowDialog() != DialogResult.OK || string.IsNullOrEmpty(saveDialog.FileName))
-            {
-                sbar("Readfile generation cancelled");
-                return;
-            }
-
-            List<string> pluginFiles = tools.GetPluginList().Select(Path.GetFileNameWithoutExtension).ToList(); // Add .esm files
-
-            var readFileOther = File.ReadAllLines(Path.Combine(Tools.CommonFolder, "ReadFile.txt")).Where(x => !x.StartsWith("rem ")).ToList();
-            var readFileItems = pluginFiles.Concat(readFileOther).ToList();
-            using (StreamWriter writer = new(saveDialog.FileName))
-            {
-                foreach (var plugin in readFileItems)
-                    writer.WriteLine($"readfile \"{Path.Combine(StarfieldGamePath, "Data", plugin)}*\" /h");
-            }
-            if (Tools.ConfirmAction("Readfile generation complete", "Open file?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                Tools.OpenFile(saveDialog.FileName);
-            sbar("Readfile generation complete");
-        }
+       
 
         private void runProgramToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -5386,6 +5359,31 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             {
                 MessageBox.Show("Save game directory not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void readfilePathToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            System.Windows.Forms.OpenFileDialog openReadfile = new()
+            {
+                InitialDirectory = Properties.Settings.Default.ReadfilePath,
+                Filter = "Exe Files|*.exe",
+                Title = "Locate readfile.exe"
+            };
+
+            if (openReadfile.ShowDialog() == DialogResult.OK && !string.IsNullOrEmpty(openReadfile.FileName))
+            {
+                Properties.Settings.Default.ReadfilePath = openReadfile.FileName;
+                SaveSettings();
+                sbar("Readfile path set to: " + openReadfile.FileName);
+                if (log)
+                    activityLog.WriteLog("Readfile path set to: " + openReadfile.FileName);
+            }
+        }
+
+        private void configurationToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmCacheConfig frmCacheConfig = new frmCacheConfig();
+            frmCacheConfig.Show();
         }
     }
 }

@@ -1,17 +1,12 @@
-rem ------
-rem E:\SteamLibrary\steamapps\common\Starfield\Data\starfield - voices*
-rem E:\SteamLibrary\steamapps\common\Starfield\Data\starfield - face*
-E:\SteamLibrary\steamapps\common\Starfield\Data\video\*.*
-E:\SteamLibrary\steamapps\common\Starfield\*.ini
-E:\SteamLibrary\steamapps\common\Starfield\starfield.exe
-E:\SteamLibrary\steamapps\common\Starfield\*.dll
-E:\SteamLibrary\steamapps\common\Starfield\Data\*.esm
-E:\SteamLibrary\steamapps\common\Starfield\Data\sfbgs*.ba2
-E:\SteamLibrary\steamapps\common\Starfield\Data\Starfield - Shaders.ba2
-E:\SteamLibrary\steamapps\common\Starfield\Data\Starfield - Interface.ba2
-E:\SteamLibrary\steamapps\common\Starfield\Data\starfield - wwise*
-E:\SteamLibrary\steamapps\common\Starfield\Data\Starfield - Materials.ba2
+Data\video\*.*
+Starfield\*.ini
+starfield.exe
+*.dll
+Data\*.esm
+Data\sfbgs*.ba2
+Data\Starfield - Shaders.ba2
+Data\Starfield - Interface.ba2
+Data\Starfield - Materials.ba2
 rem optional
-rem E:\SteamLibrary\steamapps\common\Starfield\Data\starfield - mesh*
-rem E:\SteamLibrary\steamapps\common\Starfield\Data\starfield - lod*
-rem E:\SteamLibrary\steamapps\common\Starfield\Data\starfield - textures*
+rem Data\starfield - voices*
+rem Data\starfield - face*

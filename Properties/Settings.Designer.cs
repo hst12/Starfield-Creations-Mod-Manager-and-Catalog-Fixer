@@ -704,5 +704,17 @@ namespace Starfield_Tools.Properties {
                 this["RunProgramPath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ReadfilePath {
+            get {
+                return ((string)(this["ReadfilePath"]));
+            }
+            set {
+                this["ReadfilePath"] = value;
+            }
+        }
     }
 }
