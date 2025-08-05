@@ -457,6 +457,10 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                     MessageBox.Show($"Error deleting log file: {ex.Message}");
                 }
             }
+
+            public void Dispose()
+            {
+            }
         }
 
         private void SetMenus()
@@ -487,6 +491,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             if (Properties.Settings.Default.VortexPath != "")
                 vortexToolStripMenuItem.Visible = true;
             runProgramToolStripMenuItem.Checked = settings.RunProgram;
+            resizeToolStripMenuItem.Checked = settings.Resize;
         }
 
         private void SetupColumns()
@@ -922,6 +927,9 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                     if (!(bool)row.Cells["ModEnabled"].Value)
                         row.Visible = false;
             }
+
+            if (Properties.Settings.Default.Resize)
+                ResizeFormToFitDataGridView(dataGridView1, this);
 
             progressBar1.Value = progressBar1.Maximum;
             progressBar1.Hide();
@@ -3262,6 +3270,8 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             dataGridView1.ResumeLayout();
             sbar4(showAll ? "All mods shown" : "Active mods only");
 
+            if (resizeToolStripMenuItem.Checked)
+                ResizeFormToFitDataGridView(dataGridView1, this);
             btnActiveOnly.Font = new System.Drawing.Font(btnActiveOnly.Font, ActiveOnly ? FontStyle.Bold : FontStyle.Regular);
         }
 
@@ -3580,9 +3590,11 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             if (ActiveOnly)
                 ActiveOnlyToggle();
             ChangeSettings(false);
+            disableAllWarnings();
+
             if (log)
                 activityLog.WriteLog("Disabling all settings");
-            disableAllWarnings();
+            DisableLog();
             sbar5("");
         }
 
@@ -4869,7 +4881,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             Tools.OpenUrl("https://www.nexusmods.com/games/starfield/mods?sort=updatedAt");
         }
 
-        /*private void DisableLog()
+        private void DisableLog()
         {
             if (activityLog != null)
             {
@@ -4879,7 +4891,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             log = false;
             Properties.Settings.Default.Log = false;
             toggleToolStripMenuItem.Checked = false;
-        }*/
+        }
 
         private void EnableLog()
         {
@@ -5307,8 +5319,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 Tools.OpenFile(ExportActive.FileName);
         }
 
-       
-
         private void runProgramToolStripMenuItem_Click(object sender, EventArgs e)
         {
             runProgramToolStripMenuItem.Checked = Properties.Settings.Default.RunProgram = !runProgramToolStripMenuItem.Checked;
@@ -5384,6 +5394,38 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
         {
             frmCacheConfig frmCacheConfig = new frmCacheConfig();
             frmCacheConfig.Show();
+        }
+
+        private void ResizeFormToFitDataGridView(DataGridView dgv, Form parentForm,
+                                         int minHeight = 800, int maxHeight = 1080)
+        {
+            /*dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dataGridView1.AutoResizeRows();*/
+            maxHeight = Screen.PrimaryScreen.WorkingArea.Height - 250;
+
+            int totalRowHeight = dataGridView1.ColumnHeadersHeight;
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                if (row.Visible)
+                    totalRowHeight += row.Height;
+                else
+                    Debug.WriteLine(totalRowHeight);
+            }
+
+            // Extra padding for spacing, borders, etc.
+            int padding = 250;
+            int desiredHeight = /*dataGridView1.Top +*/ totalRowHeight + padding;
+
+            // Clamp to min/max limits
+            int clampedHeight = Math.Max(minHeight, Math.Min(desiredHeight, maxHeight));
+            parentForm.Height = clampedHeight;
+        }
+
+        private void resizeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            resizeToolStripMenuItem.Checked = Properties.Settings.Default.Resize = !resizeToolStripMenuItem.Checked;
+            if (resizeToolStripMenuItem.Checked)
+                ResizeFormToFitDataGridView(dataGridView1, this);
         }
     }
 }

@@ -716,5 +716,17 @@ namespace Starfield_Tools.Properties {
                 this["ReadfilePath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Resize {
+            get {
+                return ((bool)(this["Resize"]));
+            }
+            set {
+                this["Resize"] = value;
+            }
+        }
     }
 }
