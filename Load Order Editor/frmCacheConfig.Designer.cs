@@ -36,8 +36,8 @@
             chkMesh = new System.Windows.Forms.CheckBox();
             chkLOD = new System.Windows.Forms.CheckBox();
             chkTextures = new System.Windows.Forms.CheckBox();
-            btnCalc = new System.Windows.Forms.Button();
             txtCacheSize = new System.Windows.Forms.TextBox();
+            btnCalc = new System.Windows.Forms.Button();
             flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             flowLayoutPanel1.SuspendLayout();
             flowLayoutPanel2.SuspendLayout();
@@ -87,6 +87,7 @@
             chkWwise.TabIndex = 0;
             chkWwise.Text = "Wwise";
             chkWwise.UseVisualStyleBackColor = true;
+            chkWwise.Click += chkWwise_Click;
             // 
             // chkMesh
             // 
@@ -97,6 +98,7 @@
             chkMesh.TabIndex = 1;
             chkMesh.Text = "Mesh";
             chkMesh.UseVisualStyleBackColor = true;
+            chkMesh.Click += chkMesh_Click;
             // 
             // chkLOD
             // 
@@ -107,6 +109,7 @@
             chkLOD.TabIndex = 2;
             chkLOD.Text = "LOD";
             chkLOD.UseVisualStyleBackColor = true;
+            chkLOD.Click += chkLOD_Click;
             // 
             // chkTextures
             // 
@@ -117,6 +120,14 @@
             chkTextures.TabIndex = 3;
             chkTextures.Text = "Textures";
             chkTextures.UseVisualStyleBackColor = true;
+            chkTextures.Click += chkTextures_Click;
+            // 
+            // txtCacheSize
+            // 
+            txtCacheSize.Location = new System.Drawing.Point(3, 171);
+            txtCacheSize.Name = "txtCacheSize";
+            txtCacheSize.Size = new System.Drawing.Size(200, 39);
+            txtCacheSize.TabIndex = 4;
             // 
             // btnCalc
             // 
@@ -128,13 +139,6 @@
             btnCalc.Text = "Calc Cache Size";
             btnCalc.UseVisualStyleBackColor = true;
             btnCalc.Click += btnCalc_Click;
-            // 
-            // txtCacheSize
-            // 
-            txtCacheSize.Location = new System.Drawing.Point(3, 171);
-            txtCacheSize.Name = "txtCacheSize";
-            txtCacheSize.Size = new System.Drawing.Size(200, 39);
-            txtCacheSize.TabIndex = 4;
             // 
             // flowLayoutPanel2
             // 

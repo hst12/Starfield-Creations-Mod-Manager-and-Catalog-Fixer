@@ -136,5 +136,25 @@ namespace Starfield_Tools.Load_Order_Editor
         {
             UpdateCacheSize();
         }
+
+        private void chkWwise_Click(object sender, EventArgs e)
+        {
+            UpdateCacheSize();
+        }
+
+        private void chkMesh_Click(object sender, EventArgs e)
+        {
+            UpdateCacheSize();
+        }
+
+        private void chkLOD_Click(object sender, EventArgs e)
+        {
+            UpdateCacheSize();
+        }
+
+        private void chkTextures_Click(object sender, EventArgs e)
+        {
+            UpdateCacheSize();
+        }
     }
 }

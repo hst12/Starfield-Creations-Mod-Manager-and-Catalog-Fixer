@@ -14,6 +14,7 @@ using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -844,75 +845,100 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 dataGridView1.Rows.AddRange(row);
 
             // -- Process mod stats if the Starfield game path is set --
-            if (!string.IsNullOrEmpty(StarfieldGamePath) && Properties.Settings.Default.ModStats)
+            if (string.IsNullOrEmpty(StarfieldGamePath) || !Properties.Settings.Default.ModStats)
+                return;
+
+            try
             {
-                try
+                // Cache file paths and load BGS archives once
+                var dataDirectory = Path.Combine(StarfieldGamePath, "Data");
+                var bgsArchives = File.ReadLines(Path.Combine(Tools.CommonFolder, "BGS Archives.txt"))
+                    .Where(line => line.Length > 4)
+                    .Select(line => line[..^4].ToLowerInvariant())
+                    .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+                // Load enabled plugins once
+                var enabledPlugins = File.ReadLines(loText)
+                    .Where(line => line.StartsWith('*') && line.Length > 1)
+                    .Select(line => line[1..])
+                    .Where(plugin => plugin.Contains('.'))
+                    .Select(plugin => plugin.Split('.')[0].ToLowerInvariant())
+                    .Where(plugin => !bgsArchives.Contains(plugin))
+                    .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+                // Process all BA2 files in one enumeration
+                var allBa2Files = Directory.EnumerateFiles(dataDirectory, "*.ba2", SearchOption.TopDirectoryOnly);
+                var archives = new List<string>();
+                var mainArchivePlugins = new List<string>();
+                var textureArchivePlugins = new List<string>();
+
+                foreach (var file in allBa2Files)
                 {
-                    var BGSArchives = File.ReadLines(Path.Combine(Tools.CommonFolder, "BGS Archives.txt"))
-    .Select(line => line[..^4].ToLower())
-    .ToHashSet();
+                    var fileNameWithoutExt = Path.GetFileNameWithoutExtension(file);
+                    if (string.IsNullOrEmpty(fileNameWithoutExt))
+                        continue;
 
-                    var archives = Directory.EnumerateFiles(Path.Combine(StarfieldGamePath, "Data"), "*.ba2")
-    .Select(file => Path.GetFileNameWithoutExtension(file)?.ToLower())
-    .Except(BGSArchives)
-    .ToList();
+                    var lowerFileName = fileNameWithoutExt.ToLowerInvariant();
 
-                    var plugins = File.ReadLines(loText)
-                        .Where(line => line.StartsWith('*'))
-                        .Select(line => line[1..].Split('.')[0].ToLower())
-                        .Where(plugin => !BGSArchives.Contains(plugin))
-                        .ToList();
+                    // Skip BGS archives
+                    if (bgsArchives.Contains(lowerFileName))
+                        continue;
 
-                    List<string> suffixes = new(Tools.Suffixes);
+                    archives.Add(lowerFileName);
 
-                    directory = Path.Combine(StarfieldGamePath, "Data");
-                    ba2Count = Directory.EnumerateFiles(directory, "*.ba2").Count();
-                    esmCount = Directory.EnumerateFiles(directory, "*.esm").Count();
-                    espCount = Directory.EnumerateFiles(directory, "*.esp")
-                        .Select(file => Path.GetFileNameWithoutExtension(file)?.ToLower())
-                        .Count(plugin => plugins.Contains(plugin));
-
-                    foreach (string file in Directory.EnumerateFiles(directory, "* - main*.ba2")) // Count main archives
+                    // Check for main archives and extract mod name
+                    if (lowerFileName.Contains(" - main", StringComparison.OrdinalIgnoreCase))
                     {
-                        string? filename = Path.GetFileNameWithoutExtension(file)?.ToLower();
-                        if (filename != null)
-                        {
-                            string modName = filename.Replace(" - main", string.Empty);
-                            if (plugins.Contains(modName))
-                            {
-                                mainCount++;
-                            }
-                        }
+                        var modName = lowerFileName.Replace(" - main", string.Empty, StringComparison.OrdinalIgnoreCase);
+                        mainArchivePlugins.Add(modName);
                     }
 
-                    i = Directory.EnumerateFiles(directory, "* - texture*.ba2").Select(file => Path.GetFileNameWithoutExtension(file)?.ToLower())
-                    .Select(file => file.Replace(" - textures", string.Empty)) // Remove "- textures" suffix for matching
-                    .Count(mod => plugins.Contains(mod));
-
-                    StatText = $"Mods: Creations {CreationsPlugin.Count}, Other {dataGridView1.RowCount - CreationsPlugin.Count}, " +
-                               $"Enabled: {EnabledCount}, esm: {esmCount}, Archives Total: {ba2Count}, Enabled - Main: {mainCount}, Textures: {i}";
-
-                    if (espCount > 0)
-                        StatText += $", esp files: {espCount}";
-
-                    Debug.Assert(dataGridView1.RowCount - CreationsPlugin.Count >= 0, "Plugins mismatch");
-                    if (dataGridView1.RowCount - CreationsPlugin.Count < 0)
+                    // Check for texture archives and extract mod name
+                    if (lowerFileName.Contains(" - textures", StringComparison.OrdinalIgnoreCase))
                     {
-                        sbar4("Catalog/Plugins mismatch - Run game to solve");
-                        //MessageBox.Show("Catalog/Plugins mismatch - Run game to solve");
+                        var modName = lowerFileName.Replace(" - textures", string.Empty, StringComparison.OrdinalIgnoreCase);
+                        textureArchivePlugins.Add(modName);
                     }
                 }
-                catch (Exception ex)
+
+                // Calculate all counts
+                ba2Count = Directory.EnumerateFiles(dataDirectory, "*.ba2", SearchOption.TopDirectoryOnly).Count();
+                esmCount = Directory.EnumerateFiles(dataDirectory, "*.esm", SearchOption.TopDirectoryOnly).Count();
+
+                espCount = Directory.EnumerateFiles(dataDirectory, "*.esp", SearchOption.TopDirectoryOnly)
+                    .Select(file => Path.GetFileNameWithoutExtension(file))
+                    .Where(plugin => !string.IsNullOrEmpty(plugin))
+                    .Count(plugin => enabledPlugins.Contains(plugin.ToLowerInvariant()));
+
+                mainCount = mainArchivePlugins.Count(mod => enabledPlugins.Contains(mod));
+                var textureCount = textureArchivePlugins.Count(mod => enabledPlugins.Contains(mod));
+
+                // Build status text efficiently
+                var statusBuilder = new StringBuilder();
+                statusBuilder.Append($"Mods: Creations {CreationsPlugin.Count}, Other {dataGridView1.RowCount - CreationsPlugin.Count}, ");
+                statusBuilder.Append($"Enabled: {EnabledCount}, esm: {esmCount}, Archives Total: {ba2Count}, ");
+                statusBuilder.Append($"Enabled - Main: {mainCount}, Textures: {textureCount}");
+
+                if (espCount > 0)
+                    statusBuilder.Append($", esp files: {espCount}");
+
+                StatText = statusBuilder.ToString();
+
+                // Validate plugin consistency
+                var otherPluginCount = dataGridView1.RowCount - CreationsPlugin.Count;
+                Debug.Assert(otherPluginCount >= 0, "Plugins mismatch");
+
+                if (otherPluginCount < 0)
                 {
-                    sbar("Starfield path needs to be set for mod stats");
-#if DEBUG
-                    MessageBox.Show(ex.Message);
-#endif
+                    sbar4("Catalog/Plugins mismatch - Run game to solve");
                 }
             }
-            else
+            catch (Exception ex)
             {
                 sbar("Starfield path needs to be set for mod stats");
+#if DEBUG
+                MessageBox.Show($"Mod stats error: {ex.Message}");
+#endif
             }
 
             // Restore column visibility based on user settings.
@@ -4791,6 +4817,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             sbar3($"Changes made: {totalChanges}");
             if (log)
                 activityLog.WriteLog($"UpdateAllProfiles – total changes: {totalChanges}");
+            progressBar1.Hide();
         }
 
         private static void GetSteamGamePath()
@@ -5396,29 +5423,43 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             frmCacheConfig.Show();
         }
 
-        private void ResizeFormToFitDataGridView(DataGridView dgv, Form parentForm,
-                                         int minHeight = 800, int maxHeight = 1080)
+        private void ResizeFormToFitDataGridView(DataGridView dgv, Form parentForm)
         {
-            /*dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
-            dataGridView1.AutoResizeRows();*/
+            int minHeight = 800, maxHeight, minWidth = 800, maxWidth;
             maxHeight = Screen.PrimaryScreen.WorkingArea.Height - 250;
+            maxWidth = Screen.PrimaryScreen.WorkingArea.Width - 250;
 
             int totalRowHeight = dataGridView1.ColumnHeadersHeight;
+            int totalRowWidth = 0;
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
                 if (row.Visible)
                     totalRowHeight += row.Height;
-                else
-                    Debug.WriteLine(totalRowHeight);
+            }
+            foreach (DataGridViewColumn column in dataGridView1.Columns)
+            {
+                if (column.Visible)
+                    totalRowWidth += column.Width;
+            }
+
+            //totalRowWidth = dataGridView1.Columns.Cast<DataGridViewColumn>().Where(c => c.Visible).Sum(c => c.Width);
+
+            int availableWidth = dataGridView1.ClientSize.Width;
+            if (totalRowWidth < availableWidth)
+            {
+                totalRowWidth = availableWidth - 50; // Ensure at least the width of the DataGridView
             }
 
             // Extra padding for spacing, borders, etc.
             int padding = 250;
-            int desiredHeight = /*dataGridView1.Top +*/ totalRowHeight + padding;
+            int desiredHeight = totalRowHeight + padding;
+            int desiredWidth = totalRowWidth;
 
             // Clamp to min/max limits
             int clampedHeight = Math.Max(minHeight, Math.Min(desiredHeight, maxHeight));
+            int clampedWidth = Math.Max(minWidth, Math.Min(desiredWidth, maxWidth));
             parentForm.Height = clampedHeight;
+            //parentForm.Width = Math.Min(clampedWidth, availableWidth);
         }
 
         private void resizeToolStripMenuItem_Click(object sender, EventArgs e)
@@ -5426,6 +5467,11 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             resizeToolStripMenuItem.Checked = Properties.Settings.Default.Resize = !resizeToolStripMenuItem.Checked;
             if (resizeToolStripMenuItem.Checked)
                 ResizeFormToFitDataGridView(dataGridView1, this);
+        }
+
+        private void frmLoadOrder_Resize(object sender, EventArgs e)
+        {
+            progressBar1.Location = new Point((this.ClientSize.Width - progressBar1.Width) / 2, (this.ClientSize.Height - progressBar1.Height) / 2);
         }
     }
 }
