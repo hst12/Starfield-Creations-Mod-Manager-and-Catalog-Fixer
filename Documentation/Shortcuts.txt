@@ -47,6 +47,7 @@ View Menu
 Columns: Some columns can be hidden or shown. Certain columns require a press of the Refresh button to update the display
 Theme: Light, dark mode or System=Windows setting
 Log File: Open the log file.
+Resize: Attempt to resize the app to fit selected columns.
 
 File Menu
 Edit Files->StarfieldCustomINI Editor - Some tweak options for the game.

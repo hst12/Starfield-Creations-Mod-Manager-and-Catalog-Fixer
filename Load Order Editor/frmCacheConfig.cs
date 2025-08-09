@@ -79,6 +79,7 @@ namespace Starfield_Tools.Load_Order_Editor
             }
             if (Tools.ConfirmAction("Readfile generation complete", "Run batch file?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 Tools.OpenFile(saveDialog.FileName);
+            this.Close();
         }
 
         private void UpdateCacheSize()
