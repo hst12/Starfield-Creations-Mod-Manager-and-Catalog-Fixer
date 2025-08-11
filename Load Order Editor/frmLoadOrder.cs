@@ -4626,7 +4626,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 RefreshDataGrid();
         }
 
-        private void backupProfilesToolStripMenuItem_Click(object sender, EventArgs e) // Backup profiles to Backup folder in Profile folder
+        private void BackupProfiles()
         {
             if (Properties.Settings.Default.ProfileFolder == "")
             {
@@ -4648,6 +4648,10 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                     activityLog.WriteLog($"Backed up {item} to backup folder {destinationPath}.");
             }
             sbar("Profiles backed up to Backup folder");
+        }
+        private void backupProfilesToolStripMenuItem_Click(object sender, EventArgs e) // Backup profiles to Backup folder in Profile folder
+        {
+            BackupProfiles();
         }
 
         private void restoreProfilesToolStripMenuItem_Click(object sender, EventArgs e) // Restore profiles from Backup folder
@@ -4683,7 +4687,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             }
         }
 
-        private void mnuBackupBlockedMods_Click(object sender, EventArgs e) // Backup BlockedMods.txt to a user selected folder
+        private void BackupBlockedMods()
         {
             using FolderBrowserDialog folderBrowserDialog = new();
             folderBrowserDialog.Description = "Choose folder to use to backup BlockedMods.txt";
@@ -4703,6 +4707,10 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 if (log)
                     activityLog.WriteLog($"BlockedMods.txt backed up to {selectedFolderPath}");
             }
+        }
+        private void mnuBackupBlockedMods_Click(object sender, EventArgs e) // Backup BlockedMods.txt to a user selected folder
+        {
+            BackupBlockedMods();
         }
 
         private void mnuRestoreBlockedMods_Click(object sender, EventArgs e) // Restore BlockedMods.txt from backup folder
@@ -5097,7 +5105,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             gameSelectForm.Show();
         }
 
-        private void backupContentCatalogtxtToolStripMenuItem_Click(object sender, EventArgs e)
+        private void BackupContentCatalog()
         {
             using FolderBrowserDialog folderBrowserDialog = new();
             folderBrowserDialog.Description = "Choose folder to use to backup ContentCatalog.txt";
@@ -5117,6 +5125,10 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 if (log)
                     activityLog.WriteLog($"ContentCatalog.txt backed up to {selectedFolderPath}");
             }
+        }
+        private void backupContentCatalogtxtToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            BackupContentCatalog();
         }
 
         private void restoreContentCatalogtxtToolStripMenuItem_Click(object sender, EventArgs e)
@@ -5491,6 +5503,14 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
         private void dataGridView1_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
             sbar(e.Exception.Message);
+        }
+
+        private void allTheThingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            BackupPlugins();
+            BackupBlockedMods();
+            BackupContentCatalog();
+            BackupProfiles();
         }
     }
 }

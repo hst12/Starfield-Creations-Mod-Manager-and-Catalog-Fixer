@@ -133,11 +133,6 @@ namespace Starfield_Tools.Load_Order_Editor
             return totalSize;
         }
 
-        private void btnCalc_Click(object sender, EventArgs e)
-        {
-            UpdateCacheSize();
-        }
-
         private void chkWwise_Click(object sender, EventArgs e)
         {
             UpdateCacheSize();

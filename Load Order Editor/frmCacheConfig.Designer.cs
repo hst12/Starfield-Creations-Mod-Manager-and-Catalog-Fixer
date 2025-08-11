@@ -37,7 +37,6 @@
             chkLOD = new System.Windows.Forms.CheckBox();
             chkTextures = new System.Windows.Forms.CheckBox();
             txtCacheSize = new System.Windows.Forms.TextBox();
-            btnCalc = new System.Windows.Forms.Button();
             flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             flowLayoutPanel1.SuspendLayout();
             flowLayoutPanel2.SuspendLayout();
@@ -57,7 +56,7 @@
             // btnClose
             // 
             btnClose.AutoSize = true;
-            btnClose.Location = new System.Drawing.Point(355, 3);
+            btnClose.Location = new System.Drawing.Point(159, 3);
             btnClose.Name = "btnClose";
             btnClose.Size = new System.Drawing.Size(150, 46);
             btnClose.TabIndex = 1;
@@ -129,21 +128,9 @@
             txtCacheSize.Size = new System.Drawing.Size(200, 39);
             txtCacheSize.TabIndex = 4;
             // 
-            // btnCalc
-            // 
-            btnCalc.AutoSize = true;
-            btnCalc.Location = new System.Drawing.Point(159, 3);
-            btnCalc.Name = "btnCalc";
-            btnCalc.Size = new System.Drawing.Size(190, 46);
-            btnCalc.TabIndex = 3;
-            btnCalc.Text = "Calc Cache Size";
-            btnCalc.UseVisualStyleBackColor = true;
-            btnCalc.Click += btnCalc_Click;
-            // 
             // flowLayoutPanel2
             // 
             flowLayoutPanel2.Controls.Add(btnOk);
-            flowLayoutPanel2.Controls.Add(btnCalc);
             flowLayoutPanel2.Controls.Add(btnClose);
             flowLayoutPanel2.Location = new System.Drawing.Point(11, 402);
             flowLayoutPanel2.Name = "flowLayoutPanel2";
@@ -176,7 +163,6 @@
         private System.Windows.Forms.CheckBox chkMesh;
         private System.Windows.Forms.CheckBox chkLOD;
         private System.Windows.Forms.CheckBox chkTextures;
-        private System.Windows.Forms.Button btnCalc;
         private System.Windows.Forms.TextBox txtCacheSize;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
     }
