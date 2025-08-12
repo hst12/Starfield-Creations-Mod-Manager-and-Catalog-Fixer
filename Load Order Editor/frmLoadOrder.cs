@@ -493,6 +493,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 vortexToolStripMenuItem.Visible = true;
             runProgramToolStripMenuItem.Checked = settings.RunProgram;
             resizeToolStripMenuItem.Checked = settings.Resize;
+            enableSplashScreenToolStripMenuItem.Checked = Properties.Settings.Default.LoadScreenEnabled;
         }
 
         private void SetupColumns()
@@ -2466,7 +2467,8 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             sbar("Starting game...");
             if (GameVersion != MS)
             {
-                SS.Show();
+                if (Properties.Settings.Default.LoadScreenEnabled)
+                    SS.Show();
             }
 
             if (isModified)
@@ -4649,6 +4651,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             }
             sbar("Profiles backed up to Backup folder");
         }
+
         private void backupProfilesToolStripMenuItem_Click(object sender, EventArgs e) // Backup profiles to Backup folder in Profile folder
         {
             BackupProfiles();
@@ -4708,6 +4711,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                     activityLog.WriteLog($"BlockedMods.txt backed up to {selectedFolderPath}");
             }
         }
+
         private void mnuBackupBlockedMods_Click(object sender, EventArgs e) // Backup BlockedMods.txt to a user selected folder
         {
             BackupBlockedMods();
@@ -5126,6 +5130,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                     activityLog.WriteLog($"ContentCatalog.txt backed up to {selectedFolderPath}");
             }
         }
+
         private void backupContentCatalogtxtToolStripMenuItem_Click(object sender, EventArgs e)
         {
             BackupContentCatalog();
@@ -5511,6 +5516,12 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             BackupBlockedMods();
             BackupContentCatalog();
             BackupProfiles();
+        }
+
+        private void enableSplashScreenToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            enableSplashScreenToolStripMenuItem.Checked = Properties.Settings.Default.LoadScreenEnabled = !enableSplashScreenToolStripMenuItem.Checked;
+            SaveSettings();
         }
     }
 }

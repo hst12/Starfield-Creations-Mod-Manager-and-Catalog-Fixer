@@ -728,5 +728,17 @@ namespace Starfield_Tools.Properties {
                 this["Resize"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool LoadScreenEnabled {
+            get {
+                return ((bool)(this["LoadScreenEnabled"]));
+            }
+            set {
+                this["LoadScreenEnabled"] = value;
+            }
+        }
     }
 }

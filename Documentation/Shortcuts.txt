@@ -20,7 +20,7 @@ Install mods by dragging and dropping the zip file onto the mod list. Multiple f
 Right-click on the mod list for context menu
 
 Context menu functions:
-Install mod from zip file - won't work for mods that have loose files.
+Install mod from zip file.
 
 Archive mod - Zips up the files for a mod and copies them to a specified folder. The mod can be uninstalled at this point and re-installed later from the folder chosen.
 

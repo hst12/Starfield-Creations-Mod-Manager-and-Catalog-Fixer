@@ -152,5 +152,10 @@ namespace Starfield_Tools.Load_Order_Editor
         {
             UpdateCacheSize();
         }
+
+        private void btnReadFile_Click(object sender, EventArgs e)
+        {
+            Tools.OpenFile(Path.Combine(Tools.CommonFolder, "Readfile.txt"));
+        }
     }
 }

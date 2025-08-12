@@ -38,6 +38,7 @@
             chkTextures = new System.Windows.Forms.CheckBox();
             txtCacheSize = new System.Windows.Forms.TextBox();
             flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            btnReadFile = new System.Windows.Forms.Button();
             flowLayoutPanel1.SuspendLayout();
             flowLayoutPanel2.SuspendLayout();
             SuspendLayout();
@@ -56,7 +57,7 @@
             // btnClose
             // 
             btnClose.AutoSize = true;
-            btnClose.Location = new System.Drawing.Point(159, 3);
+            btnClose.Location = new System.Drawing.Point(427, 3);
             btnClose.Name = "btnClose";
             btnClose.Size = new System.Drawing.Size(150, 46);
             btnClose.TabIndex = 1;
@@ -131,11 +132,23 @@
             // flowLayoutPanel2
             // 
             flowLayoutPanel2.Controls.Add(btnOk);
+            flowLayoutPanel2.Controls.Add(btnReadFile);
             flowLayoutPanel2.Controls.Add(btnClose);
             flowLayoutPanel2.Location = new System.Drawing.Point(11, 402);
             flowLayoutPanel2.Name = "flowLayoutPanel2";
             flowLayoutPanel2.Size = new System.Drawing.Size(777, 67);
             flowLayoutPanel2.TabIndex = 5;
+            // 
+            // btnReadFile
+            // 
+            btnReadFile.AutoSize = true;
+            btnReadFile.Location = new System.Drawing.Point(159, 3);
+            btnReadFile.Name = "btnReadFile";
+            btnReadFile.Size = new System.Drawing.Size(262, 46);
+            btnReadFile.TabIndex = 2;
+            btnReadFile.Text = "View / Edit Readfile.txt";
+            btnReadFile.UseVisualStyleBackColor = true;
+            btnReadFile.Click += btnReadFile_Click;
             // 
             // frmCacheConfig
             // 
@@ -165,5 +178,6 @@
         private System.Windows.Forms.CheckBox chkTextures;
         private System.Windows.Forms.TextBox txtCacheSize;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
+        private System.Windows.Forms.Button btnReadFile;
     }
 }

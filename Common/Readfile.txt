@@ -7,6 +7,3 @@ Data\sfbgs*.ba2
 Data\Starfield - Shaders.ba2
 Data\Starfield - Interface.ba2
 Data\Starfield - Materials.ba2
-rem optional
-rem Data\starfield - voices*
-rem Data\starfield - face*
