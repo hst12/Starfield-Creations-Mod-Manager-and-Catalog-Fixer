@@ -126,7 +126,7 @@ namespace Starfield_Tools.Load_Order_Editor
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error processing pattern '{pattern}': {ex.Message}");
+                MessageBox.Show($"Error processing pattern '{pattern}': {ex.Message}");
                 // Optionally log or handle the error
             }
 

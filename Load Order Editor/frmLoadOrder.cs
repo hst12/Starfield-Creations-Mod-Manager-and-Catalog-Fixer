@@ -846,7 +846,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 dataGridView1.Rows.AddRange(row);
 
             // -- Process mod stats if the Starfield game path is set --
-            if (!string.IsNullOrEmpty(StarfieldGamePath) || Properties.Settings.Default.ModStats)
+            if (!string.IsNullOrEmpty(StarfieldGamePath) && Properties.Settings.Default.ModStats)
             {
                 try
                 {
