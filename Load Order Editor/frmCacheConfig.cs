@@ -77,6 +77,7 @@ namespace Starfield_Tools.Load_Order_Editor
                 foreach (var item in cacheOptions.Concat(selectedOptions))
                     writer.WriteLine($"{readfilePath} \"{Path.Combine(frmLoadOrder.StarfieldGamePath, item)}\" /h /b /o");
             }
+            Properties.Settings.Default.ReadFileBatchPath = saveDialog.FileName;
             if (Tools.ConfirmAction("Readfile generation complete", "Run batch file?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 Tools.OpenFile(saveDialog.FileName);
             this.Close();

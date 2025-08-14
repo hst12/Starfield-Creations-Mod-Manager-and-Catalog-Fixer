@@ -223,6 +223,7 @@
             readfileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             configurationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             readfilePathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            runBatchFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator40 = new System.Windows.Forms.ToolStripSeparator();
             disableAllWarningToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuGame = new System.Windows.Forms.ToolStripMenuItem();
@@ -1671,9 +1672,9 @@
             // 
             // readfileToolStripMenuItem
             // 
-            readfileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { configurationToolStripMenuItem, readfilePathToolStripMenuItem });
+            readfileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { configurationToolStripMenuItem, readfilePathToolStripMenuItem, runBatchFileToolStripMenuItem });
             readfileToolStripMenuItem.Name = "readfileToolStripMenuItem";
-            readfileToolStripMenuItem.Size = new System.Drawing.Size(232, 44);
+            readfileToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
             readfileToolStripMenuItem.Text = "Readfile";
             // 
             // configurationToolStripMenuItem
@@ -1689,6 +1690,13 @@
             readfilePathToolStripMenuItem.Size = new System.Drawing.Size(555, 44);
             readfilePathToolStripMenuItem.Text = "Readfile Path";
             readfilePathToolStripMenuItem.Click += readfilePathToolStripMenuItem_Click;
+            // 
+            // runBatchFileToolStripMenuItem
+            // 
+            runBatchFileToolStripMenuItem.Name = "runBatchFileToolStripMenuItem";
+            runBatchFileToolStripMenuItem.Size = new System.Drawing.Size(555, 44);
+            runBatchFileToolStripMenuItem.Text = "Run Batch File";
+            runBatchFileToolStripMenuItem.Click += runBatchFileToolStripMenuItem_Click;
             // 
             // toolStripSeparator40
             // 
@@ -2727,5 +2735,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator48;
         private System.Windows.Forms.ToolStripMenuItem allTheThingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem enableSplashScreenToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem runBatchFileToolStripMenuItem;
     }
 }

@@ -603,7 +603,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             int EnabledCount = 0, IndexCount = 1, esmCount = 0, espCount = 0, ba2Count, mainCount = 0, i, versionDelimiter, dotIndex;
             string loText = Path.Combine(Tools.StarfieldAppData, "Plugins.txt"),
                    LOOTPath = Properties.Settings.Default.LOOTPath,
-                   StatText = "", directory, pluginName, rawVersion;
+                   StatText = "", pluginName, rawVersion;
 
             List<string> CreationsPlugin = new(), CreationsTitle = new(), CreationsFiles = new(), CreationsVersion = new();
             List<bool> AchievementSafe = new();
@@ -956,7 +956,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             }
 
             if (Properties.Settings.Default.Resize)
-                ResizeFormToFitDataGridView(dataGridView1, this);
+                ResizeFormToFitDataGridView(this);
 
             progressBar1.Value = progressBar1.Maximum;
             progressBar1.Hide();
@@ -3304,7 +3304,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             sbar4(showAll ? "All mods shown" : "Active mods only");
 
             if (resizeToolStripMenuItem.Checked)
-                ResizeFormToFitDataGridView(dataGridView1, this);
+                ResizeFormToFitDataGridView(this);
             btnActiveOnly.Font = new System.Drawing.Font(btnActiveOnly.Font, ActiveOnly ? FontStyle.Bold : FontStyle.Regular);
         }
 
@@ -5391,7 +5391,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void modContentsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string modName = string.Empty;
+            string modName;
 
             if (dataGridView1.CurrentRow == null || dataGridView1.CurrentRow.IsNewRow)
             {
@@ -5448,14 +5448,13 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             frmCacheConfig.Show();
         }
 
-        private void ResizeFormToFitDataGridView(DataGridView dgv, Form parentForm)
+        private void ResizeFormToFitDataGridView(Form parentForm)
         {
             int minHeight = 800, maxHeight, minWidth = 800, maxWidth;
             maxHeight = Screen.PrimaryScreen.WorkingArea.Height - 250;
             maxWidth = Screen.PrimaryScreen.WorkingArea.Width - 250;
 
             int totalRowHeight = dataGridView1.ColumnHeadersHeight;
-            int totalRowWidth = 0;
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
                 if (row.Visible)
@@ -5497,7 +5496,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
         {
             resizeToolStripMenuItem.Checked = Properties.Settings.Default.Resize = !resizeToolStripMenuItem.Checked;
             if (resizeToolStripMenuItem.Checked)
-                ResizeFormToFitDataGridView(dataGridView1, this);
+                ResizeFormToFitDataGridView(this);
         }
 
         private void frmLoadOrder_Resize(object sender, EventArgs e)
@@ -5522,6 +5521,14 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
         {
             enableSplashScreenToolStripMenuItem.Checked = Properties.Settings.Default.LoadScreenEnabled = !enableSplashScreenToolStripMenuItem.Checked;
             SaveSettings();
+        }
+
+        private void runBatchFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(Properties.Settings.Default.ReadFileBatchPath))
+                Tools.OpenFile(Properties.Settings.Default.ReadFileBatchPath);
+            else
+                MessageBox.Show("Batch file path not set. Please set it in the settings.", "Batch File Not Set", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
     }
 }

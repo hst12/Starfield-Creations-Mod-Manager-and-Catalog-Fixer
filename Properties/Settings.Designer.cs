@@ -740,5 +740,17 @@ namespace Starfield_Tools.Properties {
                 this["LoadScreenEnabled"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ReadFileBatchPath {
+            get {
+                return ((string)(this["ReadFileBatchPath"]));
+            }
+            set {
+                this["ReadFileBatchPath"] = value;
+            }
+        }
     }
 }
