@@ -5530,5 +5530,16 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             else
                 MessageBox.Show("Batch file path not set. Please set it in the settings.", "Batch File Not Set", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
+
+        private void scriptLogsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            tempstr = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games\\Starfield\\Logs\\Script");
+            if (!Directory.Exists(tempstr))
+            {
+                MessageBox.Show("Script logs directory not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            Tools.OpenFolder(tempstr);
+        }
     }
 }
