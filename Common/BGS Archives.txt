@@ -94,7 +94,8 @@ starfield - textures08.ba2
 starfield - textures09.ba2
 starfield - textures10.ba2
 starfield - textures11.ba2
-starfield - texturespatch.ba2
+Starfield - TexturesPatch01.ba2
+Starfield - TexturesPatch02.ba2
 starfield - voices01.ba2
 starfield - voices02.ba2
 starfield - voicespatch.ba2

@@ -351,7 +351,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                     InstallMod(strippedCommandLine);
                 }
 
-                if (arg.Equals("-hst"))
+                if (arg.Equals("-dev"))
                     testToolStripMenuItem.Visible = true;
             }
 
@@ -937,7 +937,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 {
                     sbar("Starfield path needs to be set for mod stats");
 #if DEBUG
-                MessageBox.Show($"Mod stats error: {ex.Message}");
+                    MessageBox.Show($"Mod stats error: {ex.Message}");
 #endif
                 }
             }
@@ -2283,6 +2283,8 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             if (!CheckGamePath()) // Game path folder needs to be set
                 return;
 
+            List<string> files = new();
+
             // Create a copy of selected rows to avoid collection-modification issues.
             var selectedRows = dataGridView1.SelectedRows.Cast<DataGridViewRow>().ToList();
             string dataDirectory = Path.Combine(StarfieldGamePath, "Data");
@@ -2348,6 +2350,18 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                             if (log)
                                 activityLog.WriteLog($"Deleted: {filePath}");
                         }
+                    }
+
+                    // match files like 'modname - textures.ba2', 'modname - textures01.ba2', 'modname - textures02.ba2', etc.
+                    string directoryPath = StarfieldGamePath + "\\Data\\";
+                    string[] textureFiles = Directory.GetFiles(directoryPath, modName + "* - textures*.ba2");
+                   
+
+                    foreach (string file in textureFiles)
+                    {
+                        File.Delete(file);
+                        if (log)
+                            activityLog.WriteLog($"Deleted: {file}");
                     }
 
                     SavePlugins();
@@ -4002,10 +4016,8 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
         private int CheckArchives()
         {
             List<string> BGSArchives = Tools.BGSArchives();
-            List<string> suffixes = new(Tools.Suffixes);
             List<string> archives = [];
             List<string> plugins = [];
-            List<string> orphaned = [];
             List<string> toDelete = [];
 
             if (StarfieldGamePath == "")
@@ -4021,26 +4033,14 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
             try
             {
-                List<string> modArchives = archives
-                    .Except(BGSArchives) // Exclude BGS Archives
-                    .Select(s =>
-                        suffixes.Aggregate(
-                            s.ToLower().Replace(".ba2", string.Empty), // Start by removing ".ba2"
-                            (current, suffix) => current.Replace(suffix, string.Empty) // Remove all suffixes dynamically
-                        )
-                    ).ToList();
+                List<string> modArchives = archives.Except(BGSArchives) // Exclude BGS Archives
+                    .Select(s => s.ToLower().Replace(".ba2", string.Empty)) // Remove ".ba2" from archive names
+                    .ToList();
 
-                // Build a list of archives to delete with full path
-                orphaned = modArchives.Except(plugins).ToList(); // Strip out esm files to get orphaned archives
-                suffixes.Add(""); // Add a blank suffix
-                foreach (var item in orphaned)
+                foreach (var archive in modArchives) // Check if archive is orphaned
                 {
-                    foreach (var suffix in suffixes)
-                    {
-                        tempstr = Path.Combine(StarfieldGamePath, "Data") + @"\" + Path.GetFileNameWithoutExtension(item) + suffix + ".ba2";
-                        if (File.Exists(tempstr))
-                            toDelete.Add(tempstr);
-                    }
+                    if (!plugins.Any(plugin => archive.StartsWith(plugin))) // If no plugin starts with the archive name
+                        toDelete.Add(Path.Combine(StarfieldGamePath, "Data", archive) + ".ba2");
                 }
 
                 if (toDelete.Count > 0)
@@ -5540,6 +5540,26 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 return;
             }
             Tools.OpenFolder(tempstr);
+        }
+
+        private void generateBGSArchivestxtToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            List<string> plugins = tools.GetPluginList().Select(p => Path.GetFileNameWithoutExtension(p)).ToList();
+            List<string> allArchives = Directory.EnumerateFiles(Path.Combine(StarfieldGamePath, "Data"), "*.ba2").Select(p => Path.GetFileNameWithoutExtension(p)).ToList();
+            List<string> bgsArchives = new List<string>();
+
+            foreach (string fileName in allArchives)
+            {
+                foreach (string plugin in plugins)
+                {
+                    if (fileName.StartsWith(plugin))
+                    {
+                        bgsArchives.Add(fileName);
+                        Debug.WriteLine($"Found BGS archive: {fileName}");
+                    }
+                    //break; // Found a match, skip to next fileName
+                }
+            }
         }
     }
 }

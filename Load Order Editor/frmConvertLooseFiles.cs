@@ -58,13 +58,14 @@ namespace Starfield_Tools.Load_Order_Editor
             /*if (Directory.Exists(Path.Combine(workingDirectory, "textures")))
             {*/
             cmdLine = @"textures -create=""" + Path.Combine(frmLoadOrder.StarfieldGamePath, "Data", Path.GetFileNameWithoutExtension(esm)) + " - textures.ba2" + @""""
-           + " -format=DDS -excludefile=" + "\""
+           + " -format=DDS -maxSizeMB=1024 -excludefile=" + "\""
            + Path.Combine(Tools.CommonFolder, "exclude.txt" + "\"");
 
             if (!File.Exists(Path.Combine(frmLoadOrder.StarfieldGamePath, "Data", Path.GetFileNameWithoutExtension(esm) + " - textures.ba2")))
             {
                 //activityLog.WriteLog($"Creating texture archive\n{archive2Path} {cmdLine}");
                 MakeArchive(archive2Path, cmdLine, workingDirectory);
+                Debug.WriteLine(cmdLine);
                 frmLoadOrder.returnStatus++;
             }
             else

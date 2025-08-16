@@ -26,8 +26,14 @@ namespace Starfield_Tools.Load_Order_Editor
             if (File.Exists(ModFile + ".esm"))
                 files.Add(ModFile + ".esm");
 
-            if (File.Exists(ModFile + " - textures.ba2"))
-                files.Add(ModFile + " - textures.ba2");
+            // match files like 'modname - textures.ba2', 'modname - textures01.ba2', 'modname - textures02.ba2', etc.
+            string[] textureFiles = Directory.GetFiles(directoryPath, modName[..^4] +"* - textures*.ba2");
+            
+            foreach (string file in textureFiles)
+            {
+                files.Add(file);
+
+            }
 
             if (File.Exists(ModFile + " - main.ba2"))
                 files.Add(ModFile + " - main.ba2");

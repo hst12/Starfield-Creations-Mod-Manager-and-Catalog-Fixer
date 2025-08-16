@@ -519,7 +519,7 @@ namespace Starfield_Tools.Common // Various functions used by the app
                 string line;
                 while ((line = sr.ReadLine()) != null)
                 {
-                    bgsArchives.Add(line);
+                    bgsArchives.Add(line.ToLower());
                 }
             }
             return bgsArchives;
