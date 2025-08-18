@@ -2355,7 +2355,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                     // match files like 'modname - textures.ba2', 'modname - textures01.ba2', 'modname - textures02.ba2', etc.
                     string directoryPath = StarfieldGamePath + "\\Data\\";
                     string[] textureFiles = Directory.GetFiles(directoryPath, modName + "* - textures*.ba2");
-                   
 
                     foreach (string file in textureFiles)
                     {
@@ -5490,6 +5489,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
             // Adjust the form's client size
             parentForm.Width = Math.Max(minWidth, Math.Min(requiredClientWidth, maxWidth));
+            this.CenterToScreen();
         }
 
         private void resizeToolStripMenuItem_Click(object sender, EventArgs e)
@@ -5555,7 +5555,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                     if (fileName.StartsWith(plugin))
                     {
                         bgsArchives.Add(fileName);
-                        Debug.WriteLine($"Found BGS archive: {fileName}");
+                        Debug.WriteLine($"Found  archive: {fileName}, plugin: {plugin}");
                     }
                     //break; // Found a match, skip to next fileName
                 }

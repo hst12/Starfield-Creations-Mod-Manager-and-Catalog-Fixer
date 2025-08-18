@@ -2,8 +2,8 @@ Data\video\*.*
 Starfield\*.ini
 starfield.exe
 *.dll
-Data\*.esm
-Data\sfbgs*.ba2
+rem Data\*.esm
+rem Data\sfbgs*.ba2
 Data\Starfield - Shaders.ba2
 Data\Starfield - Interface.ba2
 Data\Starfield - Materials.ba2
