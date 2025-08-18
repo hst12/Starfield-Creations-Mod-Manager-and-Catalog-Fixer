@@ -915,8 +915,8 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
                     // Build status text
                     var statusBuilder = new StringBuilder();
-                    statusBuilder.Append($"Mods: Creations {CreationsPlugin.Count}, Other {dataGridView1.RowCount - CreationsPlugin.Count}, ");
-                    statusBuilder.Append($"Enabled: {EnabledCount}, esm: {esmCount}, Archives Total: {ba2Count}, ");
+                    statusBuilder.Append($"Creations {CreationsPlugin.Count}, Other {dataGridView1.RowCount - CreationsPlugin.Count}, ");
+                    statusBuilder.Append($"Enabled: {EnabledCount}, esm: {esmCount}, Archives: {ba2Count}, ");
                     statusBuilder.Append($"Enabled - Main: {mainCount}, Textures: {textureCount}");
 
                     if (espCount > 0)
