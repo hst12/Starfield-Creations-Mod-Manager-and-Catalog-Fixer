@@ -4098,28 +4098,28 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             }
             profiles.Remove(cmbProfile.SelectedItem.ToString()); // Remove current profile from list
 
-            try
+            foreach (DataGridViewRow selectedRow in dataGridView1.SelectedRows)
             {
-                foreach (DataGridViewRow selectedRow in dataGridView1.SelectedRows)
+                try
                 {
                     if (selectedRow.Cells["PluginName"].Value != null) // Ensure the cell value is not null
                     {
                         frmAddModToProfile addMod = new(profiles, selectedRow.Cells["PluginName"].Value.ToString());
                         addMod.ShowDialog(cmbProfile);
                     }
-
-                    if (Tools.ConfirmAction("Run update/sort on all profiles", "Update All Profiles?",
-                        MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                        UpdateAllProfiles();
                 }
-            }
-            catch (Exception ex)
-            {
-                if (log)
-                    activityLog.WriteLog("Error adding mod to profile: " + ex.Message);
+                catch (Exception ex)
+                {
+                    if (log)
+                        activityLog.WriteLog("Error adding mod to profile: " + ex.Message);
 #if DEBUG
-                MessageBox.Show("Error: " + ex.Message);
+                    MessageBox.Show("Error: " + ex.Message);
 #endif
+                }
+
+                if (Tools.ConfirmAction("Run update/sort on all profiles", "Update All Profiles?",
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    UpdateAllProfiles();
             }
         }
 
@@ -5560,6 +5560,11 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                     //break; // Found a match, skip to next fileName
                 }
             }
+        }
+
+        private void steamDBToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Tools.OpenUrl("https://steamdb.info/app/1716740/depots/");
         }
     }
 }
