@@ -3883,7 +3883,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 foreach (DataGridViewRow row in dataGridView1.SelectedRows)
                 {
                     if (row.Cells["PluginName"].Value is not string ModNameRaw) continue;
-                    string ModName = ModNameRaw[..ModNameRaw.IndexOf('.')]; // Get current mod name
+                    string ModName = ModNameRaw[..ModNameRaw.LastIndexOf('.')]; // Get current mod name
                     string ModFile = Path.Combine(directoryPath, ModName); // Add esp, esm, and archives to files list
 
                     if (File.Exists(ModFile + ".esp"))
@@ -5398,7 +5398,11 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 return;
             }
 
-            var selectedRows = dataGridView1.SelectedRows.Cast<DataGridViewRow>().ToList();
+            //var selectedRows = dataGridView1.SelectedRows.Cast<DataGridViewRow>().ToList();
+            var selectedRows = dataGridView1.SelectedRows
+    .Cast<DataGridViewRow>()
+    .Where(row => row.Cells["ModEnabled"].Value is bool isActive && isActive)
+    .ToList();
 
             foreach (DataGridViewRow row in selectedRows)
             {
