@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -27,12 +28,11 @@ namespace Starfield_Tools.Load_Order_Editor
                 files.Add(ModFile + ".esm");
 
             // match files like 'modname - textures.ba2', 'modname - textures01.ba2', 'modname - textures02.ba2', etc.
-            string[] textureFiles = Directory.GetFiles(directoryPath, modName[..^4] +"* - textures*.ba2");
-            
+            string[] textureFiles = Directory.GetFiles(directoryPath, modName[..^4] + "* - textures*.ba2");
+
             foreach (string file in textureFiles)
             {
                 files.Add(file);
-
             }
 
             if (File.Exists(ModFile + " - main.ba2"))
@@ -44,7 +44,9 @@ namespace Starfield_Tools.Load_Order_Editor
             richTextBox1.Text += "Mod files are:\n";
             foreach (var item in files)
             {
-                richTextBox1.Text += $"{Path.GetFileName(item)}\n";
+                FileInfo fileInfo = new FileInfo(item);
+                long fileSize = fileInfo.Length / 1024;
+                richTextBox1.Text += $"{Path.GetFileName(item)}, Size: {fileSize} Kb\n";
             }
         }
 

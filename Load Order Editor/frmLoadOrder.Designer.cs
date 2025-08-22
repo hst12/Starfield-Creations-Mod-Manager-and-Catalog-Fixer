@@ -1529,7 +1529,7 @@
             // 
             enableSplashScreenToolStripMenuItem.Name = "enableSplashScreenToolStripMenuItem";
             enableSplashScreenToolStripMenuItem.Size = new System.Drawing.Size(407, 44);
-            enableSplashScreenToolStripMenuItem.Text = "Enable Splash Screen";
+            enableSplashScreenToolStripMenuItem.Text = "Load Screen Enabled";
             enableSplashScreenToolStripMenuItem.Click += enableSplashScreenToolStripMenuItem_Click;
             // 
             // toolStripSeparator20
