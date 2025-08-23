@@ -845,92 +845,82 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             foreach (var row in rowBuffer)
                 dataGridView1.Rows.AddRange(row);
 
-            // Mod Stats
+            // -- Process mod stats if the Starfield game path is set --
             if (!string.IsNullOrEmpty(StarfieldGamePath) && Properties.Settings.Default.ModStats)
             {
                 try
                 {
+                    // Cache file paths and load BGS archives once
                     var dataDirectory = Path.Combine(StarfieldGamePath, "Data");
-
-                    // Preload BGS archives into a case-insensitive set
                     var bgsArchives = File.ReadLines(Path.Combine(Tools.CommonFolder, "BGS Archives.txt"))
                         .Where(line => line.Length > 4)
-                        .Select(line => line[..^4])
+                        .Select(line => line[..^4].ToLowerInvariant())
                         .ToHashSet(StringComparer.OrdinalIgnoreCase);
 
-                    // Preload enabled plugins into a case-insensitive set
+                    // Load enabled plugins once
                     var enabledPlugins = File.ReadLines(loText)
-                        .Where(line => line.Length > 1 && line[0] == '*')
+                        .Where(line => line.StartsWith('*') && line.Length > 1)
                         .Select(line => line[1..])
                         .Where(plugin => plugin.Contains('.'))
-                        .Select(plugin => plugin.Split('.')[0])
+                        .Select(plugin => plugin.Split('.')[0].ToLowerInvariant())
                         .Where(plugin => !bgsArchives.Contains(plugin))
                         .ToHashSet(StringComparer.OrdinalIgnoreCase);
 
-                    int ba2CountLocal = 0, esmCountLocal = 0, espCountLocal = 0;
-                    int mainCountLocal = 0, textureCountLocal = 0;
+                    // Process all BA2 files in one enumeration
+                    var allBa2Files = Directory.EnumerateFiles(dataDirectory, "*.ba2", SearchOption.TopDirectoryOnly);
+                    var archives = new List<string>();
+                    var mainArchivePlugins = new List<string>();
+                    var textureArchivePlugins = new List<string>();
 
-                    // Enumerate all relevant files in one pass
-                    foreach (var file in Directory.EnumerateFiles(dataDirectory, "*.*", SearchOption.TopDirectoryOnly))
+                    foreach (var file in allBa2Files)
                     {
-                        var ext = Path.GetExtension(file);
-                        if (string.IsNullOrEmpty(ext)) continue;
-
-                        var nameNoExt = Path.GetFileNameWithoutExtension(file);
-                        if (string.IsNullOrEmpty(nameNoExt)) continue;
-
-                        // Skip BGS archives/plugins
-                        if (bgsArchives.Contains(nameNoExt))
+                        var fileNameWithoutExt = Path.GetFileNameWithoutExtension(file);
+                        if (string.IsNullOrEmpty(fileNameWithoutExt))
                             continue;
 
-                        switch (ext.ToLowerInvariant())
+                        var lowerFileName = fileNameWithoutExt.ToLowerInvariant();
+
+                        // Skip BGS archives
+                        if (bgsArchives.Contains(lowerFileName))
+                            continue;
+
+                        archives.Add(lowerFileName);
+
+                        // Check for main archives and extract mod name
+                        if (lowerFileName.Contains(" - main", StringComparison.OrdinalIgnoreCase))
                         {
-                            case ".ba2":
-                                ba2CountLocal++;
-                                if (nameNoExt.Contains(" - main", StringComparison.OrdinalIgnoreCase))
-                                {
-                                    var modName = nameNoExt.Replace(" - main", string.Empty, StringComparison.OrdinalIgnoreCase);
-                                    if (enabledPlugins.Contains(modName))
-                                        mainCountLocal++;
-                                }
-                                else if (nameNoExt.Contains(" - textures", StringComparison.OrdinalIgnoreCase))
-                                {
-                                    var modName = nameNoExt.Replace(" - textures", string.Empty, StringComparison.OrdinalIgnoreCase);
-                                    if (enabledPlugins.Contains(modName))
-                                        textureCountLocal++;
-                                }
-                                break;
+                            var modName = lowerFileName.Replace(" - main", string.Empty, StringComparison.OrdinalIgnoreCase);
+                            mainArchivePlugins.Add(modName);
+                        }
 
-                            case ".esm":
-                                esmCountLocal++;
-                                break;
-
-                            case ".esp":
-                                var pluginNameesp = nameNoExt;
-                                if (enabledPlugins.Contains(pluginNameesp))
-                                    espCountLocal++;
-                                break;
+                        // Check for texture archives and extract mod name
+                        if (lowerFileName.Contains(" - textures", StringComparison.OrdinalIgnoreCase))
+                        {
+                            var modName = lowerFileName.Replace(" - textures", string.Empty, StringComparison.OrdinalIgnoreCase);
+                            textureArchivePlugins.Add(modName);
                         }
                     }
 
-                    ba2Count = ba2CountLocal;
-                    esmCount = esmCountLocal;
-                    espCount = espCountLocal;
-                    mainCount = mainCountLocal;
-                    var textureCount = textureCountLocal;
+                    // Calculate all counts
+                    ba2Count = Directory.EnumerateFiles(dataDirectory, "*.ba2", SearchOption.TopDirectoryOnly).Count();
+                    esmCount = Directory.EnumerateFiles(dataDirectory, "*.esm", SearchOption.TopDirectoryOnly).Count();
 
-                    // Build status text efficiently
-                    var statusBuilder = new StringBuilder(128);
-                    statusBuilder.Append("Creations ").Append(CreationsPlugin.Count)
-                        .Append(", Other ").Append(dataGridView1.RowCount - CreationsPlugin.Count)
-                        .Append(", Enabled: ").Append(EnabledCount)
-                        .Append(", esm: ").Append(esmCount)
-                        .Append(", Archives: ").Append(ba2Count)
-                        .Append(", Enabled - Main: ").Append(mainCount)
-                        .Append(", Textures: ").Append(textureCount);
+                    espCount = Directory.EnumerateFiles(dataDirectory, "*.esp", SearchOption.TopDirectoryOnly)
+                        .Select(file => Path.GetFileNameWithoutExtension(file))
+                        .Where(plugin => !string.IsNullOrEmpty(plugin))
+                        .Count(plugin => enabledPlugins.Contains(plugin.ToLowerInvariant()));
+
+                    mainCount = mainArchivePlugins.Count(mod => enabledPlugins.Contains(mod));
+                    var textureCount = textureArchivePlugins.Count(mod => enabledPlugins.Contains(mod));
+
+                    // Build status text
+                    var statusBuilder = new StringBuilder();
+                    statusBuilder.Append($"Creations {CreationsPlugin.Count}, Other {dataGridView1.RowCount - CreationsPlugin.Count}, ");
+                    statusBuilder.Append($"Enabled: {EnabledCount}, esm: {esmCount}, Archives: {ba2Count}, ");
+                    statusBuilder.Append($"Enabled - Main: {mainCount}, Textures: {textureCount}");
 
                     if (espCount > 0)
-                        statusBuilder.Append(", esp files: ").Append(espCount);
+                        statusBuilder.Append($", esp files: {espCount}");
 
                     StatText = statusBuilder.ToString();
 
@@ -939,7 +929,9 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                     Debug.Assert(otherPluginCount >= 0, "Plugins mismatch");
 
                     if (otherPluginCount < 0)
+                    {
                         sbar4("Catalog/Plugins mismatch - Run game to solve");
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -1691,53 +1683,142 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private int SyncPlugins()
         {
-            int currentRowCount = dataGridView1.Rows.Count, changes = 0;
-
+            // 1) Validate game path
             if (!CheckGamePath() || string.IsNullOrEmpty(StarfieldGamePath))
                 return 0;
 
-            // 1) Build full on-disk set, skip duplicates immediately
+            sbar3("Updating...");
+            statusStrip1.Refresh();
+            dataGridView1.SuspendLayout();
+            // 2) Gather all on-disk .esm + .esp plugin filenames
+            var pluginFiles = tools.GetPluginList();
             string dataDir = Path.Combine(StarfieldGamePath, "Data");
-            var onDisk = new HashSet<string>(tools.GetPluginList(), StringComparer.OrdinalIgnoreCase);
-            foreach (var file in Directory.EnumerateFiles(dataDir, "*.esp", SearchOption.TopDirectoryOnly))
-                onDisk.Add(Path.GetFileName(file));
-
-            // 2) Exclude Bethesda files, so they’re never in the grid
-            onDisk.ExceptWith(tools.BethFiles);
-
-            // 3) Prepare for grid rebuild
-            bool activateNew = Properties.Settings.Default.ActivateNew;
-            var grid = dataGridView1;
-            int colName = grid.Columns["PluginName"].Index;
-            int colEnable = grid.Columns["ModEnabled"].Index;
-
-            grid.SuspendLayout();
-            grid.Rows.Clear();    // one shot removal of everything
-
-            // 4) Bulk add every unique plugin exactly once
-            foreach (var plugin in onDisk)
+            try
             {
-                int rowIndex = grid.Rows.Add();
-                var cells = grid.Rows[rowIndex].Cells;
-
-                // fast StringComparison, avoids extra allocations
-                cells[colEnable].Value = plugin.EndsWith(".esm", StringComparison.OrdinalIgnoreCase)
-                                         && activateNew;
-                cells[colName].Value = plugin;
+                pluginFiles.AddRange(
+                    Directory.EnumerateFiles(dataDir, "*.esp", SearchOption.TopDirectoryOnly)
+                             .Select(Path.GetFileName)
+                );
             }
-
-            grid.ResumeLayout();
-
-            changes = Math.Abs(currentRowCount - dataGridView1.Rows.Count);
-            if (changes != 0)
+            catch (Exception ex)
             {
                 if (log)
-                    activityLog.WriteLog($"Plugins added/removed: {changes}");
-                isModified = true;
+                    activityLog.WriteLog($"Error reading plugin files: {ex.Message}");
+                MessageBox.Show(
+                    $"Error reading plugin files: {ex.Message}",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+                return 0;
             }
 
-            return changes;
+            var onDisk = new HashSet<string>(pluginFiles);
+
+            // 3) Remove duplicate rows in the grid (keep the first occurrence)
+            int dupRemoved = 0;
+            var duplicates = dataGridView1.Rows
+                .Cast<DataGridViewRow>()
+                .Select(r => r.Cells["PluginName"].Value as string)
+                .Where(n => !string.IsNullOrEmpty(n))
+                .GroupBy(n => n)
+                .Where(g => g.Count() > 1)
+                .Select(g => g.Key);
+
+            foreach (var name in duplicates)
+            {
+                // take all but the first row with this name
+                var rowsToDrop = dataGridView1.Rows
+                    .Cast<DataGridViewRow>()
+                    .Where(r => (r.Cells["PluginName"].Value as string) == name)
+                    .Skip(1)
+                    .ToList();
+
+                foreach (var row in rowsToDrop)
+                {
+                    dataGridView1.Rows.Remove(row);
+                    dupRemoved++;
+                    if (log)
+                        activityLog.WriteLog($"Removing duplicate entry {name}");
+                }
+            }
+
+            // 4) Rehydrate the set of what's currently in the grid
+            var inGrid = new HashSet<string>(
+                dataGridView1.Rows
+                    .Cast<DataGridViewRow>()
+                    .Select(r => r.Cells["PluginName"].Value as string)
+                    .Where(n => !string.IsNullOrEmpty(n))
+            );
+
+            // 5) Compute which to add / remove
+            var toAdd = onDisk.Except(inGrid).Except(tools.BethFiles).ToList();
+            var toRemove = inGrid.Except(onDisk).Union(tools.BethFiles).ToList();
+
+            int added = 0;
+            int removed = 0;
+
+            // 6) Add new entries
+            foreach (var file in toAdd)
+            {
+                int idx = dataGridView1.Rows.Add();
+                var row = dataGridView1.Rows[idx];
+
+                row.Cells["ModEnabled"].Value = file.EndsWith(".esm")
+                    && Properties.Settings.Default.ActivateNew;
+                row.Cells["PluginName"].Value = file;
+
+                if (log)
+                    activityLog.WriteLog($"Adding {file} to Plugins.txt");
+
+                added++;
+            }
+
+            // 7) Remove deleted mods or base‐game entries
+            var counter = dataGridView1.Rows.Count;
+            foreach (var file in toRemove)
+            {
+                var rowsToDrop = dataGridView1.Rows
+                    .Cast<DataGridViewRow>()
+                    .Where(r => (r.Cells["PluginName"].Value as string) == file)
+                    .ToList();
+
+                foreach (var row in rowsToDrop)
+                {
+                    counter--;
+                    sbar($"Removing {counter.ToString()}");
+                    statusStrip1.Refresh();
+                    dataGridView1.Rows.Remove(row);
+
+                    if (log)
+                        activityLog.WriteLog($"Removing {file} from Plugins.txt");
+                    removed++;
+                }
+            }
+
+            // 8) Persist + summary log
+            int totalChanges = dupRemoved + added + removed;
+            if (totalChanges > 0)
+            {
+                if (log)
+                    activityLog.WriteLog($"Plugins added: {added}, removed: {removed}, duplicates removed: {dupRemoved}");
+                isModified = true;
+                SavePlugins();
+            }
+
+            sbar3("");
+            dataGridView1.ResumeLayout();
+            return totalChanges;
         }
+
+        /*private int AddRemove()
+        {
+            int ReturnStatus = AddMissing() + RemoveMissing();
+             if (ReturnStatus > 0)
+                 SavePlugins();
+
+             return ReturnStatus;
+        }*/
 
         private void toolStripMenuAutoClean_Click(object sender, EventArgs e)
         {
@@ -3096,7 +3177,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
         private void btnUpdate_Click(object sender, EventArgs e)
         {
             UpdatePlugins();
-            sbar("Update Complete");
         }
 
         private void LooseFilesOnOff(bool enable)
@@ -4757,7 +4837,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             if (log)
                 activityLog.WriteLog($"UpdateAllProfiles – total changes: {totalChanges}");
             progressBar1.Hide();
-            sbar("Profiles updated");
         }
 
         private static void GetSteamGamePath()
