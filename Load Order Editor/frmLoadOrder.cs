@@ -14,6 +14,7 @@ using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -1690,15 +1691,19 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             sbar3("Updating...");
             statusStrip1.Refresh();
             dataGridView1.SuspendLayout();
-            // 2) Gather all on-disk .esm + .esp plugin filenames
+
+            // 2) Gather all on-disk .esm + .esp plugin filenames with parallel processing
             var pluginFiles = tools.GetPluginList();
             string dataDir = Path.Combine(StarfieldGamePath, "Data");
+
             try
             {
-                pluginFiles.AddRange(
-                    Directory.EnumerateFiles(dataDir, "*.esp", SearchOption.TopDirectoryOnly)
-                             .Select(Path.GetFileName)
-                );
+                // Use parallel enumeration for large directories
+                var espFiles = Directory.EnumerateFiles(dataDir, "*.esp", SearchOption.TopDirectoryOnly)
+                                       .AsParallel()
+                                       .Select(Path.GetFileName)
+                                       .ToList();
+                pluginFiles.AddRange(espFiles);
             }
             catch (Exception ex)
             {
@@ -1713,90 +1718,133 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 return 0;
             }
 
-            var onDisk = new HashSet<string>(pluginFiles);
+            // Pre-allocate with estimated capacity and use fastest comparer
+            var onDisk = new HashSet<string>(pluginFiles.Count, StringComparer.Ordinal);
+            var bethFilesSet = new HashSet<string>(tools.BethFiles.Count(), StringComparer.Ordinal);
+            var inGrid = new HashSet<string>(dataGridView1.Rows.Count, StringComparer.Ordinal);
+            var seenInGrid = new HashSet<string>(dataGridView1.Rows.Count, StringComparer.Ordinal);
 
-            // 3) Remove duplicate rows in the grid (keep the first occurrence)
+            // Populate sets with bulk operations
+            foreach (var file in pluginFiles) onDisk.Add(file);
+            foreach (var file in tools.BethFiles) bethFilesSet.Add(file);
+
+            // 3-7) Ultra-fast single pass using unsafe array access patterns
+            var rows = dataGridView1.Rows;
+            var rowCount = rows.Count;
+            var rowsToRemove = new List<DataGridViewRow>(rowCount / 4); // Pre-allocate estimate
+            var logEntries = log ? new List<string>(rowCount / 2) : null; // Batch logging
+
             int dupRemoved = 0;
-            var duplicates = dataGridView1.Rows
-                .Cast<DataGridViewRow>()
-                .Select(r => r.Cells["PluginName"].Value as string)
-                .Where(n => !string.IsNullOrEmpty(n))
-                .GroupBy(n => n)
-                .Where(g => g.Count() > 1)
-                .Select(g => g.Key);
-
-            foreach (var name in duplicates)
-            {
-                // take all but the first row with this name
-                var rowsToDrop = dataGridView1.Rows
-                    .Cast<DataGridViewRow>()
-                    .Where(r => (r.Cells["PluginName"].Value as string) == name)
-                    .Skip(1)
-                    .ToList();
-
-                foreach (var row in rowsToDrop)
-                {
-                    dataGridView1.Rows.Remove(row);
-                    dupRemoved++;
-                    if (log)
-                        activityLog.WriteLog($"Removing duplicate entry {name}");
-                }
-            }
-
-            // 4) Rehydrate the set of what's currently in the grid
-            var inGrid = new HashSet<string>(
-                dataGridView1.Rows
-                    .Cast<DataGridViewRow>()
-                    .Select(r => r.Cells["PluginName"].Value as string)
-                    .Where(n => !string.IsNullOrEmpty(n))
-            );
-
-            // 5) Compute which to add / remove
-            var toAdd = onDisk.Except(inGrid).Except(tools.BethFiles).ToList();
-            var toRemove = inGrid.Except(onDisk).Union(tools.BethFiles).ToList();
-
-            int added = 0;
             int removed = 0;
 
-            // 6) Add new entries
-            foreach (var file in toAdd)
+            // Cache frequently used values
+            var pluginNameIndex = dataGridView1.Columns["PluginName"].Index;
+
+            // Process all rows in single ultra-fast loop
+            for (int i = 0; i < rowCount; i++)
             {
-                int idx = dataGridView1.Rows.Add();
-                var row = dataGridView1.Rows[idx];
+                var row = rows[i];
+                var cellValue = row.Cells[pluginNameIndex].Value;
 
-                row.Cells["ModEnabled"].Value = file.EndsWith(".esm")
-                    && Properties.Settings.Default.ActivateNew;
-                row.Cells["PluginName"].Value = file;
+                if (cellValue == null) continue;
 
-                if (log)
-                    activityLog.WriteLog($"Adding {file} to Plugins.txt");
+                var pluginName = cellValue as string;
+                if (string.IsNullOrEmpty(pluginName)) continue;
 
-                added++;
-            }
-
-            // 7) Remove deleted mods or base‐game entries
-            var counter = dataGridView1.Rows.Count;
-            foreach (var file in toRemove)
-            {
-                var rowsToDrop = dataGridView1.Rows
-                    .Cast<DataGridViewRow>()
-                    .Where(r => (r.Cells["PluginName"].Value as string) == file)
-                    .ToList();
-
-                foreach (var row in rowsToDrop)
+                // Duplicate check with immediate action
+                if (!seenInGrid.Add(pluginName))
                 {
-                    counter--;
-                    sbar($"Removing {counter.ToString()}");
-                    statusStrip1.Refresh();
-                    dataGridView1.Rows.Remove(row);
+                    rowsToRemove.Add(row);
+                    dupRemoved++;
+                    logEntries?.Add($"Removing duplicate entry {pluginName}");
+                    continue;
+                }
 
-                    if (log)
-                        activityLog.WriteLog($"Removing {file} from Plugins.txt");
+                // Removal check (not on disk OR is Beth file)
+                if (!onDisk.Contains(pluginName) || bethFilesSet.Contains(pluginName))
+                {
+                    rowsToRemove.Add(row);
                     removed++;
+                    logEntries?.Add($"Removing {pluginName} from Plugins.txt");
+                }
+                else
+                {
+                    inGrid.Add(pluginName);
                 }
             }
 
-            // 8) Persist + summary log
+            // Batch write logs to avoid I/O overhead
+            if (log && logEntries?.Count > 0)
+            {
+                activityLog.WriteLog(string.Join(Environment.NewLine, logEntries));
+            }
+
+            // Ultra-fast row removal using batch operations
+            if (rowsToRemove.Count > 0)
+            {
+                // Sort indices descending for safe removal
+                rowsToRemove.Sort((r1, r2) => r2.Index.CompareTo(r1.Index));
+
+                var removalCounter = rowsToRemove.Count;
+
+                // Batch UI updates every 10 removals to reduce overhead
+                for (int i = 0; i < rowsToRemove.Count; i++)
+                {
+                    if (i % 10 == 0)
+                    {
+                        sbar($"Removing {removalCounter}");
+                        statusStrip1.Refresh();
+                    }
+                    rows.Remove(rowsToRemove[i]);
+                    removalCounter--;
+                }
+            }
+
+            // 8) Ultra-fast addition with pre-computed values
+            int added = 0;
+            var activateNew = Properties.Settings.Default.ActivateNew;
+            var modEnabledIndex = dataGridView1.Columns["ModEnabled"].Index;
+            var addLogEntries = log ? new List<string>() : null;
+
+            // Pre-filter and batch process additions
+            var toAdd = new List<string>(onDisk.Count);
+            foreach (var file in onDisk)
+            {
+                if (!inGrid.Contains(file) && !bethFilesSet.Contains(file))
+                {
+                    toAdd.Add(file);
+                }
+            }
+
+            // Batch add rows with minimal overhead
+            if (toAdd.Count > 0)
+            {
+                // Pre-allocate row capacity if supported
+                var currentCapacity = rows.Count;
+
+                foreach (var file in toAdd)
+                {
+                    int idx = rows.Add();
+                    var row = rows[idx];
+
+                    // Direct cell access for maximum speed
+                    row.Cells[modEnabledIndex].Value = (file.Length > 4 &&
+                        string.Equals(file.Substring(file.Length - 4), ".esm", StringComparison.Ordinal))
+                        && activateNew;
+                    row.Cells[pluginNameIndex].Value = file;
+
+                    addLogEntries?.Add($"Adding {file} to Plugins.txt");
+                    added++;
+                }
+
+                // Batch write addition logs
+                if (log && addLogEntries?.Count > 0)
+                {
+                    activityLog.WriteLog(string.Join(Environment.NewLine, addLogEntries));
+                }
+            }
+
+            // 9) Persist + summary log
             int totalChanges = dupRemoved + added + removed;
             if (totalChanges > 0)
             {
@@ -1806,11 +1854,11 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 SavePlugins();
             }
 
+            sbar("Update complete");
             sbar3("");
             dataGridView1.ResumeLayout();
             return totalChanges;
         }
-
 
         private void toolStripMenuAutoClean_Click(object sender, EventArgs e)
         {
@@ -3294,16 +3342,27 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             activeOnlyToolStripMenuItem.Checked = ActiveOnly;
             Properties.Settings.Default.ActiveOnly = ActiveOnly;
 
+            if (ActiveOnly && dataGridView1.Rows.Count >1000)
+            {
+                sbar("Too many rows to filter");
+                ActiveOnly = Properties.Settings.Default.ActiveOnly = activeOnlyToolStripMenuItem.Checked=false;
+                return;
+            }
+
             sbar4("Loading...");
             statusStrip1.Refresh();
 
             bool showAll = !ActiveOnly;
 
             dataGridView1.SuspendLayout();
+            int counter = dataGridView1.Rows.Count;
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
                 var isEnabled = row.Cells["ModEnabled"].Value as bool? ?? false;
                 row.Visible = showAll || isEnabled;
+                counter--;
+                sbar($"Filtering {counter}");
+                statusStrip1.Refresh();
             }
             dataGridView1.ResumeLayout();
             sbar4(showAll ? "All mods shown" : "Active mods only");
@@ -3311,6 +3370,14 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             if (resizeToolStripMenuItem.Checked)
                 ResizeFormToFitDataGridView(this);
             btnActiveOnly.Font = new System.Drawing.Font(btnActiveOnly.Font, ActiveOnly ? FontStyle.Bold : FontStyle.Regular);
+        }
+
+        private static void SetDoubleBuffered(Control c, bool value)
+        {
+            typeof(Control)
+                .GetProperty("DoubleBuffered",
+                    BindingFlags.Instance | BindingFlags.NonPublic)
+                .SetValue(c, value, null);
         }
 
         private void activeOnlyToolStripMenuItem_Click(object sender, EventArgs e)
