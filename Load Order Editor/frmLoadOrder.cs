@@ -1811,14 +1811,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             return totalChanges;
         }
 
-        /*private int AddRemove()
-        {
-            int ReturnStatus = AddMissing() + RemoveMissing();
-             if (ReturnStatus > 0)
-                 SavePlugins();
-
-             return ReturnStatus;
-        }*/
 
         private void toolStripMenuAutoClean_Click(object sender, EventArgs e)
         {
