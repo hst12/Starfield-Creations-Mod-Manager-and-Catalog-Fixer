@@ -1685,7 +1685,7 @@
             // 
             readfileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { configurationToolStripMenuItem, readfilePathToolStripMenuItem, runBatchFileToolStripMenuItem });
             readfileToolStripMenuItem.Name = "readfileToolStripMenuItem";
-            readfileToolStripMenuItem.Size = new System.Drawing.Size(232, 44);
+            readfileToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
             readfileToolStripMenuItem.Text = "Readfile";
             // 
             // configurationToolStripMenuItem

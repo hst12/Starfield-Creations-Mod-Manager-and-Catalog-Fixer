@@ -47,13 +47,19 @@ namespace Starfield_Tools.Load_Order_Editor
                 MessageBox.Show("Please set the readfile.exe path in Settings first.", "Readfile Path Not Set", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+            string readfileBatchPath;
+            if (string.IsNullOrEmpty(Properties.Settings.Default.ReadFileBatchPath))
+                readfileBatchPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            else
+                readfileBatchPath=Properties.Settings.Default.ReadFileBatchPath;
+
             System.Windows.Forms.SaveFileDialog saveDialog = new()
-            {
-                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
-                Filter = "Cmd File|*.cmd",
-                Title = "Generate Readfile commands",
-                FileName = "Starfield Readfile.cmd"
-            };
+                {
+                    InitialDirectory = readfileBatchPath,
+                    Filter = "Cmd File|*.cmd",
+                    Title = "Generate Readfile commands",
+                    FileName = "Starfield Readfile.cmd"
+                };
 
             if (saveDialog.ShowDialog() != DialogResult.OK || string.IsNullOrEmpty(saveDialog.FileName))
             {

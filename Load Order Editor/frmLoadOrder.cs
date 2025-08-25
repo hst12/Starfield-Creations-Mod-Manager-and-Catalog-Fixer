@@ -1619,6 +1619,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 SavePlugins(); // Save changes to Plugins.txt
             }
 
+            sbar4($"Plugins added: {addedFiles}");
             if (log)
                 activityLog.WriteLog($"Plugins added: {addedFiles}");
             return addedFiles;
@@ -1676,6 +1677,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 SavePlugins(); // Save changes to Plugins.txt
             }
 
+            sbar4($"Plugins removed: {removedFiles}");
             if (log)
                 activityLog.WriteLog($"Plugins removed: {removedFiles}");
 
@@ -1854,8 +1856,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 SavePlugins();
             }
 
-            sbar("Update complete");
-            sbar3("");
+            sbar3("Update complete");
             dataGridView1.ResumeLayout();
             return totalChanges;
         }
