@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using Microsoft.VisualBasic;
+using Microsoft.Win32;
 using Narod.SteamGameFinder;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
@@ -14,7 +15,6 @@ using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -315,11 +315,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             // Initialise profiles
             if (Properties.Settings.Default.ProfileOn)
             {
-                /*#if DEBUG
-                                // Check if profile matches Plugins.txt
-                                if (!Tools.FileCompare(Path.Combine(Properties.Settings.Default.ProfileFolder, LastProfile), Path.Combine(Tools.StarfieldAppData, "Plugins.txt")))
-                                    this.Text = Application.ProductName + " Plugins.txt mismatch";
-                #endif*/
                 toolStripMenuProfilesOn.Checked = true;
                 Profiles = true;
 
@@ -392,8 +387,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 if (changes > 0)
                 {
                     sbar4($"Changes: {changes}");
-                    /*SavePlugins();*/
-
                     if (AutoSort)
                         RunLOOT(true);
 
@@ -541,7 +534,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             {
                 var deserializer = new DeserializerBuilder().Build();
                 string yamlContent = File.ReadAllText(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                    @"LOOT\games\Starfield\userlist.yaml"));
+                    "LOOT\\games\\Starfield\\userlist.yaml"));
                 Groups = deserializer.Deserialize<Tools.Configuration>(yamlContent);
             }
             catch (Exception ex)
@@ -559,16 +552,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
         {
             switch (e.KeyCode)
             {
-                /*case Keys.Enter:
-                    if (dataGridView1.Focused && !string.IsNullOrEmpty(txtSearchBox.Text))
-                        SearchMod();
-                    break;*/
-
-                /*case Keys.F3:
-                    if (dataGridView1.SelectedRows.Count > 0)
-                        SearchMod();
-                    break;*/
-
                 case Keys.F5:
                     RefreshDataGrid();
                     break;
@@ -726,9 +709,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                     {
                         authorVersion = rawVersion[(versionDelimiter + 1)..];
 
-                        /*if (double.TryParse(rawVersion[..versionDelimiter], out double seconds))
-                            modVersion = start.AddSeconds(seconds).Date.ToString("yyyy-MM-dd");*/
-
                         try
                         {
                             if (versionDelimiter > 0 && versionDelimiter <= rawVersion.Length)
@@ -765,7 +745,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 }
 
                 // Buffer the row before adding.
-                //List<DataGridViewRow> rowBuffer = new List<DataGridViewRow>();
 
                 var row = new DataGridViewRow();
                 row.CreateCells(dataGridView1); // Create cells based on current column structure
@@ -801,19 +780,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 {
                     string currentGroupX = row.Cells[4].Value?.ToString() ?? "Bethesda Game Studios Creations"; //Group = column 4
                     row.Cells[4].Value = $"{currentGroupX} (Bethesda)";
-                }
-
-                if (row.Cells[0].Visible) // Highlight index cells if visible
-                {
-                    string currentGroup = row.Cells[4].Value?.ToString(); // Group = column 4
-
-                    if (!string.Equals(currentGroup, previousGroup, StringComparison.OrdinalIgnoreCase))
-                    {
-                        row.Cells[0].Style.BackColor = System.Drawing.Color.Gray; // Highlight only the first cell
-                        /*row.DefaultCellStyle.BackColor = Color.LightGoldenrodYellow;*/
-                    }
-
-                    previousGroup = currentGroup;
                 }
 
                 // Update required cells.
@@ -947,6 +913,12 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             SetColumnVisibility(Properties.Settings.Default.CreationsID, toolStripMenuCreationsID, dataGridView1.Columns["CreationsID"]);
             SetColumnVisibility(Properties.Settings.Default.URL, uRLToolStripMenuItem, dataGridView1.Columns["URL"]);
 
+            if (ActiveOnly && dataGridView1.Rows.Count > 1000)
+            {
+                sbar("Too many rows to filter");
+                ActiveOnly = Properties.Settings.Default.ActiveOnly = activeOnlyToolStripMenuItem.Checked = false;
+            }
+
             if (ActiveOnly)
             {
                 sbar("Hiding inactive mods...");
@@ -987,8 +959,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 }
 
                 int index = cmbProfile.Items.IndexOf(Properties.Settings.Default.LastProfile);
-                //int index = cmbProfile.Items.Cast<string>().ToList()
-                //.FindIndex(item => string.Equals(item, LastProfile, StringComparison.OrdinalIgnoreCase));
+
                 if (index != -1)
                 {
                     cmbProfile.SelectedIndex = index;
@@ -1730,7 +1701,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             foreach (var file in pluginFiles) onDisk.Add(file);
             foreach (var file in tools.BethFiles) bethFilesSet.Add(file);
 
-            // 3-7) Ultra-fast single pass using unsafe array access patterns
+            // Single pass using unsafe array access patterns
             var rows = dataGridView1.Rows;
             var rowCount = rows.Count;
             var rowsToRemove = new List<DataGridViewRow>(rowCount / 4); // Pre-allocate estimate
@@ -1742,7 +1713,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             // Cache frequently used values
             var pluginNameIndex = dataGridView1.Columns["PluginName"].Index;
 
-            // Process all rows in single ultra-fast loop
+            // Process all rows
             for (int i = 0; i < rowCount; i++)
             {
                 var row = rows[i];
@@ -1781,7 +1752,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 activityLog.WriteLog(string.Join(Environment.NewLine, logEntries));
             }
 
-            // Ultra-fast row removal using batch operations
+            // Removal using batch operations
             if (rowsToRemove.Count > 0)
             {
                 // Sort indices descending for safe removal
@@ -1802,7 +1773,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 }
             }
 
-            // 8) Ultra-fast addition with pre-computed values
+            // 8) Addition with pre-computed values
             int added = 0;
             var activateNew = Properties.Settings.Default.ActivateNew;
             var modEnabledIndex = dataGridView1.Columns["ModEnabled"].Index;
@@ -1863,7 +1834,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void toolStripMenuAutoClean_Click(object sender, EventArgs e)
         {
-            /*sbar3($"Changes made: {AddRemove().ToString()}");*/
             sbar3($"Changes made: {SyncPlugins().ToString()}");
         }
 
@@ -2188,9 +2158,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
         {
             Profiles = chkProfile.Checked;
             cmbProfile.Enabled = chkProfile.Checked;
-
-            /*if (chkProfile.Checked)
-                GetProfiles();*/
         }
 
         private void toolStripMenuExportMods_Click(object sender, EventArgs e)
@@ -2543,7 +2510,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void toolStripMenAddRemoveContext_Click(object sender, EventArgs e)
         {
-            /*AddRemove();*/
             SyncPlugins();
         }
 
@@ -2579,9 +2545,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void btnQuit_Click(object sender, EventArgs e)
         {
-            /* if (isModified)
-                 SavePlugins();*/
-            //SaveSettings();
             System.Windows.Forms.Application.Exit();
         }
 
@@ -3207,7 +3170,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void UpdatePlugins()
         {
-            /*int changes = AddRemove() + RemoveDuplicates();*/
             int changes = SyncPlugins();
             if (AutoSort && changes > 0)
                 RunLOOT(true);
@@ -3342,11 +3304,12 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             ActiveOnly = !activeOnlyToolStripMenuItem.Checked;
             activeOnlyToolStripMenuItem.Checked = ActiveOnly;
             Properties.Settings.Default.ActiveOnly = ActiveOnly;
+            bool isEnabled;
 
-            if (ActiveOnly && dataGridView1.Rows.Count >1000)
+            if (ActiveOnly && dataGridView1.Rows.Count > 1000)
             {
                 sbar("Too many rows to filter");
-                ActiveOnly = Properties.Settings.Default.ActiveOnly = activeOnlyToolStripMenuItem.Checked=false;
+                ActiveOnly = Properties.Settings.Default.ActiveOnly = activeOnlyToolStripMenuItem.Checked = false;
                 return;
             }
 
@@ -3356,14 +3319,18 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             bool showAll = !ActiveOnly;
 
             dataGridView1.SuspendLayout();
-            int counter = dataGridView1.Rows.Count;
+            /*int counter = dataGridView1.Rows.Count;*/
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
-                var isEnabled = row.Cells["ModEnabled"].Value as bool? ?? false;
+                isEnabled = row.Cells["ModEnabled"].Value as bool? ?? false;
                 row.Visible = showAll || isEnabled;
+                /*if (!isEnabled && !ActiveOnly)
+                    row.DefaultCellStyle.BackColor = System.Drawing.Color.LightCyan;
+                else
+                    row.DefaultCellStyle.BackColor = System.Drawing.Color.White;
                 counter--;
                 sbar($"Filtering {counter}");
-                statusStrip1.Refresh();
+                statusStrip1.Refresh();*/
             }
             dataGridView1.ResumeLayout();
             sbar4(showAll ? "All mods shown" : "Active mods only");
@@ -3371,14 +3338,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             if (resizeToolStripMenuItem.Checked)
                 ResizeFormToFitDataGridView(this);
             btnActiveOnly.Font = new System.Drawing.Font(btnActiveOnly.Font, ActiveOnly ? FontStyle.Bold : FontStyle.Regular);
-        }
-
-        private static void SetDoubleBuffered(Control c, bool value)
-        {
-            typeof(Control)
-                .GetProperty("DoubleBuffered",
-                    BindingFlags.Instance | BindingFlags.NonPublic)
-                .SetValue(c, value, null);
         }
 
         private void activeOnlyToolStripMenuItem_Click(object sender, EventArgs e)
@@ -3829,41 +3788,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 activityLog.WriteLog("Achievement friendly mods enabled");
         }
 
-        /*private void SetAchievement(bool OnOff) // Experimental. Should probably remove
-        {
-            string jsonFilePath = Tools.GetCatalogPath(), json = File.ReadAllText(jsonFilePath);
-            var data = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, Tools.Creation>>(json);
-
-            data.Remove("ContentCatalog");
-
-            foreach (var kvp in data)
-            {
-                int selectedIndex = dataGridView1.SelectedRows[0].Index;
-                if (dataGridView1.Rows[selectedIndex].Cells["CreationsID"].Value.ToString() == kvp.Key.ToString())
-                {
-                    kvp.Value.AchievementSafe = OnOff;
-                    dataGridView1.Rows[selectedIndex].Cells["Achievements"].Value = OnOff ? "Yes" : "";
-                }
-            }
-
-            json = Newtonsoft.Json.JsonConvert.SerializeObject(data, Newtonsoft.Json.Formatting.Indented);
-
-            // Hack the Bethesda header back in
-            json = Tools.MakeHeader() + json[1..];
-
-            File.WriteAllText(Tools.GetCatalogPath(), json); // Write updated catalog
-            //RefreshDataGrid();
-        }
-        private void disableAchievementFlagToolStripMenuItem_Click(object sender, EventArgs e) // Experimental. Should probably remove
-        {
-            SetAchievement(false);
-        }
-
-        private void enableAchievementFlagToolStripMenuItem_Click(object sender, EventArgs e) // Experimental. Should probably remove
-        {
-            SetAchievement(true);
-        }*/
-
         private void openAllActiveModWebPagesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             int i;
@@ -4016,7 +3940,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             folderBrowserDialog.InitialDirectory = Properties.Settings.Default.BackupDirectory;
             if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
             {
-                MessageBox.Show("Current archive will continue to be created", "Press F12 to stop operation");
+                sbar("Press F12 to stop operation");
                 string selectedFolderPath = folderBrowserDialog.SelectedPath;
                 Properties.Settings.Default.BackupDirectory = selectedFolderPath;
                 SaveSettings();
@@ -4066,7 +3990,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                     }
                     files.Clear();
                 }
-                sbar3(modsArchived + " Mod(s) archived");
+                sbar(modsArchived + " Mod(s) archived");
                 if (log)
                     activityLog.WriteLog($"{modsArchived} mods archived to {selectedFolderPath}");
             }
@@ -5625,6 +5549,56 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
         private void steamDBToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Tools.OpenUrl("https://steamdb.info/app/1716740/depots/");
+        }
+
+        private void renameModToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            List<string> files = new();
+            if (!CheckGamePath()) // Abort if game path not set
+                return;
+
+            string directoryPath = Path.Combine(StarfieldGamePath, "Data");
+            var row = dataGridView1.CurrentRow;
+            string ModName = row.Cells["PluginName"].Value.ToString();
+            ModName = ModName[..ModName.LastIndexOf('.')]; // Strip extension
+            string ModFile = Path.Combine(directoryPath, ModName);
+
+            // Collect existing mod-related files
+            string[] extensions = { ".esp", ".esm", " - textures.ba2", " - main.ba2", " - voices_en.ba2" };
+            foreach (var ext in extensions)
+            {
+                string fullPath = ModFile + ext;
+                if (File.Exists(fullPath))
+                    files.Add(fullPath);
+            }
+
+            foreach (var item in files)
+                Debug.WriteLine("Found: " + item);
+
+            string userInput = Interaction.InputBox("New Name:", "Rename Mod", ModName);
+            if (string.IsNullOrWhiteSpace(userInput))
+                return;
+
+            // Rename each file
+            foreach (var oldPath in files)
+            {
+                string extensionPart = oldPath.Substring(ModFile.Length); // Get suffix like ".esp" or " - textures.ba2"
+                string newPath = Path.Combine(directoryPath, userInput + extensionPart);
+
+                try
+                {
+                    File.Move(oldPath, newPath);
+                    if (log)
+                        activityLog.WriteLog($"Renamed: {Path.GetFileName(oldPath)} to {Path.GetFileName(newPath)}");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Failed to rename {Path.GetFileName(oldPath)}:\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+
+            SyncPlugins();
+            sbar($"Mod {ModName} renamed to: {userInput}");
         }
     }
 }
