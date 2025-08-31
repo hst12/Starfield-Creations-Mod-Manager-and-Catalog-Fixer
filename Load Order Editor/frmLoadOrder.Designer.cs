@@ -62,17 +62,16 @@
             toolStripMenuInstallMod = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuUninstallContext = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator36 = new System.Windows.Forms.ToolStripSeparator();
+            modContentsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripMenuViewWebSite = new System.Windows.Forms.ToolStripMenuItem();
+            renameModToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripSeparator18 = new System.Windows.Forms.ToolStripSeparator();
             archiveModToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             updateArchivedModsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
-            toolStripMenuViewWebSite = new System.Windows.Forms.ToolStripMenuItem();
-            toolStripSeparator31 = new System.Windows.Forms.ToolStripSeparator();
-            modContentsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            toolStripSeparator18 = new System.Windows.Forms.ToolStripSeparator();
             toolStripMenuLootAutoSort = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
             toolStripMenuRefresh = new System.Windows.Forms.ToolStripMenuItem();
-            renameModToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             statusStrip1 = new System.Windows.Forms.StatusStrip();
             toolStripStatusStats = new System.Windows.Forms.ToolStripStatusLabel();
             toolStripStatus1 = new System.Windows.Forms.ToolStripStatusLabel();
@@ -314,7 +313,7 @@
             timer1 = new System.Windows.Forms.Timer(components);
             timer2 = new System.Windows.Forms.Timer(components);
             progressBar1 = new System.Windows.Forms.ProgressBar();
-            toolStripSeparator49 = new System.Windows.Forms.ToolStripSeparator();
+            toolStripSeparator31 = new System.Windows.Forms.ToolStripSeparator();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             contextMenuDatagrid.SuspendLayout();
             statusStrip1.SuspendLayout();
@@ -487,9 +486,9 @@
             // contextMenuDatagrid
             // 
             contextMenuDatagrid.ImageScalingSize = new System.Drawing.Size(32, 32);
-            contextMenuDatagrid.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuEnableDisable, toolStripMenuAddToProfile, blockUnblockToolStripMenuItem, toolStripSeparator10, toolStripMenuUp, toolStripMenuDown, toolStripMenuTop, toolStripMenuBottom, toolStripSeparator4, toolStripMenAddRemoveContext, toolStripMenuDelContext, toolStripSeparator32, renameModToolStripMenuItem, toolStripSeparator49, toolStripMenuInstallMod, toolStripMenuUninstallContext, toolStripSeparator36, archiveModToolStripMenuItem, updateArchivedModsToolStripMenuItem, toolStripSeparator11, toolStripMenuViewWebSite, toolStripSeparator31, modContentsToolStripMenuItem, toolStripSeparator18, toolStripMenuLootAutoSort, toolStripSeparator12, toolStripMenuRefresh });
+            contextMenuDatagrid.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuEnableDisable, toolStripMenuAddToProfile, blockUnblockToolStripMenuItem, toolStripSeparator10, toolStripMenuUp, toolStripMenuDown, toolStripMenuTop, toolStripMenuBottom, toolStripSeparator4, toolStripMenAddRemoveContext, toolStripMenuDelContext, toolStripSeparator32, toolStripMenuInstallMod, toolStripMenuUninstallContext, toolStripSeparator36, modContentsToolStripMenuItem, toolStripMenuViewWebSite, toolStripSeparator31, renameModToolStripMenuItem, toolStripSeparator18, archiveModToolStripMenuItem, updateArchivedModsToolStripMenuItem, toolStripSeparator11, toolStripMenuLootAutoSort, toolStripSeparator12, toolStripMenuRefresh });
             contextMenuDatagrid.Name = "contextMenuDatagrid";
-            contextMenuDatagrid.Size = new System.Drawing.Size(625, 822);
+            contextMenuDatagrid.Size = new System.Drawing.Size(625, 816);
             // 
             // toolStripMenuEnableDisable
             // 
@@ -590,6 +589,32 @@
             toolStripSeparator36.Name = "toolStripSeparator36";
             toolStripSeparator36.Size = new System.Drawing.Size(621, 6);
             // 
+            // modContentsToolStripMenuItem
+            // 
+            modContentsToolStripMenuItem.Name = "modContentsToolStripMenuItem";
+            modContentsToolStripMenuItem.Size = new System.Drawing.Size(624, 40);
+            modContentsToolStripMenuItem.Text = "Mod Contents";
+            modContentsToolStripMenuItem.Click += modContentsToolStripMenuItem_Click;
+            // 
+            // toolStripMenuViewWebSite
+            // 
+            toolStripMenuViewWebSite.Name = "toolStripMenuViewWebSite";
+            toolStripMenuViewWebSite.Size = new System.Drawing.Size(624, 40);
+            toolStripMenuViewWebSite.Text = "Web Site";
+            toolStripMenuViewWebSite.Click += toolStripMenuViewWebSite_Click;
+            // 
+            // renameModToolStripMenuItem
+            // 
+            renameModToolStripMenuItem.Name = "renameModToolStripMenuItem";
+            renameModToolStripMenuItem.Size = new System.Drawing.Size(624, 40);
+            renameModToolStripMenuItem.Text = "Rename Mod";
+            renameModToolStripMenuItem.Click += renameModToolStripMenuItem_Click;
+            // 
+            // toolStripSeparator18
+            // 
+            toolStripSeparator18.Name = "toolStripSeparator18";
+            toolStripSeparator18.Size = new System.Drawing.Size(621, 6);
+            // 
             // archiveModToolStripMenuItem
             // 
             archiveModToolStripMenuItem.Name = "archiveModToolStripMenuItem";
@@ -608,30 +633,6 @@
             // 
             toolStripSeparator11.Name = "toolStripSeparator11";
             toolStripSeparator11.Size = new System.Drawing.Size(621, 6);
-            // 
-            // toolStripMenuViewWebSite
-            // 
-            toolStripMenuViewWebSite.Name = "toolStripMenuViewWebSite";
-            toolStripMenuViewWebSite.Size = new System.Drawing.Size(624, 40);
-            toolStripMenuViewWebSite.Text = "Web Site";
-            toolStripMenuViewWebSite.Click += toolStripMenuViewWebSite_Click;
-            // 
-            // toolStripSeparator31
-            // 
-            toolStripSeparator31.Name = "toolStripSeparator31";
-            toolStripSeparator31.Size = new System.Drawing.Size(621, 6);
-            // 
-            // modContentsToolStripMenuItem
-            // 
-            modContentsToolStripMenuItem.Name = "modContentsToolStripMenuItem";
-            modContentsToolStripMenuItem.Size = new System.Drawing.Size(624, 40);
-            modContentsToolStripMenuItem.Text = "Mod Contents";
-            modContentsToolStripMenuItem.Click += modContentsToolStripMenuItem_Click;
-            // 
-            // toolStripSeparator18
-            // 
-            toolStripSeparator18.Name = "toolStripSeparator18";
-            toolStripSeparator18.Size = new System.Drawing.Size(621, 6);
             // 
             // toolStripMenuLootAutoSort
             // 
@@ -653,13 +654,6 @@
             toolStripMenuRefresh.Size = new System.Drawing.Size(624, 40);
             toolStripMenuRefresh.Text = "Refresh (Discards unsaved changes)";
             toolStripMenuRefresh.Click += toolStripMenuRefresh_Click;
-            // 
-            // renameModToolStripMenuItem
-            // 
-            renameModToolStripMenuItem.Name = "renameModToolStripMenuItem";
-            renameModToolStripMenuItem.Size = new System.Drawing.Size(624, 40);
-            renameModToolStripMenuItem.Text = "Rename Mod";
-            renameModToolStripMenuItem.Click += renameModToolStripMenuItem_Click;
             // 
             // statusStrip1
             // 
@@ -2456,10 +2450,10 @@
             progressBar1.Size = new System.Drawing.Size(200, 46);
             progressBar1.TabIndex = 8;
             // 
-            // toolStripSeparator49
+            // toolStripSeparator31
             // 
-            toolStripSeparator49.Name = "toolStripSeparator49";
-            toolStripSeparator49.Size = new System.Drawing.Size(621, 6);
+            toolStripSeparator31.Name = "toolStripSeparator31";
+            toolStripSeparator31.Size = new System.Drawing.Size(621, 6);
             // 
             // frmLoadOrder
             // 
@@ -2684,7 +2678,6 @@
         private System.Windows.Forms.ToolStripMenuItem editBlockedModstxtToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem blockedToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem blockUnblockToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator31;
         private System.Windows.Forms.ToolStripMenuItem prepareForCreationsUpdateToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator28;
         private System.Windows.Forms.ToolStripMenuItem profileToolStripMenuItem;
@@ -2780,6 +2773,6 @@
         private System.Windows.Forms.ToolStripMenuItem generateBGSArchivestxtToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem steamDBToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem renameModToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator49;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator31;
     }
 }

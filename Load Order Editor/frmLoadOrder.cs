@@ -5551,60 +5551,16 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             Tools.OpenUrl("https://steamdb.info/app/1716740/depots/");
         }
 
-        /*private void renameModToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            List<string> files = new();
-            if (!CheckGamePath()) // Abort if game path not set
-                return;
-
-            string directoryPath = Path.Combine(StarfieldGamePath, "Data");
-            var row = dataGridView1.CurrentRow;
-            string ModName = row.Cells["PluginName"].Value.ToString();
-            ModName = ModName[..ModName.LastIndexOf('.')]; // Strip extension
-            string ModFile = Path.Combine(directoryPath, ModName);
-
-            // Collect existing mod-related files
-            string[] extensions = { ".esp", ".esm", " - textures.ba2", " - main.ba2", " - voices_en.ba2" };
-            foreach (var ext in extensions)
-            {
-                string fullPath = ModFile + ext;
-                if (File.Exists(fullPath))
-                    files.Add(fullPath);
-            }
-
-            foreach (var item in files)
-                Debug.WriteLine("Found: " + item);
-
-            string userInput = Interaction.InputBox("New Name:", "Rename Mod", ModName);
-            if (string.IsNullOrWhiteSpace(userInput))
-                return;
-
-            // Rename each file
-            foreach (var oldPath in files)
-            {
-                string extensionPart = oldPath.Substring(ModFile.Length); // Get suffix like ".esp" or " - textures.ba2"
-                string newPath = Path.Combine(directoryPath, userInput + extensionPart);
-
-                try
-                {
-                    File.Move(oldPath, newPath);
-                    if (log)
-                        activityLog.WriteLog($"Renamed: {Path.GetFileName(oldPath)} to {Path.GetFileName(newPath)}");
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Failed to rename {Path.GetFileName(oldPath)}:\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-
-            SyncPlugins();
-            sbar($"Mod {ModName} renamed to: {userInput}");
-        }*/
-
         private void renameModToolStripMenuItem_Click(object sender, EventArgs e)
         {
             List<string> files = new();
             if (!CheckGamePath()) // Abort if game path not set
+            {
+                MessageBox.Show("Game path not set");
+                return;
+            }
+
+            if (Tools.ConfirmAction("This can break stuff.", "Rename mod - Use with caution",MessageBoxButtons.OKCancel,MessageBoxIcon.Exclamation) != DialogResult.OK)
                 return;
 
             string directoryPath = Path.Combine(StarfieldGamePath, "Data");
