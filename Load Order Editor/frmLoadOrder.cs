@@ -50,6 +50,7 @@ namespace Starfield_Tools
 #if DEBUG
             this.Text = Application.ProductName + " " + File.ReadAllText(Path.Combine(Tools.CommonFolder, "App Version.txt")) + " Debug";
             testToolStripMenuItem.Visible = true; // Show test menu in debug mode
+            testToolStripMenuItem.Visible = true;
 #endif
 
             LastProfile ??= Properties.Settings.Default.LastProfile;
@@ -1834,7 +1835,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void toolStripMenuAutoClean_Click(object sender, EventArgs e)
         {
-            sbar3($"Changes made: {SyncPlugins().ToString()}");
+            sbar($"Changes made: {SyncPlugins().ToString()}");
         }
 
         private void SaveWindowSettings()
@@ -3174,7 +3175,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             if (AutoSort && changes > 0)
                 RunLOOT(true);
 
-            sbar3($"Changes made: {changes}");
+            sbar($"Changes made: {changes}");
         }
 
         private void btnUpdate_Click(object sender, EventArgs e)
@@ -3857,10 +3858,11 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
             using FolderBrowserDialog folderBrowserDialog = new();
             folderBrowserDialog.Description = "Choose folder to archive the mods to";
+            folderBrowserDialog.InitialDirectory = Properties.Settings.Default.BackupDirectory;
             if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
             {
                 string selectedFolderPath = folderBrowserDialog.SelectedPath;
-
+                Properties.Settings.Default.BackupDirectory = selectedFolderPath;
                 Form LoadScreen = new frmLoading("Archiving mods..."); // Show popup while archive process runs
                 LoadScreen.Show();
 
@@ -3892,6 +3894,11 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                         sbar3($"Creating archive for {ModName}...");
                         statusStrip1.Refresh();
                         CreateZipFromFiles(files, zipPath); // Make zip
+                        if (log)
+                        {
+                            foreach (var file in files)
+                                activityLog.WriteLog($"Archived {file}");
+                        }
                         sbar3($"{ModName} archived");
                         if (log)
                             activityLog.WriteLog($"Created archive for {ModName} at {zipPath}");
@@ -5544,6 +5551,22 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                     //break; // Found a match, skip to next fileName
                 }
             }
+            bgsArchives = allArchives.Except(bgsArchives).ToList();
+            Debug.WriteLine(bgsArchives.Count);
+            var modifiedLines = bgsArchives.Select(line => line + ".ba2");
+
+            System.Windows.Forms.SaveFileDialog saveDialog = new()
+            {
+                InitialDirectory = Tools.CommonFolder,
+                Filter = "Txt File|*.txt",
+                Title = "Create BGS Archives.txt",
+                FileName = "BGS Archives.txt"
+            };
+
+            if (saveDialog.ShowDialog() != DialogResult.OK || string.IsNullOrEmpty(saveDialog.FileName))
+                return;
+
+            File.WriteAllLines(saveDialog.FileName, modifiedLines);
         }
 
         private void steamDBToolStripMenuItem_Click(object sender, EventArgs e)
@@ -5560,7 +5583,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 return;
             }
 
-            if (Tools.ConfirmAction("This can break stuff.", "Rename mod - Use with caution",MessageBoxButtons.OKCancel,MessageBoxIcon.Exclamation) != DialogResult.OK)
+            if (Tools.ConfirmAction("This can break stuff.", "Rename mod - Use with caution", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) != DialogResult.OK)
                 return;
 
             string directoryPath = Path.Combine(StarfieldGamePath, "Data");
@@ -5578,7 +5601,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                     files.Add(fullPath);
             }
 
-            // Handle dynamic texture files like " - textures*.ba2"
+            // Handle texture files like " - textures*.ba2"
             string pattern = ModName + " - textures*.ba2";
             /*foreach (var pattern in texturePatterns)
             {*/

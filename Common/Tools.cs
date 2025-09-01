@@ -483,8 +483,7 @@ namespace Starfield_Tools.Common // Various functions used by the app
             }
         }
 
-        public static DialogResult ConfirmAction(string ActionText, string ActionTitle = "",
-     MessageBoxButtons buttons = MessageBoxButtons.OKCancel,
+        public static DialogResult ConfirmAction(string ActionText, string ActionTitle = "", MessageBoxButtons buttons = MessageBoxButtons.OKCancel,
      MessageBoxIcon icon = MessageBoxIcon.Stop,
      bool overRide = false) // overRide - always show dialog
         {
