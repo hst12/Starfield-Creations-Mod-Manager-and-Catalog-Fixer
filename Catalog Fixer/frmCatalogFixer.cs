@@ -61,8 +61,8 @@ namespace Starfield_Tools
 
             if (AutoRestore)
             {
-                RestoreCatalog();
-                CatalogStatus = "Catalog restored";
+                if (!RestoreCatalog())
+                    CatalogStatus = "Catalog restored";
             }
 
             if (AutoBackup)

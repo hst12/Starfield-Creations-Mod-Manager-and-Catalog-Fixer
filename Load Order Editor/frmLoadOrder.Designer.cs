@@ -375,10 +375,12 @@
             // 
             // PluginName
             // 
+            PluginName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
             PluginName.HeaderText = "Plugin Name";
             PluginName.MinimumWidth = 10;
             PluginName.Name = "PluginName";
             PluginName.ReadOnly = true;
+            PluginName.Width = 181;
             // 
             // Description
             // 
@@ -391,18 +393,16 @@
             // 
             // Group
             // 
-            Group.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
             Group.FillWeight = 80F;
             Group.HeaderText = "Group";
             Group.MinimumWidth = 10;
             Group.Name = "Group";
             Group.ReadOnly = true;
             Group.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            Group.Width = 125;
             // 
             // Version
             // 
-            Version.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            Version.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
             dataGridViewCellStyle1.NullValue = null;
             Version.DefaultCellStyle = dataGridViewCellStyle1;
             Version.HeaderText = "Date";
@@ -413,7 +413,7 @@
             // 
             // AuthorVersion
             // 
-            AuthorVersion.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            AuthorVersion.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
             AuthorVersion.HeaderText = "Version";
             AuthorVersion.MinimumWidth = 10;
             AuthorVersion.Name = "AuthorVersion";
@@ -1694,7 +1694,7 @@
             // 
             readfileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { runBatchFileToolStripMenuItem, configurationToolStripMenuItem, toolStripSeparator49, readfilePathToolStripMenuItem });
             readfileToolStripMenuItem.Name = "readfileToolStripMenuItem";
-            readfileToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+            readfileToolStripMenuItem.Size = new System.Drawing.Size(232, 44);
             readfileToolStripMenuItem.Text = "Readfile";
             // 
             // runBatchFileToolStripMenuItem
@@ -2757,6 +2757,16 @@
         private System.Windows.Forms.ToolStripMenuItem readfilePathToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem configurationToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem resizeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator48;
+        private System.Windows.Forms.ToolStripMenuItem allTheThingsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem enableSplashScreenToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem runBatchFileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem scriptLogsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem generateBGSArchivestxtToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem steamDBToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem renameModToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator31;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator49;
         private System.Windows.Forms.DataGridViewTextBoxColumn Index;
         private System.Windows.Forms.DataGridViewCheckBoxColumn ModEnabled;
         private System.Windows.Forms.DataGridViewTextBoxColumn PluginName;
@@ -2771,15 +2781,5 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn FileSize;
         private System.Windows.Forms.DataGridViewTextBoxColumn URL;
         private System.Windows.Forms.DataGridViewTextBoxColumn Blocked;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator48;
-        private System.Windows.Forms.ToolStripMenuItem allTheThingsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem enableSplashScreenToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem runBatchFileToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem scriptLogsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem generateBGSArchivestxtToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem steamDBToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem renameModToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator31;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator49;
     }
 }

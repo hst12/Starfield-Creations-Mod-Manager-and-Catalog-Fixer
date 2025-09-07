@@ -1519,7 +1519,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                     break;
 
                 case Keys.F12:
-                    MessageBox.Show("F12");
+                    MessageBox.Show("F12 pressed, operation cancelled");
                     break;
             }
         }
@@ -2067,17 +2067,20 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             }
             if (SFSEMod)
             {
-                sbar3("SFSE mod installed");
+                sbar2("SFSE mod installed");
                 if (log)
                     activityLog.WriteLog("SFSE mod installed");
             }
+
             if (filesInstalled > 0)
+            {
                 UpdatePlugins();
+                sbar2($"Files installed: {filesInstalled}");
+            }
 
             if (log)
                 activityLog.WriteLog($"Mod files installed: {filesInstalled}");
 
-            sbar2("");
             return;
 
             // Helper local function that moves extracted files with confirmation if a destination file exists.
@@ -5583,7 +5586,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 return;
             }
 
-            if (Tools.ConfirmAction("This can break stuff.", "Rename mod - Use with caution", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) != DialogResult.OK)
+            if (Tools.ConfirmAction("This may affect other mods.", "Rename mod - Use with caution", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) != DialogResult.OK)
                 return;
 
             string directoryPath = Path.Combine(StarfieldGamePath, "Data");
@@ -5603,18 +5606,19 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
             // Handle texture files like " - textures*.ba2"
             string pattern = ModName + " - textures*.ba2";
-            /*foreach (var pattern in texturePatterns)
-            {*/
+
             string[] matchedFiles = Directory.GetFiles(directoryPath, Path.GetFileName(pattern));
             files.AddRange(matchedFiles);
-            //}
 
+#if DEBUG
             foreach (var item in files)
                 Debug.WriteLine("Found: " + item);
+#endif
 
             string userInput = Interaction.InputBox("New Name:", "Rename Mod", ModName);
             if (string.IsNullOrWhiteSpace(userInput))
                 return;
+            userInput = Path.GetFileNameWithoutExtension(userInput); // Remove any extension from user input
 
             // Rename each file
             foreach (var oldPath in files)
