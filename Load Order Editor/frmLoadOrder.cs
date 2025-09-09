@@ -5515,6 +5515,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             BackupBlockedMods();
             BackupContentCatalog();
             BackupProfiles();
+            BackupAppSettings();
         }
 
         private void enableSplashScreenToolStripMenuItem_Click(object sender, EventArgs e)
@@ -5684,6 +5685,122 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 Properties.Settings.Default.xEditPath = openFileDialog1.FileName;
                 xEditToolStripMenuItem.Visible = true;
             }
+        }
+
+        private void BackupAppSettings()
+        {
+            using FolderBrowserDialog folderBrowserDialog = new();
+            folderBrowserDialog.Description = "Choose folder to use to backup application settings";
+            folderBrowserDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments); // Set initial directory to Documents Directory
+            if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+            {
+                string selectedFolderPath = folderBrowserDialog.SelectedPath;
+                string appDataPath = Tools.LocalAppDataPath;
+                string destinationPath = Path.Combine(selectedFolderPath, "hstModManagerBackup");
+                try
+                {
+                    if (Directory.Exists(appDataPath))
+                    {
+                        CopyAll(appDataPath, destinationPath);
+
+                        sbar("Application settings backed up.");
+                        if (log)
+                            activityLog.WriteLog($"Application settings backed up to {selectedFolderPath}");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Application settings directory not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"An error occurred while backing up application settings: {ex.Message}", "Backup Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            return;
+
+            void CopyAll(string sourceDir, string destinationDir)
+            {
+                // Ensure destination directory exists
+                Directory.CreateDirectory(destinationDir);
+
+                // Copy all files in the current directory
+                foreach (var file in Directory.GetFiles(sourceDir))
+                {
+                    string destFile = Path.Combine(destinationDir, Path.GetFileName(file));
+                    File.Copy(file, destFile, true);
+                }
+
+                // Recursively copy subdirectories
+                foreach (var subDir in Directory.GetDirectories(sourceDir))
+                {
+                    string destSubDir = Path.Combine(destinationDir, Path.GetFileName(subDir));
+                    CopyAll(subDir, destSubDir);
+                }
+            }
+        }
+
+        private void appSettingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            BackupAppSettings();
+        }
+
+        private void RestoreAppSettings()
+        {
+            using FolderBrowserDialog folderBrowserDialog = new();
+            folderBrowserDialog.Description = "Choose folder to restore application settings from";
+            folderBrowserDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments); // Set initial directory to Documents Directory
+            if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+            {
+                string selectedFolderPath = folderBrowserDialog.SelectedPath;
+                string backupPath = Path.Combine(selectedFolderPath, "hstModManagerBackup");
+                string appDataPath = Tools.LocalAppDataPath;
+                try
+                {
+                    if (Directory.Exists(backupPath))
+                    {
+                        CopyAll(backupPath, appDataPath);
+                        sbar("Application settings restored.");
+                        if (log)
+                            activityLog.WriteLog($"Application settings restored from {selectedFolderPath}");
+                        Tools.ConfirmAction("Restart Required", "Please restart the application to apply restored settings.", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        System.Windows.Forms.Application.Exit();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Backup directory not found in the selected folder.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"An error occurred while restoring application settings: {ex.Message}", "Restore Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+
+            return;
+
+            void CopyAll(string sourceDir, string destinationDir)
+            {
+                // Ensure destination directory exists
+                Directory.CreateDirectory(destinationDir);
+                // Copy all files in the current directory
+                foreach (var file in Directory.GetFiles(sourceDir))
+                {
+                    string destFile = Path.Combine(destinationDir, Path.GetFileName(file));
+                    File.Copy(file, destFile, true);
+                }
+                // Recursively copy subdirectories
+                foreach (var subDir in Directory.GetDirectories(sourceDir))
+                {
+                    string destSubDir = Path.Combine(destinationDir, Path.GetFileName(subDir));
+                    CopyAll(subDir, destSubDir);
+                }
+            }
+        }
+
+        private void appSettingsToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            RestoreAppSettings();
         }
     }
 }

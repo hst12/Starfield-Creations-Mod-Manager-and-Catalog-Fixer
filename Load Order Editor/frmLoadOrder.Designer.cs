@@ -147,6 +147,7 @@
             backupContentCatalogtxtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             backupProfilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             savesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            appSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator48 = new System.Windows.Forms.ToolStripSeparator();
             allTheThingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             restoreToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -154,6 +155,7 @@
             restoreProfilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             mnuRestoreBlockedMods = new System.Windows.Forms.ToolStripMenuItem();
             restoreContentCatalogtxtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            appSettingsToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -1136,7 +1138,7 @@
             // 
             // backupToolStripMenuItem
             // 
-            backupToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuBackup, mnuBackupBlockedMods, backupContentCatalogtxtToolStripMenuItem, backupProfilesToolStripMenuItem, savesToolStripMenuItem, toolStripSeparator48, allTheThingsToolStripMenuItem });
+            backupToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuBackup, mnuBackupBlockedMods, backupContentCatalogtxtToolStripMenuItem, backupProfilesToolStripMenuItem, savesToolStripMenuItem, appSettingsToolStripMenuItem, toolStripSeparator48, allTheThingsToolStripMenuItem });
             backupToolStripMenuItem.Name = "backupToolStripMenuItem";
             backupToolStripMenuItem.Size = new System.Drawing.Size(504, 44);
             backupToolStripMenuItem.Text = "Backup";
@@ -1176,6 +1178,13 @@
             savesToolStripMenuItem.Text = "Saved Games";
             savesToolStripMenuItem.Click += savesToolStripMenuItem_Click;
             // 
+            // appSettingsToolStripMenuItem
+            // 
+            appSettingsToolStripMenuItem.Name = "appSettingsToolStripMenuItem";
+            appSettingsToolStripMenuItem.Size = new System.Drawing.Size(346, 44);
+            appSettingsToolStripMenuItem.Text = "App Settings";
+            appSettingsToolStripMenuItem.Click += appSettingsToolStripMenuItem_Click;
+            // 
             // toolStripSeparator48
             // 
             toolStripSeparator48.Name = "toolStripSeparator48";
@@ -1190,7 +1199,7 @@
             // 
             // restoreToolStripMenuItem
             // 
-            restoreToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuRestore, restoreProfilesToolStripMenuItem, mnuRestoreBlockedMods, restoreContentCatalogtxtToolStripMenuItem });
+            restoreToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuRestore, restoreProfilesToolStripMenuItem, mnuRestoreBlockedMods, restoreContentCatalogtxtToolStripMenuItem, appSettingsToolStripMenuItem1 });
             restoreToolStripMenuItem.Name = "restoreToolStripMenuItem";
             restoreToolStripMenuItem.Size = new System.Drawing.Size(504, 44);
             restoreToolStripMenuItem.Text = "Restore";
@@ -1198,30 +1207,37 @@
             // toolStripMenuRestore
             // 
             toolStripMenuRestore.Name = "toolStripMenuRestore";
-            toolStripMenuRestore.Size = new System.Drawing.Size(346, 44);
+            toolStripMenuRestore.Size = new System.Drawing.Size(359, 44);
             toolStripMenuRestore.Text = "Plugins.txt";
             toolStripMenuRestore.Click += toolStripMenuRestore_Click;
             // 
             // restoreProfilesToolStripMenuItem
             // 
             restoreProfilesToolStripMenuItem.Name = "restoreProfilesToolStripMenuItem";
-            restoreProfilesToolStripMenuItem.Size = new System.Drawing.Size(346, 44);
+            restoreProfilesToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
             restoreProfilesToolStripMenuItem.Text = "Profiles";
             restoreProfilesToolStripMenuItem.Click += restoreProfilesToolStripMenuItem_Click;
             // 
             // mnuRestoreBlockedMods
             // 
             mnuRestoreBlockedMods.Name = "mnuRestoreBlockedMods";
-            mnuRestoreBlockedMods.Size = new System.Drawing.Size(346, 44);
+            mnuRestoreBlockedMods.Size = new System.Drawing.Size(359, 44);
             mnuRestoreBlockedMods.Text = "BlockedMods.txt";
             mnuRestoreBlockedMods.Click += mnuRestoreBlockedMods_Click;
             // 
             // restoreContentCatalogtxtToolStripMenuItem
             // 
             restoreContentCatalogtxtToolStripMenuItem.Name = "restoreContentCatalogtxtToolStripMenuItem";
-            restoreContentCatalogtxtToolStripMenuItem.Size = new System.Drawing.Size(346, 44);
+            restoreContentCatalogtxtToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
             restoreContentCatalogtxtToolStripMenuItem.Text = "ContentCatalog.txt";
             restoreContentCatalogtxtToolStripMenuItem.Click += restoreContentCatalogtxtToolStripMenuItem_Click;
+            // 
+            // appSettingsToolStripMenuItem1
+            // 
+            appSettingsToolStripMenuItem1.Name = "appSettingsToolStripMenuItem1";
+            appSettingsToolStripMenuItem1.Size = new System.Drawing.Size(359, 44);
+            appSettingsToolStripMenuItem1.Text = "App Settings";
+            appSettingsToolStripMenuItem1.Click += appSettingsToolStripMenuItem1_Click;
             // 
             // toolStripSeparator1
             // 
@@ -2799,5 +2815,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Blocked;
         private System.Windows.Forms.ToolStripMenuItem xEditToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem xEditPathToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem appSettingsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem appSettingsToolStripMenuItem1;
     }
 }
