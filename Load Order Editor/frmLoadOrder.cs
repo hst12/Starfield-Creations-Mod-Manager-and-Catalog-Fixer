@@ -209,6 +209,9 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             if (Properties.Settings.Default.MO2Path == "")
                 mO2ToolStripMenuItem.Visible = false;
 
+            if (Properties.Settings.Default.xEditPath == "")
+                xEditToolStripMenuItem.Visible = false;
+
             if (string.IsNullOrEmpty(Properties.Settings.Default.LOOTPath) &&
     File.Exists(@"C:\Program Files\LOOT\LOOT.exe")) // Try to detect LOOT if installed in default location
             {
@@ -5643,6 +5646,44 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
             SyncPlugins();
             sbar($"Mod {ModName} renamed to: {userInput}");
+        }
+
+        private void xEditToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string xEditPath = Properties.Settings.Default.xEditPath;
+            if (xEditPath != "")
+            {
+                try
+                {
+                    var result = Process.Start(xEditPath);
+                    if (result != null)
+                    {
+                        SaveSettings();
+                        if (log)
+                            activityLog.WriteLog("Starting xEdit");
+                        System.Windows.Forms.Application.Exit();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+            else
+                MessageBox.Show("xEdit doesn't seem to be installed or path not configured.");
+        }
+
+        private void xEditPathToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            openFileDialog1.Filter = "Executable Files|*.exe";
+            openFileDialog1.Title = "Set the path to the xEdit executable";
+            openFileDialog1.FileName = "SF1Edit.exe";
+            DialogResult xEditPath = openFileDialog1.ShowDialog();
+            if (xEditPath == DialogResult.OK && openFileDialog1.FileName != "")
+            {
+                Properties.Settings.Default.xEditPath = openFileDialog1.FileName;
+                xEditToolStripMenuItem.Visible = true;
+            }
         }
     }
 }

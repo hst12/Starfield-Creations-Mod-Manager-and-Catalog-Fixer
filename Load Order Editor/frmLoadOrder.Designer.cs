@@ -194,6 +194,7 @@
             toolStripMenuLootPath = new System.Windows.Forms.ToolStripMenuItem();
             vortexPathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             modOrganizer2PathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            xEditPathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator13 = new System.Windows.Forms.ToolStripSeparator();
             toolStripMenuLoadingScreen = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuLoadScreenPreview = new System.Windows.Forms.ToolStripMenuItem();
@@ -263,6 +264,7 @@
             toolStripSeparator15 = new System.Windows.Forms.ToolStripSeparator();
             vortexToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             mO2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            xEditToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             starUIConfiguratorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             creationKitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator26 = new System.Windows.Forms.ToolStripSeparator();
@@ -1464,7 +1466,7 @@
             // 
             // toolsToolStripMenuItem
             // 
-            toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { optionsToolStripMenuItem, toolStripSeparator14, toolStripMenuLootPath, vortexPathToolStripMenuItem, modOrganizer2PathToolStripMenuItem, toolStripSeparator13, toolStripMenuLoadingScreen, toolStripMenuLoadScreenPreview, resetLoadScreenToolStripMenuItem, enableSplashScreenToolStripMenuItem, toolStripSeparator20, toolStripMenuCatalog, toolStripSeparator21, toolStripMenuProfilesOn, compareProfilesToolStripMenuItem, toolStripSeparator23, toolStripMenuAutoDelccc, autoResetToolStripMenuItem, toolStripSeparator22, autoUpdateModsToolStripMenuItem, activateNewModsToolStripMenuItem, toolStripMenuLOOTToggle, autoSortToolStripMenuItem, toolStripSeparator27, enableAllToolStripMenuItem, disableAllToolStripMenuItem, toolStripSeparator5, logToolStripMenuItem, toolStripSeparator44, advancedToolStripMenuItem, toolStripSeparator40, disableAllWarningToolStripMenuItem });
+            toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { optionsToolStripMenuItem, toolStripSeparator14, toolStripMenuLootPath, vortexPathToolStripMenuItem, modOrganizer2PathToolStripMenuItem, xEditPathToolStripMenuItem, toolStripSeparator13, toolStripMenuLoadingScreen, toolStripMenuLoadScreenPreview, resetLoadScreenToolStripMenuItem, enableSplashScreenToolStripMenuItem, toolStripSeparator20, toolStripMenuCatalog, toolStripSeparator21, toolStripMenuProfilesOn, compareProfilesToolStripMenuItem, toolStripSeparator23, toolStripMenuAutoDelccc, autoResetToolStripMenuItem, toolStripSeparator22, autoUpdateModsToolStripMenuItem, activateNewModsToolStripMenuItem, toolStripMenuLOOTToggle, autoSortToolStripMenuItem, toolStripSeparator27, enableAllToolStripMenuItem, disableAllToolStripMenuItem, toolStripSeparator5, logToolStripMenuItem, toolStripSeparator44, advancedToolStripMenuItem, toolStripSeparator40, disableAllWarningToolStripMenuItem });
             toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             toolsToolStripMenuItem.Size = new System.Drawing.Size(89, 38);
             toolsToolStripMenuItem.Text = "&Tools";
@@ -1504,6 +1506,13 @@
             modOrganizer2PathToolStripMenuItem.Size = new System.Drawing.Size(407, 44);
             modOrganizer2PathToolStripMenuItem.Text = "Mod Organizer 2 Path";
             modOrganizer2PathToolStripMenuItem.Click += modOrganizer2PathToolStripMenuItem_Click;
+            // 
+            // xEditPathToolStripMenuItem
+            // 
+            xEditPathToolStripMenuItem.Name = "xEditPathToolStripMenuItem";
+            xEditPathToolStripMenuItem.Size = new System.Drawing.Size(407, 44);
+            xEditPathToolStripMenuItem.Text = "xEdit Path";
+            xEditPathToolStripMenuItem.Click += xEditPathToolStripMenuItem_Click;
             // 
             // toolStripSeparator13
             // 
@@ -1834,7 +1843,7 @@
             // 
             // toolStripMenuMods
             // 
-            toolStripMenuMods.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuEnableAll, toolStripMenuDisableAll, enableAchievementSafeOnlyToolStripMenuItem, toolStripSeparator6, toolStripMenuDelete, toolStripSeparator8, toolStripMenuAutoClean, toolStripMenuScanMods, toolStripMenuCleanup, removeDuplicatesToolStripMenuItem, toolStripSeparator7, toolStripMenuInstall, toolStripMenuUninstall, toolStripSeparator9, toolStripMenuLoot, toolStripMenuLootSort, toolStripSeparator15, vortexToolStripMenuItem, mO2ToolStripMenuItem, starUIConfiguratorToolStripMenuItem, creationKitToolStripMenuItem, toolStripSeparator26, openAllActiveModWebPagesToolStripMenuItem, toolStripSeparator29, looseFilesDisabledToolStripMenuItem, toolStripSeparator28, prepareForCreationsUpdateToolStripMenuItem });
+            toolStripMenuMods.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuEnableAll, toolStripMenuDisableAll, enableAchievementSafeOnlyToolStripMenuItem, toolStripSeparator6, toolStripMenuDelete, toolStripSeparator8, toolStripMenuAutoClean, toolStripMenuScanMods, toolStripMenuCleanup, removeDuplicatesToolStripMenuItem, toolStripSeparator7, toolStripMenuInstall, toolStripMenuUninstall, toolStripSeparator9, toolStripMenuLoot, toolStripMenuLootSort, toolStripSeparator15, vortexToolStripMenuItem, mO2ToolStripMenuItem, xEditToolStripMenuItem, starUIConfiguratorToolStripMenuItem, creationKitToolStripMenuItem, toolStripSeparator26, openAllActiveModWebPagesToolStripMenuItem, toolStripSeparator29, looseFilesDisabledToolStripMenuItem, toolStripSeparator28, prepareForCreationsUpdateToolStripMenuItem });
             toolStripMenuMods.Name = "toolStripMenuMods";
             toolStripMenuMods.Size = new System.Drawing.Size(94, 38);
             toolStripMenuMods.Text = "Mods";
@@ -1967,6 +1976,13 @@
             mO2ToolStripMenuItem.Size = new System.Drawing.Size(498, 44);
             mO2ToolStripMenuItem.Text = "MO2";
             mO2ToolStripMenuItem.Click += mO2ToolStripMenuItem_Click;
+            // 
+            // xEditToolStripMenuItem
+            // 
+            xEditToolStripMenuItem.Name = "xEditToolStripMenuItem";
+            xEditToolStripMenuItem.Size = new System.Drawing.Size(498, 44);
+            xEditToolStripMenuItem.Text = "xEdit";
+            xEditToolStripMenuItem.Click += xEditToolStripMenuItem_Click;
             // 
             // starUIConfiguratorToolStripMenuItem
             // 
@@ -2781,5 +2797,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn FileSize;
         private System.Windows.Forms.DataGridViewTextBoxColumn URL;
         private System.Windows.Forms.DataGridViewTextBoxColumn Blocked;
+        private System.Windows.Forms.ToolStripMenuItem xEditToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem xEditPathToolStripMenuItem;
     }
 }

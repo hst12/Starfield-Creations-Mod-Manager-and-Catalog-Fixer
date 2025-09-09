@@ -752,5 +752,17 @@ namespace Starfield_Tools.Properties {
                 this["ReadFileBatchPath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string xEditPath {
+            get {
+                return ((string)(this["xEditPath"]));
+            }
+            set {
+                this["xEditPath"] = value;
+            }
+        }
     }
 }
