@@ -2483,7 +2483,10 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                         Process.Start(tempstr); // Start the configured program before running the game.
                 }
                 else
-                    MessageBox.Show($"Run program path not found: {tempstr}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                {
+                    if (Tools.ConfirmAction($"Run program path not found: {tempstr}", "Stop Game Launch?", MessageBoxButtons.YesNo, MessageBoxIcon.Error) == DialogResult.Yes)
+                        return;
+                }
 
             Properties.Settings.Default.GameVersion = GameVersion;
             SaveSettings();
@@ -3723,7 +3726,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 }
             }
 
-            if (Properties.Settings.Default.GamePathMS == "" || GameVersion == MS)
+            if (Properties.Settings.Default.GamePathMS == "" && GameVersion == MS)
             {
                 StarfieldGamePath = tools.SetStarfieldGamePathMS();
                 Properties.Settings.Default.GamePathMS = StarfieldGamePath;
