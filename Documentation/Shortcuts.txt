@@ -63,3 +63,6 @@ Content Catalog Check - Launches the ContentCatalog.txt checker. This runs autom
 Warning: The Enable All Settings function will turn on settings that will reverse the INI file changes made by Vortex, so use with caution. It will also overwrite any settings in StarfieldCustom.ini and deletes Starfield.CCC file if found. A warning will be displayed before any action is taken in case you accidently click this option.
 The tool will not modify the INI files in the game folder, only the ones found in your Documents\My Games\Starfield folder.
 Tools->Logging - Enable or disable log or delete log
+
+Mods Menu
+Prepare for Creations Update - Workaround for the in-game Creations update function re-downloading some mods when the latest version is already installed.
