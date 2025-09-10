@@ -59,7 +59,7 @@
     <PackageTags>Starfield</PackageTags>
     <FileVersion>1.15.1</FileVersion>
     <AssemblyVersion>1.15.1</AssemblyVersion>
-    <Version>1.15.1</Version>
+    <Version>1.15.7</Version>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <OutputPath>bin\x64\Debug\</OutputPath>
@@ -86,7 +86,7 @@
   </PropertyGroup>
 	<PropertyGroup>
 		<NoWarn>$(NoWarn);WFO5001</NoWarn>
-		<PackageProjectUrl></PackageProjectUrl>
+		<PackageProjectUrl>https://github.com/hst12/Starfield-Creations-Mod-Manager-and-Catalog-Fixer</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/hst12/Starfield-Creations-Mod-Manager-and-Catalog-Fixer</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 	</PropertyGroup>
@@ -127,9 +127,9 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageReference Include="Narod.SteamGameFinder" Version="1.0.1" />
+    <PackageReference Include="Narod.SteamGameFinder" Version="2.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="QuestPDF" Version="2025.7.0" />
+    <PackageReference Include="QuestPDF" Version="2025.7.1" />
     <PackageReference Include="SevenZipExtractor" Version="1.0.19" />
     <PackageReference Include="YamlDotNet" Version="16.3.0" />
   </ItemGroup>

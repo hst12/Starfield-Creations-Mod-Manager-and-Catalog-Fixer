@@ -4,7 +4,7 @@ VisualStudioVersion = 17.10.34928.147
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Starfield Tools", "Starfield Tools.csproj", "{8CE8BFDF-A961-4A84-9D51-28A53194A85E}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Starfield Tools Setup", "..\Starfield Tools Setup\Starfield Tools Setup.vdproj", "{FF0408F3-CBD3-4177-AA21-4E5CE1C0EF76}"
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Starfield Tools Setup", "..\Starfield Tools Setup\Starfield Tools Setup.vdproj", "{91A48000-64BD-A3E5-668A-B941C456CA1E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,12 +22,10 @@ Global
 		{8CE8BFDF-A961-4A84-9D51-28A53194A85E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8CE8BFDF-A961-4A84-9D51-28A53194A85E}.Release|x64.ActiveCfg = Release|x64
 		{8CE8BFDF-A961-4A84-9D51-28A53194A85E}.Release|x64.Build.0 = Release|x64
-		{FF0408F3-CBD3-4177-AA21-4E5CE1C0EF76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FF0408F3-CBD3-4177-AA21-4E5CE1C0EF76}.Debug|x64.ActiveCfg = Debug|x64
-		{FF0408F3-CBD3-4177-AA21-4E5CE1C0EF76}.Debug|x64.Build.0 = Debug|x64
-		{FF0408F3-CBD3-4177-AA21-4E5CE1C0EF76}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FF0408F3-CBD3-4177-AA21-4E5CE1C0EF76}.Release|x64.ActiveCfg = Release|x64
-		{FF0408F3-CBD3-4177-AA21-4E5CE1C0EF76}.Release|x64.Build.0 = Release|x64
+		{91A48000-64BD-A3E5-668A-B941C456CA1E}.Debug|Any CPU.ActiveCfg = Debug
+		{91A48000-64BD-A3E5-668A-B941C456CA1E}.Debug|x64.ActiveCfg = Debug
+		{91A48000-64BD-A3E5-668A-B941C456CA1E}.Release|Any CPU.ActiveCfg = Release
+		{91A48000-64BD-A3E5-668A-B941C456CA1E}.Release|x64.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

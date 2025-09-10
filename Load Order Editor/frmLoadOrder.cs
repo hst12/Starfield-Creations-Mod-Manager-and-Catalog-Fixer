@@ -4370,11 +4370,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 if (currentRow.IsNewRow)
                     continue;
 
-                // Initialize 'Blocked' cell if it's null
-                if (currentRow.Cells["Blocked"].Value == null)
-                {
-                    currentRow.Cells["Blocked"].Value = false;
-                }
+                currentRow.Cells["Blocked"].Value ??= false;
 
                 // Toggle blocked status
                 currentRow.Cells["Blocked"].Value = !(bool)(currentRow.Cells["Blocked"].Value);
