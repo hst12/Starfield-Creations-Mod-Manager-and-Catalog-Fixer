@@ -677,8 +677,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             progressBar1.Value = 0;
             progressBar1.Show();
 
-            string previousGroup = null;
-
             List<DataGridViewRow> rowBuffer = new List<DataGridViewRow>();
 
             foreach (var line in lines)
@@ -4483,6 +4481,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             }
         }
 
+
         private void updateArchivedModsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             UpdateArchiveModsAsync();
@@ -5693,6 +5692,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 string selectedFolderPath = folderBrowserDialog.SelectedPath;
                 string appDataPath = Tools.LocalAppDataPath;
                 string destinationPath = Path.Combine(selectedFolderPath, "hstModManagerBackup");
+                SaveSettings(); // Ensure latest settings are saved
                 try
                 {
                     if (Directory.Exists(appDataPath))
@@ -5760,7 +5760,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                         if (log)
                             activityLog.WriteLog($"Application settings restored from {selectedFolderPath}");
                         Tools.ConfirmAction("Restart Required", "Please restart the application to apply restored settings.", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        System.Windows.Forms.Application.Exit();
+                        Environment.Exit(0);
                     }
                     else
                     {
@@ -5797,6 +5797,12 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
         private void appSettingsToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             RestoreAppSettings();
+        }
+
+        private void displayAllSettingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmDisplaySettings frmDisplaySettings = new();
+            frmDisplaySettings.Show();
         }
     }
 }

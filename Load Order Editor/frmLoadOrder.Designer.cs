@@ -230,6 +230,7 @@
             configurationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator49 = new System.Windows.Forms.ToolStripSeparator();
             readfilePathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            displayAllSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator40 = new System.Windows.Forms.ToolStripSeparator();
             disableAllWarningToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuGame = new System.Windows.Forms.ToolStripMenuItem();
@@ -1146,54 +1147,54 @@
             // toolStripMenuBackup
             // 
             toolStripMenuBackup.Name = "toolStripMenuBackup";
-            toolStripMenuBackup.Size = new System.Drawing.Size(346, 44);
+            toolStripMenuBackup.Size = new System.Drawing.Size(359, 44);
             toolStripMenuBackup.Text = "Plugins.txt";
             toolStripMenuBackup.Click += toolStripMenuBackup_Click;
             // 
             // mnuBackupBlockedMods
             // 
             mnuBackupBlockedMods.Name = "mnuBackupBlockedMods";
-            mnuBackupBlockedMods.Size = new System.Drawing.Size(346, 44);
+            mnuBackupBlockedMods.Size = new System.Drawing.Size(359, 44);
             mnuBackupBlockedMods.Text = "BlockedMods.txt";
             mnuBackupBlockedMods.Click += mnuBackupBlockedMods_Click;
             // 
             // backupContentCatalogtxtToolStripMenuItem
             // 
             backupContentCatalogtxtToolStripMenuItem.Name = "backupContentCatalogtxtToolStripMenuItem";
-            backupContentCatalogtxtToolStripMenuItem.Size = new System.Drawing.Size(346, 44);
+            backupContentCatalogtxtToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
             backupContentCatalogtxtToolStripMenuItem.Text = "ContentCatalog.txt";
             backupContentCatalogtxtToolStripMenuItem.Click += backupContentCatalogtxtToolStripMenuItem_Click;
             // 
             // backupProfilesToolStripMenuItem
             // 
             backupProfilesToolStripMenuItem.Name = "backupProfilesToolStripMenuItem";
-            backupProfilesToolStripMenuItem.Size = new System.Drawing.Size(346, 44);
+            backupProfilesToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
             backupProfilesToolStripMenuItem.Text = "Profiles";
             backupProfilesToolStripMenuItem.Click += backupProfilesToolStripMenuItem_Click;
             // 
             // savesToolStripMenuItem
             // 
             savesToolStripMenuItem.Name = "savesToolStripMenuItem";
-            savesToolStripMenuItem.Size = new System.Drawing.Size(346, 44);
+            savesToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
             savesToolStripMenuItem.Text = "Saved Games";
             savesToolStripMenuItem.Click += savesToolStripMenuItem_Click;
             // 
             // appSettingsToolStripMenuItem
             // 
             appSettingsToolStripMenuItem.Name = "appSettingsToolStripMenuItem";
-            appSettingsToolStripMenuItem.Size = new System.Drawing.Size(346, 44);
+            appSettingsToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
             appSettingsToolStripMenuItem.Text = "App Settings";
             appSettingsToolStripMenuItem.Click += appSettingsToolStripMenuItem_Click;
             // 
             // toolStripSeparator48
             // 
             toolStripSeparator48.Name = "toolStripSeparator48";
-            toolStripSeparator48.Size = new System.Drawing.Size(343, 6);
+            toolStripSeparator48.Size = new System.Drawing.Size(356, 6);
             // 
             // allTheThingsToolStripMenuItem
             // 
             allTheThingsToolStripMenuItem.Name = "allTheThingsToolStripMenuItem";
-            allTheThingsToolStripMenuItem.Size = new System.Drawing.Size(346, 44);
+            allTheThingsToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
             allTheThingsToolStripMenuItem.Text = "All the Things";
             allTheThingsToolStripMenuItem.Click += allTheThingsToolStripMenuItem_Click;
             // 
@@ -1207,35 +1208,35 @@
             // toolStripMenuRestore
             // 
             toolStripMenuRestore.Name = "toolStripMenuRestore";
-            toolStripMenuRestore.Size = new System.Drawing.Size(359, 44);
+            toolStripMenuRestore.Size = new System.Drawing.Size(346, 44);
             toolStripMenuRestore.Text = "Plugins.txt";
             toolStripMenuRestore.Click += toolStripMenuRestore_Click;
             // 
             // restoreProfilesToolStripMenuItem
             // 
             restoreProfilesToolStripMenuItem.Name = "restoreProfilesToolStripMenuItem";
-            restoreProfilesToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+            restoreProfilesToolStripMenuItem.Size = new System.Drawing.Size(346, 44);
             restoreProfilesToolStripMenuItem.Text = "Profiles";
             restoreProfilesToolStripMenuItem.Click += restoreProfilesToolStripMenuItem_Click;
             // 
             // mnuRestoreBlockedMods
             // 
             mnuRestoreBlockedMods.Name = "mnuRestoreBlockedMods";
-            mnuRestoreBlockedMods.Size = new System.Drawing.Size(359, 44);
+            mnuRestoreBlockedMods.Size = new System.Drawing.Size(346, 44);
             mnuRestoreBlockedMods.Text = "BlockedMods.txt";
             mnuRestoreBlockedMods.Click += mnuRestoreBlockedMods_Click;
             // 
             // restoreContentCatalogtxtToolStripMenuItem
             // 
             restoreContentCatalogtxtToolStripMenuItem.Name = "restoreContentCatalogtxtToolStripMenuItem";
-            restoreContentCatalogtxtToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+            restoreContentCatalogtxtToolStripMenuItem.Size = new System.Drawing.Size(346, 44);
             restoreContentCatalogtxtToolStripMenuItem.Text = "ContentCatalog.txt";
             restoreContentCatalogtxtToolStripMenuItem.Click += restoreContentCatalogtxtToolStripMenuItem_Click;
             // 
             // appSettingsToolStripMenuItem1
             // 
             appSettingsToolStripMenuItem1.Name = "appSettingsToolStripMenuItem1";
-            appSettingsToolStripMenuItem1.Size = new System.Drawing.Size(359, 44);
+            appSettingsToolStripMenuItem1.Size = new System.Drawing.Size(346, 44);
             appSettingsToolStripMenuItem1.Text = "App Settings";
             appSettingsToolStripMenuItem1.Click += appSettingsToolStripMenuItem1_Click;
             // 
@@ -1710,7 +1711,7 @@
             // 
             // advancedToolStripMenuItem
             // 
-            advancedToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { readfileToolStripMenuItem });
+            advancedToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { readfileToolStripMenuItem, displayAllSettingsToolStripMenuItem });
             advancedToolStripMenuItem.Name = "advancedToolStripMenuItem";
             advancedToolStripMenuItem.Size = new System.Drawing.Size(407, 44);
             advancedToolStripMenuItem.Text = "Advanced";
@@ -1719,7 +1720,7 @@
             // 
             readfileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { runBatchFileToolStripMenuItem, configurationToolStripMenuItem, toolStripSeparator49, readfilePathToolStripMenuItem });
             readfileToolStripMenuItem.Name = "readfileToolStripMenuItem";
-            readfileToolStripMenuItem.Size = new System.Drawing.Size(232, 44);
+            readfileToolStripMenuItem.Size = new System.Drawing.Size(351, 44);
             readfileToolStripMenuItem.Text = "Readfile";
             // 
             // runBatchFileToolStripMenuItem
@@ -1747,6 +1748,13 @@
             readfilePathToolStripMenuItem.Size = new System.Drawing.Size(555, 44);
             readfilePathToolStripMenuItem.Text = "Readfile Path";
             readfilePathToolStripMenuItem.Click += readfilePathToolStripMenuItem_Click;
+            // 
+            // displayAllSettingsToolStripMenuItem
+            // 
+            displayAllSettingsToolStripMenuItem.Name = "displayAllSettingsToolStripMenuItem";
+            displayAllSettingsToolStripMenuItem.Size = new System.Drawing.Size(351, 44);
+            displayAllSettingsToolStripMenuItem.Text = "Display All Settings";
+            displayAllSettingsToolStripMenuItem.Click += displayAllSettingsToolStripMenuItem_Click;
             // 
             // toolStripSeparator40
             // 
@@ -2817,5 +2825,6 @@
         private System.Windows.Forms.ToolStripMenuItem xEditPathToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem appSettingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem appSettingsToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem displayAllSettingsToolStripMenuItem;
     }
 }

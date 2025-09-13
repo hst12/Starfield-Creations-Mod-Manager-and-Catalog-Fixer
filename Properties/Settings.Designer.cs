@@ -156,17 +156,6 @@ namespace Starfield_Tools.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public int LastUsedScreenshot {
-            get {
-                return ((int)(this["LastUsedScreenshot"]));
-            }
-            set {
-                this["LastUsedScreenshot"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool Achievements {
             get {
