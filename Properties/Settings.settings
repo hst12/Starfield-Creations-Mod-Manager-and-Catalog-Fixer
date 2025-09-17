@@ -14,7 +14,7 @@
     <Setting Name="AutoRestore" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="StarfieldGamePath" Type="System.String" Scope="User">
+    <Setting Name="GamePath" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="ForceClean" Type="System.Boolean" Scope="User">
@@ -184,6 +184,9 @@
     </Setting>
     <Setting Name="xEditPath" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Game" Type="System.Byte" Scope="User">
+      <Value Profile="(Default)">0</Value>
     </Setting>
   </Settings>
 </SettingsFile>

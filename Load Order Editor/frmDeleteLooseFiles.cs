@@ -19,7 +19,7 @@ namespace Starfield_Tools.Load_Order_Editor
             frmLoadOrder.returnStatus = 0;
             List<string> DeletedFiles = new();
 
-            if (string.IsNullOrEmpty(frmLoadOrder.StarfieldGamePath))
+            if (string.IsNullOrEmpty(frmLoadOrder.GamePath))
             {
                 MessageBox.Show("Game path not set");
                 return;
@@ -47,7 +47,7 @@ namespace Starfield_Tools.Load_Order_Editor
         private static bool CheckFolder(string folderPath)
         {
             bool gameFolder = false, documentsFolder = false;
-            string gameFolderPath = Path.Combine(frmLoadOrder.StarfieldGamePath, "Data", folderPath);
+            string gameFolderPath = Path.Combine(frmLoadOrder.GamePath, "Data", folderPath);
             string documentsFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"My Games\Starfield\Data", folderPath);
 
             // Check if the folder exists in the game directory
@@ -96,7 +96,7 @@ namespace Starfield_Tools.Load_Order_Editor
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            string gameFolderPath = Path.Combine(frmLoadOrder.StarfieldGamePath, "Data");
+            string gameFolderPath = Path.Combine(frmLoadOrder.GamePath, "Data");
             string documentsFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"My Games\Starfield\Data");
 
             if (checkedListBox1.CheckedItems.Count == 0)

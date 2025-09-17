@@ -80,7 +80,7 @@ namespace Starfield_Tools.Load_Order_Editor
             using (StreamWriter writer = new(saveDialog.FileName))
             {
                 foreach (var item in cacheOptions.Concat(selectedOptions))
-                    writer.WriteLine($"{readfilePath} \"{Path.Combine(frmLoadOrder.StarfieldGamePath, item)}\" /h /b /o");
+                    writer.WriteLine($"{readfilePath} \"{Path.Combine(frmLoadOrder.GamePath, item)}\" /h /b /o");
             }
             Properties.Settings.Default.ReadFileBatchPath = saveDialog.FileName;
             if (Tools.ConfirmAction("Readfile generation complete", "Run batch file?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
@@ -103,7 +103,7 @@ namespace Starfield_Tools.Load_Order_Editor
             long cacheSize = 0;
 
             foreach (string item in cacheOptions.Concat(selectedOptions))
-                cacheSize += GetCacheSize(frmLoadOrder.StarfieldGamePath, item);
+                cacheSize += GetCacheSize(frmLoadOrder.GamePath, item);
             txtCacheSize.Text = $"{cacheSize / 1024 / 1024 / 1024} GB";
         }
 

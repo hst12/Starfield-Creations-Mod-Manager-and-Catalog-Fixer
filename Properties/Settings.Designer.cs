@@ -74,12 +74,12 @@ namespace Starfield_Tools.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string StarfieldGamePath {
+        public string GamePath {
             get {
-                return ((string)(this["StarfieldGamePath"]));
+                return ((string)(this["GamePath"]));
             }
             set {
-                this["StarfieldGamePath"] = value;
+                this["GamePath"] = value;
             }
         }
         
@@ -751,6 +751,18 @@ namespace Starfield_Tools.Properties {
             }
             set {
                 this["xEditPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public byte Game {
+            get {
+                return ((byte)(this["Game"]));
+            }
+            set {
+                this["Game"] = value;
             }
         }
     }

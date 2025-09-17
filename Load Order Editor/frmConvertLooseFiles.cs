@@ -19,7 +19,7 @@ namespace Starfield_Tools.Load_Order_Editor
             if (!string.IsNullOrEmpty(txtEsm.Text))
                 lblRequired.Visible = false;
             this.AcceptButton = btnStart;
-            if (!File.Exists(Path.Combine(frmLoadOrder.StarfieldGamePath, @"Tools\Archive2", "Archive2.exe"))) // Check if Archive2.exe exists
+            if (!File.Exists(Path.Combine(frmLoadOrder.GamePath, @"Tools\Archive2", "Archive2.exe"))) // Check if Archive2.exe exists
             {
                 MessageBox.Show("Install the Creation Kit.", "Archive2.exe not found", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 this.Close();
@@ -43,25 +43,25 @@ namespace Starfield_Tools.Load_Order_Editor
                         txtEsm.Text = txtEsm.Text.Replace(".esm", "");
                     esm = txtEsm.Text;
 
-                    if (!File.Exists(Path.Combine(frmLoadOrder.StarfieldGamePath, "Data", esm) + ".esm"))
+                    if (!File.Exists(Path.Combine(frmLoadOrder.GamePath, "Data", esm) + ".esm"))
                     {
-                        File.Copy(Path.Combine(Tools.CommonFolder, "dummy.esm"), Path.Combine(frmLoadOrder.StarfieldGamePath, "Data", esm + ".esm"));
+                        File.Copy(Path.Combine(Tools.CommonFolder, "dummy.esm"), Path.Combine(frmLoadOrder.GamePath, "Data", esm + ".esm"));
                     }
                 }
                 else
                     return;
 
-            string archive2Path = Path.Combine(frmLoadOrder.StarfieldGamePath, "Tools", "Archive2", "Archive2.exe");
+            string archive2Path = Path.Combine(frmLoadOrder.GamePath, "Tools", "Archive2", "Archive2.exe");
             string workingDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"My Games\Starfield\Data");
 
             // Create texture archive
             /*if (Directory.Exists(Path.Combine(workingDirectory, "textures")))
             {*/
-            cmdLine = @"textures -create=""" + Path.Combine(frmLoadOrder.StarfieldGamePath, "Data", Path.GetFileNameWithoutExtension(esm)) + " - textures.ba2" + @""""
+            cmdLine = @"textures -create=""" + Path.Combine(frmLoadOrder.GamePath, "Data", Path.GetFileNameWithoutExtension(esm)) + " - textures.ba2" + @""""
            + " -format=DDS -maxSizeMB=1024 -excludefile=" + "\""
            + Path.Combine(Tools.CommonFolder, "exclude.txt" + "\"");
 
-            if (!File.Exists(Path.Combine(frmLoadOrder.StarfieldGamePath, "Data", Path.GetFileNameWithoutExtension(esm) + " - textures.ba2")))
+            if (!File.Exists(Path.Combine(frmLoadOrder.GamePath, "Data", Path.GetFileNameWithoutExtension(esm) + " - textures.ba2")))
             {
                 //activityLog.WriteLog($"Creating texture archive\n{archive2Path} {cmdLine}");
                 MakeArchive(archive2Path, cmdLine, workingDirectory);
@@ -76,10 +76,10 @@ namespace Starfield_Tools.Load_Order_Editor
 
             // Create main archive
             cmdLine = @"interface,geometries,materials,meshes,scripts -create="""
-                    + Path.Combine(frmLoadOrder.StarfieldGamePath, "Data", Path.GetFileNameWithoutExtension(esm) + " - main.ba2") + @""""
+                    + Path.Combine(frmLoadOrder.GamePath, "Data", Path.GetFileNameWithoutExtension(esm) + " - main.ba2") + @""""
                     + " -format=General";
 
-            if (!File.Exists(Path.Combine(frmLoadOrder.StarfieldGamePath, "Data", Path.GetFileNameWithoutExtension(esm) + " - main.ba2")))
+            if (!File.Exists(Path.Combine(frmLoadOrder.GamePath, "Data", Path.GetFileNameWithoutExtension(esm) + " - main.ba2")))
             {
                 //activityLog.WriteLog($"Creating main archive\n{archive2Path} {cmdLine}");
                 MakeArchive(archive2Path, cmdLine, workingDirectory);
@@ -93,10 +93,10 @@ namespace Starfield_Tools.Load_Order_Editor
             if (Directory.Exists(Path.Combine(workingDirectory, "sound")))
             {
                 cmdLine = @"sound -create="""
-                        + Path.Combine(frmLoadOrder.StarfieldGamePath, "Data", Path.GetFileNameWithoutExtension(esm) + " - main.ba2") + @""""
+                        + Path.Combine(frmLoadOrder.GamePath, "Data", Path.GetFileNameWithoutExtension(esm) + " - main.ba2") + @""""
                         + " -format=General -compression=None";
 
-                if (!File.Exists(Path.Combine(frmLoadOrder.StarfieldGamePath, "Data", Path.GetFileNameWithoutExtension(esm) + " - main.ba2")))
+                if (!File.Exists(Path.Combine(frmLoadOrder.GamePath, "Data", Path.GetFileNameWithoutExtension(esm) + " - main.ba2")))
                 {
                     activityLog.WriteLog($"Creating sound archive\n{archive2Path} {cmdLine}");
                     MakeArchive(archive2Path, cmdLine, workingDirectory);
@@ -138,7 +138,7 @@ namespace Starfield_Tools.Load_Order_Editor
         {
             OpenFileDialog openFileDialog = new()
             {
-                InitialDirectory = Path.GetFullPath(Path.Combine(frmLoadOrder.StarfieldGamePath, "Data")),
+                InitialDirectory = Path.GetFullPath(Path.Combine(frmLoadOrder.GamePath, "Data")),
                 AutoUpgradeEnabled = true,
                 Filter = "Esm files (*.esm)|*.esm|All files (*.*)|*.*",
                 Title = "Select the esm file to convert loose files to",

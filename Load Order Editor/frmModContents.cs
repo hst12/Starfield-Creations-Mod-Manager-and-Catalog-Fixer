@@ -18,7 +18,7 @@ namespace Starfield_Tools.Load_Order_Editor
             richTextBox1.Text = $"Plugin Name: {modName}:\n\n";
             string modBaseName = modName[..modName.LastIndexOf('.')]; // Get current mod name
 
-            string directoryPath = frmLoadOrder.StarfieldGamePath + "\\Data\\";
+            string directoryPath = Path.Combine(frmLoadOrder.GamePath , "Data");
             string ModFile = Path.Combine(directoryPath, modBaseName); // Add esp, esm, and archives to files list
 
             if (File.Exists(ModFile + ".esp"))
@@ -30,16 +30,19 @@ namespace Starfield_Tools.Load_Order_Editor
             // match files like 'modname - textures.ba2', 'modname - textures01.ba2', 'modname - textures02.ba2', etc.
             string[] textureFiles = Directory.GetFiles(directoryPath, modName[..^4] + "* - textures*.ba2");
 
+                btnShowArchives.Enabled = false;
+
             foreach (string file in textureFiles)
-            {
                 files.Add(file);
-            }
 
             if (File.Exists(ModFile + " - main.ba2"))
                 files.Add(ModFile + " - main.ba2");
 
             if (File.Exists(ModFile + " - voices_en.ba2"))
                 files.Add(ModFile + " - voices_en.ba2");
+
+            // Disable the Archive Contents button if no file ends with ".ba2"
+            btnShowArchives.Enabled = files.Any(f => f.EndsWith(".ba2", StringComparison.OrdinalIgnoreCase));
 
             richTextBox1.Text += "Mod files are:\n";
             foreach (var item in files)
@@ -57,7 +60,7 @@ namespace Starfield_Tools.Load_Order_Editor
 
         private void btnShowArchives_Click(object sender, EventArgs e)
         {
-            string archive2Path = Path.Combine(frmLoadOrder.StarfieldGamePath, "Tools", "Archive2", "Archive2.exe");
+            string archive2Path = Path.Combine(frmLoadOrder.GamePath, "Tools", "Archive2", "Archive2.exe");
 
             if (!File.Exists(archive2Path)) // Check if Archive2.exe exists
             {
@@ -67,7 +70,7 @@ namespace Starfield_Tools.Load_Order_Editor
 
             foreach (var file in files.Where(f => f.EndsWith(".ba2")))
             {
-                string cmdLine = "\"" + Path.Combine(frmLoadOrder.StarfieldGamePath, "Data", file) + "\"";
+                string cmdLine = "\"" + Path.Combine(frmLoadOrder.GamePath, "Data", file) + "\"";
                 System.Diagnostics.Process.Start(archive2Path, cmdLine);
             }
         }

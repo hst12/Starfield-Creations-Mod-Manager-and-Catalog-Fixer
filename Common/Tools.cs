@@ -16,7 +16,7 @@ namespace Starfield_Tools.Common // Various functions used by the app
         public static string DocumentationFolder { get; set; }
         public static string LocalAppDataPath { get; set; }
         public string StarFieldPath { get; set; }
-        public string StarfieldGamePath { get; set; }
+        public string GamePath { get; set; }
 
         public string StarfieldGamePathMS { get; set; }
         public List<string> BethFiles { get; set; }
@@ -327,8 +327,8 @@ namespace Starfield_Tools.Common // Various functions used by the app
         {
             using (System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog())
             {
-                if (!string.IsNullOrEmpty(frmLoadOrder.StarfieldGamePath))
-                    openFileDialog.InitialDirectory = frmLoadOrder.StarfieldGamePath;
+                if (!string.IsNullOrEmpty(frmLoadOrder.GamePath))
+                    openFileDialog.InitialDirectory = frmLoadOrder.GamePath;
                 else
                 {
                     openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
@@ -351,10 +351,10 @@ namespace Starfield_Tools.Common // Various functions used by the app
                     return string.Empty;
                 }
 
-                StarfieldGamePath = Path.GetDirectoryName(selectedFile);
-                Settings.Default.StarfieldGamePath = StarfieldGamePath;
+                GamePath = Path.GetDirectoryName(selectedFile);
+                Settings.Default.GamePath = GamePath;
                 Settings.Default.Save();
-                return StarfieldGamePath;
+                return GamePath;
             }
         }
 
@@ -390,7 +390,7 @@ namespace Starfield_Tools.Common // Various functions used by the app
                 var startInfo = new ProcessStartInfo
                 {
                     FileName = cmdLine,
-                    WorkingDirectory = Properties.Settings.Default.StarfieldGamePath,
+                    WorkingDirectory = Properties.Settings.Default.GamePath,
                     UseShellExecute = false //
                 };
                 Process.Start(startInfo);
@@ -405,7 +405,7 @@ namespace Starfield_Tools.Common // Various functions used by the app
 
         public static bool StartStarfieldSFSE() // Start game with SFSE loader
         {
-            string cmdLine = Path.Combine(Properties.Settings.Default.StarfieldGamePath, "sfse_loader.exe");
+            string cmdLine = Path.Combine(Properties.Settings.Default.GamePath, "sfse_loader.exe");
             if (cmdLine == null)
                 return false;
 
@@ -414,7 +414,7 @@ namespace Starfield_Tools.Common // Various functions used by the app
                 var startInfo = new ProcessStartInfo
                 {
                     FileName = cmdLine,
-                    WorkingDirectory = Properties.Settings.Default.StarfieldGamePath,
+                    WorkingDirectory = Properties.Settings.Default.GamePath,
                     UseShellExecute = false //
                 };
                 Process.Start(startInfo);
@@ -497,7 +497,7 @@ namespace Starfield_Tools.Common // Various functions used by the app
         {
             try
             {
-                string dataPath = Path.Combine(frmLoadOrder.StarfieldGamePath, "Data");
+                string dataPath = Path.Combine(frmLoadOrder.GamePath, "Data");
                 return Directory.EnumerateFiles(dataPath, "*.esm", SearchOption.TopDirectoryOnly)
                                 .Select(Path.GetFileName)
                                 .Where(fileName => !BethFiles.Contains(fileName))

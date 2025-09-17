@@ -15,7 +15,7 @@ namespace Starfield_Tools
         public bool AutoCheck, AutoClean, AutoBackup, AutoRestore, ForceClean, Verbose, log;
         public string CatalogStatus;
 
-        private readonly string StarfieldGamePath;
+        private readonly string GamePath;
         private readonly Tools tools = new();
         private frmLoadOrder.ActivityLog activityLog = frmLoadOrder.activityLog;
 
@@ -29,7 +29,7 @@ namespace Starfield_Tools
             AutoCheck = Properties.Settings.Default.AutoCheck;
             AutoClean = Properties.Settings.Default.AutoClean;
             AutoBackup = Properties.Settings.Default.AutoBackup;
-            StarfieldGamePath = Properties.Settings.Default.StarfieldGamePath;
+            GamePath = Properties.Settings.Default.GamePath;
             Verbose = Properties.Settings.Default.Verbose;
             chkVerbose.Checked = Properties.Settings.Default.Verbose;
             AutoRestore = Properties.Settings.Default.AutoRestore;
@@ -124,8 +124,8 @@ namespace Starfield_Tools
             Settings.Default.AutoClean = AutoClean;
             Settings.Default.AutoBackup = AutoBackup;
             Settings.Default.AutoRestore = AutoRestore;
-            if (StarfieldGamePath != "")
-                Settings.Default.StarfieldGamePath = StarfieldGamePath;
+            if (GamePath != "")
+                Settings.Default.GamePath = GamePath;
             Settings.Default.ForceClean = ForceClean;
             Settings.Default.Verbose = Verbose;
             Settings.Default.Save();
