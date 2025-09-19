@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -18,7 +17,7 @@ namespace Starfield_Tools.Load_Order_Editor
             richTextBox1.Text = $"Plugin Name: {modName}:\n\n";
             string modBaseName = modName[..modName.LastIndexOf('.')]; // Get current mod name
 
-            string directoryPath = Path.Combine(frmLoadOrder.GamePath , "Data");
+            string directoryPath = Path.Combine(frmLoadOrder.GamePath, "Data");
             string ModFile = Path.Combine(directoryPath, modBaseName); // Add esp, esm, and archives to files list
 
             if (File.Exists(ModFile + ".esp"))
@@ -30,7 +29,7 @@ namespace Starfield_Tools.Load_Order_Editor
             // match files like 'modname - textures.ba2', 'modname - textures01.ba2', 'modname - textures02.ba2', etc.
             string[] textureFiles = Directory.GetFiles(directoryPath, modName[..^4] + "* - textures*.ba2");
 
-                btnShowArchives.Enabled = false;
+            btnShowArchives.Enabled = false;
 
             foreach (string file in textureFiles)
                 files.Add(file);
