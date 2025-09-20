@@ -1682,11 +1682,11 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             statusStrip1.Refresh();
             dataGridView1.SuspendLayout();
 
-            // 2) Gather all on-disk .esm + .esp plugin filenames with parallel processing
+            // 2) Gather all on-disk plugin filenames with parallel processing
             var pluginFiles = tools.GetPluginList();
             string dataDir = Path.Combine(GamePath, "Data");
 
-            try
+            /*try
             {
                 // Use parallel enumeration for large directories
                 var espFiles = Directory.EnumerateFiles(dataDir, "*.esp", SearchOption.TopDirectoryOnly)
@@ -1706,7 +1706,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                     MessageBoxIcon.Error
                 );
                 return 0;
-            }
+            }*/
 
             // Pre-allocate with estimated capacity and use fastest comparer
             var onDisk = new HashSet<string>(pluginFiles.Count, StringComparer.Ordinal);
