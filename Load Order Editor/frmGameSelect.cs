@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Starfield_Tools.Load_Order_Editor
@@ -15,6 +8,24 @@ namespace Starfield_Tools.Load_Order_Editor
         public frmGameSelect()
         {
             InitializeComponent();
+            switch (Properties.Settings.Default.Game)
+            {
+                case 0:
+                    radStarfield.Checked = true;
+                    break;
+
+                case 1:
+                    radFallout5.Checked = true;
+                    break;
+
+                case 2:
+                    radES6.Checked = true;
+                    break;
+
+                default:
+                    radStarfield.Checked = true;
+                    break;
+            }
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -24,7 +35,13 @@ namespace Starfield_Tools.Load_Order_Editor
 
         private void btnSelect_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("This feature is not yet implemented.", "Feature Not Available", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            if (radStarfield.Checked)
+                Properties.Settings.Default.Game = 0; // Starfield
+            if (radFallout5.Checked)
+                Properties.Settings.Default.Game = 1; // Fallout 5
+            if (radES6.Checked)
+                Properties.Settings.Default.Game = 2; //ES6
+            this.Close();
         }
     }
 }

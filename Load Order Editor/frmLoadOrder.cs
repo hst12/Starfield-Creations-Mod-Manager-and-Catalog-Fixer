@@ -31,7 +31,7 @@ namespace Starfield_Tools
         public const byte Steam = 0, MS = 1, Custom = 2, SFSE = 3;
         public const byte Starfield = 0, FO5 = 1, ES6 = 2;
         public static string GamePath, GameName;
-        public static byte Game = Starfield;
+        public static byte Game = Properties.Settings.Default.Game;
         public static bool NoWarn;
         public static int returnStatus;
         public static ActivityLog activityLog;
@@ -53,6 +53,7 @@ namespace Starfield_Tools
             this.Text = Application.ProductName + " " + File.ReadAllText(Path.Combine(Tools.CommonFolder, "App Version.txt")) + " Debug";
             testToolStripMenuItem.Visible = true; // Show test menu in debug mode
             testToolStripMenuItem.Visible = true;
+            gameSelectToolStripMenuItem.Visible = true;
 #endif
 
             LastProfile ??= Properties.Settings.Default.LastProfile;
@@ -82,7 +83,11 @@ namespace Starfield_Tools
                     ResetPreferences();
             }
 
-            string PluginsPath = Path.Combine(Tools.StarfieldAppData, "Plugins.txt");
+            GameVersion = Properties.Settings.Default.GameVersion;
+            Game = Properties.Settings.Default.Game;
+            GameName = Tools.GameName;
+
+            string PluginsPath = Path.Combine(Tools.GameAppData, "Plugins.txt");
             if (!File.Exists(PluginsPath))
             {
                 MessageBox.Show(@"Missing Plugins.txt file
@@ -91,7 +96,7 @@ Click Ok to create a blank Plugins.txt file
 Click File->Restore if you have a backup of your Plugins.txt file
 Alternatively, run the game once to have it create a Plugins.txt file for you.", "Plugins.txt not found");
 
-                File.WriteAllText(PluginsPath, "# This file is used by Starfield to keep track of your downloaded content.\n# Please do not modify this file.\n");
+                File.WriteAllText(PluginsPath, $"# This file is used by {GameName} to keep track of your downloaded content.\n# Please do not modify this file.\n");
             }
 
             frmStarfieldTools StarfieldTools = new();
@@ -109,7 +114,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             try
             {
                 // Check if loose files are enabled
-                string LooseFilesDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"My Games\Starfield"),
+                string LooseFilesDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName),
                     filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 if (File.Exists(filePath))
                 {
@@ -142,23 +147,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
             // Initialise settings
 
-            GameVersion = Properties.Settings.Default.GameVersion;
-            Game = Properties.Settings.Default.Game;
-            switch (Game)
-            {
-                case 0:
-                    GameName = "Starfield";
-                    break;
-
-                case 1:
-                    GameName = "Fallout 5";
-                    break;
-
-                case 2:
-                    GameName = "Elder Scrolls 6";
-                    break;
-            }
-
             if (GameVersion != MS)
             {
                 GamePath = Properties.Settings.Default.GamePath;
@@ -184,8 +172,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 creationKitToolStripMenuItem.Visible = false;
 
             // Unhide Star UI Configurator menu if found
-
-            if (!File.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"My Games\Starfield\Data\StarUI Configurator.bat")))
+            if (!File.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName, "Data", "StarUI Configurator.bat")))
                 starUIConfiguratorToolStripMenuItem.Visible = false;
 
             if (Properties.Settings.Default.AutoDelccc)
@@ -304,9 +291,9 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             // Do a 1-time backup of Plugins.txt if it doesn't exist
             try
             {
-                if (!File.Exists(Path.Combine(Tools.StarfieldAppData, "Plugins.txt.bak")))
+                if (!File.Exists(Path.Combine(Tools.GameAppData, "Plugins.txt.bak")))
                 {
-                    File.Copy(PluginsPath, Tools.StarfieldAppData + @"\Plugins.txt.bak");
+                    File.Copy(PluginsPath, Tools.GameAppData + @"\Plugins.txt.bak");
                     sbar2("Plugins.txt backed up to Plugins.txt.bak");
                 }
             }
@@ -555,7 +542,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             {
                 var deserializer = new DeserializerBuilder().Build();
                 string yamlContent = File.ReadAllText(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                    "LOOT\\games\\Starfield\\userlist.yaml"));
+                    $"LOOT\\games\\{GameName}\\userlist.yaml"));
                 Groups = deserializer.Deserialize<Tools.Configuration>(yamlContent);
             }
             catch (Exception ex)
@@ -587,10 +574,10 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             }
         }
 
-        private static bool CheckStarfieldCustom()
+        private static bool CheckGameCustom()
         {
             return Tools.FileCompare(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                     @"My Games\Starfield\StarfieldCustom.ini"), Path.Combine(Tools.CommonFolder, "StarfieldCustom.ini"));
+                     "My Games", GameName, $"{GameName}Custom.ini"), Path.Combine(Tools.CommonFolder, $"{GameName}Custom.ini"));
         }
 
         private void InitDataGrid()
@@ -604,7 +591,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             }
 #endif
             int EnabledCount = 0, IndexCount = 1, esmCount = 0, espCount = 0, ba2Count, mainCount = 0, i, versionDelimiter, dotIndex;
-            string loText = Path.Combine(Tools.StarfieldAppData, "Plugins.txt"),
+            string loText = Path.Combine(Tools.GameAppData, "Plugins.txt"),
                    LOOTPath = Properties.Settings.Default.LOOTPath,
                    StatText = "", pluginName, rawVersion;
 
@@ -758,7 +745,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                     modTimeStamp = Tools.ConvertTime(TimeStamp[idx]).ToString();
                     modID = CreationsID[idx];
                     modFileSize = FileSize[idx] / 1024;
-                    url = $"https://creations.bethesda.net/en/starfield/details/{(modID.Length > 3 ? modID[3..] : modID)}";
+                    url = $"https://creations.bethesda.net/en/{GameName}/details/{(modID.Length > 3 ? modID[3..] : modID)}";
                 }
 
                 // Buffer the row before adding.
@@ -1113,7 +1100,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void BackupPlugins()
         {
-            string sourceFileName = Path.Combine(Tools.StarfieldAppData, "Plugins.txt");
+            string sourceFileName = Path.Combine(Tools.GameAppData, "Plugins.txt");
             string destFileName = sourceFileName + ".bak";
 
             if (isModified)
@@ -1139,8 +1126,8 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void RestorePlugins()
         {
-            string sourceFileName = Path.Combine(Tools.StarfieldAppData, "Plugins.txt.bak");
-            string destFileName = Path.Combine(Tools.StarfieldAppData, "Plugins.txt");
+            string sourceFileName = Path.Combine(Tools.GameAppData, "Plugins.txt.bak");
+            string destFileName = Path.Combine(Tools.GameAppData, "Plugins.txt");
 
             try
             {
@@ -1353,12 +1340,12 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void toolStripMenuCreations_Click(object sender, EventArgs e)
         {
-            Tools.OpenUrl("https://creations.bethesda.net/en/starfield/all?platforms=PC&sort=latest_uploaded");
+            Tools.OpenUrl($"https://creations.bethesda.net/en/{GameName}/all?platforms=PC&sort=latest_uploaded");
         }
 
         private void toolStripMenuNexus_Click(object sender, EventArgs e)
         {
-            Tools.OpenUrl("https://www.nexusmods.com/games/starfield/mods");
+            Tools.OpenUrl($"https://www.nexusmods.com/games/{GameName}/mods");
         }
 
         private void txtSearchBox_KeyDown(object sender, KeyEventArgs e)
@@ -1412,7 +1399,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
             if (Properties.Settings.Default.CompareProfiles)
             {
-                var currentProfile = File.ReadAllLines(Path.Combine(Tools.StarfieldAppData, "Plugins.txt")).ToList();
+                var currentProfile = File.ReadAllLines(Path.Combine(Tools.GameAppData, "Plugins.txt")).ToList();
                 var newProfile = File.ReadAllLines(ProfileName).ToList();
 
                 var Difference = newProfile.Except(currentProfile)
@@ -1437,7 +1424,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
             try
             {
-                File.Copy(ProfileName, Path.Combine(Tools.StarfieldAppData, "Plugins.txt"), true);
+                File.Copy(ProfileName, Path.Combine(Tools.GameAppData, "Plugins.txt"), true);
                 Properties.Settings.Default.LastProfile = ProfileName[(ProfileName.LastIndexOf('\\') + 1)..];
                 SaveSettings();
                 isModified = false;
@@ -2032,7 +2019,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             List<string> looseFileDirs = Tools.LooseFolderDirsOnly; // Get the list of loose file directories from the Tools class
 
             // Define the target directory
-            var targetDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), Path.Combine("My Games",GameName,"Data"));
+            var targetDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), Path.Combine("My Games", GameName, "Data"));
 
             // Ensure the target directory exists
             Directory.CreateDirectory(targetDir);
@@ -2253,7 +2240,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void toolStripMenuExploreAppData_Click(object sender, EventArgs e)
         {
-            Tools.OpenFolder(Tools.StarfieldAppData);
+            Tools.OpenFolder(Tools.GameAppData);
         }
 
         private void dataGridView1_MouseDown(object sender, MouseEventArgs e)
@@ -2455,7 +2442,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void SavePlugins()
         {
-            string pluginPath = Path.Combine(Tools.StarfieldAppData, @"Plugins.txt");
+            string pluginPath = Path.Combine(Tools.GameAppData, @"Plugins.txt");
             SaveLO(pluginPath);
 
             if (Profiles && !string.IsNullOrEmpty(cmbProfile.Text))
@@ -2753,7 +2740,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void toolStripMenuEditPlugins_Click(object sender, EventArgs e)
         {
-            Tools.OpenFile(Path.Combine(Tools.StarfieldAppData, "Plugins.txt"));
+            Tools.OpenFile(Path.Combine(Tools.GameAppData, "Plugins.txt"));
         }
 
         private void toolStripMenuGroup_Click(object sender, EventArgs e)
@@ -2786,29 +2773,29 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
         {
             try
             {
-                string Starfieldccc = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"My Games\Starfield\Starfield.ccc");
+                string Starfieldccc = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName, $"{GameName}.ccc");
                 if (File.Exists(Starfieldccc))
                 {
                     File.Delete(Starfieldccc);
-                    sbar3("Starfield.ccc deleted");
+                    sbar3($"{GameName}.ccc deleted");
                     if (log)
-                        activityLog.WriteLog("Starfield.ccc deleted");
+                        activityLog.WriteLog($"GameName.ccc deleted");
                     return true;
                 }
                 else
                 {
-                    sbar3("Starfield.ccc not found");
+                    sbar3($"{GameName}.ccc not found");
                     return false;
                 }
             }
             catch (Exception ex)
             {
                 if (log)
-                    activityLog.WriteLog("Error deleting Starfield.ccc: " + ex.Message);
+                    activityLog.WriteLog($"Error deleting {GameName}.ccc: " + ex.Message);
 #if DEBUG
                 MessageBox.Show(ex.Message);
 #endif
-                sbar3("Error deleting Starfield.ccc " + ex.Message);
+                sbar3($"Error deleting {GameName}.ccc " + ex.Message);
                 return false;
             }
         }
@@ -2987,21 +2974,21 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
         {
             string version = GameVersion switch
             {
-                Steam => "Game version - Steam",
-                MS => "Game version - MS",
-                Custom => $"Game version - Custom - {Properties.Settings.Default.CustomEXE}",
-                SFSE => "Game version - SFSE",
+                Steam => "Steam",
+                MS => "MS",
+                Custom => $"Custom - {Properties.Settings.Default.CustomEXE}",
+                SFSE => "SFSE",
                 _ => "Unknown game version"
             };
 
-            sbar2(version);
+            sbar2($"{GameName} - {version}");
         }
 
-        private bool ResetStarfieldCustomINI(bool ConfirmOverwrite)  // true for confirmation
+        private bool ResetGameCustomINI(bool ConfirmOverwrite)  // true for confirmation
         {
             if (ConfirmOverwrite)
             {
-                DialogResult DialogResult = MessageBox.Show("This will overwrite your StarfieldCustom.ini to a recommended version", "Are you sure?",
+                DialogResult DialogResult = MessageBox.Show($"This will overwrite your {GameName}Custom.ini to a recommended version", "Are you sure?",
                     MessageBoxButtons.OKCancel, MessageBoxIcon.Stop);
                 if (DialogResult != DialogResult.OK)
                     return false;
@@ -3009,15 +2996,15 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
             try
             {
-                if (!Tools.FileCompare(Path.Combine(Tools.CommonFolder, "StarfieldCustom.ini"),
+                if (!Tools.FileCompare(Path.Combine(Tools.CommonFolder, $"{GameName}Custom.ini"),
                     Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                    @"My Games\Starfield\StarfieldCustom.ini"))) // Check if StarfieldCustom.ini needs resetting
+                    "My Games", GameName, $"{GameName}Custom.ini"))) // Check if game Custom.ini needs resetting
                 {
-                    File.Copy(Path.Combine(Tools.CommonFolder, "StarfieldCustom.ini"), Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                        @"My Games\Starfield\StarfieldCustom.ini"), true);
-                    sbar3("StarfieldCustom.ini restored");
+                    File.Copy(Path.Combine(Tools.CommonFolder, $"{GameName}Custom.ini"), Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                        "My Games", GameName, $"{GameName}Custom.ini"), true);
+                    sbar3($"{GameName}Custom.ini restored");
                     if (log)
-                        activityLog.WriteLog("StarfieldCustom.ini restored");
+                        activityLog.WriteLog($"{GameName}Custom.ini restored");
                     return true;
                 }
                 else
@@ -3025,21 +3012,21 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Error restoring StarfieldCustom.ini");
+                MessageBox.Show(ex.Message, $"Error restoring {GameName}Custom.ini");
                 if (log)
-                    activityLog.WriteLog("Error restoring StarfieldCustom.ini: " + ex.Message);
+                    activityLog.WriteLog($"Error restoring {GameName}Custom.ini: " + ex.Message);
                 return false;
             }
         }
 
         private void toolStripMenuResetStarfieldCustom_Click(object sender, EventArgs e)
         {
-            ResetStarfieldCustomINI(true);
+            ResetGameCustomINI(true);
         }
 
         private void editStarfieldCustominiToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Tools.OpenFile(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"My Games\Starfield\StarfieldCustom.ini"));
+            Tools.OpenFile(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName, $"{GameName}Custom.ini"));
         }
 
         private void editContentCatalogtxtToolStripMenuItem_Click(object sender, EventArgs e)
@@ -3100,7 +3087,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void compareStarfieldCustominiToBackupToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            sbar3(CheckStarfieldCustom() ? "Same" : "Modified");
+            sbar3(CheckGameCustom() ? "Same" : "Modified");
         }
 
         private void toolStripMenuExploreCommon_Click(object sender, EventArgs e)
@@ -3132,7 +3119,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private static int CheckAndDeleteINI(string FileName)
         {
-            string FolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"My Games\Starfield");
+            string FolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", Tools.GameName);
             if (File.Exists(Path.Combine(FolderPath, FileName)))
             {
                 File.Delete(Path.Combine(FolderPath, FileName));
@@ -3154,7 +3141,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                     return 0;
             }
 
-            string FolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"My Games\Starfield");
+            string FolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", Tools.GameName);
             if (File.Exists(Path.Combine(FolderPath, "StarfieldCustom.ini.base")))
             {
                 File.Copy(Path.Combine(FolderPath, "StarfieldCustom.ini.base"), Path.Combine(FolderPath, "StarfieldCustom.ini"), true);
@@ -3167,11 +3154,11 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 File.Delete(Path.Combine(FolderPath, "StarfieldPrefs.ini.base"));
                 ChangeCount++;
             }
-            ChangeCount += CheckAndDeleteINI("Starfield.ini");
-            ChangeCount += CheckAndDeleteINI("Starfield.ini.baked");
-            ChangeCount += CheckAndDeleteINI("StarfieldCustom.ini.baked");
-            ChangeCount += CheckAndDeleteINI("StarfieldPrefs.ini.baked");
-            ChangeCount += CheckAndDeleteINI("Starfield.ini.base");
+            ChangeCount += CheckAndDeleteINI($"{GameName}.ini");
+            ChangeCount += CheckAndDeleteINI($"{GameName}.ini.baked");
+            ChangeCount += CheckAndDeleteINI($"{GameName}Custom.ini.baked");
+            ChangeCount += CheckAndDeleteINI($"{GameName}Prefs.ini.baked");
+            ChangeCount += CheckAndDeleteINI($"{GameName}.ini.base");
             LooseFiles = false;
             LooseFilesOnOff(false);
             LooseFilesMenuUpdate();
@@ -3207,7 +3194,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void LooseFilesOnOff(bool enable)
         {
-            string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", "Starfield", "StarfieldCustom.ini");
+            string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", Tools.GameName, "StarfieldCustom.ini");
 
             if (Tools.FileCompare(filePath, Path.Combine(Tools.CommonFolder, "StarfieldCustom.ini")) && enable == false) // Return if loose files are already disabled
                 return;
@@ -3282,7 +3269,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             }
             else
             {
-                MessageBox.Show("SFSE doesn't seem to be installed or Starfield path not set", "Unable to switch to SFSE", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"SFSE doesn't seem to be installed or {GameName} path not set", "Unable to switch to SFSE", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 GameVersion = Steam;
                 toolStripMenuSteam.Checked = true;
                 toolStripMenuMS.Checked = false;
@@ -3293,7 +3280,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private int RemoveDuplicates()
         {
-            string loText = Path.Combine(Tools.StarfieldAppData, "Plugins.txt");
+            string loText = Path.Combine(Tools.GameAppData, "Plugins.txt");
             if (!File.Exists(loText)) return 0;
 
             var plugins = new HashSet<string>(
@@ -3552,8 +3539,8 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private int ResetDefaults()
         {
-            string LooseFilesDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"My Games\Starfield"), // Check if loose files are enabled
-        filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
+            string LooseFilesDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName), // Check if loose files are enabled
+        filePath = Path.Combine(LooseFilesDir, $"{GameName}Custom.ini");
             int ChangeCount = 0;
 
             if (File.Exists(filePath)) // Disable loose files
@@ -3567,10 +3554,10 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                     ChangeCount++;
                 }
 
-                if (Delccc()) // Delete Starfield.ccc
+                if (Delccc()) // Delete ccc
                     ChangeCount++;
 
-                if (ResetStarfieldCustomINI(false)) // Apply recommended settings
+                if (ResetGameCustomINI(false)) // Apply recommended settings
                     ChangeCount++;
 
                 sbar3(ChangeCount.ToString() + " Change(s) made to ini files");
@@ -3626,7 +3613,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             }
             else
             {
-                MessageBox.Show("Starfield path not set");
+                MessageBox.Show($"{GameName} path not set");
             }
         }
 
@@ -3693,8 +3680,8 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
         {
             frmStarfieldCustomINI fci = new();
             fci.ShowDialog();
-            string PluginsPath = Path.Combine(Tools.StarfieldAppData, "Plugins.txt"),
-        LooseFilesDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"My Games\Starfield"), // Check if loose files are enabled
+            string PluginsPath = Path.Combine(Tools.GameAppData, "Plugins.txt"),
+        LooseFilesDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName), // Check if loose files are enabled
         filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             LooseFiles = false;
             try
@@ -3863,7 +3850,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 GamePath = tools.SetStarfieldGamePath(); // Prompt user to set game path if not set
             if (GamePath == "")
             {
-                MessageBox.Show("Unable to continue without Starfield game path");
+                MessageBox.Show($"Unable to continue without {GameName} game path");
                 return false;
             }
             else
@@ -4092,7 +4079,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
         {
             if (Tools.ConfirmAction("Are you sure you want to delete Plugins.txt?", "This will delete Plugins.txt", MessageBoxButtons.YesNo) == DialogResult.No)
                 return;
-            File.Delete(Path.Combine(Tools.StarfieldAppData, "Plugins.txt"));
+            File.Delete(Path.Combine(Tools.GameAppData, "Plugins.txt"));
         }
 
         private void toolStripMenuAddToProfile_Click(object sender, EventArgs e) // Add selected mods to a different profile
@@ -4521,7 +4508,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void starUIConfiguratorToolStripMenuItem_Click(object sender, EventArgs e) // Launch StarUI Configurator if installed
         {
-            string workingDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\My Games\Starfield\Data\";
+            string workingDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName, "Data");
             string StarUI = workingDirectory + @"StarUI Configurator.bat";
             if (!String.IsNullOrEmpty(StarUI))
             {
@@ -4549,16 +4536,16 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private int RestoreStarfieldINI()
         {
-            string StarfieldiniPath = Path.Combine(GamePath, "Starfield.ini");
+            string StarfieldiniPath = Path.Combine(GamePath, $"{GameName}.ini");
 
-            if (!Tools.FileCompare(StarfieldiniPath, Path.Combine(Tools.CommonFolder, "Starfield.ini")))
+            if (!Tools.FileCompare(StarfieldiniPath, Path.Combine(Tools.CommonFolder, $"{GameName}.ini")))
             {
                 try
                 {
-                    File.Copy(Path.Combine(Tools.CommonFolder, "Starfield.ini"), Path.Combine(GamePath, "Starfield.ini"), true); // Restore Starfield.ini
-                    sbar3("Starfield.ini restored");
+                    File.Copy(Path.Combine(Tools.CommonFolder, $"{GameName}.ini"), Path.Combine(GamePath, $"{GameName}.ini"), true); // Restore game.ini
+                    sbar3($"{GameName}.ini restored");
                     if (log)
-                        activityLog.WriteLog("Starfield.ini restored to default settings");
+                        activityLog.WriteLog($"{GameName}.ini restored to default settings");
                     return 1;
                 }
                 catch (Exception ex)
@@ -4569,9 +4556,9 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             }
             else
             {
-                sbar3("Starfield.ini Matches Default");
+                sbar3($"{GameName}.ini Matches Default");
                 if (log)
-                    activityLog.WriteLog("Starfield.ini Matches Default");
+                    activityLog.WriteLog($"{GameName}.ini Matches Default");
                 return 0;
             }
         }
@@ -4762,14 +4749,14 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
         {
             try
             {
-                var StarfieldCustomINIPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\My Games\Starfield\StarfieldCustom.ini";
-                if (File.Exists(StarfieldCustomINIPath))
+                var GameCustomINIPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName, $"{GameName}Custom.ini");
+                if (File.Exists(GameCustomINIPath))
                 {
-                    File.Delete(StarfieldCustomINIPath);
-                    sbar3("StarfieldCustom.ini deleted");
+                    File.Delete(GameCustomINIPath);
+                    sbar3($"{GameName}Custom.ini deleted");
                 }
                 else
-                    sbar3("StarfieldCustom.ini not found");
+                    sbar3($"{GameName}Custom.ini not found");
             }
             catch (Exception ex)
             {
@@ -4853,7 +4840,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             try
             {
                 SteamGameLocator steamGameLocator = new SteamGameLocator();
-                GamePath = steamGameLocator.getGameInfoByFolder("Starfield").steamGameLocation;
+                GamePath = steamGameLocator.getGameInfoByFolder(GameName).steamGameLocation;
                 Properties.Settings.Default.GamePath = GamePath;
                 SaveSettings();
             }
@@ -4928,12 +4915,12 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void nexusTrackingToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Tools.OpenUrl("https://www.nexusmods.com/starfield/mods/trackingcentre?tab=tracked+content+updates");
+            Tools.OpenUrl($"https://www.nexusmods.com/{GameName}/mods/trackingcentre?tab=tracked+content+updates");
         }
 
         private void nexusUpdatedModsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Tools.OpenUrl("https://www.nexusmods.com/games/starfield/mods?sort=updatedAt");
+            Tools.OpenUrl($"https://www.nexusmods.com/games/{GameName}/mods?sort=updatedAt");
         }
 
         private void DisableLog()
@@ -5046,7 +5033,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             if (string.IsNullOrEmpty(LOOTPath)) // Check if LOOT path is set
                 return;
 
-            Tools.OpenFile(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"LOOT\games\Starfield\Userlist.yaml"));
+            Tools.OpenFile(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Path.Combine("LOOT", "games", GameName, "Userlist.yaml")));
             MessageBox.Show("Click OK to refresh");
             ReadLOOTGroups();
 #if DEBUG
@@ -5125,7 +5112,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
             {
                 string selectedFolderPath = folderBrowserDialog.SelectedPath;
-                string FilePath = Path.Combine(Tools.StarfieldAppData, "ContentCatalog.txt");
+                string FilePath = Path.Combine(Tools.GameAppData, "ContentCatalog.txt");
                 string destinationPath = Path.Combine(selectedFolderPath, "ContentCatalog.txt");
                 if (!File.Exists(FilePath))
                 {
@@ -5154,7 +5141,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 string selectedFolderPath = folderBrowserDialog.SelectedPath;
 
                 string backupFilePath = Path.Combine(selectedFolderPath, "ContentCatalog.txt");
-                string destinationPath = Path.Combine(Tools.StarfieldAppData, "ContentCatalog.txt");
+                string destinationPath = Path.Combine(Tools.GameAppData, "ContentCatalog.txt");
 
                 if (!File.Exists(backupFilePath))
                 {
@@ -5420,7 +5407,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void savesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string savesPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", "Starfield", "Saves");
+            string savesPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName, "Saves");
             if (Directory.Exists(savesPath))
             {
                 Tools.OpenFolder(savesPath);
@@ -5543,7 +5530,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void scriptLogsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            tempstr = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games\\Starfield\\Logs\\Script");
+            tempstr = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName, "Logs\\Script");
             if (!Directory.Exists(tempstr))
             {
                 MessageBox.Show("Script logs directory not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);

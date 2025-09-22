@@ -1720,7 +1720,7 @@
             // 
             readfileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { runBatchFileToolStripMenuItem, configurationToolStripMenuItem, toolStripSeparator49, readfilePathToolStripMenuItem });
             readfileToolStripMenuItem.Name = "readfileToolStripMenuItem";
-            readfileToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+            readfileToolStripMenuItem.Size = new System.Drawing.Size(351, 44);
             readfileToolStripMenuItem.Text = "Readfile";
             // 
             // runBatchFileToolStripMenuItem
@@ -1752,7 +1752,7 @@
             // displayAllSettingsToolStripMenuItem
             // 
             displayAllSettingsToolStripMenuItem.Name = "displayAllSettingsToolStripMenuItem";
-            displayAllSettingsToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+            displayAllSettingsToolStripMenuItem.Size = new System.Drawing.Size(351, 44);
             displayAllSettingsToolStripMenuItem.Text = "Display All Settings";
             displayAllSettingsToolStripMenuItem.Click += displayAllSettingsToolStripMenuItem_Click;
             // 

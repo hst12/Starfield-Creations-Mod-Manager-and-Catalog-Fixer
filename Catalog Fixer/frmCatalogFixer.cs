@@ -16,12 +16,31 @@ namespace Starfield_Tools
         public string CatalogStatus;
 
         private readonly string GamePath;
+        private int Game, GameVersion;
+        private string GameName;
         private readonly Tools tools = new();
         private frmLoadOrder.ActivityLog activityLog = frmLoadOrder.activityLog;
 
         public frmStarfieldTools()
         {
             InitializeComponent();
+
+            GameVersion = Properties.Settings.Default.GameVersion;
+            Game = Properties.Settings.Default.Game;
+            switch (Game)
+            {
+                case 0:
+                    GameName = "Starfield";
+                    break;
+
+                case 1:
+                    GameName = "Fallout 5";
+                    break;
+
+                case 2:
+                    GameName = "Elder Scrolls 6";
+                    break;
+            }
 
             Tools.CheckGame();
 
@@ -75,9 +94,9 @@ namespace Starfield_Tools
             DisplayCatalog();
         }
 
-        public static string GetStarfieldAppData()
+        public static string GetGameAppData()
         {
-            return (Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)) + @"\Starfield";
+            return (Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Tools.GameName));
         }
 
         public bool BackupCatalog()
@@ -589,7 +608,7 @@ namespace Starfield_Tools
             if (log)
                 activityLog.WriteLog("Checking for unused items in catalog.");
 
-            string filePath = Path.Combine(GetStarfieldAppData(), "Plugins.txt");
+            string filePath = Path.Combine(GetGameAppData(), "Plugins.txt");
             //string fileContent = File.ReadAllText(filePath); // Load Plugins.txt
 
             // Split the content into lines

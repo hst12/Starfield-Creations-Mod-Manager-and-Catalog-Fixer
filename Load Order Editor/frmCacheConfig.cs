@@ -18,7 +18,7 @@ namespace Starfield_Tools.Load_Order_Editor
 
             var readFileOther = File.ReadAllLines(Path.Combine(Tools.CommonFolder, "ReadFile.txt")).Where(x => !x.StartsWith("rem ")).ToList();
 
-            var plugins = File.ReadAllLines(Path.Combine(Tools.StarfieldAppData, "Plugins.txt")) // Only active plugins
+            var plugins = File.ReadAllLines(Path.Combine(Tools.GameAppData, "Plugins.txt")) // Only active plugins
                 .Where(p => p[0] == '*')
                 .Select(p => p.Substring(1).Replace(".esm", "", StringComparison.OrdinalIgnoreCase)) // Strip * and .esm
                 .ToList();
@@ -51,15 +51,15 @@ namespace Starfield_Tools.Load_Order_Editor
             if (string.IsNullOrEmpty(Properties.Settings.Default.ReadFileBatchPath))
                 readfileBatchPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             else
-                readfileBatchPath=Properties.Settings.Default.ReadFileBatchPath;
+                readfileBatchPath = Properties.Settings.Default.ReadFileBatchPath;
 
             System.Windows.Forms.SaveFileDialog saveDialog = new()
-                {
-                    InitialDirectory = readfileBatchPath,
-                    Filter = "Cmd File|*.cmd",
-                    Title = "Generate Readfile commands",
-                    FileName = "Starfield Readfile.cmd"
-                };
+            {
+                InitialDirectory = readfileBatchPath,
+                Filter = "Cmd File|*.cmd",
+                Title = "Generate Readfile commands",
+                FileName = $"{Tools.GameName} Readfile.cmd"
+            };
 
             if (saveDialog.ShowDialog() != DialogResult.OK || string.IsNullOrEmpty(saveDialog.FileName))
             {
@@ -69,13 +69,13 @@ namespace Starfield_Tools.Load_Order_Editor
 
             List<string> selectedOptions = new();
             if (chkWwise.Checked)
-                selectedOptions.Add("Data\\starfield - wwise*");
+                selectedOptions.Add($"Data\\{Tools.GameName} - wwise*");
             if (chkMesh.Checked)
-                selectedOptions.Add("Data\\starfield - mesh*");
+                selectedOptions.Add($"Data\\{Tools.GameName} - mesh*");
             if (chkLOD.Checked)
-                selectedOptions.Add("Data\\starfield - lod*");
+                selectedOptions.Add($"Data\\{Tools.GameName} - lod*");
             if (chkTextures.Checked)
-                selectedOptions.Add("Data\\starfield - textures*");
+                selectedOptions.Add($"Data\\{Tools.GameName} - textures*");
 
             using (StreamWriter writer = new(saveDialog.FileName))
             {
@@ -92,13 +92,13 @@ namespace Starfield_Tools.Load_Order_Editor
         {
             List<string> selectedOptions = new();
             if (chkWwise.Checked)
-                selectedOptions.Add("Data\\starfield - wwise*");
+                selectedOptions.Add($"Data\\{Tools.GameName} - wwise*");
             if (chkMesh.Checked)
-                selectedOptions.Add("Data\\starfield - mesh*");
+                selectedOptions.Add($"Data\\{Tools.GameName} - mesh*");
             if (chkLOD.Checked)
-                selectedOptions.Add("Data\\starfield - lod*");
+                selectedOptions.Add($"Data\\{Tools.GameName} - lod*");
             if (chkTextures.Checked)
-                selectedOptions.Add("Data\\starfield - textures*");
+                selectedOptions.Add($"Data\\{Tools.GameName} - textures*");
 
             long cacheSize = 0;
 

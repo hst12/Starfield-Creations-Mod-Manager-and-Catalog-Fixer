@@ -15,13 +15,16 @@ namespace Starfield_Tools.Common // Various functions used by the app
         public static string CommonFolder { get; set; }
         public static string DocumentationFolder { get; set; }
         public static string LocalAppDataPath { get; set; }
-        public string StarFieldPath { get; set; }
         public string GamePath { get; set; }
 
-        public string StarfieldGamePathMS { get; set; }
+        public static string GameName { get; set; }
+
+        public static int Game { get; set; } // 0=Starfield, 1=Fallout 5, 2=Elder Scrolls 6
+
+        public string GamePathMS { get; set; }
         public List<string> BethFiles { get; set; }
         public static string CatalogVersion { get; set; }
-        public static string StarfieldAppData { get; set; }
+        public static string GameAppData { get; set; }
         public List<string> PluginList { get; set; }
 
         public static readonly List<string> Suffixes = new List<string>
@@ -79,6 +82,22 @@ namespace Starfield_Tools.Common // Various functions used by the app
 
             DocumentationFolder = Path.Combine(Environment.CurrentDirectory, "Documentation");
 
+            Game = Properties.Settings.Default.Game;
+            switch (Game)
+            {
+                case 0:
+                    GameName = "Starfield";
+                    break;
+
+                case 1:
+                    GameName = "Fallout 5";
+                    break;
+
+                case 2:
+                    GameName = "Elder Scrolls 6";
+                    break;
+            }
+
             try
             {
                 BethFiles = new(File.ReadAllLines(Path.Combine(CommonFolder, "BGS Exclude.txt"))); // Exclude these files from Plugin list
@@ -100,11 +119,11 @@ namespace Starfield_Tools.Common // Various functions used by the app
             }
             try
             {
-                StarfieldAppData = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Starfield");
+                GameAppData = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), GameName);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Starfield AppData folder missing. Repair the game", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                MessageBox.Show(ex.Message, $"{GameName} AppData folder missing. Repair the game", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 Environment.Exit(1);
             }
         }
@@ -181,7 +200,7 @@ namespace Starfield_Tools.Common // Various functions used by the app
 
         public static string GetCatalogPath()
         {
-            return Path.Combine(StarfieldAppData, "ContentCatalog.txt");
+            return Path.Combine(GameAppData, "ContentCatalog.txt");
         }
 
         public class Group // LOOT
@@ -301,11 +320,11 @@ namespace Starfield_Tools.Common // Various functions used by the app
             }
         }
 
-        public static void CheckGame() // Check if Starfield appdata folder exists
+        public static void CheckGame() // Check if Game appdata folder exists
         {
-            if (!Directory.Exists(StarfieldAppData))
+            if (!Directory.Exists(GameAppData))
             {
-                MessageBox.Show("Unable to continue. Is Starfield installed correctly?", "Starfield AppData directory not found",
+                MessageBox.Show($"Unable to continue. Is {GameName} installed correctly?", $"{GameName} AppData directory not found",
                     MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 Environment.Exit(1);
             }
@@ -323,7 +342,7 @@ namespace Starfield_Tools.Common // Various functions used by the app
             AboutBox.Show();
         }
 
-        public string SetStarfieldGamePath() // Prompt for Starfield game path
+        public string SetStarfieldGamePath() // Prompt for game path
         {
             using (System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog())
             {
@@ -334,9 +353,9 @@ namespace Starfield_Tools.Common // Various functions used by the app
                     openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
                 }
 
-                openFileDialog.Title = "Set the path to the Starfield executable - Starfield.exe";
-                openFileDialog.FileName = "Starfield.exe";
-                openFileDialog.Filter = "Starfield.exe|Starfield.exe";
+                openFileDialog.Title = $"Set the path to the {GameName} executable - {GameName}.exe";
+                openFileDialog.FileName = $"{GameName}.exe";
+                openFileDialog.Filter = $"{GameName}.exe|{GameName}.exe";
 
                 if (openFileDialog.ShowDialog() != DialogResult.OK)
                 {
@@ -346,7 +365,7 @@ namespace Starfield_Tools.Common // Various functions used by the app
                 string selectedFile = openFileDialog.FileName;
                 if (!File.Exists(selectedFile))
                 {
-                    MessageBox.Show("Starfield.exe not found in the selected path",
+                    MessageBox.Show($"{GameName}.exe not found in the selected path",
                         "Please select the correct folder", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return string.Empty;
                 }
@@ -361,7 +380,8 @@ namespace Starfield_Tools.Common // Various functions used by the app
         public string SetStarfieldGamePathMS()
         {
             string selectedPath = Properties.Settings.Default.GamePathMS;
-            MessageBox.Show("Please select the path to the game installation folder where Starfield.exe is located", "Select Game Path - Choose the Content Folder", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show($"Please select the path to the game installation folder where {GameName}.exe is located", "Select Game Path - Choose the Content Folder",
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             using (FolderBrowserDialog folderBrowserDialog = new())
             {
@@ -369,7 +389,7 @@ namespace Starfield_Tools.Common // Various functions used by the app
                 if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
                 {
                     selectedPath = folderBrowserDialog.SelectedPath;
-                    StarfieldGamePathMS = selectedPath;
+                    GamePathMS = selectedPath;
                     Settings.Default.GamePathMS = selectedPath;
                     Settings.Default.Save();
                     return selectedPath;
@@ -430,7 +450,7 @@ namespace Starfield_Tools.Common // Various functions used by the app
         public static bool StartStarfieldMS() // Start game with MS Store version
         {
             //string cmdLine = @"shell:AppsFolder\BethesdaSoftworks.ProjectGold_3275kfvn8vcwc!Game";
-            string cmdLine = Path.Combine(Properties.Settings.Default.GamePathMS, "Starfield.exe");
+            string cmdLine = Path.Combine(Properties.Settings.Default.GamePathMS, $"{GameName}.exe");
 
             try
             {
@@ -493,7 +513,7 @@ namespace Starfield_Tools.Common // Various functions used by the app
             return MessageBox.Show(ActionText, ActionTitle, buttons, icon);
         }
 
-        public List<string> GetPluginList() // Get list of plugins from Starfield Data folder
+        public List<string> GetPluginList() // Get list of plugins from game Data folder
         {
             try
             {
