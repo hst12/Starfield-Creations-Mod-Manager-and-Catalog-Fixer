@@ -619,10 +619,9 @@ namespace Starfield_Tools
                 activityLog.WriteLog("Checking for unused items in catalog.");
 
             string filePath = Path.Combine(GetGameAppData(), "Plugins.txt");
-            //string fileContent = File.ReadAllText(filePath); // Load Plugins.txt
+            
 
             // Split the content into lines
-            //List<string> lines = [.. fileContent.Split('\n')];
             List<string> lines = File.ReadLines(filePath)
                                      .Select(line => line.Trim())
                                      .ToList();
@@ -706,8 +705,15 @@ namespace Starfield_Tools
 
                     // Hack the Bethesda header back in
                     json = Tools.MakeHeader() + json[1..];
-
-                    File.WriteAllText(Tools.GetCatalogPath(), json);
+                    if (Tools.ConfirmAction("Do you want to continue?", $"{RemovalCount} Unused mods found in catalog. Remove them?", MessageBoxButtons.YesNo) == DialogResult.No)
+                    {
+                        toolStripStatusLabel1.Text = "No changes made to catalog";
+                        if (log)
+                            activityLog.WriteLog("No changes made to catalog");
+                        return;
+                    }
+                    else
+                        File.WriteAllText(Tools.GetCatalogPath(), json);
                 }
                 else
                 {

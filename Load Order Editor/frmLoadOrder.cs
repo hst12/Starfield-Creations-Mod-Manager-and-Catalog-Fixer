@@ -43,7 +43,7 @@ namespace Starfield_Tools
 
         private string LastProfile, tempstr;
 
-        private bool Profiles = false, GridSorted = false, AutoUpdate = false, ActiveOnly = false, AutoSort = false, isModified = false, LooseFiles, log;
+        private bool Profiles = false, GridSorted = false, AutoUpdate = false, ActiveOnly = false, AutoSort = false, isModified = false, LooseFiles, log,GameExists;
         private Tools.Configuration Groups = new();
 
         public frmLoadOrder(string parameter)
@@ -69,7 +69,7 @@ namespace Starfield_Tools
 
             this.KeyPreview = true; // Ensure the form captures key presses
 
-            Tools.CheckGame(); // Exit if game appdata folder not found
+            GameExists=Tools.CheckGame(); // Exit if game appdata folder not found
 
             foreach (var arg in Environment.GetCommandLineArgs()) // Handle command line arguments
             {
@@ -88,7 +88,7 @@ namespace Starfield_Tools
             GameName = Tools.GameName;
 
             string PluginsPath = Path.Combine(Tools.GameAppData, "Plugins.txt");
-            if (!File.Exists(PluginsPath))
+            if (!File.Exists(PluginsPath) && GameExists)
             {
                 MessageBox.Show(@"Missing Plugins.txt file
 
@@ -997,7 +997,9 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             {
                 if (log)
                     activityLog.WriteLog("Error reading profiles: " + ex.Message);
+#if DEBUG
                 MessageBox.Show(ex.Message,"Error reading profiles");
+#endif
             }
         }
 
@@ -1041,7 +1043,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             {
                 if (log)
                     activityLog.WriteLog($"Error saving plugins file {PluginFileName}: {ex.Message}");
-                MessageBox.Show(ex.Message, "Error saving plugins file", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                 FileInfo fileInfo = new FileInfo(PluginFileName);
 

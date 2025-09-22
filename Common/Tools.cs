@@ -320,14 +320,18 @@ namespace Starfield_Tools.Common // Various functions used by the app
             }
         }
 
-        public static void CheckGame() // Check if Game appdata folder exists
+        public static bool CheckGame() // Check if Game appdata folder exists, true if it does
         {
             if (!Directory.Exists(GameAppData))
             {
+#if DEBUG
                 MessageBox.Show($"Unable to continue. Is {GameName} installed correctly?", $"{GameName} AppData directory not found",
                     MessageBoxButtons.OK, MessageBoxIcon.Stop);
-                //Environment.Exit(1);
+#endif
+                return false;
             }
+            else
+                return true;
         }
 
         public static void ShowAbout()
@@ -475,7 +479,7 @@ namespace Starfield_Tools.Common // Various functions used by the app
         {
             return GameVersion switch
             {
-                0 => StartStarfieldSteam(),
+                0 => StartGameSteam(),
                 1 => StartStarfieldMS(),
                 2 => StartStarfieldCustom(),
                 3 => StartStarfieldSFSE(),
@@ -483,7 +487,7 @@ namespace Starfield_Tools.Common // Various functions used by the app
             };
         }
 
-        public static bool StartStarfieldSteam() // Start game with Steam version
+        public static bool StartGameSteam() // Start game with Steam version
         {
             const string userRoot = "HKEY_CURRENT_USER";
             const string subkey = @"Software\Valve\Steam";
