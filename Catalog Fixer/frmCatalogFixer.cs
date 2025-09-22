@@ -411,7 +411,17 @@ namespace Starfield_Tools
                 if (!File.Exists(catalogPath))
                 {
                     Tools.ConfirmAction("Missing ContentCatalog.txt", "A Blank ContentCatalog.txt file will be created", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                    File.WriteAllText(catalogPath, Tools.MakeHeaderBlank());
+                    try
+                    {
+                        File.WriteAllText(catalogPath, Tools.MakeHeaderBlank());
+                    }
+                    catch (Exception writeEx)
+                    {
+                        MessageBox.Show($"Error: {writeEx.Message}", "Failed to create dummy ContentCatalog.txt");
+                        if (log)
+                            activityLog.WriteLog($"Error: {writeEx.Message} Failed to create dummy ContentCatalog.txt");
+                        return false;
+                    }
                     toolStripStatusLabel1.Text = "Dummy ContentCatalog.txt created";
                     if (log)
                         activityLog.WriteLog("Dummy ContentCatalog.txt created");

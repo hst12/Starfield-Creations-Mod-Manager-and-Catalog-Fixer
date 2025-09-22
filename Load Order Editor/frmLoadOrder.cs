@@ -96,7 +96,16 @@ Click Ok to create a blank Plugins.txt file
 Click File->Restore if you have a backup of your Plugins.txt file
 Alternatively, run the game once to have it create a Plugins.txt file for you.", "Plugins.txt not found");
 
-                File.WriteAllText(PluginsPath, $"# This file is used by {GameName} to keep track of your downloaded content.\n# Please do not modify this file.\n");
+                try
+                {
+                    File.WriteAllText(PluginsPath, $"# This file is used by {GameName} to keep track of your downloaded content.\n# Please do not modify this file.\n");
+                }
+                catch (Exception ex)
+                {
+#if DEBUG
+                    MessageBox.Show( ex.Message,"Error creating Plugins.txt");
+#endif
+                }
             }
 
             frmStarfieldTools StarfieldTools = new();
@@ -155,7 +164,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                     GetSteamGamePath(); // Detect Steam path
                     if (GamePath == "")
                     {
-                        GamePath = tools.SetStarfieldGamePath();
+                        GamePath = tools.SetGamePath();
                         Properties.Settings.Default.GamePath = GamePath;
                         //SaveSettings();
                     }
@@ -164,7 +173,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             else
             {
                 if (Properties.Settings.Default.GamePathMS == "")
-                    tools.SetStarfieldGamePathMS();
+                    tools.SetGamePathMS();
                 GamePath = Properties.Settings.Default.GamePathMS;
             }
 
@@ -291,11 +300,15 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             // Do a 1-time backup of Plugins.txt if it doesn't exist
             try
             {
-                if (!File.Exists(Path.Combine(Tools.GameAppData, "Plugins.txt.bak")))
-                {
-                    File.Copy(PluginsPath, Tools.GameAppData + @"\Plugins.txt.bak");
-                    sbar2("Plugins.txt backed up to Plugins.txt.bak");
-                }
+                
+                
+                
+                    if (!File.Exists(Path.Combine(Tools.GameAppData, "Plugins.txt.bak")) && File.Exists(PluginsPath))
+                    {
+                        File.Copy(PluginsPath, Tools.GameAppData + @"\Plugins.txt.bak");
+                        sbar2("Plugins.txt backed up to Plugins.txt.bak");
+                    }
+                
             }
             catch (Exception ex)
             {
@@ -538,11 +551,14 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void ReadLOOTGroups() // Read LOOT Groups
         {
+            string yamlPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                $"LOOT\\games\\{GameName}\\userlist.yaml");
+            if (!File.Exists(yamlPath))
+                return;
             try
             {
                 var deserializer = new DeserializerBuilder().Build();
-                string yamlContent = File.ReadAllText(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                    $"LOOT\\games\\{GameName}\\userlist.yaml"));
+                string yamlContent = File.ReadAllText(yamlPath);
                 Groups = deserializer.Deserialize<Tools.Configuration>(yamlContent);
             }
             catch (Exception ex)
@@ -612,9 +628,16 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             bool isFileSizeVisible = dataGridView1.Columns["FileSize"]?.Visible ?? false;
             bool isIndexVisible = dataGridView1.Columns["Index"]?.Visible ?? false;
             bool modEnabled;
-            string json = File.ReadAllText(Tools.GetCatalogPath()); // Read Catalog
+            string json = "";
+            if (File.Exists(Tools.GetCatalogPath()))
+                json = File.ReadAllText(Tools.GetCatalogPath()); // Read Catalog
             var bethFilesSet = new HashSet<string>(tools.BethFiles); // Read files to exclude
-            string[] lines = File.ReadAllLines(loText); // Read Plugins.txt
+            string[] lines;
+            if (File.Exists(loText))
+                lines = File.ReadAllLines(loText); // Read Plugins.txt
+            else
+
+                return;
 
             sbar("Loading...");
             sbar3("");
@@ -974,7 +997,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             {
                 if (log)
                     activityLog.WriteLog("Error reading profiles: " + ex.Message);
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message,"Error reading profiles");
             }
         }
 
@@ -1029,7 +1052,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 }
                 else
                 {
-                    MessageBox.Show($"{PluginFileName} does not exist.");
+                    MessageBox.Show($"{PluginFileName} does not exist.","Save Profiles");
                 }
             }
 
@@ -1535,9 +1558,9 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
         private void toolStripMenuSetPath_Click(object sender, EventArgs e)
         {
             if (GameVersion != MS)
-                GamePath = tools.SetStarfieldGamePath();
+                GamePath = tools.SetGamePath();
             else
-                GamePath = tools.SetStarfieldGamePathMS();
+                GamePath = tools.SetGamePathMS();
         }
 
         private void toolStripMenuCleanup_Click(object sender, EventArgs e)
@@ -3718,7 +3741,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             Properties.Settings.Default.GameVersion = GameVersion;
             if (Properties.Settings.Default.GamePath == "")
             {
-                GamePath = tools.SetStarfieldGamePath();
+                GamePath = tools.SetGamePath();
                 if (GameVersion != MS)
                 {
                     Properties.Settings.Default.GamePath = GamePath;
@@ -3731,7 +3754,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
             if (Properties.Settings.Default.GamePathMS == "" && GameVersion == MS)
             {
-                GamePath = tools.SetStarfieldGamePathMS();
+                GamePath = tools.SetGamePathMS();
                 Properties.Settings.Default.GamePathMS = GamePath;
                 SaveSettings();
             }
@@ -3847,7 +3870,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
         private bool CheckGamePath() // Check if game path is set
         {
             if (String.IsNullOrEmpty(GamePath))
-                GamePath = tools.SetStarfieldGamePath(); // Prompt user to set game path if not set
+                GamePath = tools.SetGamePath(); // Prompt user to set game path if not set
             if (GamePath == "")
             {
                 MessageBox.Show($"Unable to continue without {GameName} game path");
@@ -4157,7 +4180,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 }
             }
 
-            int minWidth = 1500; // Set your minimum width
+            int minWidth = 1840; // Set your minimum width
             int minHeight = 800; // Set your minimum height
 
             if (this.Width < minWidth || this.Height < minHeight)
@@ -4961,14 +4984,14 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             returnStatus = 0;
             frmConvertLooseFiles frmCLF = new frmConvertLooseFiles(esm);
             frmCLF.StartPosition = FormStartPosition.CenterScreen;
-            try
+            /*try
             {
                 frmCLF.ShowDialog(this);
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error converting loose files. {ex.Message}.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            }*/
 
             if (returnStatus > 0)
             {
@@ -5101,7 +5124,9 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
         {
             frmGameSelect gameSelectForm = new frmGameSelect();
             gameSelectForm.StartPosition = FormStartPosition.CenterScreen;
-            gameSelectForm.Show();
+            gameSelectForm.ShowDialog();
+            MessageBox.Show("Please restart the app after changing the game.", "Restart Required", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            Application.Exit();
         }
 
         private void BackupContentCatalog()

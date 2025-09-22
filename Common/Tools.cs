@@ -314,7 +314,7 @@ namespace Starfield_Tools.Common // Various functions used by the app
             catch (Exception ex)
             {
 #if DEBUG
-                MessageBox.Show("Tools.FileCompare error: " + ex.Message);
+                MessageBox.Show(ex.Message, "File Compare error");
 #endif
                 return false;
             }
@@ -326,7 +326,7 @@ namespace Starfield_Tools.Common // Various functions used by the app
             {
                 MessageBox.Show($"Unable to continue. Is {GameName} installed correctly?", $"{GameName} AppData directory not found",
                     MessageBoxButtons.OK, MessageBoxIcon.Stop);
-                Environment.Exit(1);
+                //Environment.Exit(1);
             }
         }
 
@@ -342,7 +342,7 @@ namespace Starfield_Tools.Common // Various functions used by the app
             AboutBox.Show();
         }
 
-        public string SetStarfieldGamePath() // Prompt for game path
+        public string SetGamePath() // Prompt for game path
         {
             using (System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog())
             {
@@ -377,7 +377,7 @@ namespace Starfield_Tools.Common // Various functions used by the app
             }
         }
 
-        public string SetStarfieldGamePathMS()
+        public string SetGamePathMS()
         {
             string selectedPath = Properties.Settings.Default.GamePathMS;
             MessageBox.Show($"Please select the path to the game installation folder where {GameName}.exe is located", "Select Game Path - Choose the Content Folder",

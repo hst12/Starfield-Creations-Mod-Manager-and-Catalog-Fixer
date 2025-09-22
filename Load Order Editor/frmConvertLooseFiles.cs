@@ -65,7 +65,9 @@ namespace Starfield_Tools.Load_Order_Editor
             {
                 //activityLog.WriteLog($"Creating texture archive\n{archive2Path} {cmdLine}");
                 MakeArchive(archive2Path, cmdLine, workingDirectory);
+#if DEBUG
                 Debug.WriteLine(cmdLine);
+#endif
                 frmLoadOrder.returnStatus++;
             }
             else
