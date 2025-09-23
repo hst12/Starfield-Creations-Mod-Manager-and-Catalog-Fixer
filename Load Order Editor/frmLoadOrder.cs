@@ -43,7 +43,7 @@ namespace Starfield_Tools
 
         private string LastProfile, tempstr;
 
-        private bool Profiles = false, GridSorted = false, AutoUpdate = false, ActiveOnly = false, AutoSort = false, isModified = false, LooseFiles, log,GameExists;
+        private bool Profiles = false, GridSorted = false, AutoUpdate = false, ActiveOnly = false, AutoSort = false, isModified = false, LooseFiles, log, GameExists;
         private Tools.Configuration Groups = new();
 
         public frmLoadOrder(string parameter)
@@ -69,7 +69,7 @@ namespace Starfield_Tools
 
             this.KeyPreview = true; // Ensure the form captures key presses
 
-            GameExists=Tools.CheckGame(); // Exit if game appdata folder not found
+            GameExists = Tools.CheckGame(); // Exit if game appdata folder not found
 
             foreach (var arg in Environment.GetCommandLineArgs()) // Handle command line arguments
             {
@@ -110,7 +110,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
             frmStarfieldTools StarfieldTools = new();
 
-            if (Properties.Settings.Default.AutoCheck)
+            if (Properties.Settings.Default.AutoCheck && GameExists)
             {
                 // Check the catalog
                 tempstr = StarfieldTools.CatalogStatus;
@@ -176,6 +176,8 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                     tools.SetGamePathMS();
                 GamePath = Properties.Settings.Default.GamePathMS;
             }
+            if (!Tools.CheckGame())
+                GamePath = "";
 
             if (!File.Exists(Path.Combine(GamePath, "CreationKit.exe"))) // Hide option to launch CK if not found
                 creationKitToolStripMenuItem.Visible = false;
@@ -300,15 +302,11 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             // Do a 1-time backup of Plugins.txt if it doesn't exist
             try
             {
-                
-                
-                
-                    if (!File.Exists(Path.Combine(Tools.GameAppData, "Plugins.txt.bak")) && File.Exists(PluginsPath))
-                    {
-                        File.Copy(PluginsPath, Tools.GameAppData + @"\Plugins.txt.bak");
-                        sbar2("Plugins.txt backed up to Plugins.txt.bak");
-                    }
-                
+                if (!File.Exists(Path.Combine(Tools.GameAppData, "Plugins.txt.bak")) && File.Exists(PluginsPath))
+                {
+                    File.Copy(PluginsPath, Tools.GameAppData + @"\Plugins.txt.bak");
+                    sbar2("Plugins.txt backed up to Plugins.txt.bak");
+                }
             }
             catch (Exception ex)
             {
@@ -369,7 +367,10 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 }
 
                 if (arg.Equals("-dev"))
+                {
                     testToolStripMenuItem.Visible = true;
+                    gameSelectToolStripMenuItem.Visible = true;
+                }
             }
 
             cmbProfile.Enabled = Profiles;
@@ -636,7 +637,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             if (File.Exists(loText))
                 lines = File.ReadAllLines(loText); // Read Plugins.txt
             else
-
                 return;
 
             sbar("Loading...");
@@ -1053,7 +1053,11 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 }
                 else
                 {
+#if DEBUG
+
                     MessageBox.Show($"{PluginFileName} does not exist.","Save Profiles");
+#endif
+                    sbar($"Error saving {Path.GetFileName(PluginFileName)}: {ex.Message}");
                 }
             }
 
@@ -2839,7 +2843,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             Properties.Settings.Default.AutoDelccc = toolStripMenuAutoDelccc.Checked;
         }
 
-        private void toolStripMenuProfilesOn_Click(object sender, EventArgs e)
+        private void ToggleProfiles()
         {
             toolStripMenuProfilesOn.Checked = !toolStripMenuProfilesOn.Checked;
             Properties.Settings.Default.ProfileOn = toolStripMenuProfilesOn.Checked;
@@ -2847,6 +2851,11 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             chkProfile.Checked = toolStripMenuProfilesOn.Checked;
 
             if (Profiles) GetProfiles();
+        }
+
+        private void toolStripMenuProfilesOn_Click(object sender, EventArgs e)
+        {
+            ToggleProfiles();
         }
 
         private void toolStripMenuLoadScreenPreview_Click(object sender, EventArgs e)
@@ -3685,6 +3694,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
             if (!ActiveOnly)
                 ActiveOnlyToggle();
+            RefreshDataGrid();
         }
 
         private void disableAllToolStripMenuItem_Click(object sender, EventArgs e)
@@ -3874,7 +3884,11 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 GamePath = tools.SetGamePath(); // Prompt user to set game path if not set
             if (GamePath == "")
             {
+#if DEBUG
                 MessageBox.Show($"Unable to continue without {GameName} game path");
+#endif
+                if (Profiles)
+                    ToggleProfiles();
                 return false;
             }
             else

@@ -1833,6 +1833,7 @@
             gameSelectToolStripMenuItem.Name = "gameSelectToolStripMenuItem";
             gameSelectToolStripMenuItem.Size = new System.Drawing.Size(400, 44);
             gameSelectToolStripMenuItem.Text = "Game Select";
+            gameSelectToolStripMenuItem.Visible = false;
             gameSelectToolStripMenuItem.Click += gameSelectToolStripMenuItem_Click;
             // 
             // toolStripMenuGameLaunchOptions

@@ -42,7 +42,7 @@ namespace Starfield_Tools
                     break;
             }
 
-            Tools.CheckGame();
+        
 
             // Retrieve settings
             AutoCheck = Properties.Settings.Default.AutoCheck;
@@ -60,7 +60,7 @@ namespace Starfield_Tools
 
             if (AutoCheck) // Check catalog status if enabled
             {
-                if (!CheckCatalog()) // If not okay, then...
+                if (!CheckCatalog() && Tools.CheckGame()) // If not okay, then...
                 {
                     richTextBox2.Text += "\nCatalog issues(s) found\n";
                     if (AutoRestore) // Restore backup file if auto restore is on
@@ -75,7 +75,12 @@ namespace Starfield_Tools
                 else
                     toolStripStatusLabel1.Text = "Catalog ok";
             }
-            else toolStripStatusLabel1.Text = "Ready";
+
+            else
+            {
+                Tools.CheckGame();
+                toolStripStatusLabel1.Text = "Ready";
+            }
             ScrollToEnd();
 
             if (AutoRestore)
@@ -103,7 +108,7 @@ namespace Starfield_Tools
         {
             bool BackupStatus = false;
 
-            if (!CheckCatalog())
+            if (!CheckCatalog() && Tools.CheckGame())
             {
                 richTextBox2.Text += "\nCatalog is corrupted. Backup not made.\n";
                 if (AutoClean)
@@ -127,7 +132,9 @@ namespace Starfield_Tools
                 }
                 catch (Exception ex)
                 {
+#if DEBUG
                     MessageBox.Show($"Error: {ex.Message}", "Catalog Backup failed");
+#endif
                     if (log)
                         activityLog.WriteLog($"Error: {ex.Message} Backup failed");
                 }
@@ -408,18 +415,21 @@ namespace Starfield_Tools
             catch (Exception ex)
             {
                 // If the catalog file is missing create a dummy one.
-                if (!File.Exists(catalogPath))
+                if (!File.Exists(catalogPath) && Tools.CheckGame())
                 {
                     Tools.ConfirmAction("Missing ContentCatalog.txt", "A Blank ContentCatalog.txt file will be created", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     try
                     {
                         File.WriteAllText(catalogPath, Tools.MakeHeaderBlank());
                     }
-                    catch (Exception writeEx)
+                    catch (Exception ex2)
                     {
-                        MessageBox.Show($"Error: {writeEx.Message}", "Failed to create dummy ContentCatalog.txt");
+#if DEBUG
+                        MessageBox.Show($"Error: {ex2.Message}", "Failed to create dummy ContentCatalog.txt");
+                        richTextBox2.AppendText("\n" + ex2.Message);
+#endif
                         if (log)
-                            activityLog.WriteLog($"Error: {writeEx.Message} Failed to create dummy ContentCatalog.txt");
+                            activityLog.WriteLog($"Error: {ex2.Message} Failed to create dummy ContentCatalog.txt");
                         return false;
                     }
                     toolStripStatusLabel1.Text = "Dummy ContentCatalog.txt created";
