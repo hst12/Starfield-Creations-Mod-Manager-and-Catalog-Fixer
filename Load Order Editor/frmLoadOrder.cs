@@ -4999,14 +4999,14 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             returnStatus = 0;
             frmConvertLooseFiles frmCLF = new frmConvertLooseFiles(esm);
             frmCLF.StartPosition = FormStartPosition.CenterScreen;
-            /*try
+            try
             {
                 frmCLF.ShowDialog(this);
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error converting loose files. {ex.Message}.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }*/
+            }
 
             if (returnStatus > 0)
             {
@@ -5844,6 +5844,29 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
         {
             frmDisplaySettings frmDisplaySettings = new();
             frmDisplaySettings.Show();
+        }
+
+        private void generateTestPluginstxtToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            const int count = 5000;
+            const int minLength = 8;
+            const int maxLength = 16;
+            var rand = new Random();
+            var set = new HashSet<string>();
+            var chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            using var writer = new StreamWriter(Path.Combine(Properties.Settings.Default.ProfileFolder, "unique_plugins.txt"));
+
+            while (set.Count < count)
+            {
+                int len = rand.Next(minLength, maxLength + 1);
+                var arr = new char[len];
+                for (int i = 0; i < len; i++)
+                    arr[i] = chars[rand.Next(chars.Length)];
+                var entry = new string(arr) + ".esm";
+                if (set.Add(entry))
+                    writer.WriteLine(entry);
+            }
+            sbar("unique_plugins.txt created.");
         }
     }
 }

@@ -293,6 +293,7 @@
             aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             generateBGSArchivestxtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            generateTestPluginstxtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             btnUp = new System.Windows.Forms.Button();
@@ -2166,7 +2167,7 @@
             // 
             // testToolStripMenuItem
             // 
-            testToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { generateBGSArchivestxtToolStripMenuItem });
+            testToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { generateBGSArchivestxtToolStripMenuItem, generateTestPluginstxtToolStripMenuItem });
             testToolStripMenuItem.Name = "testToolStripMenuItem";
             testToolStripMenuItem.Size = new System.Drawing.Size(76, 38);
             testToolStripMenuItem.Text = "Dev";
@@ -2178,6 +2179,13 @@
             generateBGSArchivestxtToolStripMenuItem.Size = new System.Drawing.Size(422, 44);
             generateBGSArchivestxtToolStripMenuItem.Text = "Generate BGS Archives.txt";
             generateBGSArchivestxtToolStripMenuItem.Click += generateBGSArchivestxtToolStripMenuItem_Click;
+            // 
+            // generateTestPluginstxtToolStripMenuItem
+            // 
+            generateTestPluginstxtToolStripMenuItem.Name = "generateTestPluginstxtToolStripMenuItem";
+            generateTestPluginstxtToolStripMenuItem.Size = new System.Drawing.Size(422, 44);
+            generateTestPluginstxtToolStripMenuItem.Text = "Generate test Plugins.txt";
+            generateTestPluginstxtToolStripMenuItem.Click += generateTestPluginstxtToolStripMenuItem_Click;
             // 
             // tableLayoutPanel2
             // 
@@ -2826,5 +2834,6 @@
         private System.Windows.Forms.ToolStripMenuItem appSettingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem appSettingsToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem displayAllSettingsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem generateTestPluginstxtToolStripMenuItem;
     }
 }
