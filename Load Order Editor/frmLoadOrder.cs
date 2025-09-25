@@ -2382,7 +2382,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 " - voices_es.ba2",
                 " - voices_fr.ba2",
                 " - voices_ja.ba2"
-
                     };
 
                     // Loop over each extension and delete the file if it exists.
@@ -4549,7 +4548,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
         private void starUIConfiguratorToolStripMenuItem_Click(object sender, EventArgs e) // Launch StarUI Configurator if installed
         {
             string workingDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName, "Data");
-            string StarUI = workingDirectory + @"StarUI Configurator.bat";
+            string StarUI = Path.Combine(workingDirectory, @"StarUI Configurator.bat");
             if (!String.IsNullOrEmpty(StarUI))
             {
                 try
