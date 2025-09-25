@@ -2375,12 +2375,14 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 ".esm",
                 " - textures.ba2",
                 " - Textures_xbox.ba2",
+                " - main_xbox.ba2",
                 " - main.ba2",
                 " - voices_de.ba2",
                 " - voices_en.ba2",
                 " - voices_es.ba2",
                 " - voices_fr.ba2",
                 " - voices_ja.ba2"
+
                     };
 
                     // Loop over each extension and delete the file if it exists.

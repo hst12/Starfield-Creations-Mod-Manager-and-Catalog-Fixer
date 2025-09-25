@@ -163,5 +163,14 @@ namespace Starfield_Tools.Load_Order_Editor
         {
             Tools.OpenFile(Path.Combine(Tools.CommonFolder, "Readfile.txt"));
         }
+
+        private void btnSelectAll_Click(object sender, EventArgs e)
+        {
+            chkWwise.Checked = true;
+            chkMesh.Checked = true;
+            chkLOD.Checked = true;
+            chkTextures.Checked = true;
+            UpdateCacheSize();
+        }
     }
 }

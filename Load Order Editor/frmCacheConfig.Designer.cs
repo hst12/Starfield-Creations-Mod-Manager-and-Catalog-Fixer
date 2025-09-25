@@ -39,6 +39,7 @@
             txtCacheSize = new System.Windows.Forms.TextBox();
             flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             btnReadFile = new System.Windows.Forms.Button();
+            btnSelectAll = new System.Windows.Forms.Button();
             flowLayoutPanel1.SuspendLayout();
             flowLayoutPanel2.SuspendLayout();
             SuspendLayout();
@@ -46,7 +47,7 @@
             // btnOk
             // 
             btnOk.AutoSize = true;
-            btnOk.Location = new System.Drawing.Point(3, 3);
+            btnOk.Location = new System.Drawing.Point(159, 3);
             btnOk.Name = "btnOk";
             btnOk.Size = new System.Drawing.Size(150, 46);
             btnOk.TabIndex = 0;
@@ -57,7 +58,7 @@
             // btnClose
             // 
             btnClose.AutoSize = true;
-            btnClose.Location = new System.Drawing.Point(427, 3);
+            btnClose.Location = new System.Drawing.Point(583, 3);
             btnClose.Name = "btnClose";
             btnClose.Size = new System.Drawing.Size(150, 46);
             btnClose.TabIndex = 1;
@@ -131,6 +132,7 @@
             // 
             // flowLayoutPanel2
             // 
+            flowLayoutPanel2.Controls.Add(btnSelectAll);
             flowLayoutPanel2.Controls.Add(btnOk);
             flowLayoutPanel2.Controls.Add(btnReadFile);
             flowLayoutPanel2.Controls.Add(btnClose);
@@ -142,13 +144,23 @@
             // btnReadFile
             // 
             btnReadFile.AutoSize = true;
-            btnReadFile.Location = new System.Drawing.Point(159, 3);
+            btnReadFile.Location = new System.Drawing.Point(315, 3);
             btnReadFile.Name = "btnReadFile";
             btnReadFile.Size = new System.Drawing.Size(262, 46);
             btnReadFile.TabIndex = 2;
             btnReadFile.Text = "View / Edit Readfile.txt";
             btnReadFile.UseVisualStyleBackColor = true;
             btnReadFile.Click += btnReadFile_Click;
+            // 
+            // btnSelectAll
+            // 
+            btnSelectAll.Location = new System.Drawing.Point(3, 3);
+            btnSelectAll.Name = "btnSelectAll";
+            btnSelectAll.Size = new System.Drawing.Size(150, 46);
+            btnSelectAll.TabIndex = 3;
+            btnSelectAll.Text = "Select All";
+            btnSelectAll.UseVisualStyleBackColor = true;
+            btnSelectAll.Click += btnSelectAll_Click;
             // 
             // frmCacheConfig
             // 
@@ -179,5 +191,6 @@
         private System.Windows.Forms.TextBox txtCacheSize;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
         private System.Windows.Forms.Button btnReadFile;
+        private System.Windows.Forms.Button btnSelectAll;
     }
 }
