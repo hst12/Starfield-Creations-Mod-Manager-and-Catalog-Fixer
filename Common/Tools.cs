@@ -1,5 +1,5 @@
 ﻿using Microsoft.Win32;
-using Starfield_Tools.Properties;
+using CMM.Properties;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -8,7 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace Starfield_Tools.Common // Various functions used by the app
+namespace CMM.Common // Various functions used by the app
 {
     internal class Tools
     {
@@ -78,7 +78,7 @@ namespace Starfield_Tools.Common // Various functions used by the app
         {
             CommonFolder = Path.Combine(Environment.CurrentDirectory, "Common"); // Used to read misc txt files used by the app
 
-            LocalAppDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Starfield_Tools");
+            LocalAppDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "CMM");
 
             DocumentationFolder = Path.Combine(Environment.CurrentDirectory, "Documentation");
 

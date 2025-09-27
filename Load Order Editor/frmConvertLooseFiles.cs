@@ -1,10 +1,10 @@
-﻿using Starfield_Tools.Common;
+﻿using CMM.Common;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 
-namespace Starfield_Tools.Load_Order_Editor
+namespace CMM.Load_Order_Editor
 {
     public partial class frmConvertLooseFiles : Form
     {

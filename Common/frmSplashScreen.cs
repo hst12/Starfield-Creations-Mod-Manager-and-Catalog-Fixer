@@ -1,4 +1,4 @@
-﻿using Starfield_Tools.Properties;
+﻿using CMM.Properties;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -6,7 +6,7 @@ using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
 
-namespace Starfield_Tools
+namespace CMM
 {
     public partial class frmSplashScreen : Form
     {

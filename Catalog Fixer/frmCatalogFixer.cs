@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
-using Starfield_Tools.Common;
-using Starfield_Tools.Properties;
+using CMM.Common;
+using CMM.Properties;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -8,7 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace Starfield_Tools
+namespace CMM
 {
     public partial class frmStarfieldTools : Form
     {

@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Windows.Forms;
 
-namespace Starfield_Tools
+namespace CMM
 {
     internal static class Program
     {

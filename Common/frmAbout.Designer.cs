@@ -1,4 +1,4 @@
-﻿namespace Starfield_Tools
+﻿namespace CMM
 {
     partial class frmAbout
     {

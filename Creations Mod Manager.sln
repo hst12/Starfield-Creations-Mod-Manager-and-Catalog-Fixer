@@ -2,7 +2,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.34928.147
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Starfield Tools", "Starfield Tools.csproj", "{8CE8BFDF-A961-4A84-9D51-28A53194A85E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Creations Mod Manager", "Creations Mod Manager.csproj", "{8CE8BFDF-A961-4A84-9D51-28A53194A85E}"
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Starfield Tools Setup", "..\Starfield Tools Setup\Starfield Tools Setup.vdproj", "{91A48000-64BD-A3E5-668A-B941C456CA1E}"
 EndProject

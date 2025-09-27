@@ -4,7 +4,7 @@
     <TargetFramework>net9.0-windows10.0.17763.0</TargetFramework>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Starfield_Tools</RootNamespace>
+    <RootNamespace>CMM</RootNamespace>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
@@ -103,9 +103,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="Banner.jpg" />
+    <None Remove="CMM Installer.iss" />
     <None Remove="Documentation\Buttons.htm" />
     <None Remove="Documentation\Index.htm" />
     <None Remove="Documentation\Menus.htm" />
+    <None Remove="SpaceShip.png" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Clipboard.ico" />
@@ -113,7 +115,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="SpaceShip.ico">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>

@@ -8,7 +8,7 @@ public static class SettingsManager
     // Use a consistent, user-writable location for settings
     private static readonly string SettingsPath = Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-        "Starfield_Tools", // Replace with your app's name
+        "CMM", // Replace with your app's name
         SettingsFileName
     );
 

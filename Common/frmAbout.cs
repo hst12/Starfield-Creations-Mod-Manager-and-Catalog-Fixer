@@ -1,8 +1,8 @@
-﻿using Starfield_Tools.Common;
+﻿using CMM.Common;
 using System.IO;
 using System.Windows.Forms;
 
-namespace Starfield_Tools
+namespace CMM
 {
     public partial class frmAbout : Form
     {
