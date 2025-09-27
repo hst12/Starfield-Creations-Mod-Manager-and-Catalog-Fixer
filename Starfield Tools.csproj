@@ -93,10 +93,13 @@
   <ItemGroup>
     <Compile Remove="bin\**" />
     <Compile Remove="Documentation\Images\**" />
+    <Compile Remove="Output\**" />
     <EmbeddedResource Remove="bin\**" />
     <EmbeddedResource Remove="Documentation\Images\**" />
+    <EmbeddedResource Remove="Output\**" />
     <None Remove="bin\**" />
     <None Remove="Documentation\Images\**" />
+    <None Remove="Output\**" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Banner.jpg" />
