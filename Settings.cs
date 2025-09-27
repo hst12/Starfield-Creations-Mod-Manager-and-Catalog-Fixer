@@ -1,4 +1,4 @@
-﻿namespace Starfield_Tools.Properties
+﻿namespace hstCMM.Properties
 {
 
 

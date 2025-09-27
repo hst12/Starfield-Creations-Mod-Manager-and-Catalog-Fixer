@@ -1,4 +1,4 @@
-﻿namespace Starfield_Tools.Common
+﻿namespace hstCMM.Common
 {
     partial class frmLoading
     {

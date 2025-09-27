@@ -1,6 +1,6 @@
-﻿using Starfield_Tools.Properties;
+﻿using hstCMM.Properties;
 
-namespace Starfield_Tools
+namespace hstCMM
 {
     partial class frmSplashScreen
     {

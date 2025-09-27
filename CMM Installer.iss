@@ -5,7 +5,8 @@
 #define MyAppVersion "1.15.8"
 #define MyAppPublisher "hst"
 #define MyAppURL "https://github.com/hst12/Starfield-Creations-Mod-Manager-and-Catalog-Fixer"
-#define MyAppExeName "Starfield Tools.exe"
+#define MyAppExeName "Creations Mod Manager.exe"
+#define MyAppUpdatesUrl "https://github.com/hst12/Starfield-Creations-Mod-Manager-and-Catalog-Fixer/releases"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.
@@ -17,7 +18,7 @@ AppVersion={#MyAppVersion}
 AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
-AppUpdatesURL={#MyAppURL}
+AppUpdatesURL={#MyAppUpdatesUrl}
 UsePreviousAppDir=yes
 DisableDirPage=no
 AlwaysShowDirOnReadyPage=yes
@@ -33,11 +34,11 @@ ArchitecturesAllowed=x64compatible
 ArchitecturesInstallIn64BitMode=x64compatible
 ; Remove the following line to run in administrative install mode (install for all users).
 ; PrivilegesRequired=lowest
-OutputBaseFilename=CMM Installer
+OutputBaseFilename=hstCMM Installer
 SolidCompression=yes
 WizardStyle=modern
 SetupIconFile=SpaceShip.ico
-WizardSmallImageFile=banner.png
+WizardSmallImageFile=SpaceShip.png
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"

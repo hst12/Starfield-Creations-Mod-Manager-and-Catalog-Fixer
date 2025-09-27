@@ -1,12 +1,12 @@
-﻿using Microsoft.VisualBasic;
+﻿using hstCMM.Common;
+using hstCMM.Load_Order_Editor;
+using Microsoft.VisualBasic;
 using Microsoft.Win32;
 using Narod.SteamGameFinder;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 using SevenZipExtractor;
-using Starfield_Tools.Common;
-using Starfield_Tools.Load_Order_Editor;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -22,7 +22,7 @@ using System.Windows.Forms;
 using YamlDotNet.Serialization;
 using File = System.IO.File;
 
-namespace Starfield_Tools
+namespace hstCMM
 {
     public partial class frmLoadOrder : Form
     {
@@ -4628,7 +4628,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
         public void ResetPreferences() // Reset user preferences
         {
             string localAppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            string appPreferencesPath = Path.Combine(localAppDataPath, "Starfield_Tools");
+            string appPreferencesPath = Path.Combine(localAppDataPath, "hstCMM");
 
             if (Tools.ConfirmAction("Are you sure you want to reset user preferences?", "This will delete all user settings and preferences", MessageBoxButtons.YesNo,
                 MessageBoxIcon.Exclamation, true) == DialogResult.No) // Override Nowarn

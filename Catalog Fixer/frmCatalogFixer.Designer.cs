@@ -1,4 +1,4 @@
-﻿namespace Starfield_Tools
+﻿namespace hstCMM
 {
     partial class frmStarfieldTools
     {

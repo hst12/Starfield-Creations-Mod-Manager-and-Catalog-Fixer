@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace Starfield_Tools.Common
+namespace hstCMM.Common
 {
     public partial class frmLoading : Form
     {

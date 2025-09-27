@@ -1,4 +1,4 @@
-﻿namespace Starfield_Tools.Load_Order_Editor
+﻿namespace hstCMM.Load_Order_Editor
 {
     partial class frmDisplaySettings
     {

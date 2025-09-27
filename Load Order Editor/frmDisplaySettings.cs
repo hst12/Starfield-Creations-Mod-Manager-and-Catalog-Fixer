@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Windows.Forms;
 
-namespace Starfield_Tools.Load_Order_Editor
+namespace hstCMM.Load_Order_Editor
 {
     public partial class frmDisplaySettings : Form
     {

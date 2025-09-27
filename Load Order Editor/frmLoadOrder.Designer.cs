@@ -1,4 +1,4 @@
-﻿namespace Starfield_Tools
+﻿namespace hstCMM
 {
     partial class frmLoadOrder
     {
@@ -1148,54 +1148,54 @@
             // toolStripMenuBackup
             // 
             toolStripMenuBackup.Name = "toolStripMenuBackup";
-            toolStripMenuBackup.Size = new System.Drawing.Size(346, 44);
+            toolStripMenuBackup.Size = new System.Drawing.Size(359, 44);
             toolStripMenuBackup.Text = "Plugins.txt";
             toolStripMenuBackup.Click += toolStripMenuBackup_Click;
             // 
             // mnuBackupBlockedMods
             // 
             mnuBackupBlockedMods.Name = "mnuBackupBlockedMods";
-            mnuBackupBlockedMods.Size = new System.Drawing.Size(346, 44);
+            mnuBackupBlockedMods.Size = new System.Drawing.Size(359, 44);
             mnuBackupBlockedMods.Text = "BlockedMods.txt";
             mnuBackupBlockedMods.Click += mnuBackupBlockedMods_Click;
             // 
             // backupContentCatalogtxtToolStripMenuItem
             // 
             backupContentCatalogtxtToolStripMenuItem.Name = "backupContentCatalogtxtToolStripMenuItem";
-            backupContentCatalogtxtToolStripMenuItem.Size = new System.Drawing.Size(346, 44);
+            backupContentCatalogtxtToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
             backupContentCatalogtxtToolStripMenuItem.Text = "ContentCatalog.txt";
             backupContentCatalogtxtToolStripMenuItem.Click += backupContentCatalogtxtToolStripMenuItem_Click;
             // 
             // backupProfilesToolStripMenuItem
             // 
             backupProfilesToolStripMenuItem.Name = "backupProfilesToolStripMenuItem";
-            backupProfilesToolStripMenuItem.Size = new System.Drawing.Size(346, 44);
+            backupProfilesToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
             backupProfilesToolStripMenuItem.Text = "Profiles";
             backupProfilesToolStripMenuItem.Click += backupProfilesToolStripMenuItem_Click;
             // 
             // savesToolStripMenuItem
             // 
             savesToolStripMenuItem.Name = "savesToolStripMenuItem";
-            savesToolStripMenuItem.Size = new System.Drawing.Size(346, 44);
+            savesToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
             savesToolStripMenuItem.Text = "Saved Games";
             savesToolStripMenuItem.Click += savesToolStripMenuItem_Click;
             // 
             // appSettingsToolStripMenuItem
             // 
             appSettingsToolStripMenuItem.Name = "appSettingsToolStripMenuItem";
-            appSettingsToolStripMenuItem.Size = new System.Drawing.Size(346, 44);
+            appSettingsToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
             appSettingsToolStripMenuItem.Text = "App Settings";
             appSettingsToolStripMenuItem.Click += appSettingsToolStripMenuItem_Click;
             // 
             // toolStripSeparator48
             // 
             toolStripSeparator48.Name = "toolStripSeparator48";
-            toolStripSeparator48.Size = new System.Drawing.Size(343, 6);
+            toolStripSeparator48.Size = new System.Drawing.Size(356, 6);
             // 
             // allTheThingsToolStripMenuItem
             // 
             allTheThingsToolStripMenuItem.Name = "allTheThingsToolStripMenuItem";
-            allTheThingsToolStripMenuItem.Size = new System.Drawing.Size(346, 44);
+            allTheThingsToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
             allTheThingsToolStripMenuItem.Text = "All the Things";
             allTheThingsToolStripMenuItem.Click += allTheThingsToolStripMenuItem_Click;
             // 
@@ -2523,7 +2523,7 @@
             Margin = new System.Windows.Forms.Padding(2);
             Name = "frmLoadOrder";
             StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            Text = "Starfield Tools";
+            Text = "Creations Mod Manager";
             FormClosing += frmLoadOrder_FormClosing;
             Load += frmLoadOrder_Load;
             KeyDown += frmLoadOrder_KeyDown;

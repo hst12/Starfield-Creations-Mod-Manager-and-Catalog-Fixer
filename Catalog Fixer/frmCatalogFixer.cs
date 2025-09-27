@@ -1,6 +1,5 @@
-﻿using Newtonsoft.Json;
-using Starfield_Tools.Common;
-using Starfield_Tools.Properties;
+﻿using hstCMM.Common;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -8,7 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace Starfield_Tools
+namespace hstCMM
 {
     public partial class frmStarfieldTools : Form
     {
@@ -42,8 +41,6 @@ namespace Starfield_Tools
                     break;
             }
 
-        
-
             // Retrieve settings
             AutoCheck = Properties.Settings.Default.AutoCheck;
             AutoClean = Properties.Settings.Default.AutoClean;
@@ -75,7 +72,6 @@ namespace Starfield_Tools
                 else
                     toolStripStatusLabel1.Text = "Catalog ok";
             }
-
             else
             {
                 Tools.CheckGame();
@@ -146,15 +142,15 @@ namespace Starfield_Tools
 
         public void SaveSettings()  // Save user settings
         {
-            Settings.Default.AutoCheck = AutoCheck;
-            Settings.Default.AutoClean = AutoClean;
-            Settings.Default.AutoBackup = AutoBackup;
-            Settings.Default.AutoRestore = AutoRestore;
+            Properties.Settings.Default.AutoCheck = AutoCheck;
+            Properties.Settings.Default.AutoClean = AutoClean;
+            Properties.Settings.Default.AutoBackup = AutoBackup;
+            Properties.Settings.Default.AutoRestore = AutoRestore;
             if (GamePath != "")
-                Settings.Default.GamePath = GamePath;
-            Settings.Default.ForceClean = ForceClean;
-            Settings.Default.Verbose = Verbose;
-            Settings.Default.Save();
+                Properties.Settings.Default.GamePath = GamePath;
+            Properties.Settings.Default.ForceClean = ForceClean;
+            Properties.Settings.Default.Verbose = Verbose;
+            Properties.Settings.Default.Save();
         }
 
         private void btnAchievemnts_Click(object sender, EventArgs e)
@@ -476,7 +472,7 @@ namespace Starfield_Tools
 
         private void chkVerbose_CheckedChanged(object sender, EventArgs e)
         {
-            Settings.Default.Verbose = chkVerbose.Checked;
+            Properties.Settings.Default.Verbose = chkVerbose.Checked;
             Verbose = chkVerbose.Checked;
         }
 
@@ -629,7 +625,6 @@ namespace Starfield_Tools
                 activityLog.WriteLog("Checking for unused items in catalog.");
 
             string filePath = Path.Combine(GetGameAppData(), "Plugins.txt");
-            
 
             // Split the content into lines
             List<string> lines = File.ReadLines(filePath)

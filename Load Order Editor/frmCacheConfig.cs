@@ -1,11 +1,11 @@
-﻿using Starfield_Tools.Common;
+﻿using  hstCMM.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace Starfield_Tools.Load_Order_Editor
+namespace hstCMM.Load_Order_Editor
 {
     public partial class frmCacheConfig : Form
     {
