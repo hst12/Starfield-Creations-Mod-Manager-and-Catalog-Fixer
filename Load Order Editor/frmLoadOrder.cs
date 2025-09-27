@@ -9,6 +9,7 @@ using QuestPDF.Infrastructure;
 using SevenZipExtractor;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
@@ -16,6 +17,8 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -45,6 +48,13 @@ namespace hstCMM
 
         private bool Profiles = false, GridSorted = false, AutoUpdate = false, ActiveOnly = false, AutoSort = false, isModified = false, LooseFiles, log, GameExists;
         private Tools.Configuration Groups = new();
+
+        public class AppSettings
+        {
+            public string Username { get; set; }
+            public int RefreshInterval { get; set; }
+            public bool EnableNotifications { get; set; }
+        }
 
         public frmLoadOrder(string parameter)
         {
@@ -103,7 +113,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 catch (Exception ex)
                 {
 #if DEBUG
-                    MessageBox.Show( ex.Message,"Error creating Plugins.txt");
+                    MessageBox.Show(ex.Message, "Error creating Plugins.txt");
 #endif
                 }
             }
@@ -998,7 +1008,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 if (log)
                     activityLog.WriteLog("Error reading profiles: " + ex.Message);
 #if DEBUG
-                MessageBox.Show(ex.Message,"Error reading profiles");
+                MessageBox.Show(ex.Message, "Error reading profiles");
 #endif
             }
         }
@@ -1055,7 +1065,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 {
 #if DEBUG
 
-                    MessageBox.Show($"{PluginFileName} does not exist.","Save Profiles");
+                    MessageBox.Show($"{PluginFileName} does not exist.", "Save Profiles");
 #endif
                     sbar($"Error saving {Path.GetFileName(PluginFileName)}: {ex.Message}");
                 }
@@ -5724,57 +5734,42 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             }
         }
 
+        private Dictionary<string, object> GetAllSettings()
+        {
+            var settings = new Dictionary<string, object>();
+            foreach (SettingsProperty prop in Properties.Settings.Default.Properties)
+            {
+                settings[prop.Name] = Properties.Settings.Default[prop.Name];
+            }
+            return settings;
+        }
+
         private void BackupAppSettings()
         {
-            using FolderBrowserDialog folderBrowserDialog = new();
-            folderBrowserDialog.Description = "Choose folder to use to backup application settings";
-            folderBrowserDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments); // Set initial directory to Documents Directory
-            if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+            using var sfd = new SaveFileDialog
             {
-                string selectedFolderPath = folderBrowserDialog.SelectedPath;
-                string appDataPath = Tools.LocalAppDataPath;
-                string destinationPath = Path.Combine(selectedFolderPath, "hstModManagerBackup");
-                SaveSettings(); // Ensure latest settings are saved
-                try
-                {
-                    if (Directory.Exists(appDataPath))
-                    {
-                        CopyAll(appDataPath, destinationPath);
+                Title = "Export application settings to JSON",
+                Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*",
+                DefaultExt = "json",
+                FileName = "hstCMMsettings.json",
+                AddExtension = true,
+                OverwritePrompt = true
+            };
 
-                        sbar("Application settings backed up.");
-                        if (log)
-                            activityLog.WriteLog($"Application settings backed up to {selectedFolderPath}");
-                    }
-                    else
-                    {
-                        MessageBox.Show("Application settings directory not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"An error occurred while backing up application settings: {ex.Message}", "Backup Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+            if (sfd.ShowDialog(this) != DialogResult.OK) return;
+            
+            SaveSettings();
+            try
+            {
+                var dict = GatherSettings();
+                var options = new JsonSerializerOptions { WriteIndented = true };
+                var json = JsonSerializer.Serialize(dict, options);
+                File.WriteAllText(sfd.FileName, json);
+                MessageBox.Show(this, "Settings exported successfully.", "Export", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-            return;
-
-            void CopyAll(string sourceDir, string destinationDir)
+            catch (Exception ex)
             {
-                // Ensure destination directory exists
-                Directory.CreateDirectory(destinationDir);
-
-                // Copy all files in the current directory
-                foreach (var file in Directory.GetFiles(sourceDir))
-                {
-                    string destFile = Path.Combine(destinationDir, Path.GetFileName(file));
-                    File.Copy(file, destFile, true);
-                }
-
-                // Recursively copy subdirectories
-                foreach (var subDir in Directory.GetDirectories(sourceDir))
-                {
-                    string destSubDir = Path.Combine(destinationDir, Path.GetFileName(subDir));
-                    CopyAll(subDir, destSubDir);
-                }
+                MessageBox.Show(this, "Export failed: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -5785,54 +5780,121 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void RestoreAppSettings()
         {
-            using FolderBrowserDialog folderBrowserDialog = new();
-            folderBrowserDialog.Description = "Choose folder to restore application settings from";
-            folderBrowserDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments); // Set initial directory to Documents Directory
-            if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+            using var ofd = new OpenFileDialog
             {
-                string selectedFolderPath = folderBrowserDialog.SelectedPath;
-                string backupPath = Path.Combine(selectedFolderPath, "hstModManagerBackup");
-                string appDataPath = Tools.LocalAppDataPath;
-                try
+                Title = "Import application settings from JSON",
+                Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*",
+                DefaultExt = "json",
+                Multiselect = false
+            };
+
+            if (ofd.ShowDialog(this) != DialogResult.OK) return;
+
+            try
+            {
+                var json = File.ReadAllText(ofd.FileName);
+                var dict = JsonSerializer.Deserialize<Dictionary<string, object?>>(json);
+                if (dict == null) throw new InvalidOperationException("Invalid JSON or empty file.");
+                ApplySettings(dict);
+                Properties.Settings.Default.Save();
+                MessageBox.Show("Please restart the application to apply all settings.", "Restart Required", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                Application.Exit();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "Import failed: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+        }
+
+        private Dictionary<string, object?> GatherSettings()
+        {
+            var result = new Dictionary<string, object?>();
+
+            // Iterate properties defined in the Settings designer
+            foreach (SettingsProperty prop in Properties.Settings.Default.Properties)
+            {
+                // Only export user-scoped writable settings
+                if (prop.Attributes.Contains(typeof(UserScopedSettingAttribute)))
                 {
-                    if (Directory.Exists(backupPath))
+                    var name = prop.Name;
+                    try
                     {
-                        CopyAll(backupPath, appDataPath);
-                        sbar("Application settings restored.");
-                        if (log)
-                            activityLog.WriteLog($"Application settings restored from {selectedFolderPath}");
-                        Tools.ConfirmAction("Restart Required", "Please restart the application to apply restored settings.", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        Environment.Exit(0);
+                        var value = Properties.Settings.Default[name];
+                        result[name] = value;
                     }
-                    else
+                    catch
                     {
-                        MessageBox.Show("Backup directory not found in the selected folder.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        // If a property fails to read, include a null placeholder
+                        result[name] = null;
                     }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"An error occurred while restoring application settings: {ex.Message}", "Restore Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
 
-            return;
+            return result;
+        }
 
-            void CopyAll(string sourceDir, string destinationDir)
+        private void ApplySettings(Dictionary<string, object?> imported)
+        {
+            foreach (var kvp in imported)
             {
-                // Ensure destination directory exists
-                Directory.CreateDirectory(destinationDir);
-                // Copy all files in the current directory
-                foreach (var file in Directory.GetFiles(sourceDir))
+                var key = kvp.Key;
+                if (Properties.Settings.Default.Properties[key] == null) continue;
+
+                try
                 {
-                    string destFile = Path.Combine(destinationDir, Path.GetFileName(file));
-                    File.Copy(file, destFile, true);
+                    var targetProp = Properties.Settings.Default.Properties[key];
+                    var targetType = targetProp.PropertyType;
+
+                    if (kvp.Value == null)
+                    {
+                        Properties.Settings.Default[key] = null;
+                        continue;
+                    }
+
+                    // System.Text.Json deserializes numbers as JsonElement by default when object; handle common cases
+                    if (kvp.Value is System.Text.Json.JsonElement je)
+                    {
+                        object? converted = JsonElementToType(je, targetType);
+                        Properties.Settings.Default[key] = converted;
+                    }
+                    else
+                    {
+                        // Try direct convert (covers strings, bools, etc.)
+                        var converted = Convert.ChangeType(kvp.Value, targetType);
+                        Properties.Settings.Default[key] = converted;
+                    }
                 }
-                // Recursively copy subdirectories
-                foreach (var subDir in Directory.GetDirectories(sourceDir))
+                catch
                 {
-                    string destSubDir = Path.Combine(destinationDir, Path.GetFileName(subDir));
-                    CopyAll(subDir, destSubDir);
+                    // Ignore single-property failures and continue
                 }
+            }
+        }
+
+        private object? JsonElementToType(System.Text.Json.JsonElement je, Type targetType)
+        {
+            try
+            {
+                if (targetType == typeof(string)) return je.GetString();
+                if (targetType == typeof(bool)) return je.GetBoolean();
+                if (targetType == typeof(int)) return je.GetInt32();
+                if (targetType == typeof(long)) return je.GetInt64();
+                if (targetType == typeof(double)) return je.GetDouble();
+                if (targetType.IsEnum)
+                {
+                    var s = je.GetString();
+                    if (s != null) return Enum.Parse(targetType, s);
+                    return null;
+                }
+
+                // For complex types, try deserializing the element into the target type
+                var raw = je.GetRawText();
+                return JsonSerializer.Deserialize(raw, targetType);
+            }
+            catch
+            {
+                return null;
             }
         }
 
