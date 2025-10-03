@@ -11,7 +11,7 @@ namespace hstCMM
         {
             InitializeComponent();
             string Readme = File.ReadAllText(Path.Combine(Tools.DocumentationFolder , "Readme.txt"));
-            string AboutText = Application.ProductName + " " + File.ReadAllText(Path.Combine(Tools.CommonFolder , "App Version.txt")) + "\n\n" + Readme;
+            string AboutText =  Application.ProductName + " " + File.ReadAllText(Path.Combine(Tools.CommonFolder , "App Version.txt")) + "\n\n" + Readme;
             richTextBox1.Text = AboutText;
         }
     }

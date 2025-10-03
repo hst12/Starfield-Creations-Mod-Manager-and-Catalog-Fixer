@@ -18,7 +18,6 @@ using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -1711,7 +1710,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             var pluginFiles = tools.GetPluginList();
             string dataDir = Path.Combine(GamePath, "Data");
 
-            /*try
+            try
             {
                 // Use parallel enumeration for large directories
                 var espFiles = Directory.EnumerateFiles(dataDir, "*.esp", SearchOption.TopDirectoryOnly)
@@ -1731,7 +1730,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                     MessageBoxIcon.Error
                 );
                 return 0;
-            }*/
+            }
 
             // Pre-allocate with estimated capacity and use fastest comparer
             var onDisk = new HashSet<string>(pluginFiles.Count, StringComparer.Ordinal);
@@ -2353,11 +2352,11 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 string modName = pluginName.Substring(0, dotIndex);
 
                 if (log)
-                    activityLog.WriteLog($"Starting uninstall for mod: {modName}");
+                    activityLog.WriteLog($"Starting uninstall for mod: {pluginName}");
 
                 if (Tools.ConfirmAction(
-                        $"This will delete all files related to the '{modName}' mod",
-                        $"Delete {modName} - Are you sure?",
+                        $"This will delete all files related to the '{pluginName}' mod",
+                        $"Delete {pluginName} - Are you sure?",
                         MessageBoxButtons.YesNo) == DialogResult.Yes || NoWarn)
                 {
                     isModified = true;
@@ -2422,7 +2421,9 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 }
                 else
                 {
-                    sbar2($"Un-install of '{modName}' cancelled.");
+                    sbar2($"Un-install of '{pluginName}' cancelled.");
+                    if (log)
+                        activityLog.WriteLog($"Un-install of {pluginName} cancelled");
                 }
             }
         }
@@ -4322,40 +4323,26 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             Properties.Settings.Default.Description = toolStripMenuDescription.Checked;
         }
 
+        private void HideAllColumns()
+        {
+            ShowHideColumns(false);
+        }
+
         private void toolStripMenuItemHideAll_Click(object sender, EventArgs e) // Hide all columns in the DataGridView except active status and plugin name
         {
-            var items = new[]
-        {
-    ("TimeStamp", timeStampToolStripMenuItem),
-    ("Achievements", toolStripMenuAchievements),
-    ("CreationsID", toolStripMenuCreationsID),
-    ("Files", toolStripMenuFiles),
-    ("Group", toolStripMenuGroup),
-    ("Index", toolStripMenuIndex),
-    ("FileSize", toolStripMenuFileSize),
-    ("URL", uRLToolStripMenuItem),
-    ("Version", toolStripMenuVersion),
-    ("AuthorVersion", toolStripMenuAuthorVersion),
-    ("Description", toolStripMenuDescription),
-    ("Blocked", blockedToolStripMenuItem)
-};
-
-            foreach (var (columnName, menuItem) in items)
-            {
-                SetColumnVisibility(false, menuItem, dataGridView1.Columns[columnName]);
-                Properties.Settings.Default[columnName] = false;
-            }
+            HideAllColumns();
         }
 
         private void ShowRecommendedColumns()
         {
+            HideAllColumns();
             var enableItems = new[]
        {
     ("Group", toolStripMenuGroup),
     ("Version", toolStripMenuVersion),
     ("AuthorVersion", toolStripMenuAuthorVersion),
-    ("Description", toolStripMenuDescription),
-    ("Blocked", blockedToolStripMenuItem)
+    ("Description", toolStripMenuDescription)/*,
+    ("Blocked", blockedToolStripMenuItem)*/
 };
             var disableItems = new[]
             {
@@ -5081,23 +5068,50 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             string LOOTPath = Properties.Settings.Default.LOOTPath;
             if (string.IsNullOrEmpty(LOOTPath)) // Check if LOOT path is set
                 return;
-
+            CheckUnusedUserlistPlugins();
             Tools.OpenFile(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Path.Combine("LOOT", "games", GameName, "Userlist.yaml")));
             MessageBox.Show("Click OK to refresh");
             ReadLOOTGroups();
-#if DEBUG
-            /*if (Groups.groups != null)
-            {
-                foreach (var group in Groups.groups)
-                    Debug.WriteLine($"Found group: {group.name}");
-            }*/
-
-            var x = Groups.groups.OrderBy(g => g.name).ToList();
-            foreach (var item in x)
-                Debug.WriteLine(item.name);
-
-#endif
             RefreshDataGrid();
+        }
+
+        private void CheckUnusedUserlistPlugins()
+        {
+            // Path to userlist.yaml
+            string yamlPath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                $"LOOT\\games\\{GameName}\\userlist.yaml"
+            );
+
+            if (!File.Exists(yamlPath))
+            {
+                MessageBox.Show("userlist.yaml not found.");
+                return;
+            }
+
+            // Parse userlist.yaml
+            var deserializer = new YamlDotNet.Serialization.DeserializerBuilder().Build();
+            var yamlContent = File.ReadAllText(yamlPath);
+            var lootConfig = deserializer.Deserialize<Tools.Configuration>(yamlContent);
+
+            // Get plugin names from userlist.yaml
+            var yamlPlugins = lootConfig.plugins?.Select(p => p.name).ToHashSet(StringComparer.OrdinalIgnoreCase) ?? new HashSet<string>();
+
+            // Get current plugins from game data
+            var gamePlugins = new HashSet<string>(tools.GetPluginList(), StringComparer.OrdinalIgnoreCase);
+
+            // Find unused plugins (in userlist.yaml but not in game data)
+            var unused = yamlPlugins.Except(gamePlugins).ToList();
+
+            // Report results
+            if (unused.Count > 0)
+            {
+                MessageBox.Show("Unused plugins in userlist.yaml:\n" + string.Join("\n", unused), "Unused Plugins");
+            }
+            else
+            {
+                MessageBox.Show("All plugins in userlist.yaml are present in game data.", "Check Complete");
+            }
         }
 
         private void modBackupsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -5126,24 +5140,40 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             }
         }
 
+        private void ShowHideColumns(bool action)
+        {
+            {
+                var items = new[]
+           {
+    ("TimeStamp", timeStampToolStripMenuItem),
+    ("Achievements", toolStripMenuAchievements),
+    ("CreationsID", toolStripMenuCreationsID),
+    ("Files", toolStripMenuFiles),
+    ("Group", toolStripMenuGroup),
+    ("Index", toolStripMenuIndex),
+    ("FileSize", toolStripMenuFileSize),
+    ("URL", uRLToolStripMenuItem),
+    ("Version", toolStripMenuVersion),
+    ("AuthorVersion", toolStripMenuAuthorVersion),
+    ("Description", toolStripMenuDescription),
+    ("Blocked", blockedToolStripMenuItem)
+};
+
+                foreach (var (columnName, menuItem) in items)
+                {
+                    SetColumnVisibility(action, menuItem, dataGridView1.Columns[columnName]);
+                    Properties.Settings.Default[columnName] = action;
+                }
+            }
+        }
+
+        private void ShowAllColumns()
+        {
+        }
+
         private void showAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            foreach (DataGridViewColumn column in dataGridView1.Columns)
-            {
-                column.Visible = true;
-            }
-            SetColumnVisibility(true, timeStampToolStripMenuItem, dataGridView1.Columns["TimeStamp"]);
-            SetColumnVisibility(true, toolStripMenuAchievements, dataGridView1.Columns["Achievements"]);
-            SetColumnVisibility(true, toolStripMenuCreationsID, dataGridView1.Columns["CreationsID"]);
-            SetColumnVisibility(true, toolStripMenuFiles, dataGridView1.Columns["Files"]);
-            SetColumnVisibility(true, toolStripMenuGroup, dataGridView1.Columns["Group"]);
-            SetColumnVisibility(true, toolStripMenuIndex, dataGridView1.Columns["Index"]);
-            SetColumnVisibility(true, toolStripMenuFileSize, dataGridView1.Columns["FileSize"]);
-            SetColumnVisibility(true, uRLToolStripMenuItem, dataGridView1.Columns["URL"]);
-            SetColumnVisibility(true, toolStripMenuVersion, dataGridView1.Columns["Version"]);
-            SetColumnVisibility(true, toolStripMenuAuthorVersion, dataGridView1.Columns["AuthorVersion"]);
-            SetColumnVisibility(true, toolStripMenuDescription, dataGridView1.Columns["Description"]);
-            SetColumnVisibility(true, blockedToolStripMenuItem, dataGridView1.Columns["Blocked"]);
+            ShowHideColumns(true);
         }
 
         private void gameSelectToolStripMenuItem_Click(object sender, EventArgs e)
@@ -5532,7 +5562,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                              + (dataGridView1.BorderStyle == BorderStyle.None ? 0 : 2);
 
             // Calculate total client width needed
-            int requiredClientWidth = totalColumnWidth + extraPadding;
+            int requiredClientWidth = Math.Max(totalColumnWidth + extraPadding, flowLayoutPanel1.Width);
 
             // Adjust the form's client size
             parentForm.Width = Math.Max(minWidth, Math.Min(requiredClientWidth, maxWidth));
@@ -5734,16 +5764,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             }
         }
 
-        private Dictionary<string, object> GetAllSettings()
-        {
-            var settings = new Dictionary<string, object>();
-            foreach (SettingsProperty prop in Properties.Settings.Default.Properties)
-            {
-                settings[prop.Name] = Properties.Settings.Default[prop.Name];
-            }
-            return settings;
-        }
-
         private void BackupAppSettings()
         {
             using var sfd = new SaveFileDialog
@@ -5757,7 +5777,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             };
 
             if (sfd.ShowDialog(this) != DialogResult.OK) return;
-            
+
             SaveSettings();
             try
             {
@@ -5765,7 +5785,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 var options = new JsonSerializerOptions { WriteIndented = true };
                 var json = JsonSerializer.Serialize(dict, options);
                 File.WriteAllText(sfd.FileName, json);
-                MessageBox.Show(this, "Settings exported successfully.", "Export", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                sbar("Settings exported successfully");
             }
             catch (Exception ex)
             {
@@ -5804,7 +5824,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             {
                 MessageBox.Show(this, "Import failed: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
         }
 
         private Dictionary<string, object?> GatherSettings()
