@@ -42,6 +42,7 @@ namespace hstCMM
         private int rowIndexFromMouseDown, rowIndexOfItemUnderMouseToDrop, GameVersion = Steam;
 
         private readonly Tools tools = new();
+        private List<Tools.GameInfo> gameInfo = new();
 
         private string LastProfile, tempstr;
 
@@ -4134,6 +4135,11 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void toolStripMenuAddToProfile_Click(object sender, EventArgs e) // Add selected mods to a different profile
         {
+            if (ActiveOnly)
+            {
+                MessageBox.Show("Please disable Active Only mode to use this feature", "Mods may be disabled or enabled unintentionally");
+                return;
+            }
             List<string> profiles = new();
 
             if (cmbProfile.Items.Count == 0 || cmbProfile.SelectedItem == null)
@@ -4167,9 +4173,13 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 #endif
                 }
 
-                if (Tools.ConfirmAction("Run update/sort on all profiles", "Update All Profiles?",
-                        MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                var dlgResult = Tools.ConfirmAction("Run update/sort on all profiles", "Update All Profiles?",
+                        MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+                if (dlgResult == DialogResult.Yes)
                     UpdateAllProfiles();
+
+                if (dlgResult == DialogResult.Cancel)
+                    return;
             }
         }
 

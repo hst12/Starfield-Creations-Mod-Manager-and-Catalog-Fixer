@@ -1,5 +1,5 @@
-﻿using Microsoft.Win32;
-using hstCMM.Properties;
+﻿using hstCMM.Properties;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -563,6 +563,16 @@ namespace hstCMM.Common // Various functions used by the app
             {
                 MessageBox.Show("File not found: " + file, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        public class GameInfo
+        {
+            public byte GameId { get; set; } // 0=Starfield, 1=Fallout 5, 2=Elder Scrolls 6
+            public string Name { get; set; }
+            public string GamePath { get; set; }
+            public string RegistryPath { get; set; }
+            public string SteamAppId { get; set; }
+            public string MSStoreId { get; set; }
         }
     }
 }

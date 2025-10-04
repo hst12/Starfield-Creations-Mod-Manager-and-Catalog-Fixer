@@ -10,6 +10,7 @@ namespace hstCMM.Load_Order_Editor
     public partial class frmGameSelect : Form
     {
         private readonly Tools tools = new();
+
         public frmGameSelect()
         {
             InitializeComponent();
@@ -40,13 +41,13 @@ namespace hstCMM.Load_Order_Editor
 
         private void btnSelect_Click(object sender, EventArgs e)
         {
-            string[] GameNames = {"Starfield", "Fallout 5", "ES6" };
-            List <string> GamePaths = new();
-            for (int i= 0; i < GameNames.Length; i++) 
+            string[] GameNames = { "Starfield", "Fallout 5", "ES6" };
+            List<string> GamePaths = new();
+            for (int i = 0; i < GameNames.Length; i++)
             {
                 GamePaths.Add(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GamePaths[i]));
             }
-            
+
             if (radStarfield.Checked)
             {
                 Properties.Settings.Default.Game = 0; // Starfield
