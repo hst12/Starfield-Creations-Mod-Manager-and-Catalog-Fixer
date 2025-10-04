@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Creations Mod Manager"
-#define MyAppVersion "1.16.0"
+#define MyAppVersion "1.16.1"
 #define MyAppPublisher "hst"
 #define MyAppURL "https://github.com/hst12/Starfield-Creations-Mod-Manager-and-Catalog-Fixer"
 #define MyAppExeName "Creations Mod Manager.exe"

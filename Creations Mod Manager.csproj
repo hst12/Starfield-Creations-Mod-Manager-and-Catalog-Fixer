@@ -107,6 +107,7 @@
     <None Remove="Documentation\Index.htm" />
     <None Remove="Documentation\Menus.htm" />
     <None Remove="SpaceShip.png" />
+    <None Remove="StarfieldTools.db" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Clipboard.ico" />

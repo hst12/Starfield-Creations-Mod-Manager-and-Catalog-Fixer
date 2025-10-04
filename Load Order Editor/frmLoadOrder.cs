@@ -5960,5 +5960,53 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             }
             sbar("unique_plugins.txt created.");
         }
+
+        private void moveUnusedModsOutOfDataDirectoryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            List<string> mods = tools.GetPluginList().Select(Path.GetFileNameWithoutExtension).ToList();
+
+            // Get all plugin names that are marked active in Plugins.txt (lines starting with '*')
+            string pluginsPath = Path.Combine(Tools.GameAppData, "Plugins.txt");
+            var activeMods = new HashSet<string>(
+                File.ReadLines(pluginsPath)
+                    .Where(line => !string.IsNullOrWhiteSpace(line) && line[0] == '*')
+                    .Select(line => line[1..].Trim()).Select(Path.GetFileNameWithoutExtension),
+                StringComparer.OrdinalIgnoreCase
+            );
+
+            List<string> inactiveMods = mods.Except(activeMods).ToList();
+            using FolderBrowserDialog folderBrowserDialog = new();
+            folderBrowserDialog.ShowDialog();
+            if (string.IsNullOrEmpty(folderBrowserDialog.SelectedPath))
+                return;
+            string destDir = Path.Combine(folderBrowserDialog.SelectedPath, "Inactive Mods");
+            foreach (var mod in inactiveMods)
+            {
+                string[] patterns = { mod + ".*", mod + " - *.ba2" };
+                foreach (var pattern in patterns)
+                {
+                    var files = Directory.GetFiles(Path.Combine(GamePath, "Data"), pattern);
+                    foreach (var file in files)
+                    {
+                        if (!Directory.Exists(destDir))
+                            Directory.CreateDirectory(destDir);
+                        string destPath = Path.Combine(destDir, Path.GetFileName(file));
+                        try
+                        {
+                            sbar($"Moving {Path.GetFileName(file)}...");
+                            statusStrip1.Refresh();
+                            File.Move(file, destPath);
+                            if (log)
+                                activityLog.WriteLog($"Moved inactive mod file {Path.GetFileName(file)} to Inactive Mods folder.");
+                        }
+                        catch (Exception ex)
+                        {
+                            sbar($"Failed to move {Path.GetFileName(file)}:\n{ex.Message}");
+                        }
+                    }
+                }
+            }
+            sbar($"Inactive mods moved to {destDir}");
+        }
     }
 }
