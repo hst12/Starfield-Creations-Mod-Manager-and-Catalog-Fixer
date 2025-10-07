@@ -27,8 +27,8 @@ namespace hstCMM.Common // Various functions used by the app
         public static string GameAppData { get; set; }
         public List<string> PluginList { get; set; }
 
-        public static readonly List<string> Suffixes = new List<string>
-{
+        public static readonly List<string> Suffixes =
+[
     " - main",
     " - textures",
     " - textures_xbox",
@@ -40,10 +40,10 @@ namespace hstCMM.Common // Various functions used by the app
     " - voices_es",
     " - voices_fr",
     " - voices_ja"
-};
+];
 
-        public static readonly List<string> LooseFolders = new List<string>
-{ "meshes",
+        public static readonly List<string> LooseFolders =
+[ "meshes",
 "interface",
 "textures\\actors",
 "textures\\architecture",
@@ -60,10 +60,10 @@ namespace hstCMM.Common // Various functions used by the app
 "materials",
 "sound" ,
 "naf"
-};
+];
 
-        public static readonly List<string> LooseFolderDirsOnly = new List<string>
-        {
+        public static readonly List<string> LooseFolderDirsOnly =
+        [
             "meshes",
 "interface",
 "textures",
@@ -72,7 +72,7 @@ namespace hstCMM.Common // Various functions used by the app
 "materials",
 "sound" ,
 "naf"
-        };
+        ];
 
         public Tools() // Constructor
         {
@@ -348,37 +348,35 @@ namespace hstCMM.Common // Various functions used by the app
 
         public string SetGamePath() // Prompt for game path
         {
-            using (System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog())
+            using System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            if (!string.IsNullOrEmpty(frmLoadOrder.GamePath))
+                openFileDialog.InitialDirectory = frmLoadOrder.GamePath;
+            else
             {
-                if (!string.IsNullOrEmpty(frmLoadOrder.GamePath))
-                    openFileDialog.InitialDirectory = frmLoadOrder.GamePath;
-                else
-                {
-                    openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
-                }
-
-                openFileDialog.Title = $"Set the path to the {GameName} executable - {GameName}.exe";
-                openFileDialog.FileName = $"{GameName}.exe";
-                openFileDialog.Filter = $"{GameName}.exe|{GameName}.exe";
-
-                if (openFileDialog.ShowDialog() != DialogResult.OK)
-                {
-                    return string.Empty;
-                }
-
-                string selectedFile = openFileDialog.FileName;
-                if (!File.Exists(selectedFile))
-                {
-                    MessageBox.Show($"{GameName}.exe not found in the selected path",
-                        "Please select the correct folder", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return string.Empty;
-                }
-
-                GamePath = Path.GetDirectoryName(selectedFile);
-                Settings.Default.GamePath = GamePath;
-                Settings.Default.Save();
-                return GamePath;
+                openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
             }
+
+            openFileDialog.Title = $"Set the path to the {GameName} executable - {GameName}.exe";
+            openFileDialog.FileName = $"{GameName}.exe";
+            openFileDialog.Filter = $"{GameName}.exe|{GameName}.exe";
+
+            if (openFileDialog.ShowDialog() != DialogResult.OK)
+            {
+                return string.Empty;
+            }
+
+            string selectedFile = openFileDialog.FileName;
+            if (!File.Exists(selectedFile))
+            {
+                MessageBox.Show($"{GameName}.exe not found in the selected path",
+                    "Please select the correct folder", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return string.Empty;
+            }
+
+            GamePath = Path.GetDirectoryName(selectedFile);
+            Settings.Default.GamePath = GamePath;
+            Settings.Default.Save();
+            return GamePath;
         }
 
         public string SetGamePathMS()

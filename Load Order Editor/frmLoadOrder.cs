@@ -442,7 +442,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 try
                 {
                     // Insert message at the top of the file
-                    string[] existingLines = File.Exists(logFilePath) ? File.ReadAllLines(logFilePath) : new string[0];
+                    string[] existingLines = File.Exists(logFilePath) ? File.ReadAllLines(logFilePath) : Array.Empty<string>();
 
                     List<string> updatedLines = new List<string> { DateTime.Now.ToString() + ": " + message }; // Prepend the new entry
                     updatedLines.AddRange(existingLines);
@@ -1998,14 +1998,12 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                             {
                                 foreach (string file in archiveFiles)
                                 {
-                                    using (ArchiveFile archiveFile2 = new ArchiveFile(file))
-                                    {
-                                        sbar2($"Extracting embedded archive: {file}");
-                                        statusStrip1.Refresh();
-                                        archiveFile2.Extract(extractPath);
-                                        if (log)
-                                            activityLog.WriteLog($"Extracting embedded archive: {file}");
-                                    }
+                                    using ArchiveFile archiveFile2 = new ArchiveFile(file);
+                                    sbar2($"Extracting embedded archive: {file}");
+                                    statusStrip1.Refresh();
+                                    archiveFile2.Extract(extractPath);
+                                    if (log)
+                                        activityLog.WriteLog($"Extracting embedded archive: {file}");
                                 }
                             }
                         }
@@ -4095,13 +4093,17 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
                 if (toDelete.Count > 0)
                 {
+                    if (log)
+                        activityLog.WriteLog($"Checked for orphaned archives - {toDelete.Count} found");
                     Form Orphaned = new frmOrphaned(toDelete);
-                    Orphaned.Show();
+                    Orphaned.ShowDialog();
                     return toDelete.Count;
                 }
                 else
                 {
                     sbar3("No orphaned archives found");
+                    if (log)
+                        activityLog.WriteLog("No orphaned archives found");
                     return 0;
                 }
             }
@@ -5177,9 +5179,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             }
         }
 
-        private void ShowAllColumns()
-        {
-        }
 
         private void showAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -5976,6 +5975,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
             List<string> inactiveMods = mods.Except(activeMods).ToList();
             using FolderBrowserDialog folderBrowserDialog = new();
+            folderBrowserDialog.Description = "Select destination folder for inactive mods";
             folderBrowserDialog.ShowDialog();
             if (string.IsNullOrEmpty(folderBrowserDialog.SelectedPath))
                 return;
