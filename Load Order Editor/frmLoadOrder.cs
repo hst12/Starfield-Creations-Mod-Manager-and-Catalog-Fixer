@@ -2625,7 +2625,8 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void toolStripMenuLoadingScreen_Click(object sender, EventArgs e)
         {
-            openFileDialog1.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp";
+            openFileDialog1.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp|All Files (*.*)|*.*\"";
+            openFileDialog1.FileName = "";
             openFileDialog1.Title = "Choose a loadscreen image";
             DialogResult LoadScreen = openFileDialog1.ShowDialog();
             if (LoadScreen == DialogResult.OK)
