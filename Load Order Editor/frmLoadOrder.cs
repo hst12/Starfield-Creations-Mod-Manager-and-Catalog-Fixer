@@ -42,6 +42,7 @@ namespace hstCMM
         private int rowIndexFromMouseDown, rowIndexOfItemUnderMouseToDrop, GameVersion = Steam;
 
         private readonly Tools tools = new();
+        private List<string> pluginList;
         private List<Tools.GameInfo> gameInfo = new();
 
         private string LastProfile, tempstr;
@@ -62,7 +63,6 @@ namespace hstCMM
 #if DEBUG
             this.Text = Application.ProductName + " " + File.ReadAllText(Path.Combine(Tools.CommonFolder, "App Version.txt")) + " Debug";
             testToolStripMenuItem.Visible = true; // Show test menu in debug mode
-            testToolStripMenuItem.Visible = true;
             gameSelectToolStripMenuItem.Visible = true;
 #endif
 
@@ -143,7 +143,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                         if (lines.Contains("bInvalidateOlderFiles"))
                         {
                             Properties.Settings.Default.LooseFiles = true;
-                            //SaveSettings();
                             LooseFiles = true;
                             break;
                         }
@@ -176,7 +175,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                     {
                         GamePath = tools.SetGamePath();
                         Properties.Settings.Default.GamePath = GamePath;
-                        //SaveSettings();
                     }
                 }
             }
@@ -239,10 +237,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
             if (string.IsNullOrEmpty(Properties.Settings.Default.LOOTPath) &&
     File.Exists(@"C:\Program Files\LOOT\LOOT.exe")) // Try to detect LOOT if installed in default location
-            {
                 Properties.Settings.Default.LOOTPath = @"C:\Program Files\LOOT\LOOT.exe";
-                //SaveSettings();
-            }
 
             // Setup other preferences
 
@@ -340,6 +335,8 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
             // Display Loose Files status
             sbarCCC(looseFilesDisabledToolStripMenuItem.Checked ? "Loose files enabled" : "Loose files disabled");
+
+            pluginList = tools.GetPluginList(); // Cache plugins
 
             // Initialise profiles
             if (Properties.Settings.Default.ProfileOn)
@@ -647,7 +644,10 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             if (File.Exists(loText))
                 lines = File.ReadAllLines(loText); // Read Plugins.txt
             else
+            {
+                sbar("Plugins.txt not found");
                 return;
+            }
 
             sbar("Loading...");
             sbar3("");
@@ -849,6 +849,34 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             foreach (var row in rowBuffer)
                 dataGridView1.Rows.AddRange(row);
 
+            // Restore column visibility based on user settings.
+            SetColumnVisibility(Properties.Settings.Default.CreationsID, toolStripMenuCreationsID, dataGridView1.Columns["CreationsID"]);
+            SetColumnVisibility(Properties.Settings.Default.URL, uRLToolStripMenuItem, dataGridView1.Columns["URL"]);
+
+            if (ActiveOnly && dataGridView1.Rows.Count > 1000)
+            {
+                sbar("Too many rows to filter");
+                ActiveOnly = Properties.Settings.Default.ActiveOnly = activeOnlyToolStripMenuItem.Checked = false;
+            }
+
+            if (ActiveOnly)
+            {
+                sbar("Hiding inactive mods...");
+                statusStrip1.Refresh();
+                foreach (DataGridViewRow row in dataGridView1.Rows)
+                    if (!(bool)row.Cells["ModEnabled"].Value)
+                        row.Visible = false;
+            }
+
+            if (Properties.Settings.Default.Resize)
+                ResizeFormToFitDataGridView(this);
+
+            progressBar1.Value = progressBar1.Maximum;
+            progressBar1.Hide();
+
+            dataGridView1.ResumeLayout(); // Resume layout
+            dataGridView1.EndEdit();
+
             // -- Process mod stats if the game path is set --
             if (!string.IsNullOrEmpty(GamePath) && Properties.Settings.Default.ModStats)
             {
@@ -936,6 +964,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                     {
                         sbar4("Catalog/Plugins mismatch - Run game to solve");
                     }
+                    sbar(StatText);
                 }
                 catch (Exception ex)
                 {
@@ -945,35 +974,8 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 #endif
                 }
             }
-
-            // Restore column visibility based on user settings.
-            SetColumnVisibility(Properties.Settings.Default.CreationsID, toolStripMenuCreationsID, dataGridView1.Columns["CreationsID"]);
-            SetColumnVisibility(Properties.Settings.Default.URL, uRLToolStripMenuItem, dataGridView1.Columns["URL"]);
-
-            if (ActiveOnly && dataGridView1.Rows.Count > 1000)
-            {
-                sbar("Too many rows to filter");
-                ActiveOnly = Properties.Settings.Default.ActiveOnly = activeOnlyToolStripMenuItem.Checked = false;
-            }
-
-            if (ActiveOnly)
-            {
-                sbar("Hiding inactive mods...");
-                statusStrip1.Refresh();
-                foreach (DataGridViewRow row in dataGridView1.Rows)
-                    if (!(bool)row.Cells["ModEnabled"].Value)
-                        row.Visible = false;
-            }
-
-            if (Properties.Settings.Default.Resize)
-                ResizeFormToFitDataGridView(this);
-
-            progressBar1.Value = progressBar1.Maximum;
-            progressBar1.Hide();
-
-            sbar(StatText);
-            dataGridView1.ResumeLayout(); // Resume layout
-            dataGridView1.EndEdit();
+            else
+                sbar("");
         }
 
         private void GetProfiles()
@@ -1048,6 +1050,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                         writer.WriteLine(pluginName);
                     }
                 }
+                pluginList = tools.GetPluginList();
             }
             catch (Exception ex)
             {
@@ -1361,13 +1364,15 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void toolStripMenuEnableAll_Click(object sender, EventArgs e)
         {
-            if (Tools.ConfirmAction("This will reset your current load order", "Enable all mods?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes || NoWarn)
+            if (Tools.ConfirmAction("This will reset your current load order", "Enable all mods?", MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question) == DialogResult.Yes || NoWarn)
                 EnableAll();
         }
 
         private void toolStripMenuDisableAll_Click(object sender, EventArgs e)
         {
-            if (Tools.ConfirmAction("This will reset your current load order", "Disable all mods?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes || NoWarn)
+            if (Tools.ConfirmAction("This will reset your current load order", "Disable all mods?", MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question) == DialogResult.Yes || NoWarn)
                 DisableAll();
         }
 
@@ -1709,6 +1714,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
             // 2) Gather all on-disk plugin filenames with parallel processing
             var pluginFiles = tools.GetPluginList();
+
             string dataDir = Path.Combine(GamePath, "Data");
 
             try
@@ -1831,7 +1837,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 }
             }
 
-            // Batch add rows with minimal overhead
+            // Batch add rows
             if (toAdd.Count > 0)
             {
                 // Pre-allocate row capacity if supported
@@ -2526,7 +2532,8 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 }
                 else
                 {
-                    if (Tools.ConfirmAction($"Run program path not found: {tempstr}", "Stop Game Launch?", MessageBoxButtons.YesNo, MessageBoxIcon.Error) == DialogResult.Yes)
+                    if (Tools.ConfirmAction($"Run program path not found: {tempstr}", "Stop Game Launch?", MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Error) == DialogResult.Yes)
                         return;
                 }
 
@@ -3045,7 +3052,8 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                     Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                     "My Games", GameName, $"{GameName}Custom.ini"))) // Check if game Custom.ini needs resetting
                 {
-                    File.Copy(Path.Combine(Tools.CommonFolder, $"{GameName}Custom.ini"), Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                    File.Copy(Path.Combine(Tools.CommonFolder, $"{GameName}Custom.ini"),
+                        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                         "My Games", GameName, $"{GameName}Custom.ini"), true);
                     sbar3($"{GameName}Custom.ini restored");
                     if (log)
@@ -3239,9 +3247,11 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void LooseFilesOnOff(bool enable)
         {
-            string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", Tools.GameName, "StarfieldCustom.ini");
+            string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                "My Games", Tools.GameName, "StarfieldCustom.ini");
 
-            if (Tools.FileCompare(filePath, Path.Combine(Tools.CommonFolder, "StarfieldCustom.ini")) && enable == false) // Return if loose files are already disabled
+            if (Tools.FileCompare(filePath, Path.Combine(Tools.CommonFolder,
+                "StarfieldCustom.ini")) && enable == false) // Return if loose files are already disabled
                 return;
 
             if (enable)
@@ -3314,7 +3324,8 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             }
             else
             {
-                MessageBox.Show($"SFSE doesn't seem to be installed or {GameName} path not set", "Unable to switch to SFSE", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"SFSE doesn't seem to be installed or {GameName} path not set", "Unable to switch to SFSE",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
                 GameVersion = Steam;
                 toolStripMenuSteam.Checked = true;
                 toolStripMenuMS.Checked = false;
@@ -3584,7 +3595,8 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private int ResetDefaults()
         {
-            string LooseFilesDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName), // Check if loose files are enabled
+            string LooseFilesDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                "My Games", GameName), // Check if loose files are enabled
         filePath = Path.Combine(LooseFilesDir, $"{GameName}Custom.ini");
             int ChangeCount = 0;
 
@@ -3690,8 +3702,8 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void enableAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (Tools.ConfirmAction("Enable All settings?", "This will turn on a most of the Tools menu settings and reset ini settings", MessageBoxButtons.OKCancel,
-                MessageBoxIcon.Exclamation) == DialogResult.OK)
+            if (Tools.ConfirmAction("Enable All settings?", "This will turn on a most of the Tools menu settings and reset ini settings",
+                MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) == DialogResult.OK)
             {
                 ChangeSettings(true);
                 if (log)
@@ -4073,7 +4085,9 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 return 0;
 
             // Build a list of all plugins excluding base game files
-            plugins = tools.GetPluginList().Select(s => s[..^4].ToLower()).ToList();
+            /*plugins = tools.GetPluginList().Select(s => s[..^4].ToLower()).ToList();
+             */
+            plugins = pluginList.Select(s => s[..^4].ToLower()).ToList();
 
             foreach (string file in Directory.EnumerateFiles(Path.Combine(GamePath, "Data"), "*.ba2", SearchOption.TopDirectoryOnly)) // Build a list of all archives
             {
@@ -4138,7 +4152,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void toolStripMenuAddToProfile_Click(object sender, EventArgs e) // Add selected mods to a different profile
         {
-            if (ActiveOnly)
+            if (ActiveOnly && dataGridView1.SelectedRows.Count > 1)
             {
                 MessageBox.Show("Please disable Active Only mode to use this feature", "Mods may be disabled or enabled unintentionally");
                 return;
@@ -4640,8 +4654,8 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             string localAppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
             string appPreferencesPath = Path.Combine(localAppDataPath, "hstCMM");
 
-            if (Tools.ConfirmAction("Are you sure you want to reset user preferences?", "This will delete all user settings and preferences", MessageBoxButtons.YesNo,
-                MessageBoxIcon.Exclamation, true) == DialogResult.No) // Override Nowarn
+            if (Tools.ConfirmAction("Are you sure you want to reset user preferences?", "This will delete all user settings and preferences",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, true) == DialogResult.No) // Override Nowarn
                 return;
 
             if (Directory.Exists(appPreferencesPath))
@@ -4717,7 +4731,8 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
             if (Directory.Exists(Path.Combine(Properties.Settings.Default.ProfileFolder, "Backup")))
             {
-                foreach (var item in Directory.EnumerateFiles(Path.Combine(Properties.Settings.Default.ProfileFolder, "Backup"), "*.txt", SearchOption.TopDirectoryOnly))
+                foreach (var item in Directory.EnumerateFiles(Path.Combine(Properties.Settings.Default.ProfileFolder, "Backup"), "*.txt",
+                    SearchOption.TopDirectoryOnly))
                 {
                     string fileName = Path.GetFileName(item);
                     string destinationPath = Path.Combine(Properties.Settings.Default.ProfileFolder, fileName);
@@ -5057,8 +5072,11 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
         private void removeMissingModsFromBlockedModstxtToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var blockedMods = Tools.BlockedMods();
-            List<string> plugins = tools.GetPluginList(); // Add .esm files
-            var missingMods = plugins.Intersect(blockedMods);
+            /*List<string> plugins = tools.GetPluginList(); // Add .esm files
+             */
+            /*List<string> plugins = pluginList; // Add .esm files
+            */
+            var missingMods = pluginList.Intersect(blockedMods);
 
             try
             {
@@ -5082,7 +5100,8 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             if (string.IsNullOrEmpty(LOOTPath)) // Check if LOOT path is set
                 return;
             CheckUnusedUserlistPlugins();
-            Tools.OpenFile(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Path.Combine("LOOT", "games", GameName, "Userlist.yaml")));
+            Tools.OpenFile(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), 
+                Path.Combine("LOOT", "games", GameName, "Userlist.yaml")));
             MessageBox.Show("Click OK to refresh");
             ReadLOOTGroups();
             RefreshDataGrid();
@@ -5111,7 +5130,9 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             var yamlPlugins = lootConfig.plugins?.Select(p => p.name).ToHashSet(StringComparer.OrdinalIgnoreCase) ?? new HashSet<string>();
 
             // Get current plugins from game data
-            var gamePlugins = new HashSet<string>(tools.GetPluginList(), StringComparer.OrdinalIgnoreCase);
+            /*var gamePlugins = new HashSet<string>(tools.GetPluginList(), StringComparer.OrdinalIgnoreCase);
+             */
+            var gamePlugins = new HashSet<string>(pluginList, StringComparer.OrdinalIgnoreCase);
 
             // Find unused plugins (in userlist.yaml but not in game data)
             var unused = yamlPlugins.Except(gamePlugins).ToList();
@@ -5119,7 +5140,8 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             // Report results
             if (unused.Count > 0)
             {
-                MessageBox.Show("Unused plugins in userlist.yaml:\n" + string.Join("\n", unused), "Unused Plugins");
+                frmGenericTextList unusedForm = new frmGenericTextList("Unused Plugins in userlist.yaml", unused);
+                unusedForm.Show();
             }
             else
             {
@@ -5132,7 +5154,8 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             if (!string.IsNullOrEmpty(Properties.Settings.Default.BackupDirectory))
                 Tools.OpenFolder(Properties.Settings.Default.BackupDirectory);
             else
-                MessageBox.Show("Backup directory will be set after backing up a mod", "Backup Directory Not Set", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Backup directory will be set after backing up a mod", "Backup Directory Not Set", 
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
         private void setDirectoryToolStripMenuItem_Click(object sender, EventArgs e)
@@ -5180,7 +5203,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             }
         }
 
-
         private void showAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ShowHideColumns(true);
@@ -5199,7 +5221,8 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
         {
             using FolderBrowserDialog folderBrowserDialog = new();
             folderBrowserDialog.Description = "Choose folder to use to backup ContentCatalog.txt";
-            folderBrowserDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments); // Set initial directory to Documents Directory
+            folderBrowserDialog.InitialDirectory = 
+                Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments); // Set initial directory to Documents Directory
             if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
             {
                 string selectedFolderPath = folderBrowserDialog.SelectedPath;
@@ -5226,7 +5249,8 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
         {
             using FolderBrowserDialog folderBrowserDialog = new();
             folderBrowserDialog.Description = "Choose folder to restore ContentCatalog.txt from";
-            folderBrowserDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments); // Set initial directory to Documents Directory
+            folderBrowserDialog.InitialDirectory = 
+                Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments); // Set initial directory to Documents Directory
             if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
             {
                 string selectedFolderPath = folderBrowserDialog.SelectedPath;
@@ -5250,7 +5274,8 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"An error occurred while restoring ContentCatalog.txt: {ex.Message}", "Restore Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"An error occurred while restoring ContentCatalog.txt: {ex.Message}", "Restore Failed", 
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
