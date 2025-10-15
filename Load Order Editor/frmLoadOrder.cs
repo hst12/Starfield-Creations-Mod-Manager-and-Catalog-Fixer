@@ -21,7 +21,9 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using YamlDotNet.Core;
 using YamlDotNet.Serialization;
+using YamlDotNet.Serialization.NamingConventions;
 using File = System.IO.File;
 
 namespace hstCMM
@@ -565,13 +567,18 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 return;
             try
             {
-                var deserializer = new DeserializerBuilder().Build();
+                //var deserializer = new DeserializerBuilder().Build();
+                var deserializer = new DeserializerBuilder()
+    .WithNamingConvention(UnderscoredNamingConvention.Instance)
+    .IgnoreUnmatchedProperties()
+    .Build();
+
                 string yamlContent = File.ReadAllText(yamlPath);
                 Groups = deserializer.Deserialize<Tools.Configuration>(yamlContent);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Yaml decoding error\nLOOT userlist.yaml possibly corrupt", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                MessageBox.Show("LOOT userlist.yaml possibly corrupt\nPossible missing display field in required mods\nRun LOOT to edit metadata","Yaml decoding error", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 sbar3(ex.Message);
                 if (log)
                     activityLog.WriteLog("Error decoding LOOT userlist.yaml: " + ex.Message);
@@ -5100,7 +5107,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             if (string.IsNullOrEmpty(LOOTPath)) // Check if LOOT path is set
                 return;
             CheckUnusedUserlistPlugins();
-            Tools.OpenFile(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), 
+            Tools.OpenFile(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                 Path.Combine("LOOT", "games", GameName, "Userlist.yaml")));
             MessageBox.Show("Click OK to refresh");
             ReadLOOTGroups();
@@ -5154,7 +5161,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             if (!string.IsNullOrEmpty(Properties.Settings.Default.BackupDirectory))
                 Tools.OpenFolder(Properties.Settings.Default.BackupDirectory);
             else
-                MessageBox.Show("Backup directory will be set after backing up a mod", "Backup Directory Not Set", 
+                MessageBox.Show("Backup directory will be set after backing up a mod", "Backup Directory Not Set",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
@@ -5221,7 +5228,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
         {
             using FolderBrowserDialog folderBrowserDialog = new();
             folderBrowserDialog.Description = "Choose folder to use to backup ContentCatalog.txt";
-            folderBrowserDialog.InitialDirectory = 
+            folderBrowserDialog.InitialDirectory =
                 Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments); // Set initial directory to Documents Directory
             if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
             {
@@ -5249,7 +5256,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
         {
             using FolderBrowserDialog folderBrowserDialog = new();
             folderBrowserDialog.Description = "Choose folder to restore ContentCatalog.txt from";
-            folderBrowserDialog.InitialDirectory = 
+            folderBrowserDialog.InitialDirectory =
                 Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments); // Set initial directory to Documents Directory
             if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
             {
@@ -5274,7 +5281,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"An error occurred while restoring ContentCatalog.txt: {ex.Message}", "Restore Failed", 
+                    MessageBox.Show($"An error occurred while restoring ContentCatalog.txt: {ex.Message}", "Restore Failed",
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
