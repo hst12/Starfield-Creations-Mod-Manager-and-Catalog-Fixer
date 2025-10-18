@@ -295,6 +295,7 @@
             testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             generateBGSArchivestxtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             generateTestPluginstxtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            videoLoadscreenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             btnUp = new System.Windows.Forms.Button();
             btnDown = new System.Windows.Forms.Button();
@@ -2173,7 +2174,7 @@
             // 
             // testToolStripMenuItem
             // 
-            testToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { generateBGSArchivestxtToolStripMenuItem, generateTestPluginstxtToolStripMenuItem });
+            testToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { generateBGSArchivestxtToolStripMenuItem, generateTestPluginstxtToolStripMenuItem, videoLoadscreenToolStripMenuItem });
             testToolStripMenuItem.Name = "testToolStripMenuItem";
             testToolStripMenuItem.Size = new System.Drawing.Size(76, 38);
             testToolStripMenuItem.Text = "Dev";
@@ -2192,6 +2193,13 @@
             generateTestPluginstxtToolStripMenuItem.Size = new System.Drawing.Size(422, 44);
             generateTestPluginstxtToolStripMenuItem.Text = "Generate test Plugins.txt";
             generateTestPluginstxtToolStripMenuItem.Click += generateTestPluginstxtToolStripMenuItem_Click;
+            // 
+            // videoLoadscreenToolStripMenuItem
+            // 
+            videoLoadscreenToolStripMenuItem.Name = "videoLoadscreenToolStripMenuItem";
+            videoLoadscreenToolStripMenuItem.Size = new System.Drawing.Size(422, 44);
+            videoLoadscreenToolStripMenuItem.Text = "Video Loadscreen";
+            videoLoadscreenToolStripMenuItem.Click += videoLoadscreenToolStripMenuItem_Click;
             // 
             // flowLayoutPanel1
             // 
@@ -2810,5 +2818,6 @@
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnQuit;
         private System.Windows.Forms.ToolStripMenuItem moveUnusedModsOutOfDataDirectoryToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem videoLoadscreenToolStripMenuItem;
     }
 }

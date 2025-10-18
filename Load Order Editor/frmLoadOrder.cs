@@ -578,7 +578,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             }
             catch (Exception ex)
             {
-                MessageBox.Show("LOOT userlist.yaml possibly corrupt\nPossible missing display field in required mods\nRun LOOT to edit metadata","Yaml decoding error", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                MessageBox.Show("LOOT userlist.yaml possibly corrupt\nPossible missing display field in required mods\nRun LOOT to edit metadata", "Yaml decoding error", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 sbar3(ex.Message);
                 if (log)
                     activityLog.WriteLog("Error decoding LOOT userlist.yaml: " + ex.Message);
@@ -4209,7 +4209,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void ResetWindowSize()
         {
-            Rectangle resolution = Screen.PrimaryScreen.Bounds; // Resize window to 75% of screen width
+            Rectangle resolution = Screen.PrimaryScreen.Bounds; // Resize window to 85% of screen width
             double screenWidth = resolution.Width;
             double screenHeight = resolution.Height;
             this.Width = (int)(screenWidth * 0.85);
@@ -6040,6 +6040,12 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 }
             }
             sbar($"Inactive mods moved to {destDir}");
+        }
+
+        private void videoLoadscreenToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmSplashScreenVideo ssVideo=new();
+            ssVideo.Show();
         }
     }
 }

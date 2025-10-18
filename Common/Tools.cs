@@ -49,6 +49,7 @@ namespace hstCMM.Common // Various functions used by the app
 "textures\\architecture",
 "textures\\clothes",
 "textures\\common",
+"textures\\displayscreens",
 "textures\\decals",
 "textures\\effects",
 "textures\\interface",
