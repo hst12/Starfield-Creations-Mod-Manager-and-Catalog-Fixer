@@ -2353,6 +2353,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             var selectedRows = dataGridView1.SelectedRows.Cast<DataGridViewRow>().ToList();
             string dataDirectory = Path.Combine(GamePath, "Data");
 
+            var dlg = DialogResult.None;
             foreach (var row in selectedRows)
             {
                 // Get the mod name from the PluginName cell (before the first dot).
@@ -2365,11 +2366,11 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
                 if (log)
                     activityLog.WriteLog($"Starting uninstall for mod: {pluginName}");
-
-                if (Tools.ConfirmAction(
+                dlg = Tools.ConfirmAction(
                         $"This will delete all files related to the '{pluginName}' mod",
                         $"Delete {pluginName} - Are you sure?",
-                        MessageBoxButtons.YesNo) == DialogResult.Yes || NoWarn)
+                        MessageBoxButtons.YesNoCancel);
+                if (dlg == DialogResult.Yes || NoWarn)
                 {
                     isModified = true;
                     dataGridView1.Rows.Remove(row);
@@ -2436,6 +2437,8 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                     sbar2($"Un-install of '{pluginName}' cancelled.");
                     if (log)
                         activityLog.WriteLog($"Un-install of {pluginName} cancelled");
+                    if (dlg == DialogResult.Cancel)
+                        return;
                 }
             }
         }
