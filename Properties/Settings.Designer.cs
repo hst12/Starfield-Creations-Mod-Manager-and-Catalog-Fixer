@@ -757,9 +757,9 @@ namespace hstCMM.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public byte Game {
+        public int Game {
             get {
-                return ((byte)(this["Game"]));
+                return ((int)(this["Game"]));
             }
             set {
                 this["Game"] = value;

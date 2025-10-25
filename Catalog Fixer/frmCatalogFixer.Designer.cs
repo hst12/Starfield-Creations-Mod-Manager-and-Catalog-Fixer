@@ -1,6 +1,6 @@
 ﻿namespace hstCMM
 {
-    partial class frmStarfieldTools
+    partial class frmCatalogFixer
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmStarfieldTools));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmCatalogFixer));
             richTextBox2 = new System.Windows.Forms.RichTextBox();
             richTextBox1 = new System.Windows.Forms.RichTextBox();
             btnClose = new System.Windows.Forms.Button();

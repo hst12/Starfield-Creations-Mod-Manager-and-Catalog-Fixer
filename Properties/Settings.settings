@@ -185,7 +185,7 @@
     <Setting Name="xEditPath" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="Game" Type="System.Byte" Scope="User">
+    <Setting Name="Game" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
   </Settings>

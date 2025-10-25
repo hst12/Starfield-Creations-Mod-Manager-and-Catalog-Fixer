@@ -19,7 +19,7 @@ namespace hstCMM.Common // Various functions used by the app
 
         public static string GameName { get; set; }
 
-        public static int Game { get; set; } // 0=Starfield, 1=Fallout 5, 2=Elder Scrolls 6
+        //public static byte Game { get; set; } // 0=Starfield, 1=Fallout 5, 2=Elder Scrolls 6, 3=Skyrim SE, 4= Fallout 4 SE
 
         public string GamePathMS { get; set; }
         public List<string> BethFiles { get; set; }
@@ -83,22 +83,6 @@ namespace hstCMM.Common // Various functions used by the app
 
             DocumentationFolder = Path.Combine(Environment.CurrentDirectory, "Documentation");
 
-            Game = Properties.Settings.Default.Game;
-            switch (Game)
-            {
-                case 0:
-                    GameName = "Starfield";
-                    break;
-
-                case 1:
-                    GameName = "Fallout 5";
-                    break;
-
-                case 2:
-                    GameName = "Elder Scrolls 6";
-                    break;
-            }
-
             try
             {
                 BethFiles = new(File.ReadAllLines(Path.Combine(CommonFolder, "BGS Exclude.txt"))); // Exclude these files from Plugin list
@@ -118,6 +102,10 @@ namespace hstCMM.Common // Various functions used by the app
                 MessageBox.Show(ex.Message, "Catalog Version file missing. Repair or re-install the app", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 Environment.Exit(1);
             }
+
+            GameLibrary gl = new GameLibrary();
+            GameName = gl.GameName(Properties.Settings.Default.Game);
+
             try
             {
                 GameAppData = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), GameName);
@@ -566,12 +554,30 @@ namespace hstCMM.Common // Various functions used by the app
 
         public class GameInfo
         {
-            public byte GameId { get; set; } // 0=Starfield, 1=Fallout 5, 2=Elder Scrolls 6
-            public string Name { get; set; }
+            public byte GameId { get; set; } // 0=Starfield, 1=Fallout 5, 2=Elder Scrolls 6, 3=Skyrim Special Edition, 4=Fallout 4 Special Edition
+            public string GameName { get; set; }
             public string GamePath { get; set; }
-            public string RegistryPath { get; set; }
             public string SteamAppId { get; set; }
             public string MSStoreId { get; set; }
+        }
+
+        public class GameLibrary
+        {
+            private readonly Dictionary<int, string> _games = new Dictionary<int, string>
+            {
+                { 0, "Starfield"},
+                { 1, "Fallout 5" },
+                { 2, "Elder Scrolls 6"},
+                { 3, "Skyrim Special Edition"},
+                { 4, "Fallout 4 Special Edition"}
+            };
+
+            public string GameName(int id)
+            {
+                return _games.TryGetValue(id, out var title) ? title : "Unknown";
+            }
+
+            public IReadOnlyDictionary<int, string> Games => _games;
         }
     }
 }

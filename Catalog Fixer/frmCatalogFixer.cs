@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace hstCMM
 {
-    public partial class frmStarfieldTools : Form
+    public partial class frmCatalogFixer : Form
     {
         public bool AutoCheck, AutoClean, AutoBackup, AutoRestore, ForceClean, Verbose, log;
         public string CatalogStatus;
@@ -20,7 +20,7 @@ namespace hstCMM
         private readonly Tools tools = new();
         private frmLoadOrder.ActivityLog activityLog = frmLoadOrder.activityLog;
 
-        public frmStarfieldTools()
+        public frmCatalogFixer()
         {
             InitializeComponent();
 

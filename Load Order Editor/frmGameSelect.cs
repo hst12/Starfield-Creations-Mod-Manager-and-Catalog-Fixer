@@ -10,27 +10,29 @@ namespace hstCMM.Load_Order_Editor
     public partial class frmGameSelect : Form
     {
         private readonly Tools tools = new();
+        private Tools.GameLibrary gl = new();
 
         public frmGameSelect()
         {
             InitializeComponent();
-            switch (Properties.Settings.Default.Game)
+
+            int GameIndex = Properties.Settings.Default.Game;
+            string gamePath;
+            for (int i = 0; i < gl.Games.Count; i++)
             {
-                case 0:
-                    radStarfield.Checked = true;
-                    break;
-
-                case 1:
-                    radFallout5.Checked = true;
-                    break;
-
-                case 2:
-                    radES6.Checked = true;
-                    break;
-
-                default:
-                    radStarfield.Checked = true;
-                    break;
+                gamePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", gl.GameName(i));
+                if (Directory.Exists(gamePath))
+                {
+                    RadioButton rb = new RadioButton
+                    {
+                        Text = gl.GameName(i),
+                        Name = $"radioButton{i}",
+                        AutoSize = true,
+                        Tag = i,
+                        Checked = GameIndex == i
+                    };
+                    flowLayoutPanel1.Controls.Add(rb);
+                }
             }
         }
 
@@ -41,31 +43,38 @@ namespace hstCMM.Load_Order_Editor
 
         private void btnSelect_Click(object sender, EventArgs e)
         {
-            string[] GameNames = { "Starfield", "Fallout 5", "ES6" };
             List<string> GamePaths = new();
-            for (int i = 0; i < GameNames.Length; i++)
+            string gamePath;
+            for (int i = 0; i < gl.Games.Count; i++)
             {
-                GamePaths.Add(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GamePaths[i]));
+                gamePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", gl.GameName(i));
+                if (Directory.Exists(gamePath))
+                    GamePaths.Add(gamePath);
             }
+            if (GamePaths.Count > 0)
+            {
+                RadioButton selectedRadio = null;
 
-            if (radStarfield.Checked)
-            {
-                Properties.Settings.Default.Game = 0; // Starfield
+                foreach (Control control in flowLayoutPanel1.Controls)
+                {
+                    if (control is RadioButton rb && rb.Checked)
+                    {
+                        selectedRadio = rb;
+                        Properties.Settings.Default.Game = (int)rb.Tag;
+                        Properties.Settings.Default.Save();
+                        break;
+                    }
+                }
+                // Serialize GamePaths to JSON and save to file
+                string json = JsonSerializer.Serialize(GamePaths, new JsonSerializerOptions { WriteIndented = true });
+                string filePath = Path.Combine(Tools.LocalAppDataPath, "GamePaths.json");
+                File.WriteAllText(filePath, json);
             }
-            if (radFallout5.Checked)
+            else
             {
-                Properties.Settings.Default.Game = 1; // Fallout 5
+                MessageBox.Show("Selected game not found");
+                return;
             }
-            if (radES6.Checked)
-            {
-                Properties.Settings.Default.Game = 2; //ES6
-            }
-
-            // Serialize GamePaths to JSON and save to file
-            string json = JsonSerializer.Serialize(GamePaths, new JsonSerializerOptions { WriteIndented = true });
-            string filePath = Path.Combine(Tools.LocalAppDataPath, "GamePaths.json");
-            File.WriteAllText(filePath, json);
-
             this.Close();
         }
     }

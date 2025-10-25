@@ -21,7 +21,6 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using YamlDotNet.Core;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 using File = System.IO.File;
@@ -35,7 +34,7 @@ namespace hstCMM
         public const byte Steam = 0, MS = 1, Custom = 2, SFSE = 3;
         public const byte Starfield = 0, FO5 = 1, ES6 = 2;
         public static string GamePath, GameName;
-        public static byte Game = Properties.Settings.Default.Game;
+        public static int Game = Properties.Settings.Default.Game;
         public static bool NoWarn;
         public static int returnStatus;
         public static ActivityLog activityLog;
@@ -49,7 +48,9 @@ namespace hstCMM
 
         private string LastProfile, tempstr;
 
-        private bool Profiles = false, GridSorted = false, AutoUpdate = false, ActiveOnly = false, AutoSort = false, isModified = false, LooseFiles, log, GameExists;
+        private bool Profiles = false, GridSorted = false, AutoUpdate = false, ActiveOnly = false, AutoSort = false, isModified = false,
+            LooseFiles, log, GameExists, devMode = false;
+
         private Tools.Configuration Groups = new();
 
         public class AppSettings
@@ -68,8 +69,10 @@ namespace hstCMM
             gameSelectToolStripMenuItem.Visible = true;
 #endif
 
-            LastProfile ??= Properties.Settings.Default.LastProfile;
+            this.KeyPreview = true; // Ensure the form captures key presses
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(KeyEvent); // Handle <enter> for search
 
+            // Logging
             if (Properties.Settings.Default.Log)
             {
                 tempstr = Properties.Settings.Default.LogFileDirectory;
@@ -79,11 +82,7 @@ namespace hstCMM
                 log = true;
             }
 
-            this.KeyPreview = true; // Ensure the form captures key presses
-
-            GameExists = Tools.CheckGame(); // Exit if game appdata folder not found
-
-            foreach (var arg in Environment.GetCommandLineArgs()) // Handle command line arguments
+            foreach (var arg in Environment.GetCommandLineArgs()) // Handle some command line arguments
             {
                 if (arg.Equals("-noauto", StringComparison.InvariantCultureIgnoreCase))
                 {
@@ -95,60 +94,36 @@ namespace hstCMM
                     ResetPreferences();
             }
 
-            GameVersion = Properties.Settings.Default.GameVersion;
-            Game = Properties.Settings.Default.Game;
-            GameName = Tools.GameName;
+            SetupGame();
 
-            string PluginsPath = Path.Combine(Tools.GameAppData, "Plugins.txt");
-            if (!File.Exists(PluginsPath) && GameExists)
-            {
-                MessageBox.Show(@"Missing Plugins.txt file
-
-Click Ok to create a blank Plugins.txt file
-Click File->Restore if you have a backup of your Plugins.txt file
-Alternatively, run the game once to have it create a Plugins.txt file for you.", "Plugins.txt not found");
-
-                try
-                {
-                    File.WriteAllText(PluginsPath, $"# This file is used by {GameName} to keep track of your downloaded content.\n# Please do not modify this file.\n");
-                }
-                catch (Exception ex)
-                {
-#if DEBUG
-                    MessageBox.Show(ex.Message, "Error creating Plugins.txt");
-#endif
-                }
-            }
-
-            frmStarfieldTools StarfieldTools = new();
+            // Check catalog
+            frmCatalogFixer catalogFixer = new();
 
             if (Properties.Settings.Default.AutoCheck && GameExists)
             {
                 // Check the catalog
-                tempstr = StarfieldTools.CatalogStatus;
-                if (tempstr != null && StarfieldTools.CatalogStatus.Contains("Error"))
-                    StarfieldTools.Show(); // Show catalog fixer if catalog broken
+                tempstr = catalogFixer.CatalogStatus;
+                if (tempstr != null && catalogFixer.CatalogStatus.Contains("Error"))
+                    catalogFixer.Show(); // Show catalog fixer if catalog broken
             }
 
             bool BackupStatus = false;
 
+            // Check if loose files are enabled
             try
             {
-                // Check if loose files are enabled
                 string LooseFilesDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName),
                     filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 if (File.Exists(filePath))
                 {
                     var StarfieldCustomINI = File.ReadAllLines(filePath);
                     foreach (var lines in StarfieldCustomINI)
-                    {
                         if (lines.Contains("bInvalidateOlderFiles"))
                         {
                             Properties.Settings.Default.LooseFiles = true;
                             LooseFiles = true;
                             break;
                         }
-                    }
                 }
             }
             catch (Exception ex)
@@ -159,8 +134,8 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 MessageBox.Show(ex.Message, "Error opening file");
 #endif
             }
-
-            this.KeyUp += new System.Windows.Forms.KeyEventHandler(KeyEvent); // Handle <enter> for search
+            // Display Loose Files status
+            sbarCCC(LooseFiles ? "Loose files enabled" : "Loose files disabled");
 
             menuStrip1.Font = Properties.Settings.Default.FontSize; // Get font size
             this.Font = Properties.Settings.Default.FontSize;
@@ -189,22 +164,12 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             if (!Tools.CheckGame())
                 GamePath = "";
 
-            if (!File.Exists(Path.Combine(GamePath, "CreationKit.exe"))) // Hide option to launch CK if not found
-                creationKitToolStripMenuItem.Visible = false;
-
-            // Unhide Star UI Configurator menu if found
-            if (!File.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName, "Data", "StarUI Configurator.bat")))
-                starUIConfiguratorToolStripMenuItem.Visible = false;
-
             if (Properties.Settings.Default.AutoDelccc)
             {
                 toolStripMenuAutoDelccc.Checked = true;
-                sbarCCCOn();
                 if (Delccc())
                     toolStripStatus1.Text = ("CCC deleted");
             }
-            else
-                sbarCCCOff();
 
             // Setup game version
             switch (GameVersion)
@@ -226,20 +191,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                     break;
             }
 
-            // Detect other apps
-            if (!File.Exists(Path.Combine(GamePath, "sfse_loader.exe")))
-                gameVersionSFSEToolStripMenuItem.Visible = false;
-            GameVersionDisplay();
-
-            if (Properties.Settings.Default.MO2Path == "")
-                mO2ToolStripMenuItem.Visible = false;
-
-            if (Properties.Settings.Default.xEditPath == "")
-                xEditToolStripMenuItem.Visible = false;
-
-            if (string.IsNullOrEmpty(Properties.Settings.Default.LOOTPath) &&
-    File.Exists(@"C:\Program Files\LOOT\LOOT.exe")) // Try to detect LOOT if installed in default location
-                Properties.Settings.Default.LOOTPath = @"C:\Program Files\LOOT\LOOT.exe";
+            DetectApps(); // Detect other apps
 
             // Setup other preferences
 
@@ -251,21 +203,17 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 2 => SystemColorMode.System,
                 _ => SystemColorMode.Classic // Default fallback
             };
-
             Application.SetColorMode(colorMode);
 
             // Update menu item selection
             var menuItems = new Dictionary<int, ToolStripMenuItem>
-{
-    { 0, lightToolStripMenuItem },
-    { 1, darkToolStripMenuItem },
-    { 2, systemToolStripMenuItem }
-};
-
-            if (menuItems.TryGetValue(Properties.Settings.Default.DarkMode, out var menuItem))
             {
+                 { 0, lightToolStripMenuItem },
+                 { 1, darkToolStripMenuItem },
+                 { 2, systemToolStripMenuItem }
+             };
+            if (menuItems.TryGetValue(Properties.Settings.Default.DarkMode, out var menuItem))
                 menuItem.Checked = true;
-            }
 
             // Apply UI changes for dark mode conditions
             if (colorMode == SystemColorMode.Dark ||
@@ -277,9 +225,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 statusStrip1.BackColor = System.Drawing.Color.Black;
             }
             else
-            {
                 dataGridView1.EnableHeadersVisualStyles = true;
-            }
 
             // Create BlockedMods.txt if necessary
             try
@@ -299,31 +245,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             SetMenus();
             SetupColumns();
 
-            // Hide menu items if LOOTPath is still unset
-            bool lootPathIsEmpty = string.IsNullOrEmpty(Properties.Settings.Default.LOOTPath);
-            toolStripMenuLOOTToggle.Visible = !lootPathIsEmpty;
-            autoSortToolStripMenuItem.Visible = !lootPathIsEmpty;
-            toolStripMenuLoot.Visible = !lootPathIsEmpty;
-            toolStripMenuLootSort.Visible = !lootPathIsEmpty;
-
-            // Do a 1-time backup of Plugins.txt if it doesn't exist
-            try
-            {
-                if (!File.Exists(Path.Combine(Tools.GameAppData, "Plugins.txt.bak")) && File.Exists(PluginsPath))
-                {
-                    File.Copy(PluginsPath, Tools.GameAppData + @"\Plugins.txt.bak");
-                    sbar2("Plugins.txt backed up to Plugins.txt.bak");
-                }
-            }
-            catch (Exception ex)
-            {
-                if (log)
-                    activityLog.WriteLog("Error backing up Plugins.txt: " + ex.Message);
-#if DEBUG
-                MessageBox.Show(ex.Message, "Error backing up Plugins.txt");
-#endif
-            }
-
             // Do a 1-time backup of StarfieldCustom.ini if it doesn't exist
             tempstr = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), Path.Combine("My Games", GameName, "StarfieldCustom.ini"));
             if (!File.Exists(tempstr + ".bak") && File.Exists(tempstr))
@@ -332,11 +253,8 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 File.Copy(tempstr, tempstr + ".bak");
             }
 
-            if (Properties.Settings.Default.LOOTEnabled)
+            if (Properties.Settings.Default.LOOTEnabled) // Cache LOOT groups
                 ReadLOOTGroups();
-
-            // Display Loose Files status
-            sbarCCC(looseFilesDisabledToolStripMenuItem.Checked ? "Loose files enabled" : "Loose files disabled");
 
             pluginList = tools.GetPluginList(); // Cache plugins
 
@@ -352,7 +270,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             {
                 Profiles = false;
             }
-
+            LastProfile ??= Properties.Settings.Default.LastProfile;
             foreach (var arg in Environment.GetCommandLineArgs()) // Handle command line arguments
             {
                 //MessageBox.Show(arg); // Show all arguments for debugging
@@ -361,27 +279,24 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                     RunGame();
                     Application.Exit();
                 }
-
                 if (arg.StartsWith("-profile", StringComparison.InvariantCultureIgnoreCase))
                 {
                     tempstr = Path.Combine(Properties.Settings.Default.ProfileFolder, Environment.GetCommandLineArgs()[2]);
                     LastProfile = Environment.GetCommandLineArgs()[2];
                 }
-
                 if (arg.StartsWith("-install")) // For future use (maybe) install mod from Nexus web link
                 {
                     string strippedCommandLine = Environment.GetCommandLineArgs()[2];
 
                     InstallMod(strippedCommandLine);
                 }
-
                 if (arg.Equals("-dev"))
                 {
                     testToolStripMenuItem.Visible = true;
                     gameSelectToolStripMenuItem.Visible = true;
+                    devMode = true;
                 }
             }
-
             cmbProfile.Enabled = Profiles;
             if (Profiles)
                 GetProfiles();
@@ -394,7 +309,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 prepareForCreationsUpdateToolStripMenuItem.Checked = false;
                 Properties.Settings.Default.CreationsUpdate = false;
                 SaveSettings();
-                BackupStatus = StarfieldTools.BackupCatalog();
+                BackupStatus = catalogFixer.BackupCatalog();
                 tempstr = BackupStatus ? "Catalog backed up" : "Catalog backup is up to date";
                 Properties.Settings.Default.AutoRestore = true;
                 MessageBox.Show(tempstr + "\nAuto Restore turned on\n\nYou can now play the game normally until the next time you want to update\n\n" +
@@ -414,7 +329,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             if (AutoUpdate)
             {
                 int changes = SyncPlugins();
-
                 if (changes > 0)
                 {
                     sbar4($"Changes: {changes}");
@@ -423,6 +337,85 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
                     InitDataGrid();
                 }
+            }
+        }
+
+        private void DetectApps()
+        {
+            if (!File.Exists(Path.Combine(GamePath, "CreationKit.exe"))) // Hide option to launch CK if not found
+                creationKitToolStripMenuItem.Visible = false;
+
+            if (!File.Exists(Path.Combine(GamePath, "sfse_loader.exe")))
+                gameVersionSFSEToolStripMenuItem.Visible = false;
+            GameVersionDisplay();
+
+            if (Properties.Settings.Default.MO2Path == "")
+                mO2ToolStripMenuItem.Visible = false;
+
+            if (Properties.Settings.Default.xEditPath == "")
+                xEditToolStripMenuItem.Visible = false;
+
+            if (string.IsNullOrEmpty(Properties.Settings.Default.LOOTPath) &&
+                File.Exists(@"C:\Program Files\LOOT\LOOT.exe")) // Try to detect LOOT if installed in default location
+                Properties.Settings.Default.LOOTPath = @"C:\Program Files\LOOT\LOOT.exe";
+
+            // Hide menu items if LOOTPath is unset
+            bool lootPathIsEmpty = string.IsNullOrEmpty(Properties.Settings.Default.LOOTPath);
+            toolStripMenuLOOTToggle.Visible = !lootPathIsEmpty;
+            autoSortToolStripMenuItem.Visible = !lootPathIsEmpty;
+            toolStripMenuLoot.Visible = !lootPathIsEmpty;
+            toolStripMenuLootSort.Visible = !lootPathIsEmpty;
+
+            // Unhide Star UI Configurator menu if found
+            if (!File.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName, "Data",
+                "StarUI Configurator.bat")))
+                starUIConfiguratorToolStripMenuItem.Visible = false;
+        }
+
+        private void SetupGame()
+        {
+            GameVersion = Properties.Settings.Default.GameVersion;
+            Game = Properties.Settings.Default.Game;
+            GameName = Tools.GameName;
+            GameExists = Tools.CheckGame(); // Check if game appdata folder exists
+
+            string PluginsPath = Path.Combine(Tools.GameAppData, "Plugins.txt");
+            if (!File.Exists(PluginsPath) && GameExists)
+            {
+                MessageBox.Show(@"Missing Plugins.txt file
+
+Click Ok to create a blank Plugins.txt file
+Click File->Restore if you have a backup of your Plugins.txt file
+Alternatively, run the game once to have it create a Plugins.txt file for you.", "Plugins.txt not found");
+
+                try
+                {
+                    File.WriteAllText(PluginsPath, $"# This file is used by {GameName} to keep track of your downloaded content.\n# Please do not modify this file.\n");
+                }
+                catch (Exception ex)
+                {
+#if DEBUG
+                    MessageBox.Show(ex.Message, "Error creating Plugins.txt");
+#endif
+                }
+            }
+
+            // Do a 1-time backup of Plugins.txt if it doesn't exist
+            try
+            {
+                if (!File.Exists(Path.Combine(Tools.GameAppData, "Plugins.txt.bak")) && File.Exists(PluginsPath))
+                {
+                    File.Copy(PluginsPath, Tools.GameAppData + @"\Plugins.txt.bak");
+                    sbar2("Plugins.txt backed up to Plugins.txt.bak");
+                }
+            }
+            catch (Exception ex)
+            {
+                if (log)
+                    activityLog.WriteLog("Error backing up Plugins.txt: " + ex.Message);
+#if DEBUG
+                MessageBox.Show(ex.Message, "Error backing up Plugins.txt");
+#endif
             }
         }
 
@@ -1958,7 +1951,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 {
                     InitialDirectory = Properties.Settings.Default.DownloadsDirectory,
                     Filter = "Archive Files (*.zip;*.7z;*.rar)|*.zip;*.7z;*.rar|All Files (*.*)|*.*",
-                    Title = "Install Mod - Loose files not supported except for SFSE plugins"
+                    Title = "Install Mod - Loose files partially supported"
                 })
                 {
                     if (openMod.ShowDialog() == DialogResult.OK)
@@ -2523,9 +2516,15 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             RunGame();
         }
 
-        private static void ShowSplashScreen()
+        private void ShowSplashScreen()
         {
-            Form SS = new frmSplashScreen();
+            Form SS;
+            /*if (devMode)
+            {
+                 SS = new frmSplashScreenVideo();
+            }
+            else*/
+            SS = new frmSplashScreen();
             SS.Show();
         }
 
@@ -2549,7 +2548,11 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
             Properties.Settings.Default.GameVersion = GameVersion;
             SaveSettings();
-            Form SS = new frmSplashScreen();
+            Form SS;
+            /*if (devMode)
+                SS = new frmSplashScreenVideo();
+            else*/
+            SS = new frmSplashScreen();
 
             sbar("Starting game...");
             if (GameVersion != MS)
@@ -2767,27 +2770,17 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void sbar4(string StatusBarMessage)
         {
-            toolStripStatusLabel4.Text = StatusBarMessage;
+            toolStripStatus4.Text = StatusBarMessage;
         }
 
         private void sbar5(string StatusMessage)
         {
-            toolStripStatusLabel5.Text = StatusMessage;
+            toolStripStatus5.Text = StatusMessage;
         }
 
         private void sbarCCC(string sbarMessage)
         {
             toolStripStatus1.Text = sbarMessage;
-        }
-
-        private void sbarCCCOn()
-        {
-            toolStripStatus1.Text = "$Auto delete {GameName}.ccc: On";
-        }
-
-        private void sbarCCCOff()
-        {
-            toolStripStatus1.Text = $"Auto delete {GameName}.ccc: Off";
         }
 
         private void toolStripMenuLoot_Click_1(object sender, EventArgs e)
@@ -2865,10 +2858,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
         private void toolStripMenuAutoDelccc_Click(object sender, EventArgs e)
         {
             toolStripMenuAutoDelccc.Checked = !toolStripMenuAutoDelccc.Checked;
-            if (toolStripMenuAutoDelccc.Checked)
-                sbarCCCOn();
-            else
-                sbarCCCOff();
             Properties.Settings.Default.AutoDelccc = toolStripMenuAutoDelccc.Checked;
         }
 
@@ -3007,7 +2996,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private string CheckCatalog()
         {
-            frmStarfieldTools StarfieldTools = new();
+            frmCatalogFixer StarfieldTools = new();
             if (log)
                 activityLog.WriteLog("Starting Catalog Checker");
             StarfieldTools.Show();
@@ -4909,7 +4898,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             progressBar1.Hide();
         }
 
-        private static void GetSteamGamePath()
+        private static bool GetSteamGamePath()
         {
             try
             {
@@ -4917,12 +4906,14 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 GamePath = steamGameLocator.getGameInfoByFolder(GameName).steamGameLocation;
                 Properties.Settings.Default.GamePath = GamePath;
                 SaveSettings();
+                return true;
             }
             catch (Exception ex)
             {
 #if DEBUG
                 MessageBox.Show(ex.Message);
 #endif
+                return false;
             }
         }
 
@@ -5223,8 +5214,13 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             frmGameSelect gameSelectForm = new frmGameSelect();
             gameSelectForm.StartPosition = FormStartPosition.CenterScreen;
             gameSelectForm.ShowDialog();
-            MessageBox.Show("Please restart the app after changing the game.", "Restart Required", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            Application.Exit();
+            MessageBox.Show("Restart recommended after after changing the game.", "Restart Recommended", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            SetupGame();
+            if (GameVersion == Steam)
+                GetSteamGamePath();
+            pluginList = tools.GetPluginList();
+            InitDataGrid();
+            //Application.Exit();
         }
 
         private void BackupContentCatalog()
@@ -5998,7 +5994,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void moveUnusedModsOutOfDataDirectoryToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            List<string> mods = tools.GetPluginList().Select(Path.GetFileNameWithoutExtension).ToList();
+            List<string> mods = pluginList.Select(Path.GetFileNameWithoutExtension).ToList();
 
             // Get all plugin names that are marked active in Plugins.txt (lines starting with '*')
             string pluginsPath = Path.Combine(Tools.GameAppData, "Plugins.txt");
@@ -6047,8 +6043,16 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void videoLoadscreenToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            frmSplashScreenVideo ssVideo=new();
+            frmSplashScreenVideo ssVideo = new();
             ssVideo.Show();
+        }
+
+        private void detectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (GetSteamGamePath())
+                MessageBox.Show($"Game Path set to {GamePath}", $"{GameName} Detected", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            else
+                MessageBox.Show("Error detecting game path", "Game Path Not Found", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
         }
     }
 }
