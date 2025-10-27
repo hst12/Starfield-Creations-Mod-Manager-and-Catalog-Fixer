@@ -582,8 +582,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
         {
             switch (e.KeyCode)
             {
-                case Keys.F3:
-                    break;
                 case Keys.F5:
                     RefreshDataGrid();
                     break;
