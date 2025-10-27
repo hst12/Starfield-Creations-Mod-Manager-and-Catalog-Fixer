@@ -164,10 +164,10 @@
     <None Update="Common\App Version.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Common\BGS Archives.txt">
+    <None Update="Common\Starfield Archives.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Common\BGS Exclude.txt">
+    <None Update="Common\Starfield Exclude.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Common\Catalog Version.txt">

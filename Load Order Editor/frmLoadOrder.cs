@@ -32,7 +32,7 @@ namespace hstCMM
         private CancellationTokenSource cancellationTokenSource;
 
         public const byte Steam = 0, MS = 1, Custom = 2, SFSE = 3;
-        public const byte Starfield = 0, FO5 = 1, ES6 = 2;
+        /*public const byte Starfield = 0, FO5 = 1, ES6 = 2;*/
         public static string GamePath, GameName;
         public static int Game = Properties.Settings.Default.Game;
         public static bool NoWarn;
@@ -98,16 +98,12 @@ namespace hstCMM
 
             // Check catalog
             frmCatalogFixer catalogFixer = new();
-
             if (Properties.Settings.Default.AutoCheck && GameExists)
             {
-                // Check the catalog
                 tempstr = catalogFixer.CatalogStatus;
                 if (tempstr != null && catalogFixer.CatalogStatus.Contains("Error"))
                     catalogFixer.Show(); // Show catalog fixer if catalog broken
             }
-
-            bool BackupStatus = false;
 
             // Check if loose files are enabled
             try
@@ -140,60 +136,7 @@ namespace hstCMM
             menuStrip1.Font = Properties.Settings.Default.FontSize; // Get font size
             this.Font = Properties.Settings.Default.FontSize;
 
-            // Initialise settings
-
-            if (GameVersion != MS)
-            {
-                GamePath = Properties.Settings.Default.GamePath;
-                if (GamePath == "")
-                {
-                    GetSteamGamePath(); // Detect Steam path
-                    if (GamePath == "")
-                    {
-                        GamePath = tools.SetGamePath();
-                        Properties.Settings.Default.GamePath = GamePath;
-                    }
-                }
-            }
-            else
-            {
-                if (Properties.Settings.Default.GamePathMS == "")
-                    tools.SetGamePathMS();
-                GamePath = Properties.Settings.Default.GamePathMS;
-            }
-            if (!Tools.CheckGame())
-                GamePath = "";
-
-            if (Properties.Settings.Default.AutoDelccc)
-            {
-                toolStripMenuAutoDelccc.Checked = true;
-                if (Delccc())
-                    toolStripStatus1.Text = ("CCC deleted");
-            }
-
-            // Setup game version
-            switch (GameVersion)
-            {
-                case Steam:
-                    toolStripMenuSteam.Checked = true;
-                    break;
-
-                case MS:
-                    toolStripMenuMS.Checked = true;
-                    break;
-
-                case Custom:
-                    toolStripMenuCustom.Checked = true;
-                    break;
-
-                case SFSE:
-                    gameVersionSFSEToolStripMenuItem.Checked = true;
-                    break;
-            }
-
             DetectApps(); // Detect other apps
-
-            // Setup other preferences
 
             // Set the color mode based on the theme
             var colorMode = Properties.Settings.Default.DarkMode switch
@@ -242,7 +185,7 @@ namespace hstCMM
                 MessageBox.Show(ex.Message);
             }
 
-            SetMenus();
+            SetUpMenus();
             SetupColumns();
 
             // Do a 1-time backup of StarfieldCustom.ini if it doesn't exist
@@ -304,6 +247,7 @@ namespace hstCMM
                 InitDataGrid();
 
             // Creations update
+            bool BackupStatus = false;
             if (Properties.Settings.Default.CreationsUpdate)
             {
                 prepareForCreationsUpdateToolStripMenuItem.Checked = false;
@@ -417,6 +361,56 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 MessageBox.Show(ex.Message, "Error backing up Plugins.txt");
 #endif
             }
+
+            // Setup game version
+
+            if (GameVersion != MS)
+            {
+                GamePath = Properties.Settings.Default.GamePath;
+                if (GamePath == "")
+                {
+                    GetSteamGamePath(); // Detect Steam path
+                    if (GamePath == "")
+                    {
+                        GamePath = tools.SetGamePath();
+                        Properties.Settings.Default.GamePath = GamePath;
+                    }
+                }
+            }
+            else
+            {
+                if (Properties.Settings.Default.GamePathMS == "")
+                    tools.SetGamePathMS();
+                GamePath = Properties.Settings.Default.GamePathMS;
+            }
+            if (!Tools.CheckGame())
+                GamePath = "";
+
+            if (Properties.Settings.Default.AutoDelccc)
+            {
+                toolStripMenuAutoDelccc.Checked = true;
+                if (Delccc())
+                    toolStripStatus1.Text = ("CCC deleted");
+            }
+
+            switch (GameVersion)
+            {
+                case Steam:
+                    toolStripMenuSteam.Checked = true;
+                    break;
+
+                case MS:
+                    toolStripMenuMS.Checked = true;
+                    break;
+
+                case Custom:
+                    toolStripMenuCustom.Checked = true;
+                    break;
+
+                case SFSE:
+                    gameVersionSFSEToolStripMenuItem.Checked = true;
+                    break;
+            }
         }
 
         public class ActivityLog
@@ -482,7 +476,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             }
         }
 
-        private void SetMenus()
+        private void SetUpMenus()
         {
             var settings = Properties.Settings.Default;
 
@@ -571,7 +565,8 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             }
             catch (Exception ex)
             {
-                MessageBox.Show("LOOT userlist.yaml possibly corrupt\nPossible missing display field in required mods\nRun LOOT to edit metadata", "Yaml decoding error", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                MessageBox.Show("LOOT userlist.yaml possibly corrupt\nPossible missing display field in required mods\nRun LOOT to edit metadata",
+                    "Yaml decoding error", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 sbar3(ex.Message);
                 if (log)
                     activityLog.WriteLog("Error decoding LOOT userlist.yaml: " + ex.Message);
@@ -591,11 +586,8 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                     txtSearchBox.Focus(); // Clear search box and focus it when Escape is pressed
                     break;
             }
-            if (e.Control && e.KeyCode == Keys.F)
-            {
+            if (e.Control && e.KeyCode == Keys.F) // Ctrl+F to search
                 txtSearchBox.Focus(); // Focus the search box when Ctrl+F is pressed
-                //SearchMod(); // Ctrl+F to search
-            }
         }
 
         private static bool CheckGameCustom()
@@ -695,7 +687,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 sbar(ex.Message);
             }
 
-            // -- Pre-build a dictionary for quick lookup from plugin name (.esm and .esp) to index --
+            // Pre-build a dictionary for quick lookup from plugin name (.esm and .esp) to index
             var creationLookup = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
             for (i = 0; i < CreationsPlugin.Count; i++)
             {
@@ -884,7 +876,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 {
                     // Cache file paths and load BGS archives once
                     var dataDirectory = Path.Combine(GamePath, "Data");
-                    var bgsArchives = File.ReadLines(Path.Combine(Tools.CommonFolder, "BGS Archives.txt"))
+                    var bgsArchives = File.ReadLines(Path.Combine(Tools.CommonFolder, GameName+" Archives.txt"))
                         .Where(line => line.Length > 4)
                         .Select(line => line[..^4].ToLowerInvariant())
                         .ToHashSet(StringComparer.OrdinalIgnoreCase);
@@ -3696,7 +3688,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             Properties.Settings.Default.ModStats = NewSetting;
 
             SaveSettings();
-            SetMenus();
+            SetUpMenus();
         }
 
         private void enableAllToolStripMenuItem_Click(object sender, EventArgs e)
@@ -5687,8 +5679,8 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             {
                 InitialDirectory = Tools.CommonFolder,
                 Filter = "Txt File|*.txt",
-                Title = "Create BGS Archives.txt",
-                FileName = "BGS Archives.txt"
+                Title = "Create Game Archives.txt",
+                FileName = GameName+" Archives.txt"
             };
 
             if (saveDialog.ShowDialog() != DialogResult.OK || string.IsNullOrEmpty(saveDialog.FileName))

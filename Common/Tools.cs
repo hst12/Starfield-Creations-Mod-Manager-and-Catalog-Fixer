@@ -83,13 +83,16 @@ namespace hstCMM.Common // Various functions used by the app
 
             DocumentationFolder = Path.Combine(Environment.CurrentDirectory, "Documentation");
 
+            GameLibrary gl = new GameLibrary();
+            GameName = gl.GameName(Properties.Settings.Default.Game);
+
             try
             {
-                BethFiles = new(File.ReadAllLines(Path.Combine(CommonFolder, "BGS Exclude.txt"))); // Exclude these files from Plugin list
+                BethFiles = new(File.ReadAllLines(Path.Combine(CommonFolder, GameName+" Exclude.txt"))); // Exclude these files from Plugin list
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "BGS Exclude file missing. Repair or re-install the app", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                MessageBox.Show(ex.Message, "Exclude file missing. Repair or re-install the app", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 Environment.Exit(1);
             }
 
@@ -103,8 +106,7 @@ namespace hstCMM.Common // Various functions used by the app
                 Environment.Exit(1);
             }
 
-            GameLibrary gl = new GameLibrary();
-            GameName = gl.GameName(Properties.Settings.Default.Game);
+
 
             try
             {
@@ -524,7 +526,7 @@ namespace hstCMM.Common // Various functions used by the app
         public static List<string> BGSArchives()
         {
             List<string> bgsArchives = new();
-            using (StreamReader sr = new StreamReader(Path.Combine(CommonFolder, "BGS Archives.txt")))
+            using (StreamReader sr = new StreamReader(Path.Combine(CommonFolder, GameName+" Archives.txt")))
             {
                 string line;
                 while ((line = sr.ReadLine()) != null)
