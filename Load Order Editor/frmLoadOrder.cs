@@ -133,42 +133,12 @@ namespace hstCMM
             // Display Loose Files status
             sbarCCC(LooseFiles ? "Loose files enabled" : "Loose files disabled");
 
-            menuStrip1.Font = Properties.Settings.Default.FontSize; // Get font size
+            menuStrip1.Font = Properties.Settings.Default.FontSize; // Set custom font size
             this.Font = Properties.Settings.Default.FontSize;
 
             DetectApps(); // Detect other apps
 
-            // Set the color mode based on the theme
-            var colorMode = Properties.Settings.Default.DarkMode switch
-            {
-                0 => SystemColorMode.Classic,
-                1 => SystemColorMode.Dark,
-                2 => SystemColorMode.System,
-                _ => SystemColorMode.Classic // Default fallback
-            };
-            Application.SetColorMode(colorMode);
-
-            // Update menu item selection
-            var menuItems = new Dictionary<int, ToolStripMenuItem>
-            {
-                 { 0, lightToolStripMenuItem },
-                 { 1, darkToolStripMenuItem },
-                 { 2, systemToolStripMenuItem }
-             };
-            if (menuItems.TryGetValue(Properties.Settings.Default.DarkMode, out var menuItem))
-                menuItem.Checked = true;
-
-            // Apply UI changes for dark mode conditions
-            if (colorMode == SystemColorMode.Dark ||
-               (colorMode == SystemColorMode.System && System.Windows.Forms.Application.SystemColorMode == SystemColorMode.Dark))
-            {
-                dataGridView1.EnableHeadersVisualStyles = false;
-                dataGridView1.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.Green; // Background color of selected cells
-                dataGridView1.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.White; // Text color of selected cells
-                statusStrip1.BackColor = System.Drawing.Color.Black;
-            }
-            else
-                dataGridView1.EnableHeadersVisualStyles = true;
+            SetTheme();
 
             // Create BlockedMods.txt if necessary
             try
@@ -284,6 +254,40 @@ namespace hstCMM
             }
         }
 
+        private void SetTheme()
+        {
+            // Set the color mode based on the theme
+            var colorMode = Properties.Settings.Default.DarkMode switch
+            {
+                0 => SystemColorMode.Classic,
+                1 => SystemColorMode.Dark,
+                2 => SystemColorMode.System,
+                _ => SystemColorMode.Classic // Default fallback
+            };
+            Application.SetColorMode(colorMode);
+
+            // Update menu item selection
+            var menuItems = new Dictionary<int, ToolStripMenuItem>
+            {
+                 { 0, lightToolStripMenuItem },
+                 { 1, darkToolStripMenuItem },
+                 { 2, systemToolStripMenuItem }
+             };
+            if (menuItems.TryGetValue(Properties.Settings.Default.DarkMode, out var menuItem))
+                menuItem.Checked = true;
+
+            // Apply UI changes for dark mode conditions
+            if (colorMode == SystemColorMode.Dark ||
+               (colorMode == SystemColorMode.System && System.Windows.Forms.Application.SystemColorMode == SystemColorMode.Dark))
+            {
+                dataGridView1.EnableHeadersVisualStyles = false;
+                dataGridView1.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.Green; // Background color of selected cells
+                dataGridView1.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.White; // Text color of selected cells
+                statusStrip1.BackColor = System.Drawing.Color.Black;
+            }
+            else
+                dataGridView1.EnableHeadersVisualStyles = true;
+        }
         private void DetectApps()
         {
             if (!File.Exists(Path.Combine(GamePath, "CreationKit.exe"))) // Hide option to launch CK if not found
@@ -3513,10 +3517,10 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
         private void lightToolStripMenuItem_Click(object sender, EventArgs e)
         {
             lightToolStripMenuItem.Checked = !lightToolStripMenuItem.Checked;
-            System.Windows.Forms.Application.SetColorMode(SystemColorMode.Classic);
             Properties.Settings.Default.DarkMode = 0;
             darkToolStripMenuItem.Checked = false;
             systemToolStripMenuItem.Checked = false;
+            SetTheme();
             MessageBox.Show("Restart app recommended to apply changes");
         }
 
@@ -3524,20 +3528,20 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
         {
             darkToolStripMenuItem.Checked = !darkToolStripMenuItem.Checked;
             dataGridView1.EnableHeadersVisualStyles = false;
-            System.Windows.Forms.Application.SetColorMode(SystemColorMode.Dark);
             Properties.Settings.Default.DarkMode = 1;
             lightToolStripMenuItem.Checked = false;
             systemToolStripMenuItem.Checked = false;
+            SetTheme();
             MessageBox.Show("Restart app recommended to apply changes");
         }
 
         private void systemToolStripMenuItem_Click(object sender, EventArgs e)
         {
             systemToolStripMenuItem.Checked = !systemToolStripMenuItem.Checked;
-            System.Windows.Forms.Application.SetColorMode(SystemColorMode.System);
             Properties.Settings.Default.DarkMode = 2;
             lightToolStripMenuItem.Checked = false;
             darkToolStripMenuItem.Checked = false;
+            SetTheme();
             MessageBox.Show("Restart app recommended to apply changes");
         }
 
