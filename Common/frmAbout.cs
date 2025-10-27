@@ -1,5 +1,7 @@
 ﻿using hstCMM.Common;
+using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace hstCMM
