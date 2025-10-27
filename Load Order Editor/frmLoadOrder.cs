@@ -138,7 +138,7 @@ namespace hstCMM
 
             DetectApps(); // Detect other apps
 
-            SetTheme();
+            SetTheme(); // Light/Dark mode
 
             // Create BlockedMods.txt if necessary
             try
@@ -288,6 +288,7 @@ namespace hstCMM
             else
                 dataGridView1.EnableHeadersVisualStyles = true;
         }
+
         private void DetectApps()
         {
             if (!File.Exists(Path.Combine(GamePath, "CreationKit.exe"))) // Hide option to launch CK if not found
@@ -581,6 +582,8 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
         {
             switch (e.KeyCode)
             {
+                case Keys.F3:
+                    break;
                 case Keys.F5:
                     RefreshDataGrid();
                     break;
@@ -880,7 +883,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 {
                     // Cache file paths and load BGS archives once
                     var dataDirectory = Path.Combine(GamePath, "Data");
-                    var bgsArchives = File.ReadLines(Path.Combine(Tools.CommonFolder, GameName+" Archives.txt"))
+                    var bgsArchives = File.ReadLines(Path.Combine(Tools.CommonFolder, GameName + " Archives.txt"))
                         .Where(line => line.Length > 4)
                         .Select(line => line[..^4].ToLowerInvariant())
                         .ToHashSet(StringComparer.OrdinalIgnoreCase);
@@ -1389,7 +1392,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void txtSearchBox_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter)
+            if (e.KeyCode == Keys.Enter || e.KeyCode==Keys.F3)
                 SearchMod();
         }
 
@@ -4693,7 +4696,8 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             {
                 Directory.CreateDirectory(Path.Combine(Properties.Settings.Default.ProfileFolder, "Backup"));
             }
-
+            if (log)
+                activityLog.WriteLog("Starting profile backup");
             foreach (var item in Directory.EnumerateFiles(Properties.Settings.Default.ProfileFolder, "*.txt", SearchOption.TopDirectoryOnly))
             {
                 string fileName = Path.GetFileName(item);
@@ -5684,7 +5688,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 InitialDirectory = Tools.CommonFolder,
                 Filter = "Txt File|*.txt",
                 Title = "Create Game Archives.txt",
-                FileName = GameName+" Archives.txt"
+                FileName = GameName + " Archives.txt"
             };
 
             if (saveDialog.ShowDialog() != DialogResult.OK || string.IsNullOrEmpty(saveDialog.FileName))

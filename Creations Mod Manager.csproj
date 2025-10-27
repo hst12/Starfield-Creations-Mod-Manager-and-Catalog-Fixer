@@ -57,7 +57,7 @@
     <SignAssembly>True</SignAssembly>
     <Description>Creations Mod Manager</Description>
     <PackageTags>Starfield;Bethesda</PackageTags>
-    <FileVersion>1.16.0</FileVersion>
+    <FileVersion>1.17.0</FileVersion>
     <AssemblyVersion>1.17.0</AssemblyVersion>
     <Version>1.16.0</Version>
   </PropertyGroup>
