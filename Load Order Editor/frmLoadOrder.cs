@@ -23,6 +23,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
+using static hstCMM.Common.Tools;
 using File = System.IO.File;
 
 namespace hstCMM
@@ -106,10 +107,10 @@ namespace hstCMM
             }
 
             // Check if loose files are enabled
+            string LooseFilesDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName),
+                filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
             try
             {
-                string LooseFilesDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName),
-                    filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
                 if (File.Exists(filePath))
                 {
                     var StarfieldCustomINI = File.ReadAllLines(filePath);
@@ -125,7 +126,7 @@ namespace hstCMM
             catch (Exception ex)
             {
                 if (log)
-                    activityLog.WriteLog("Error reading file" + ex.Message);
+                    activityLog.WriteLog($"Error reading {filePath} " + ex.Message);
 #if DEBUG
                 MessageBox.Show(ex.Message, "Error opening file");
 #endif
@@ -325,7 +326,10 @@ namespace hstCMM
         {
             GameVersion = Properties.Settings.Default.GameVersion;
             Game = Properties.Settings.Default.Game;
-            GameName = Tools.GameName;
+            GameLibrary gl = new GameLibrary();
+            GameName = gl.GameName(Properties.Settings.Default.Game);
+            if (log)
+                activityLog.WriteLog($"Game set to {GameName}");
             GameExists = Tools.CheckGame(); // Check if game appdata folder exists
 
             string PluginsPath = Path.Combine(Tools.GameAppData, "Plugins.txt");
@@ -368,7 +372,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             }
 
             // Setup game version
-
             if (GameVersion != MS)
             {
                 GamePath = Properties.Settings.Default.GamePath;
@@ -515,18 +518,19 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void SetupColumns()
         {
-            SetColumnVisibility(Properties.Settings.Default.TimeStamp, timeStampToolStripMenuItem, dataGridView1.Columns["TimeStamp"]);
-            SetColumnVisibility(Properties.Settings.Default.Achievements, toolStripMenuAchievements, dataGridView1.Columns["Achievements"]);
-            SetColumnVisibility(Properties.Settings.Default.CreationsID, toolStripMenuCreationsID, dataGridView1.Columns["CreationsID"]);
-            SetColumnVisibility(Properties.Settings.Default.Files, toolStripMenuFiles, dataGridView1.Columns["Files"]);
-            SetColumnVisibility(Properties.Settings.Default.Group, toolStripMenuGroup, dataGridView1.Columns["Group"]);
-            SetColumnVisibility(Properties.Settings.Default.Index, toolStripMenuIndex, dataGridView1.Columns["Index"]);
-            SetColumnVisibility(Properties.Settings.Default.FileSize, toolStripMenuFileSize, dataGridView1.Columns["FileSize"]);
-            SetColumnVisibility(Properties.Settings.Default.URL, uRLToolStripMenuItem, dataGridView1.Columns["URL"]);
-            SetColumnVisibility(Properties.Settings.Default.Version, toolStripMenuVersion, dataGridView1.Columns["Version"]);
-            SetColumnVisibility(Properties.Settings.Default.AuthorVersion, toolStripMenuAuthorVersion, dataGridView1.Columns["AuthorVersion"]);
-            SetColumnVisibility(Properties.Settings.Default.Description, toolStripMenuDescription, dataGridView1.Columns["Description"]);
-            SetColumnVisibility(Properties.Settings.Default.Blocked, blockedToolStripMenuItem, dataGridView1.Columns["Blocked"]);
+            var props = Properties.Settings.Default;
+            SetColumnVisibility(props.TimeStamp, timeStampToolStripMenuItem, dataGridView1.Columns["TimeStamp"]);
+            SetColumnVisibility(props.Achievements, toolStripMenuAchievements, dataGridView1.Columns["Achievements"]);
+            SetColumnVisibility(props.CreationsID, toolStripMenuCreationsID, dataGridView1.Columns["CreationsID"]);
+            SetColumnVisibility(props.Files, toolStripMenuFiles, dataGridView1.Columns["Files"]);
+            SetColumnVisibility(props.Group, toolStripMenuGroup, dataGridView1.Columns["Group"]);
+            SetColumnVisibility(props.Index, toolStripMenuIndex, dataGridView1.Columns["Index"]);
+            SetColumnVisibility(props.FileSize, toolStripMenuFileSize, dataGridView1.Columns["FileSize"]);
+            SetColumnVisibility(props.URL, uRLToolStripMenuItem, dataGridView1.Columns["URL"]);
+            SetColumnVisibility(props.Version, toolStripMenuVersion, dataGridView1.Columns["Version"]);
+            SetColumnVisibility(props.AuthorVersion, toolStripMenuAuthorVersion, dataGridView1.Columns["AuthorVersion"]);
+            SetColumnVisibility(props.Description, toolStripMenuDescription, dataGridView1.Columns["Description"]);
+            SetColumnVisibility(props.Blocked, blockedToolStripMenuItem, dataGridView1.Columns["Blocked"]);
         }
 
         private static void SetColumnVisibility(bool condition, ToolStripMenuItem menuItem, DataGridViewColumn column)
@@ -1390,7 +1394,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void txtSearchBox_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter || e.KeyCode==Keys.F3)
+            if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.F3)
                 SearchMod();
         }
 
@@ -2445,7 +2449,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
             if (Tools.BlockedMods().Contains((string)dataGridView1.CurrentRow.Cells["PluginName"].Value))
             {
-                sbar2("Mod is blocked");
+                sbar("Mod is blocked");
                 return;
             }
             isModified = true;
@@ -2679,7 +2683,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             }
 
             lootPath = Properties.Settings.Default.LOOTPath;
-            string cmdLine = (GameVersion != MS) ? $"--game {GameName}" : $"--game \"{GameName} (MS Store)\"";
+            string cmdLine = (GameVersion != MS) ? $"--game=\"{GameName}\"" : $"--game=\"{GameName} (MS Store)\"";
             if (LOOTMode) cmdLine += " --auto-sort";
 
             // Temporarily disable profiles
@@ -5209,16 +5213,22 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void gameSelectToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (Profiles)
+                ToggleProfiles();
             frmGameSelect gameSelectForm = new frmGameSelect();
             gameSelectForm.StartPosition = FormStartPosition.CenterScreen;
             gameSelectForm.ShowDialog();
-            MessageBox.Show("Restart recommended after after changing the game.", "Restart Recommended", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("App will restart. Profiles Disabled", "Restart Required", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            Game = Properties.Settings.Default.Game;
+            GameLibrary gl = new GameLibrary();
+            GameName = gl.GameName(Properties.Settings.Default.Game);
+            GamePath = tools.GamePath;
+
             SetupGame();
             if (GameVersion == Steam)
                 GetSteamGamePath();
             pluginList = tools.GetPluginList();
-            InitDataGrid();
-            //Application.Exit();
+            Application.Exit();
         }
 
         private void BackupContentCatalog()

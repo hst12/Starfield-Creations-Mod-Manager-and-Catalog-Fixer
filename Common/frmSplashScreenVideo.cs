@@ -17,17 +17,15 @@ namespace hstCMM.Common
             InitializeComponent();
             Core.Initialize(); // Required for LibVLCSharp
 
-            this.FormBorderStyle = FormBorderStyle.None;
+            //this.FormBorderStyle = FormBorderStyle.None;
             this.StartPosition = FormStartPosition.CenterScreen;
             this.TopMost = true;
             Rectangle resolution = Screen.PrimaryScreen.Bounds; // Resize window to 85% of screen width
             double screenWidth = resolution.Width;
             double screenHeight = resolution.Height;
-            /*this.Width = (int)(screenWidth * 0.85);
-            this.Height = (int)(screenHeight * 0.85);*/
-            this.Width = (int)screenWidth;
-            this.Height = (int)screenHeight;
-            this.StartPosition = FormStartPosition.CenterScreen;
+            this.Width = (int)(screenWidth * 0.85);
+            this.Height = (int)(screenHeight * 0.85);
+
             var videoView = new VideoView
             {
                 Dock = DockStyle.Fill
@@ -38,7 +36,7 @@ namespace hstCMM.Common
             _mediaPlayer = new MediaPlayer(_libVLC);
             videoView.MediaPlayer = _mediaPlayer;
 
-            var media = new Media(_libVLC, Path.Combine(Tools.CommonFolder, "hstCMM Video.mp4"), FromType.FromPath);
+            var media = new Media(_libVLC, Path.Combine(Tools.CommonFolder, @"C:\Users\hst12\Documents\Starfield\hstCMM Video.mp4"), FromType.FromPath);
             _mediaPlayer.Mute = true;
             _mediaPlayer.Play(media);
 

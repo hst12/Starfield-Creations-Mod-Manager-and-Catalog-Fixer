@@ -88,12 +88,12 @@ namespace hstCMM.Common // Various functions used by the app
 
             try
             {
-                BethFiles = new(File.ReadAllLines(Path.Combine(CommonFolder, GameName+" Exclude.txt"))); // Exclude these files from Plugin list
+                BethFiles = new(File.ReadAllLines(Path.Combine(CommonFolder, GameName + " Exclude.txt"))); // Exclude these files from Plugin list
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Exclude file missing. Repair or re-install the app", MessageBoxButtons.OK, MessageBoxIcon.Stop);
-                Environment.Exit(1);
+                //Environment.Exit(1);
             }
 
             try
@@ -105,8 +105,6 @@ namespace hstCMM.Common // Various functions used by the app
                 MessageBox.Show(ex.Message, "Catalog Version file missing. Repair or re-install the app", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 Environment.Exit(1);
             }
-
-
 
             try
             {
@@ -508,9 +506,16 @@ namespace hstCMM.Common // Various functions used by the app
 
         public List<string> GetPluginList() // Get list of plugins from game Data folder
         {
+            string dataPath = Path.Combine(frmLoadOrder.GamePath, "Data");
             try
             {
-                string dataPath = Path.Combine(frmLoadOrder.GamePath, "Data");
+                /*var patterns = new[] { "*.esm", "*.esl" };
+                var allFiles = patterns.SelectMany(pattern =>
+                    Directory.EnumerateFiles(dataPath, pattern, SearchOption.TopDirectoryOnly)
+                        .Select(Path.GetFileName)
+                                .Where(fileName => !BethFiles.Contains(fileName))
+                                .ToList());*/
+
                 return Directory.EnumerateFiles(dataPath, "*.esm", SearchOption.TopDirectoryOnly)
                                 .Select(Path.GetFileName)
                                 .Where(fileName => !BethFiles.Contains(fileName))
@@ -526,7 +531,7 @@ namespace hstCMM.Common // Various functions used by the app
         public static List<string> BGSArchives()
         {
             List<string> bgsArchives = new();
-            using (StreamReader sr = new StreamReader(Path.Combine(CommonFolder, GameName+" Archives.txt")))
+            using (StreamReader sr = new StreamReader(Path.Combine(CommonFolder, GameName + " Archives.txt")))
             {
                 string line;
                 while ((line = sr.ReadLine()) != null)
