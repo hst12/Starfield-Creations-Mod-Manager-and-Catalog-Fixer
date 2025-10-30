@@ -21,7 +21,7 @@ namespace hstCMM.Load_Order_Editor
             for (int i = 0; i < gl.Games.Count; i++)
             {
                 gamePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", gl.GameName(i));
-                if (Directory.Exists(gamePath))
+                if (Directory.Exists(gamePath)) // Only show games that are installed
                 {
                     RadioButton rb = new RadioButton
                     {
@@ -38,6 +38,7 @@ namespace hstCMM.Load_Order_Editor
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
+            frmLoadOrder.returnStatus = 1; // Signal cancel
             this.Close();
         }
 

@@ -390,7 +390,7 @@ namespace hstCMM.Common // Various functions used by the app
             }
         }
 
-        public static bool StartStarfieldCustom() // Start game with custom exe
+        public static bool StartGameCustom() // Start game with custom exe
         {
             string cmdLine = Properties.Settings.Default.CustomEXE;
             if (cmdLine == null)
@@ -414,7 +414,7 @@ namespace hstCMM.Common // Various functions used by the app
             }
         }
 
-        public static bool StartStarfieldSFSE() // Start game with SFSE loader
+        public static bool StartGameSFSE() // Start game with SFSE loader
         {
             string cmdLine = Path.Combine(Properties.Settings.Default.GamePath, "sfse_loader.exe");
             if (cmdLine == null)
@@ -438,7 +438,7 @@ namespace hstCMM.Common // Various functions used by the app
             }
         }
 
-        public static bool StartStarfieldMS() // Start game with MS Store version
+        public static bool StartGameMS() // Start game with MS Store version
         {
             //string cmdLine = @"shell:AppsFolder\BethesdaSoftworks.ProjectGold_3275kfvn8vcwc!Game";
             string cmdLine = Path.Combine(Properties.Settings.Default.GamePathMS, $"{GameName}.exe");
@@ -467,9 +467,9 @@ namespace hstCMM.Common // Various functions used by the app
             return GameVersion switch
             {
                 0 => StartGameSteam(),
-                1 => StartStarfieldMS(),
-                2 => StartStarfieldCustom(),
-                3 => StartStarfieldSFSE(),
+                1 => StartGameMS(),
+                2 => StartGameCustom(),
+                3 => StartGameSFSE(),
                 _ => false // Default case for invalid GameVersion values
             };
         }
@@ -561,7 +561,7 @@ namespace hstCMM.Common // Various functions used by the app
 
         public class GameInfo
         {
-            public byte GameId { get; set; } // 0=Starfield, 1=Fallout 5, 2=Elder Scrolls 6, 3=Skyrim Special Edition, 4=Fallout 4 Special Edition
+            public byte GameId { get; set; }
             public string GameName { get; set; }
             public string GamePath { get; set; }
             public string SteamAppId { get; set; }
@@ -573,10 +573,10 @@ namespace hstCMM.Common // Various functions used by the app
             private readonly Dictionary<int, string> _games = new Dictionary<int, string>
             {
                 { 0, "Starfield"},
-                { 1, "Fallout 5" },
-                { 2, "Elder Scrolls 6"},
-                { 3, "Skyrim Special Edition"},
-                { 4, "Fallout 4 Special Edition"}
+                { 1, "Skyrim Special Edition"},
+                { 2, "Fallout 4 Special Edition"},
+                { 3, "Elder Scrolls 6"},
+                { 4, "Fallout 5" }
             };
 
             public string GameName(int id)

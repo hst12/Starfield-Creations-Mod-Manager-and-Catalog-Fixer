@@ -1718,26 +1718,30 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
             string dataDir = Path.Combine(GamePath, "Data");
 
-            try
+            string[]patterns = {"*.esp","*.esl" };
+            foreach (var pattern in patterns)
             {
-                // Use parallel enumeration for large directories
-                var espFiles = Directory.EnumerateFiles(dataDir, "*.esp", SearchOption.TopDirectoryOnly)
-                                       .AsParallel()
-                                       .Select(Path.GetFileName)
-                                       .ToList();
-                pluginFiles.AddRange(espFiles);
-            }
-            catch (Exception ex)
-            {
-                if (log)
-                    activityLog.WriteLog($"Error reading plugin files: {ex.Message}");
-                MessageBox.Show(
-                    $"Error reading plugin files: {ex.Message}",
-                    "Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error
-                );
-                return 0;
+                try
+                {
+                    // Use parallel enumeration for large directories
+                    var espFiles = Directory.EnumerateFiles(dataDir, pattern, SearchOption.TopDirectoryOnly)
+                                           .AsParallel()
+                                           .Select(Path.GetFileName)
+                                           .ToList();
+                    pluginFiles.AddRange(espFiles);
+                }
+                catch (Exception ex)
+                {
+                    if (log)
+                        activityLog.WriteLog($"Error reading plugin files: {ex.Message}");
+                    MessageBox.Show(
+                        $"Error reading plugin files: {ex.Message}",
+                        "Error",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error
+                    );
+                    return 0;
+                }
             }
 
             // Pre-allocate with estimated capacity and use fastest comparer
@@ -5217,18 +5221,22 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 ToggleProfiles();
             frmGameSelect gameSelectForm = new frmGameSelect();
             gameSelectForm.StartPosition = FormStartPosition.CenterScreen;
+            returnStatus = 0;
             gameSelectForm.ShowDialog();
-            MessageBox.Show("App will restart. Profiles Disabled", "Restart Required", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            Game = Properties.Settings.Default.Game;
-            GameLibrary gl = new GameLibrary();
-            GameName = gl.GameName(Properties.Settings.Default.Game);
-            GamePath = tools.GamePath;
+            if (returnStatus == 0)
+            {
+                MessageBox.Show("App will restart. Profiles Disabled", "Restart Required", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                Game = Properties.Settings.Default.Game;
+                GameLibrary gl = new GameLibrary();
+                GameName = gl.GameName(Properties.Settings.Default.Game);
+                GamePath = tools.GamePath;
 
-            SetupGame();
-            if (GameVersion == Steam)
-                GetSteamGamePath();
-            pluginList = tools.GetPluginList();
-            Application.Exit();
+                SetupGame();
+                if (GameVersion == Steam)
+                    GetSteamGamePath();
+                pluginList = tools.GetPluginList();
+                Application.Exit();
+            }
         }
 
         private void BackupContentCatalog()
