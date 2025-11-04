@@ -1,5 +1,6 @@
 ﻿using hstCMM.Common;
 using hstCMM.Load_Order_Editor;
+using Microsoft.Data.Sqlite;
 using Microsoft.VisualBasic;
 using Microsoft.Win32;
 using Narod.SteamGameFinder;
@@ -10,6 +11,7 @@ using SevenZipExtractor;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+
 using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
@@ -33,7 +35,6 @@ namespace hstCMM
         private CancellationTokenSource cancellationTokenSource;
 
         public const byte Steam = 0, MS = 1, Custom = 2, SFSE = 3;
-        /*public const byte Starfield = 0, FO5 = 1, ES6 = 2;*/
         public static string GamePath, GameName;
         public static int Game = Properties.Settings.Default.Game;
         public static bool NoWarn;
@@ -253,6 +254,20 @@ namespace hstCMM
                     InitDataGrid();
                 }
             }
+
+            //SetupDB();
+        }
+
+        private void SetupDB()
+        {
+            string cs = "Data Source=Common\\db\\hstCMM.sqlite";
+            using var con = new SqliteConnection(cs);
+            con.Open();
+
+            string query = "SELECT * FROM Mods";
+            using var cmd = new SqliteCommand(query, con);
+            cmd.ExecuteNonQuery();
+
         }
 
         private void SetTheme()
@@ -1718,7 +1733,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
             string dataDir = Path.Combine(GamePath, "Data");
 
-            string[]patterns = {"*.esp","*.esl" };
+            string[] patterns = { "*.esp", "*.esl" };
             foreach (var pattern in patterns)
             {
                 try
@@ -2036,9 +2051,12 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
             if (Directory.EnumerateFiles(extractPath, "*.esm", SearchOption.AllDirectories).Any())
                 esmFile = Directory.GetFiles(extractPath, "*.esm", SearchOption.AllDirectories).FirstOrDefault();
+            if (Directory.EnumerateFiles(extractPath, "*.esp", SearchOption.AllDirectories).Any())
+                esmFile = Directory.GetFiles(extractPath, "*.esp", SearchOption.AllDirectories).FirstOrDefault();
 
             // Move .esm and .ba2 files to the game's Data folder.
             filesInstalled += MoveExtractedFiles("*.esm", "esm");
+            filesInstalled += MoveExtractedFiles("*.esp", "esp");
             filesInstalled += MoveExtractedFiles("*.ba2", "archive");
 
             // Install SFSE plugin if found.
@@ -3661,7 +3679,13 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 {
                     SaveSettings();
                     string stringValue = (string)Registry.GetValue(keyName, "SteamExe", ""); // Get Steam path from Registry
-                    var processInfo = new ProcessStartInfo(stringValue, "-applaunch 2722710");
+                    /*SteamGameLocator steamGameLocator = new SteamGameLocator();
+                    var gameName = steamGameLocator.getGameInfoByFolder(GameName).steamGameName;
+                    MessageBox.Show(gameName.ToString());
+                    Environment.Exit(1);
+                    gameID = steamGameLocator.getGameInfoByFolder(GameName).steamGameID;*/
+                    var processInfo = new ProcessStartInfo(stringValue, $"-applaunch 2722710");
+                    /*var processInfo = new ProcessStartInfo(stringValue, $"-applaunch {gameID}");*/
                     var process = Process.Start(processInfo);
                     if (log)
                         activityLog.WriteLog("Starting Creation Kit");
@@ -5840,7 +5864,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             {
                 var dict = GatherSettings();
                 var options = new JsonSerializerOptions { WriteIndented = true };
-                var json = JsonSerializer.Serialize(dict, options);
+                var json = System.Text.Json.JsonSerializer.Serialize(dict, options);
                 File.WriteAllText(sfd.FileName, json);
                 sbar("Settings exported successfully");
             }
@@ -5870,7 +5894,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             try
             {
                 var json = File.ReadAllText(ofd.FileName);
-                var dict = JsonSerializer.Deserialize<Dictionary<string, object?>>(json);
+                var dict = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, object?>>(json);
                 if (dict == null) throw new InvalidOperationException("Invalid JSON or empty file.");
                 ApplySettings(dict);
                 Properties.Settings.Default.Save();
@@ -5966,7 +5990,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
                 // For complex types, try deserializing the element into the target type
                 var raw = je.GetRawText();
-                return JsonSerializer.Deserialize(raw, targetType);
+                return System.Text.Json.JsonSerializer.Deserialize(raw, targetType);
             }
             catch
             {

@@ -1,5 +1,6 @@
 ﻿using hstCMM.Properties;
 using Microsoft.Win32;
+using Narod.SteamGameFinder;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -483,7 +484,9 @@ namespace hstCMM.Common // Various functions used by the app
             try
             {
                 string stringValue = (string)Registry.GetValue(keyName, "SteamExe", ""); // Get Steam path from Registry
-                var processInfo = new ProcessStartInfo(stringValue, "-applaunch 1716740");
+                SteamGameLocator steamGameLocator = new SteamGameLocator();
+                var gameID = steamGameLocator.getGameInfoByFolder(GameName).steamGameID;
+                var processInfo = new ProcessStartInfo(stringValue, $"-applaunch {gameID}");
                 var process = Process.Start(processInfo);
                 return true;
             }
@@ -574,7 +577,7 @@ namespace hstCMM.Common // Various functions used by the app
             {
                 { 0, "Starfield"},
                 { 1, "Skyrim Special Edition"},
-                { 2, "Fallout 4 Special Edition"},
+                { 2, "Fallout 4 Aniversary Edition"},
                 { 3, "Elder Scrolls 6"},
                 { 4, "Fallout 5" }
             };
