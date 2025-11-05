@@ -1,6 +1,6 @@
 ﻿using hstCMM.Common;
 using hstCMM.Load_Order_Editor;
-using Microsoft.Data.Sqlite;
+using Microsoft.Data.SqlClient;
 using Microsoft.VisualBasic;
 using Microsoft.Win32;
 using Narod.SteamGameFinder;
@@ -11,7 +11,6 @@ using SevenZipExtractor;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-
 using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
@@ -255,19 +254,51 @@ namespace hstCMM
                 }
             }
 
-            //SetupDB();
+            //etupDB();
         }
 
         private void SetupDB()
         {
-            string cs = "Data Source=Common\\db\\hstCMM.sqlite";
-            using var con = new SqliteConnection(cs);
-            con.Open();
+            string connectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=\"" +
+                Tools.CommonFolder + "\\db\\hstCMM.mdf\";Integrated Security=True;Connect Timeout=30";
 
-            string query = "SELECT * FROM Mods";
-            using var cmd = new SqliteCommand(query, con);
-            cmd.ExecuteNonQuery();
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
 
+                // Optional: Clear the table before inserting new data
+                using (var clearCmd = new SqlCommand("DELETE FROM Mods", connection))
+                {
+                    clearCmd.ExecuteNonQuery();
+                }
+
+                // Prepare insert command (adjust column names/types as needed)
+                var cmd = new SqlCommand(
+                    @"INSERT INTO Mods (Enabled, Name, Description, LOOTGroup,  URL)
+              VALUES
+                (@Enabled, @Name, @Description, @LOOTGroup,   @URL)",
+                    connection);
+
+                // Add parameters
+                cmd.Parameters.Add("@Enabled", System.Data.SqlDbType.Bit);
+                cmd.Parameters.Add("@Name", System.Data.SqlDbType.NVarChar, 255);
+                cmd.Parameters.Add("@Description", System.Data.SqlDbType.NVarChar, 255);
+                cmd.Parameters.Add("@LOOTGroup", System.Data.SqlDbType.NVarChar, 255);
+                cmd.Parameters.Add("@URL", System.Data.SqlDbType.NVarChar, 255);
+
+                foreach (DataGridViewRow row in dataGridView1.Rows)
+                {
+                    if (row.IsNewRow) continue;
+
+                    cmd.Parameters["@Enabled"].Value = row.Cells["ModEnabled"].Value ?? false;
+                    cmd.Parameters["@Name"].Value = row.Cells["PluginName"].Value ?? "";
+                    cmd.Parameters["@Description"].Value = row.Cells["Description"].Value ?? "";
+                    cmd.Parameters["@LOOTGroup"].Value = row.Cells["Group"].Value ?? "";
+                    cmd.Parameters["@URL"].Value = row.Cells["URL"].Value ?? "";
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
 
         private void SetTheme()
@@ -4778,25 +4809,45 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             }
         }
 
-        private void BackupBlockedMods()
+        private void BackupBlockedMods(bool UseDocuments = false)
         {
+            string blockedModsFilePath = Path.Combine(Tools.LocalAppDataPath, "BlockedMods.txt");
+            string destinationPath = string.Empty, selectedFolderPath = string.Empty;
             using FolderBrowserDialog folderBrowserDialog = new();
             folderBrowserDialog.Description = "Choose folder to use to backup BlockedMods.txt";
             folderBrowserDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments); // Set initial directory to Documents Directory
-            if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+            if (!UseDocuments)
             {
-                string selectedFolderPath = folderBrowserDialog.SelectedPath;
-                string blockedModsFilePath = Path.Combine(Tools.LocalAppDataPath, "BlockedMods.txt");
-                string destinationPath = Path.Combine(selectedFolderPath, "BlockedMods.txt");
-                if (!File.Exists(blockedModsFilePath))
+                if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
                 {
-                    MessageBox.Show("BlockedMods.txt not found");
-                    return;
+                    selectedFolderPath = folderBrowserDialog.SelectedPath;
+
+                    destinationPath = Path.Combine(selectedFolderPath, "BlockedMods.txt");
+                    if (!File.Exists(blockedModsFilePath))
+                    {
+                        MessageBox.Show("BlockedMods.txt not found");
+                        return;
+                    }
                 }
-                File.Copy(blockedModsFilePath, destinationPath, true);
-                sbar("BlockedMods.txt backed up successfully.");
-                if (log)
-                    activityLog.WriteLog($"BlockedMods.txt backed up to {selectedFolderPath}");
+            }
+            else
+            {
+                destinationPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "BlockedMods.txt");
+            }
+            try
+            {
+                if (destinationPath != string.Empty)
+                {
+                    File.Copy(blockedModsFilePath, destinationPath, true);
+                    sbar("BlockedMods.txt backed up successfully.");
+                    if (log)
+                        activityLog.WriteLog($"BlockedMods.txt backed up to {selectedFolderPath}");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while backing up BlockedMods.txt: {ex.Message}", "Backup Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
         }
 
@@ -5263,27 +5314,35 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             }
         }
 
-        private void BackupContentCatalog()
+        private void BackupContentCatalog(bool useDocuments=false)
         {
-            using FolderBrowserDialog folderBrowserDialog = new();
-            folderBrowserDialog.Description = "Choose folder to use to backup ContentCatalog.txt";
-            folderBrowserDialog.InitialDirectory =
-                Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments); // Set initial directory to Documents Directory
-            if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+            string selectedFolderPath = string.Empty, filePath=Path.Combine(Tools.GameAppData, "ContentCatalog.txt"), 
+                destinationPath=string.Empty; ;
+            if (!useDocuments)
             {
-                string selectedFolderPath = folderBrowserDialog.SelectedPath;
-                string FilePath = Path.Combine(Tools.GameAppData, "ContentCatalog.txt");
-                string destinationPath = Path.Combine(selectedFolderPath, "ContentCatalog.txt");
-                if (!File.Exists(FilePath))
+                using FolderBrowserDialog folderBrowserDialog = new();
+                folderBrowserDialog.Description = "Choose folder to use to backup ContentCatalog.txt";
+                folderBrowserDialog.InitialDirectory =
+                    Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments); // Set initial directory to Documents Directory
+                if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
                 {
-                    MessageBox.Show("ContentCatalog.txt not found");
-                    return;
+                    selectedFolderPath = folderBrowserDialog.SelectedPath;
+                    destinationPath = Path.Combine(selectedFolderPath, "ContentCatalog.txt");
+                    if (!File.Exists(filePath))
+                    {
+                        MessageBox.Show("ContentCatalog.txt not found");
+                        return;
+                    }
                 }
-                File.Copy(FilePath, destinationPath, true);
-                sbar("ContentCatalog.txt backed up.");
-                if (log)
-                    activityLog.WriteLog($"ContentCatalog.txt backed up to {selectedFolderPath}");
             }
+            else
+                destinationPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "ContentCatalog.txt");
+
+            File.Copy(filePath, destinationPath, true);
+            sbar("ContentCatalog.txt backed up.");
+            if (log)
+                activityLog.WriteLog($"ContentCatalog.txt backed up to {selectedFolderPath}");
+
         }
 
         private void backupContentCatalogtxtToolStripMenuItem_Click(object sender, EventArgs e)
@@ -5670,10 +5729,10 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
         private void allTheThingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             BackupPlugins();
-            BackupBlockedMods();
-            BackupContentCatalog();
+            BackupBlockedMods(true); // Use Documents folder
+            BackupContentCatalog(true);
             BackupProfiles();
-            BackupAppSettings();
+            BackupAppSettings(true);
         }
 
         private void enableSplashScreenToolStripMenuItem_Click(object sender, EventArgs e)
@@ -5845,19 +5904,26 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             }
         }
 
-        private void BackupAppSettings()
+        private void BackupAppSettings(bool useDocuments=false)
         {
-            using var sfd = new SaveFileDialog
+            string fileName;
+            if (!useDocuments)
             {
-                Title = "Export application settings to JSON",
-                Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*",
-                DefaultExt = "json",
-                FileName = "hstCMMsettings.json",
-                AddExtension = true,
-                OverwritePrompt = true
-            };
+                using var sfd = new SaveFileDialog
+                {
+                    Title = "Export application settings to JSON",
+                    Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*",
+                    DefaultExt = "json",
+                    FileName = "hstCMMsettings.json",
+                    AddExtension = true,
+                    OverwritePrompt = true
+                };
 
-            if (sfd.ShowDialog(this) != DialogResult.OK) return;
+                if (sfd.ShowDialog(this) != DialogResult.OK) return;
+                fileName = sfd.FileName;
+            }
+            else
+                fileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "hstCMMsettings.json");
 
             SaveSettings();
             try
@@ -5865,7 +5931,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 var dict = GatherSettings();
                 var options = new JsonSerializerOptions { WriteIndented = true };
                 var json = System.Text.Json.JsonSerializer.Serialize(dict, options);
-                File.WriteAllText(sfd.FileName, json);
+                File.WriteAllText(fileName, json);
                 sbar("Settings exported successfully");
             }
             catch (Exception ex)

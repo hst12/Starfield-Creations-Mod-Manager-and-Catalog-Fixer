@@ -94,6 +94,8 @@ namespace hstCMM.Common // Various functions used by the app
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Exclude file missing. Repair or re-install the app", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                File.WriteAllText(Path.Combine(CommonFolder, GameName + " Exclude.txt"),string.Empty);
+                BethFiles = new(File.ReadAllLines(Path.Combine(CommonFolder, GameName + " Exclude.txt"))); // Exclude these files from Plugin list 
                 //Environment.Exit(1);
             }
 
@@ -577,9 +579,10 @@ namespace hstCMM.Common // Various functions used by the app
             {
                 { 0, "Starfield"},
                 { 1, "Skyrim Special Edition"},
-                { 2, "Fallout 4 Aniversary Edition"},
-                { 3, "Elder Scrolls 6"},
-                { 4, "Fallout 5" }
+                { 2, "Fallout4"},
+                { 3, "Fallout 4 Aniversary Edition"},
+                { 4, "Elder Scrolls 6"},
+                { 5, "Fallout 5" }
             };
 
             public string GameName(int id)
