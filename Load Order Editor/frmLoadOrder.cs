@@ -3,6 +3,8 @@ using hstCMM.Load_Order_Editor;
 using Microsoft.Data.SqlClient;
 using Microsoft.VisualBasic;
 using Microsoft.Win32;
+using Microsoft.WindowsAPICodePack.Shell;
+using Microsoft.WindowsAPICodePack.Taskbar;
 using Narod.SteamGameFinder;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
@@ -185,6 +187,13 @@ namespace hstCMM
                 Profiles = false;
             }
             LastProfile ??= Properties.Settings.Default.LastProfile;
+
+            cmbProfile.Enabled = Profiles;
+            if (Profiles)
+                GetProfiles();
+            else
+                InitDataGrid();
+
             foreach (var arg in Environment.GetCommandLineArgs()) // Handle command line arguments
             {
                 //MessageBox.Show(arg); // Show all arguments for debugging
@@ -211,11 +220,6 @@ namespace hstCMM
                     devMode = true;
                 }
             }
-            cmbProfile.Enabled = Profiles;
-            if (Profiles)
-                GetProfiles();
-            else
-                InitDataGrid();
 
             // Creations update
             bool BackupStatus = false;
@@ -254,7 +258,7 @@ namespace hstCMM
                 }
             }
 
-            //etupDB();
+            //setupDB();
         }
 
         private void SetupDB()
@@ -2609,11 +2613,8 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             SS = new frmSplashScreen();
 
             sbar("Starting game...");
-            if (GameVersion != MS)
-            {
-                if (Properties.Settings.Default.LoadScreenEnabled)
-                    SS.Show();
-            }
+            if (GameVersion != MS && Properties.Settings.Default.LoadScreenEnabled)
+                SS.Show();
 
             if (isModified)
                 SavePlugins();
@@ -5314,10 +5315,10 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             }
         }
 
-        private void BackupContentCatalog(bool useDocuments=false)
+        private void BackupContentCatalog(bool useDocuments = false)
         {
-            string selectedFolderPath = string.Empty, filePath=Path.Combine(Tools.GameAppData, "ContentCatalog.txt"), 
-                destinationPath=string.Empty; ;
+            string selectedFolderPath = string.Empty, filePath = Path.Combine(Tools.GameAppData, "ContentCatalog.txt"),
+                destinationPath = string.Empty; ;
             if (!useDocuments)
             {
                 using FolderBrowserDialog folderBrowserDialog = new();
@@ -5342,7 +5343,6 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             sbar("ContentCatalog.txt backed up.");
             if (log)
                 activityLog.WriteLog($"ContentCatalog.txt backed up to {selectedFolderPath}");
-
         }
 
         private void backupContentCatalogtxtToolStripMenuItem_Click(object sender, EventArgs e)
@@ -5904,12 +5904,12 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             }
         }
 
-        private void BackupAppSettings(bool useDocuments=false)
+        private void BackupAppSettings(bool useDocuments = false)
         {
             string fileName;
             if (!useDocuments)
             {
-                using var sfd = new SaveFileDialog
+                using var sfd = new System.Windows.Forms.SaveFileDialog
                 {
                     Title = "Export application settings to JSON",
                     Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*",
@@ -5947,7 +5947,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void RestoreAppSettings()
         {
-            using var ofd = new OpenFileDialog
+            using var ofd = new System.Windows.Forms.OpenFileDialog
             {
                 Title = "Import application settings from JSON",
                 Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*",
@@ -6159,6 +6159,40 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 MessageBox.Show($"Game Path set to {GamePath}", $"{GameName} Detected", MessageBoxButtons.OK, MessageBoxIcon.Information);
             else
                 MessageBox.Show("Error detecting game path", "Game Path Not Found", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+        }
+
+        public static void SetupJumpList()
+        {
+            if (!TaskbarManager.IsPlatformSupported)
+                return;
+
+            JumpList jumpList = JumpList.CreateJumpList();
+            jumpList.KnownCategoryToDisplay = JumpListKnownCategoryType.Neither;
+
+            // Add a custom task with command-line argument
+            JumpListLink runGameTask = new JumpListLink(Application.ExecutablePath, "Run Game")
+            {
+                Arguments = "-run",
+                IconReference = new IconReference(Application.ExecutablePath, 0),
+                WorkingDirectory = Path.GetDirectoryName(Application.ExecutablePath),
+                Title = "Run Game"
+            };
+
+            JumpListLink devModeTask = new JumpListLink(Application.ExecutablePath, "Dev Mode")
+            {
+                Arguments = "-dev",
+                IconReference = new IconReference(Application.ExecutablePath, 0),
+                WorkingDirectory = Path.GetDirectoryName(Application.ExecutablePath),
+                Title = "Dev Mode"
+            };
+
+            jumpList.AddUserTasks(runGameTask, devModeTask);
+            jumpList.Refresh();
+        }
+
+        private void frmLoadOrder_Shown(object sender, EventArgs e)
+        {
+            SetupJumpList();
         }
     }
 }

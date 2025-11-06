@@ -528,7 +528,9 @@ namespace hstCMM.Common // Various functions used by the app
             }
             catch (Exception ex)
             {
+#if DEBUG
                 MessageBox.Show(ex.Message, "Error reading plugins", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+#endif
                 return new List<string>();
             }
         }
