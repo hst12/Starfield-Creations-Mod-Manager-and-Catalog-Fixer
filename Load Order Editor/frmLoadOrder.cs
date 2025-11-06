@@ -6112,6 +6112,15 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             );
 
             List<string> inactiveMods = mods.Except(activeMods).ToList();
+
+            foreach (var mod in inactiveMods)
+                Debug.WriteLine("Inactive mod: " + mod);
+            frmGenericTextList inactive = new("Inactive Mods", inactiveMods);
+            inactive.Show();
+            if (Tools.ConfirmAction("Move Inactive Mods", $"Move {inactiveMods.Count} inactive mods to a separate folder?", 
+                MessageBoxButtons.OKCancel, MessageBoxIcon.Question) != DialogResult.OK)
+                return;
+
             using FolderBrowserDialog folderBrowserDialog = new();
             folderBrowserDialog.Description = "Select destination folder for inactive mods";
             folderBrowserDialog.ShowDialog();
@@ -6167,7 +6176,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 return;
 
             JumpList jumpList = JumpList.CreateJumpList();
-            jumpList.KnownCategoryToDisplay = JumpListKnownCategoryType.Neither;
+            jumpList.KnownCategoryToDisplay = JumpListKnownCategoryType.Recent;
 
             // Add a custom task with command-line argument
             JumpListLink runGameTask = new JumpListLink(Application.ExecutablePath, "Run Game")
