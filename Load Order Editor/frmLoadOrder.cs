@@ -6146,6 +6146,13 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                     mods.Add(row.Cells["PluginName"].Value.ToString());
             }
 
+            if (modsToMove.Count == 0)
+            {
+                sbar("No inactive mods found to move.");
+                MessageBox.Show("No inactive mods found to move.", "Move Inactive Mods", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
             frmGenericTextList inactive = new("These mods will be moved", modsToMove); // Show list of mods to be moved
             inactive.ShowDialog();
             if (Tools.ConfirmAction("Move Inactive Mods", $"Move {modsToMove.Count} inactive mods to a separate folder?",
@@ -6185,6 +6192,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 }
             }
             sbar($"Inactive mods moved to {destDir}");
+            MessageBox.Show("Press the Update button to refresh the mod list or Cancel to leave the Plugins.txt file unchanged.");
         }
 
         private void videoLoadscreenToolStripMenuItem_Click(object sender, EventArgs e)
