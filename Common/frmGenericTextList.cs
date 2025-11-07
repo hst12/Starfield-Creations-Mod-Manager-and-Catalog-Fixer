@@ -12,5 +12,10 @@ namespace hstCMM.Common
             foreach (var item in textLines)
                 richTextBox1.Text += item + "\n";
         }
+
+        private void btnOk_Click(object sender, System.EventArgs e)
+        {
+            this.Close();
+        }
     }
 }

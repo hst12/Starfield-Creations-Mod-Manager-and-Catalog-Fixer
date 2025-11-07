@@ -6127,9 +6127,9 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             foreach (var mod in inactiveMods)
                 Debug.WriteLine("Inactive mod: " + mod);
             frmGenericTextList inactive = new("Inactive Mods", inactiveMods);
-            inactive.Show();
+            inactive.ShowDialog();
             if (Tools.ConfirmAction("Move Inactive Mods", $"Move {inactiveMods.Count} inactive mods to a separate folder?",
-                MessageBoxButtons.OKCancel, MessageBoxIcon.Question) != DialogResult.OK)
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
                 return;
 
             using FolderBrowserDialog folderBrowserDialog = new();
