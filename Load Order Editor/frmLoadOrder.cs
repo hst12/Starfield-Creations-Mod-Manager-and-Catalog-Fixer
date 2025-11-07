@@ -83,6 +83,7 @@ namespace hstCMM
                     tempstr = Tools.LocalAppDataPath;
                 activityLog = new ActivityLog(Path.Combine(tempstr, "Activity Log.txt")); // Create activity log if enabled
                 log = true;
+                btnLog.Font = new System.Drawing.Font(btnLog.Font, log ? FontStyle.Bold : FontStyle.Regular);
             }
 
             foreach (var arg in Environment.GetCommandLineArgs()) // Handle some command line arguments
@@ -5039,6 +5040,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             toggleToolStripMenuItem.Checked = Properties.Settings.Default.Log = log = !toggleToolStripMenuItem.Checked;
             if (activityLog is null)
                 EnableLog();
+            btnLog.Font = new System.Drawing.Font(btnLog.Font, log ? FontStyle.Bold : FontStyle.Regular);
         }
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e) // Log Delete
