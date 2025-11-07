@@ -392,7 +392,8 @@ namespace hstCMM
 
 Click Ok to create a blank Plugins.txt file
 Click File->Restore if you have a backup of your Plugins.txt file
-Alternatively, run the game once to have it create a Plugins.txt file for you.", "Plugins.txt not found");
+Alternatively, run the game once to have it create a Plugins.txt file for you.
+The game will delete your Plugins.txt file if it doesn't find any mods", "Plugins.txt not found");
 
                 try
                 {
@@ -6155,7 +6156,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
             frmGenericTextList inactive = new("These mods will be moved", modsToMove); // Show list of mods to be moved
             inactive.ShowDialog();
-            if (Tools.ConfirmAction("Move Inactive Mods", $"Move {modsToMove.Count} inactive mods to a separate folder?",
+            if (Tools.ConfirmAction("Move Inactive Mods\nExisting files will not be moved", $"Move {modsToMove.Count} inactive mods to a separate folder?",
                 MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
                 return;
 
