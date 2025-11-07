@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace hstCMM.Load_Order_Editor
@@ -84,7 +85,8 @@ namespace hstCMM.Load_Order_Editor
             }
             Properties.Settings.Default.ReadFileBatchPath = saveDialog.FileName;
             if (Tools.ConfirmAction("Readfile generation complete", "Run batch file?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                Tools.OpenFile(saveDialog.FileName);
+                Task.Run(() => Tools.OpenFile(saveDialog.FileName));
+            //Tools.OpenFile(saveDialog.FileName);
             this.Close();
         }
 

@@ -37,7 +37,7 @@ namespace hstCMM
 
         public const byte Steam = 0, MS = 1, Custom = 2, SFSE = 3;
         public static string GamePath, GameName;
-        public static int Game = Properties.Settings.Default.Game;
+        private static int Game = Properties.Settings.Default.Game;
         public static bool NoWarn;
         public static int returnStatus;
         public static ActivityLog activityLog;
@@ -97,7 +97,7 @@ namespace hstCMM
                     ResetPreferences();
             }
 
-            SetupGame();
+            Task.Run(()=>SetupGame());
 
             // Check catalog
             frmCatalogFixer catalogFixer = new();
@@ -139,7 +139,8 @@ namespace hstCMM
             menuStrip1.Font = Properties.Settings.Default.FontSize; // Set custom font size
             this.Font = Properties.Settings.Default.FontSize;
 
-            DetectApps(); // Detect other apps
+            //DetectApps(); // Detect other apps
+            Task.Run(() => DetectApps());
 
             SetTheme(); // Light/Dark mode
 
@@ -188,12 +189,6 @@ namespace hstCMM
             }
             LastProfile ??= Properties.Settings.Default.LastProfile;
 
-            cmbProfile.Enabled = Profiles;
-            if (Profiles)
-                GetProfiles();
-            else
-                InitDataGrid();
-
             foreach (var arg in Environment.GetCommandLineArgs()) // Handle command line arguments
             {
                 //MessageBox.Show(arg); // Show all arguments for debugging
@@ -205,7 +200,8 @@ namespace hstCMM
                 if (arg.StartsWith("-profile", StringComparison.InvariantCultureIgnoreCase))
                 {
                     tempstr = Path.Combine(Properties.Settings.Default.ProfileFolder, Environment.GetCommandLineArgs()[2]);
-                    LastProfile = Environment.GetCommandLineArgs()[2];
+                    //LastProfile = Environment.GetCommandLineArgs()[2];
+                    SwitchProfile(tempstr);
                 }
                 if (arg.StartsWith("-install")) // For future use (maybe) install mod from Nexus web link
                 {
@@ -220,6 +216,12 @@ namespace hstCMM
                     devMode = true;
                 }
             }
+
+            cmbProfile.Enabled = Profiles;
+            if (Profiles)
+                GetProfiles();
+            else
+                InitDataGrid();
 
             // Creations update
             bool BackupStatus = false;
@@ -254,11 +256,11 @@ namespace hstCMM
                     if (AutoSort)
                         RunLOOT(true);
 
-                    InitDataGrid();
+                    //InitDataGrid();
                 }
             }
 
-            //setupDB();
+            //SetupDB();
         }
 
         private void SetupDB()
@@ -292,7 +294,7 @@ namespace hstCMM
 
                 foreach (DataGridViewRow row in dataGridView1.Rows)
                 {
-                    if (row.IsNewRow) continue;
+                    if (row.IsNewRow || !row.Visible) continue;
 
                     cmd.Parameters["@Enabled"].Value = row.Cells["ModEnabled"].Value ?? false;
                     cmd.Parameters["@Name"].Value = row.Cells["PluginName"].Value ?? "";
@@ -540,7 +542,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
             // Assign values
             toggleToolStripMenuItem.Checked = settings.Log;
-            if (activityLog == null && settings.Log)
+            if (activityLog is null && settings.Log)
                 EnableLog();
 
             toolStripMenuProfilesOn.Checked = settings.ProfileOn;
@@ -665,10 +667,9 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 activityLog.WriteLog($"InitDatagrid called from {frame.GetMethod().Name}");
             }
 #endif
-            int EnabledCount = 0, IndexCount = 1, esmCount = 0, espCount = 0, ba2Count, mainCount = 0, i, versionDelimiter, dotIndex;
+            int EnabledCount = 0, IndexCount = 1,  i, versionDelimiter, dotIndex;
             string loText = Path.Combine(Tools.GameAppData, "Plugins.txt"),
-                   LOOTPath = Properties.Settings.Default.LOOTPath,
-                   StatText = "", pluginName, rawVersion;
+                   LOOTPath = Properties.Settings.Default.LOOTPath, pluginName, rawVersion;
 
             List<string> CreationsPlugin = new(), CreationsTitle = new(), CreationsFiles = new(), CreationsVersion = new();
             List<bool> AchievementSafe = new();
@@ -878,27 +879,28 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 row.Cells[12].Value = url; // URL = column 12
 
                 // Update additional columns if visible
-                if (isDescriptionVisible)
-                    row.Cells[3].Value = description; // Description = column 3
-                if (isVersionVisible)
-                    row.Cells[5].Value = modVersion; // Version = column 5
-                if (isAuthorVersionVisible)
-                    row.Cells[6].Value = authorVersion; // AuthorVersion = column 6
-                if (isTimeStampVisible)
-                    row.Cells[7].Value = modTimeStamp; // TimeStamp = column 7
-                if (isAchievementsVisible)
-                    row.Cells[8].Value = aSafe; // Achievements = column 8
-                if (isFilesVisible)
-                    row.Cells[9].Value = modFiles; // Files = column 9
-                if (isFileSizeVisible)
-                    row.Cells[11].Value = modFileSize != 0 ? modFileSize : null; // FileSize = column 11
-                if (isIndexVisible)
-                    row.Cells[0].Value = IndexCount++; // Index = column 0
+                var columnUpdates = new Dictionary<int, (bool isVisible, object value)>
+                {
+                    [0] = (isIndexVisible, IndexCount++),
+                    [3] = (isDescriptionVisible, description),
+                    [5] = (isVersionVisible, modVersion),
+                    [6] = (isAuthorVersionVisible, authorVersion),
+                    [7] = (isTimeStampVisible, modTimeStamp),
+                    [8] = (isAchievementsVisible, aSafe),
+                    [9] = (isFilesVisible, modFiles),
+                    [11] = (isFileSizeVisible, modFileSize != 0 ? modFileSize : null)
+                };
+
+                foreach (var kvp in columnUpdates)
+                {
+                    if (kvp.Value.isVisible)
+                        row.Cells[kvp.Key].Value = kvp.Value.value;
+                }
 
                 rowBuffer.Add(row);
             } // End of main loop
-            foreach (var row in rowBuffer)
-                dataGridView1.Rows.AddRange(row);
+
+            dataGridView1.Rows.AddRange(rowBuffer.ToArray());
 
             // Restore column visibility based on user settings.
             SetColumnVisibility(Properties.Settings.Default.CreationsID, toolStripMenuCreationsID, dataGridView1.Columns["CreationsID"]);
@@ -930,103 +932,108 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
             // -- Process mod stats if the game path is set --
             if (!string.IsNullOrEmpty(GamePath) && Properties.Settings.Default.ModStats)
+                Task.Run(() => ShowModStats(CreationsPlugin));
+            else
+                sbar("");
+        }
+
+        private void ShowModStats(List<string> CreationsPlugin)
+        {
+            string loText = Path.Combine(Tools.GameAppData, "Plugins.txt"), StatText;
+            int ba2Count, esmCount, espCount, mainCount, EnabledCount = 0;
+            try
             {
-                try
+                // Cache file paths and load BGS archives once
+                var dataDirectory = Path.Combine(GamePath, "Data");
+                var bgsArchives = File.ReadLines(Path.Combine(Tools.CommonFolder, GameName + " Archives.txt"))
+                    .Where(line => line.Length > 4)
+                    .Select(line => line[..^4].ToLowerInvariant())
+                    .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+                // Load enabled plugins once
+                var enabledPlugins = File.ReadLines(loText)
+                    .Where(line => line.StartsWith('*') && line.Length > 1)
+                    .Select(line => line[1..])
+                    .Where(plugin => plugin.Contains('.'))
+                    .Select(plugin => plugin.Split('.')[0].ToLowerInvariant())
+                    .Where(plugin => !bgsArchives.Contains(plugin))
+                    .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+                // Process all BA2 files
+                var allBa2Files = Directory.EnumerateFiles(dataDirectory, "*.ba2", SearchOption.TopDirectoryOnly);
+                var archives = new List<string>();
+                var mainArchivePlugins = new List<string>();
+                var textureArchivePlugins = new List<string>();
+
+                foreach (var file in allBa2Files)
                 {
-                    // Cache file paths and load BGS archives once
-                    var dataDirectory = Path.Combine(GamePath, "Data");
-                    var bgsArchives = File.ReadLines(Path.Combine(Tools.CommonFolder, GameName + " Archives.txt"))
-                        .Where(line => line.Length > 4)
-                        .Select(line => line[..^4].ToLowerInvariant())
-                        .ToHashSet(StringComparer.OrdinalIgnoreCase);
+                    var fileNameWithoutExt = Path.GetFileNameWithoutExtension(file);
+                    if (string.IsNullOrEmpty(fileNameWithoutExt))
+                        continue;
 
-                    // Load enabled plugins once
-                    var enabledPlugins = File.ReadLines(loText)
-                        .Where(line => line.StartsWith('*') && line.Length > 1)
-                        .Select(line => line[1..])
-                        .Where(plugin => plugin.Contains('.'))
-                        .Select(plugin => plugin.Split('.')[0].ToLowerInvariant())
-                        .Where(plugin => !bgsArchives.Contains(plugin))
-                        .ToHashSet(StringComparer.OrdinalIgnoreCase);
+                    var lowerFileName = fileNameWithoutExt.ToLowerInvariant();
 
-                    // Process all BA2 files in one enumeration
-                    var allBa2Files = Directory.EnumerateFiles(dataDirectory, "*.ba2", SearchOption.TopDirectoryOnly);
-                    var archives = new List<string>();
-                    var mainArchivePlugins = new List<string>();
-                    var textureArchivePlugins = new List<string>();
+                    // Skip BGS archives
+                    if (bgsArchives.Contains(lowerFileName))
+                        continue;
 
-                    foreach (var file in allBa2Files)
+                    archives.Add(lowerFileName);
+
+                    // Check for main archives and extract mod name
+                    if (lowerFileName.Contains(" - main", StringComparison.OrdinalIgnoreCase))
                     {
-                        var fileNameWithoutExt = Path.GetFileNameWithoutExtension(file);
-                        if (string.IsNullOrEmpty(fileNameWithoutExt))
-                            continue;
-
-                        var lowerFileName = fileNameWithoutExt.ToLowerInvariant();
-
-                        // Skip BGS archives
-                        if (bgsArchives.Contains(lowerFileName))
-                            continue;
-
-                        archives.Add(lowerFileName);
-
-                        // Check for main archives and extract mod name
-                        if (lowerFileName.Contains(" - main", StringComparison.OrdinalIgnoreCase))
-                        {
-                            var modName = lowerFileName.Replace(" - main", string.Empty, StringComparison.OrdinalIgnoreCase);
-                            mainArchivePlugins.Add(modName);
-                        }
-
-                        // Check for texture archives and extract mod name
-                        if (lowerFileName.Contains(" - textures", StringComparison.OrdinalIgnoreCase))
-                        {
-                            var modName = lowerFileName.Replace(" - textures", string.Empty, StringComparison.OrdinalIgnoreCase);
-                            textureArchivePlugins.Add(modName);
-                        }
+                        var modName = lowerFileName.Replace(" - main", string.Empty, StringComparison.OrdinalIgnoreCase);
+                        mainArchivePlugins.Add(modName);
                     }
 
-                    // Calculate all counts
-                    ba2Count = Directory.EnumerateFiles(dataDirectory, "*.ba2", SearchOption.TopDirectoryOnly).Count();
-                    esmCount = Directory.EnumerateFiles(dataDirectory, "*.esm", SearchOption.TopDirectoryOnly).Count();
-
-                    espCount = Directory.EnumerateFiles(dataDirectory, "*.esp", SearchOption.TopDirectoryOnly)
-                        .Select(file => Path.GetFileNameWithoutExtension(file))
-                        .Where(plugin => !string.IsNullOrEmpty(plugin))
-                        .Count(plugin => enabledPlugins.Contains(plugin.ToLowerInvariant()));
-
-                    mainCount = mainArchivePlugins.Count(mod => enabledPlugins.Contains(mod));
-                    var textureCount = textureArchivePlugins.Count(mod => enabledPlugins.Contains(mod));
-
-                    // Build status text
-                    var statusBuilder = new StringBuilder();
-                    statusBuilder.Append($"Creations {CreationsPlugin.Count}, Other {dataGridView1.RowCount - CreationsPlugin.Count}, ");
-                    statusBuilder.Append($"Enabled: {EnabledCount}, esm: {esmCount}, Archives: {ba2Count}, ");
-                    statusBuilder.Append($"Enabled - Main: {mainCount}, Textures: {textureCount}");
-
-                    if (espCount > 0)
-                        statusBuilder.Append($", esp files: {espCount}");
-
-                    StatText = statusBuilder.ToString();
-
-                    // Validate plugin consistency
-                    var otherPluginCount = dataGridView1.RowCount - CreationsPlugin.Count;
-                    Debug.Assert(otherPluginCount >= 0, "Plugins mismatch");
-
-                    if (otherPluginCount < 0)
+                    // Check for texture archives and extract mod name
+                    if (lowerFileName.Contains(" - textures", StringComparison.OrdinalIgnoreCase))
                     {
-                        sbar4("Catalog/Plugins mismatch - Run game to solve");
+                        var modName = lowerFileName.Replace(" - textures", string.Empty, StringComparison.OrdinalIgnoreCase);
+                        textureArchivePlugins.Add(modName);
                     }
-                    sbar(StatText);
                 }
-                catch (Exception ex)
+
+                // Calculate all counts
+                ba2Count = Directory.EnumerateFiles(dataDirectory, "*.ba2", SearchOption.TopDirectoryOnly).Count();
+                esmCount = Directory.EnumerateFiles(dataDirectory, "*.esm", SearchOption.TopDirectoryOnly).Count();
+
+                espCount = Directory.EnumerateFiles(dataDirectory, "*.esp", SearchOption.TopDirectoryOnly)
+                    .Select(file => Path.GetFileNameWithoutExtension(file))
+                    .Where(plugin => !string.IsNullOrEmpty(plugin))
+                    .Count(plugin => enabledPlugins.Contains(plugin.ToLowerInvariant()));
+
+                mainCount = mainArchivePlugins.Count(mod => enabledPlugins.Contains(mod));
+                var textureCount = textureArchivePlugins.Count(mod => enabledPlugins.Contains(mod));
+
+                // Build status text
+                var statusBuilder = new StringBuilder();
+                statusBuilder.Append($"Creations {CreationsPlugin.Count}, Other {dataGridView1.RowCount - CreationsPlugin.Count}, ");
+                statusBuilder.Append($"Enabled: {EnabledCount}, esm: {esmCount}, Archives: {ba2Count}, ");
+                statusBuilder.Append($"Enabled - Main: {mainCount}, Textures: {textureCount}");
+
+                if (espCount > 0)
+                    statusBuilder.Append($", esp files: {espCount}");
+
+                StatText = statusBuilder.ToString();
+
+                // Validate plugin consistency
+                var otherPluginCount = dataGridView1.RowCount - CreationsPlugin.Count;
+                Debug.Assert(otherPluginCount >= 0, "Plugins mismatch");
+
+                if (otherPluginCount < 0)
                 {
-                    sbar($"{GameName} path needs to be set for mod stats");
+                    sbar4("Catalog/Plugins mismatch - Run game to solve");
+                }
+                sbar(StatText);
+            }
+            catch (Exception ex)
+            {
+                sbar($"{GameName} path needs to be set for mod stats");
 #if DEBUG
                     MessageBox.Show($"Mod stats error: {ex.Message}");
 #endif
-                }
             }
-            else
-                sbar("");
         }
 
         private void GetProfiles()
@@ -1822,7 +1829,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 var row = rows[i];
                 var cellValue = row.Cells[pluginNameIndex].Value;
 
-                if (cellValue == null) continue;
+                if (cellValue is null) continue;
 
                 var pluginName = cellValue as string;
                 if (string.IsNullOrEmpty(pluginName)) continue;
@@ -4219,7 +4226,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             }
             List<string> profiles = new();
 
-            if (cmbProfile.Items.Count == 0 || cmbProfile.SelectedItem == null)
+            if (cmbProfile.Items.Count == 0 || cmbProfile.SelectedItem is null)
             {
                 MessageBox.Show("No valid profiles found");
                 return;
@@ -4294,8 +4301,8 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 }
             }
 
-            int minWidth = 1840; // Set your minimum width
-            int minHeight = 800; // Set your minimum height
+            int minWidth = 1840; // Set minimum width
+            int minHeight = 800; // Set minimum height
 
             if (this.Width < minWidth || this.Height < minHeight)
             {
@@ -4428,8 +4435,8 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
     ("Group", toolStripMenuGroup),
     ("Version", toolStripMenuVersion),
     ("AuthorVersion", toolStripMenuAuthorVersion),
-    ("Description", toolStripMenuDescription)/*,
-    ("Blocked", blockedToolStripMenuItem)*/
+    ("Description", toolStripMenuDescription),
+    ("Blocked", blockedToolStripMenuItem)
 };
             var disableItems = new[]
             {
@@ -4934,7 +4941,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                                       .Where(n => !string.IsNullOrEmpty(n))
                                       .ToArray();
 
-            if (profiles.Length == 0 || activeProfile == null)
+            if (profiles.Length == 0 || activeProfile is null)
             {
                 MessageBox.Show("No valid profiles found");
                 if (log)
@@ -5030,13 +5037,13 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
         private void toggleToolStripMenuItem_Click(object sender, EventArgs e) // Log Toggle
         {
             toggleToolStripMenuItem.Checked = Properties.Settings.Default.Log = log = !toggleToolStripMenuItem.Checked;
-            if (activityLog == null)
+            if (activityLog is null)
                 EnableLog();
         }
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e) // Log Delete
         {
-            if (activityLog == null)
+            if (activityLog is null)
                 return;
             activityLog.DeleteLog();
             if (log)
@@ -5609,7 +5616,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
         {
             string modName;
 
-            if (dataGridView1.CurrentRow == null || dataGridView1.CurrentRow.IsNewRow)
+            if (dataGridView1.CurrentRow is null || dataGridView1.CurrentRow.IsNewRow)
             {
                 MessageBox.Show("Please select a mod first.");
                 return;
@@ -5744,7 +5751,8 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
         private void runBatchFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (!string.IsNullOrEmpty(Properties.Settings.Default.ReadFileBatchPath))
-                Tools.OpenFile(Properties.Settings.Default.ReadFileBatchPath);
+                Task.Run(() => Tools.OpenFile(Properties.Settings.Default.ReadFileBatchPath));
+            //Tools.OpenFile(Properties.Settings.Default.ReadFileBatchPath);
             else
                 MessageBox.Show("Batch file path not set. Please set it in the settings.", "Batch File Not Set", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
@@ -5960,8 +5968,8 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             try
             {
                 var json = File.ReadAllText(ofd.FileName);
-                var dict = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, object?>>(json);
-                if (dict == null) throw new InvalidOperationException("Invalid JSON or empty file.");
+                Dictionary<string, object> dict = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, object?>>(json);
+                if (dict is null) throw new InvalidOperationException("Invalid JSON or empty file.");
                 ApplySettings(dict);
                 Properties.Settings.Default.Save();
                 MessageBox.Show("Please restart the application to apply all settings.", "Restart Required", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -6005,14 +6013,14 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             foreach (var kvp in imported)
             {
                 var key = kvp.Key;
-                if (Properties.Settings.Default.Properties[key] == null) continue;
+                if (Properties.Settings.Default.Properties[key] is null) continue;
 
                 try
                 {
                     var targetProp = Properties.Settings.Default.Properties[key];
                     var targetType = targetProp.PropertyType;
 
-                    if (kvp.Value == null)
+                    if (kvp.Value is null)
                     {
                         Properties.Settings.Default[key] = null;
                         continue;
@@ -6117,7 +6125,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 Debug.WriteLine("Inactive mod: " + mod);
             frmGenericTextList inactive = new("Inactive Mods", inactiveMods);
             inactive.Show();
-            if (Tools.ConfirmAction("Move Inactive Mods", $"Move {inactiveMods.Count} inactive mods to a separate folder?", 
+            if (Tools.ConfirmAction("Move Inactive Mods", $"Move {inactiveMods.Count} inactive mods to a separate folder?",
                 MessageBoxButtons.OKCancel, MessageBoxIcon.Question) != DialogResult.OK)
                 return;
 
@@ -6195,7 +6203,15 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 Title = "Dev Mode"
             };
 
-            jumpList.AddUserTasks(runGameTask, devModeTask);
+            JumpListLink DemoTask = new JumpListLink(Application.ExecutablePath, "Demo Profile")
+            {
+                Arguments = "-profile Demo.txt",
+                IconReference = new IconReference(Application.ExecutablePath, 0),
+                WorkingDirectory = Path.GetDirectoryName(Application.ExecutablePath),
+                Title = "Demo Profile"
+            };
+
+            jumpList.AddUserTasks(runGameTask, devModeTask, DemoTask);
             jumpList.Refresh();
         }
 

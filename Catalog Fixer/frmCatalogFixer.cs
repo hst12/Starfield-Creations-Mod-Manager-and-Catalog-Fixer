@@ -597,7 +597,7 @@ namespace hstCMM
             }
 
             // Re-insert the header (skipping the first '{' character from the JSON string).
-            json = Tools.MakeHeader() + json.Substring(1);
+            json = Tools.MakeHeader() + json[1..];
             File.WriteAllText(jsonFilePath, json);
 
             toolStripStatusLabel1.Text = $"{versionReplacementCount} Version replacements";

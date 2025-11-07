@@ -340,7 +340,7 @@ namespace hstCMM.Common // Various functions used by the app
 
         public string SetGamePath() // Prompt for game path
         {
-            using System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            using System.Windows.Forms.OpenFileDialog openFileDialog = new();
             if (!string.IsNullOrEmpty(frmLoadOrder.GamePath))
                 openFileDialog.InitialDirectory = frmLoadOrder.GamePath;
             else
@@ -396,7 +396,7 @@ namespace hstCMM.Common // Various functions used by the app
         public static bool StartGameCustom() // Start game with custom exe
         {
             string cmdLine = Properties.Settings.Default.CustomEXE;
-            if (cmdLine == null)
+            if (cmdLine is null)
                 return false;
 
             try
@@ -420,7 +420,7 @@ namespace hstCMM.Common // Various functions used by the app
         public static bool StartGameSFSE() // Start game with SFSE loader
         {
             string cmdLine = Path.Combine(Properties.Settings.Default.GamePath, "sfse_loader.exe");
-            if (cmdLine == null)
+            if (cmdLine is null)
                 return false;
 
             try
@@ -486,7 +486,7 @@ namespace hstCMM.Common // Various functions used by the app
             try
             {
                 string stringValue = (string)Registry.GetValue(keyName, "SteamExe", ""); // Get Steam path from Registry
-                SteamGameLocator steamGameLocator = new SteamGameLocator();
+                SteamGameLocator steamGameLocator = new();
                 var gameID = steamGameLocator.getGameInfoByFolder(GameName).steamGameID;
                 var processInfo = new ProcessStartInfo(stringValue, $"-applaunch {gameID}");
                 var process = Process.Start(processInfo);
@@ -577,7 +577,7 @@ namespace hstCMM.Common // Various functions used by the app
 
         public class GameLibrary
         {
-            private readonly Dictionary<int, string> _games = new Dictionary<int, string>
+            private readonly Dictionary<int, string> _games = new()
             {
                 { 0, "Starfield"},
                 { 1, "Skyrim Special Edition"},
