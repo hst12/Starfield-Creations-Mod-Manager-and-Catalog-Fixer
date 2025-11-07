@@ -1032,7 +1032,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             {
                 sbar($"{GameName} path needs to be set for mod stats");
 #if DEBUG
-                    MessageBox.Show($"Mod stats error: {ex.Message}");
+                MessageBox.Show($"Mod stats error: {ex.Message}");
 #endif
             }
         }
@@ -6111,24 +6111,44 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void moveUnusedModsOutOfDataDirectoryToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            List<string> mods = pluginList.Select(Path.GetFileNameWithoutExtension).ToList();
+            List<string> mods = new(), modsToMove = new();
 
-            // Get all plugin names that are marked active in Plugins.txt (lines starting with '*')
-            string pluginsPath = Path.Combine(Tools.GameAppData, "Plugins.txt");
-            var activeMods = new HashSet<string>(
-                File.ReadLines(pluginsPath)
-                    .Where(line => !string.IsNullOrWhiteSpace(line) && line[0] == '*')
-                    .Select(line => line[1..].Trim()).Select(Path.GetFileNameWithoutExtension),
-                StringComparer.OrdinalIgnoreCase
-            );
+            frmMoveMods moveModsForm = new();
+            moveModsForm.ShowDialog();
+            if (returnStatus == 0) // 0 = Cancel, 1 = Creations, 2 = Other, 3 = Both
+            {
+                sbar("Move Inactive Mods cancelled.");
+                return;
+            }
 
-            List<string> inactiveMods = mods.Except(activeMods).ToList();
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                if ((bool)row.Cells["ModEnabled"].Value == false) // Disabled only
+                {
+                    switch (returnStatus)
+                    {
+                        case 1: // Creations
+                            if (!string.IsNullOrEmpty(row.Cells["CreationsID"].Value.ToString()))
+                                modsToMove.Add(row.Cells["PluginName"].Value.ToString());
+                            break;
 
-            foreach (var mod in inactiveMods)
-                Debug.WriteLine("Inactive mod: " + mod);
-            frmGenericTextList inactive = new("Inactive Mods", inactiveMods);
+                        case 2: // Other
+                            if (string.IsNullOrEmpty(row.Cells["CreationsID"].Value.ToString()))
+                                modsToMove.Add(row.Cells["PluginName"].Value.ToString());
+                            break;
+
+                        case 3: // Both
+                            modsToMove.Add(row.Cells["PluginName"].Value.ToString());
+                            break;
+                    }
+                }
+                else
+                    mods.Add(row.Cells["PluginName"].Value.ToString());
+            }
+
+            frmGenericTextList inactive = new("These mods will be moved", modsToMove); // Show list of mods to be moved
             inactive.ShowDialog();
-            if (Tools.ConfirmAction("Move Inactive Mods", $"Move {inactiveMods.Count} inactive mods to a separate folder?",
+            if (Tools.ConfirmAction("Move Inactive Mods", $"Move {modsToMove.Count} inactive mods to a separate folder?",
                 MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
                 return;
 
@@ -6138,9 +6158,9 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             if (string.IsNullOrEmpty(folderBrowserDialog.SelectedPath))
                 return;
             string destDir = Path.Combine(folderBrowserDialog.SelectedPath, "Inactive Mods");
-            foreach (var mod in inactiveMods)
+            foreach (var mod in modsToMove)
             {
-                string[] patterns = { mod + ".*", mod + " - *.ba2" };
+                string[] patterns = { mod[..mod.LastIndexOf('.')] + ".*", mod[..mod.LastIndexOf('.')] + " - *.ba2" }; // Strip extension
                 foreach (var pattern in patterns)
                 {
                     var files = Directory.GetFiles(Path.Combine(GamePath, "Data"), pattern);
