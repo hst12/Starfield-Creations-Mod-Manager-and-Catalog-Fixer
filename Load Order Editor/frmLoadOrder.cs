@@ -5089,6 +5089,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             log = false;
             Properties.Settings.Default.Log = false;
             toggleToolStripMenuItem.Checked = false;
+            btnLog.Font = new System.Drawing.Font(btnLog.Font, log ? FontStyle.Bold : FontStyle.Regular);
         }
 
         private void EnableLog()

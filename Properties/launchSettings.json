@@ -2,7 +2,6 @@
   "profiles": {
     "Starfield Tools": {
       "commandName": "Project",
-      "commandLineArgs": "-dev",
       "nativeDebugging": false
     }
   }
