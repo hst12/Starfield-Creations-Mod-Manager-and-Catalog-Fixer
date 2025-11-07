@@ -98,7 +98,7 @@ namespace hstCMM
                     ResetPreferences();
             }
 
-            Task.Run(() => SetupGame());
+            SetupGame();
 
             // Check catalog
             frmCatalogFixer catalogFixer = new();
