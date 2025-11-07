@@ -2240,7 +2240,7 @@
             flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Left;
             flowLayoutPanel1.Location = new System.Drawing.Point(3, 942);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new System.Drawing.Size(1765, 46);
+            flowLayoutPanel1.Size = new System.Drawing.Size(1693, 46);
             flowLayoutPanel1.TabIndex = 8;
             flowLayoutPanel1.WrapContents = false;
             // 
@@ -2368,9 +2368,9 @@
             btnActiveOnly.Location = new System.Drawing.Point(870, 2);
             btnActiveOnly.Margin = new System.Windows.Forms.Padding(2);
             btnActiveOnly.Name = "btnActiveOnly";
-            btnActiveOnly.Size = new System.Drawing.Size(149, 42);
+            btnActiveOnly.Size = new System.Drawing.Size(77, 42);
             btnActiveOnly.TabIndex = 1;
-            btnActiveOnly.Text = "Filter Active";
+            btnActiveOnly.Text = "Filter";
             toolTip1.SetToolTip(btnActiveOnly, "Show all or show active mods only");
             btnActiveOnly.UseVisualStyleBackColor = true;
             btnActiveOnly.Click += btnActiveOnly_Click;
@@ -2379,7 +2379,7 @@
             // 
             btnRefresh.AutoSize = true;
             btnRefresh.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            btnRefresh.Location = new System.Drawing.Point(1023, 2);
+            btnRefresh.Location = new System.Drawing.Point(951, 2);
             btnRefresh.Margin = new System.Windows.Forms.Padding(2);
             btnRefresh.Name = "btnRefresh";
             btnRefresh.Size = new System.Drawing.Size(103, 42);
@@ -2393,7 +2393,7 @@
             // 
             btnUpdate.AutoSize = true;
             btnUpdate.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            btnUpdate.Location = new System.Drawing.Point(1130, 2);
+            btnUpdate.Location = new System.Drawing.Point(1058, 2);
             btnUpdate.Margin = new System.Windows.Forms.Padding(2);
             btnUpdate.Name = "btnUpdate";
             btnUpdate.Size = new System.Drawing.Size(101, 42);
@@ -2407,7 +2407,7 @@
             // 
             btnLoot.AutoSize = true;
             btnLoot.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            btnLoot.Location = new System.Drawing.Point(1235, 2);
+            btnLoot.Location = new System.Drawing.Point(1163, 2);
             btnLoot.Margin = new System.Windows.Forms.Padding(2);
             btnLoot.Name = "btnLoot";
             btnLoot.Size = new System.Drawing.Size(115, 42);
@@ -2421,7 +2421,7 @@
             // 
             btnCatalog.AutoSize = true;
             btnCatalog.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            btnCatalog.Location = new System.Drawing.Point(1354, 2);
+            btnCatalog.Location = new System.Drawing.Point(1282, 2);
             btnCatalog.Margin = new System.Windows.Forms.Padding(2);
             btnCatalog.Name = "btnCatalog";
             btnCatalog.Size = new System.Drawing.Size(105, 42);
@@ -2435,7 +2435,7 @@
             // 
             btnRun.AutoSize = true;
             btnRun.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            btnRun.Location = new System.Drawing.Point(1463, 2);
+            btnRun.Location = new System.Drawing.Point(1391, 2);
             btnRun.Margin = new System.Windows.Forms.Padding(2);
             btnRun.Name = "btnRun";
             btnRun.Size = new System.Drawing.Size(66, 42);
@@ -2448,7 +2448,7 @@
             // btnLog
             // 
             btnLog.AutoSize = true;
-            btnLog.Location = new System.Drawing.Point(1533, 2);
+            btnLog.Location = new System.Drawing.Point(1461, 2);
             btnLog.Margin = new System.Windows.Forms.Padding(2);
             btnLog.Name = "btnLog";
             btnLog.Size = new System.Drawing.Size(66, 42);
@@ -2462,7 +2462,7 @@
             // 
             btnCancel.AutoSize = true;
             btnCancel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            btnCancel.Location = new System.Drawing.Point(1603, 2);
+            btnCancel.Location = new System.Drawing.Point(1531, 2);
             btnCancel.Margin = new System.Windows.Forms.Padding(2);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new System.Drawing.Size(95, 42);
@@ -2476,7 +2476,7 @@
             // 
             btnQuit.AutoSize = true;
             btnQuit.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            btnQuit.Location = new System.Drawing.Point(1702, 2);
+            btnQuit.Location = new System.Drawing.Point(1630, 2);
             btnQuit.Margin = new System.Windows.Forms.Padding(2);
             btnQuit.Name = "btnQuit";
             btnQuit.Size = new System.Drawing.Size(61, 42);

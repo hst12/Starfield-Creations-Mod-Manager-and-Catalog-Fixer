@@ -5315,7 +5315,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 GamePath = tools.GamePath;
 
                 SetupGame();
-                if (GameVersion == Steam)
+                if (GameVersion is Steam || GameVersion is SFSE)
                     GetSteamGamePath();
                 pluginList = tools.GetPluginList();
                 Application.Exit();
