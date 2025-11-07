@@ -84,7 +84,7 @@ namespace hstCMM.Common // Various functions used by the app
 
             DocumentationFolder = Path.Combine(Environment.CurrentDirectory, "Documentation");
 
-            GameLibrary gl = new GameLibrary();
+            GameNames gl = new();
             GameName = gl.GameName(Properties.Settings.Default.Game);
 
             try
@@ -574,7 +574,7 @@ namespace hstCMM.Common // Various functions used by the app
 
         public class GameInfo
         {
-            public GameLibrary GameId { get; set; } // See GameLibrary class
+            public GameNames GameId { get; set; } // See GameNames class
             public string GamePath { get; set; } // Path to game .exe
             public string GameAppData { get; set; } // Path to %LocalAppData% game folder
             public string SteamAppId { get; set; } // Steam AppID
@@ -583,7 +583,7 @@ namespace hstCMM.Common // Various functions used by the app
             public string[] ModArchives { get; set; } // Supported mod archive types - .bsa, ba2, etc.
         }
 
-        public class GameLibrary
+        public class GameNames
         {
             private readonly Dictionary<int, string> _games = new()
             {

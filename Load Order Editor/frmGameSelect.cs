@@ -10,7 +10,7 @@ namespace hstCMM.Load_Order_Editor
     public partial class frmGameSelect : Form
     {
         private readonly Tools tools = new();
-        private Tools.GameLibrary gl = new();
+        private Tools.GameNames gl = new();
 
         public frmGameSelect()
         {

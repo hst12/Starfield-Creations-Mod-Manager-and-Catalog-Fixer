@@ -379,7 +379,7 @@ namespace hstCMM
         {
             GameVersion = Properties.Settings.Default.GameVersion;
             Game = Properties.Settings.Default.Game;
-            GameLibrary gl = new GameLibrary();
+            GameNames gl = new();
             GameName = gl.GameName(Properties.Settings.Default.Game);
             if (log)
                 activityLog.WriteLog($"Game set to {GameName}");
@@ -5313,7 +5313,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             {
                 MessageBox.Show("App will restart. Profiles Disabled", "Restart Required", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 Game = Properties.Settings.Default.Game;
-                GameLibrary gl = new GameLibrary();
+                GameNames gl = new GameNames();
                 GameName = gl.GameName(Properties.Settings.Default.Game);
                 GamePath = tools.GamePath;
 
