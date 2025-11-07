@@ -94,8 +94,8 @@ namespace hstCMM.Common // Various functions used by the app
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Exclude file missing. Repair or re-install the app", MessageBoxButtons.OK, MessageBoxIcon.Stop);
-                File.WriteAllText(Path.Combine(CommonFolder, GameName + " Exclude.txt"),string.Empty);
-                BethFiles = new(File.ReadAllLines(Path.Combine(CommonFolder, GameName + " Exclude.txt"))); // Exclude these files from Plugin list 
+                File.WriteAllText(Path.Combine(CommonFolder, GameName + " Exclude.txt"), string.Empty);
+                BethFiles = new(File.ReadAllLines(Path.Combine(CommonFolder, GameName + " Exclude.txt"))); // Exclude these files from Plugin list
                 //Environment.Exit(1);
             }
 
@@ -509,22 +509,28 @@ namespace hstCMM.Common // Various functions used by the app
             return MessageBox.Show(ActionText, ActionTitle, buttons, icon);
         }
 
-        public List<string> GetPluginList() // Get list of plugins from game Data folder
+        public List<string> GetPluginList(int Game) // Get list of plugins from game Data folder
         {
             string dataPath = Path.Combine(frmLoadOrder.GamePath, "Data");
+            List<string> plugins = new();
+            string[] patterns;
             try
             {
-                /*var patterns = new[] { "*.esm", "*.esl" };
-                var allFiles = patterns.SelectMany(pattern =>
-                    Directory.EnumerateFiles(dataPath, pattern, SearchOption.TopDirectoryOnly)
-                        .Select(Path.GetFileName)
-                                .Where(fileName => !BethFiles.Contains(fileName))
-                                .ToList());*/
+                if (Game == 0) // Starfield or possibly future BGS games without ESL support
+                    patterns = new[] {"*.esm", "*.esp" };
+                else
+                    patterns = new[] { "*.esm", "*.esl", "*.esp" };
+                foreach (var pattern in patterns)
+                {
+                    var modFiles = Directory.EnumerateFiles(dataPath, pattern, SearchOption.TopDirectoryOnly)
+                                    .Select(Path.GetFileName)
+                                    .Where(fileName => !BethFiles.Contains(fileName))
+                                    .ToList();
+                    foreach (var item in modFiles)
+                        plugins.Add(item);
+                }
 
-                return Directory.EnumerateFiles(dataPath, "*.esm", SearchOption.TopDirectoryOnly)
-                                .Select(Path.GetFileName)
-                                .Where(fileName => !BethFiles.Contains(fileName))
-                                .ToList();
+                return plugins;
             }
             catch (Exception ex)
             {
@@ -549,12 +555,12 @@ namespace hstCMM.Common // Various functions used by the app
             return bgsArchives;
         }
 
-        public static void OpenFolder(string folder)
+        public static void OpenFolder(string folder) // Used to open misc folders in Explorer
         {
             Process.Start(new ProcessStartInfo(folder) { UseShellExecute = true });
         }
 
-        public static void OpenFile(string file)
+        public static void OpenFile(string file) // Used to open misc text files
         {
             if (File.Exists(file))
             {
@@ -568,11 +574,13 @@ namespace hstCMM.Common // Various functions used by the app
 
         public class GameInfo
         {
-            public byte GameId { get; set; }
-            public string GameName { get; set; }
-            public string GamePath { get; set; }
-            public string SteamAppId { get; set; }
-            public string MSStoreId { get; set; }
+            public GameLibrary GameId { get; set; } // See GameLibrary class
+            public string GamePath { get; set; } // Path to game .exe
+            public string GameAppData { get; set; } // Path to %LocalAppData% game folder
+            public string SteamAppId { get; set; } // Steam AppID
+            public string MSStoreId { get; set; } // MS Store ID ?
+            public string[] Modfiles { get; set; } // Supported mod file types - .esm, esp, etc.
+            public string[] ModArchives { get; set; } // Supported mod archive types - .bsa, ba2, etc.
         }
 
         public class GameLibrary

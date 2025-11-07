@@ -98,7 +98,7 @@ namespace hstCMM
                     ResetPreferences();
             }
 
-            Task.Run(()=>SetupGame());
+            Task.Run(() => SetupGame());
 
             // Check catalog
             frmCatalogFixer catalogFixer = new();
@@ -174,7 +174,7 @@ namespace hstCMM
             if (Properties.Settings.Default.LOOTEnabled) // Cache LOOT groups
                 ReadLOOTGroups();
 
-            pluginList = tools.GetPluginList(); // Cache plugins
+            pluginList = tools.GetPluginList(Game); // Cache plugins
 
             // Initialise profiles
             if (Properties.Settings.Default.ProfileOn)
@@ -668,7 +668,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 activityLog.WriteLog($"InitDatagrid called from {frame.GetMethod().Name}");
             }
 #endif
-            int EnabledCount = 0, IndexCount = 1,  i, versionDelimiter, dotIndex;
+            int EnabledCount = 0, IndexCount = 1, i, versionDelimiter, dotIndex;
             string loText = Path.Combine(Tools.GameAppData, "Plugins.txt"),
                    LOOTPath = Properties.Settings.Default.LOOTPath, pluginName, rawVersion;
 
@@ -1109,7 +1109,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                         writer.WriteLine(pluginName);
                     }
                 }
-                pluginList = tools.GetPluginList();
+                pluginList = tools.GetPluginList(Game);
             }
             catch (Exception ex)
             {
@@ -1654,7 +1654,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 return 0;
 
             string directory = Path.Combine(GamePath, "Data");
-            List<string> pluginFiles = tools.GetPluginList(); // Add .esm files
+            List<string> pluginFiles = tools.GetPluginList(Game); // Add .esm files
 
             try
             {
@@ -1710,7 +1710,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 return 0; // Can't proceed without game path
 
             string directory = Path.Combine(GamePath, "Data");
-            List<string> pluginFiles = tools.GetPluginList(); // Get existing plugin files
+            List<string> pluginFiles = tools.GetPluginList(Game); // Get existing plugin files
 
             try
             {
@@ -1772,7 +1772,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
             dataGridView1.SuspendLayout();
 
             // 2) Gather all on-disk plugin filenames with parallel processing
-            var pluginFiles = tools.GetPluginList();
+            var pluginFiles = tools.GetPluginList(Game);
 
             string dataDir = Path.Combine(GamePath, "Data");
 
@@ -5320,7 +5320,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
                 SetupGame();
                 if (GameVersion is Steam || GameVersion is SFSE)
                     GetSteamGamePath();
-                pluginList = tools.GetPluginList();
+                pluginList = tools.GetPluginList(Game);
                 Application.Exit();
             }
         }
@@ -5773,7 +5773,7 @@ Alternatively, run the game once to have it create a Plugins.txt file for you.",
 
         private void generateBGSArchivestxtToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            List<string> plugins = tools.GetPluginList().Select(p => Path.GetFileNameWithoutExtension(p)).ToList();
+            List<string> plugins = tools.GetPluginList(Game).Select(p => Path.GetFileNameWithoutExtension(p)).ToList();
             List<string> allArchives = Directory.EnumerateFiles(Path.Combine(GamePath, "Data"), "*.ba2").Select(p => Path.GetFileNameWithoutExtension(p)).ToList();
             List<string> bgsArchives = new List<string>();
 
