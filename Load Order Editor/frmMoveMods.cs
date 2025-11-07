@@ -23,6 +23,8 @@ namespace hstCMM.Load_Order_Editor
                 frmLoadOrder.returnStatus = 2; // Move to Other Mods
             if (radBoth.Checked)
                 frmLoadOrder.returnStatus = 3; // Move to Both
+            if (radBlocked.Checked)
+                frmLoadOrder.returnStatus = 4; // Move Blocked Mods
             this.Close();
         }
 

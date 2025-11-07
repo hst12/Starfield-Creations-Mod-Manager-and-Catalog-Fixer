@@ -6141,6 +6141,11 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                         case 3: // Both
                             modsToMove.Add(row.Cells["PluginName"].Value.ToString());
                             break;
+
+                        case 4: // Blocked mods
+                            if (row.Cells["Blocked"].Value != null && (bool)row.Cells["Blocked"].Value == true)
+                                modsToMove.Add(row.Cells["PluginName"].Value.ToString());
+                            break;
                     }
                 }
                 else
@@ -6156,6 +6161,11 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
             frmGenericTextList inactive = new("These mods will be moved", modsToMove); // Show list of mods to be moved
             inactive.ShowDialog();
+            if (returnStatus == 0)
+            {
+                sbar("Move Inactive Mods cancelled.");
+                return;
+            }
             if (Tools.ConfirmAction("Move Inactive Mods\nExisting files will not be moved", $"Move {modsToMove.Count} inactive mods to a separate folder?",
                 MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
                 return;

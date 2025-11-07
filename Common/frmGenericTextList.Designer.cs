@@ -32,6 +32,7 @@
             btnOk = new System.Windows.Forms.Button();
             flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            btnCancel = new System.Windows.Forms.Button();
             flowLayoutPanel1.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
@@ -59,6 +60,7 @@
             // 
             flowLayoutPanel1.AutoSize = true;
             flowLayoutPanel1.Controls.Add(btnOk);
+            flowLayoutPanel1.Controls.Add(btnCancel);
             flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             flowLayoutPanel1.Location = new System.Drawing.Point(3, 708);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
@@ -80,6 +82,16 @@
             tableLayoutPanel1.Size = new System.Drawing.Size(1065, 763);
             tableLayoutPanel1.TabIndex = 3;
             // 
+            // btnCancel
+            // 
+            btnCancel.Location = new System.Drawing.Point(159, 3);
+            btnCancel.Name = "btnCancel";
+            btnCancel.Size = new System.Drawing.Size(150, 46);
+            btnCancel.TabIndex = 2;
+            btnCancel.Text = "Cancel";
+            btnCancel.UseVisualStyleBackColor = true;
+            btnCancel.Click += btnCancel_Click;
+            // 
             // frmGenericTextList
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(13F, 32F);
@@ -100,5 +112,6 @@
         private System.Windows.Forms.Button btnOk;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.Button btnCancel;
     }
 }

@@ -36,6 +36,7 @@
             radCreations = new System.Windows.Forms.RadioButton();
             radOther = new System.Windows.Forms.RadioButton();
             radBoth = new System.Windows.Forms.RadioButton();
+            radBlocked = new System.Windows.Forms.RadioButton();
             tableLayoutPanel1.SuspendLayout();
             flowLayoutPanel1.SuspendLayout();
             flowLayoutPanel2.SuspendLayout();
@@ -53,7 +54,7 @@
             tableLayoutPanel1.RowCount = 2;
             tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            tableLayoutPanel1.Size = new System.Drawing.Size(339, 230);
+            tableLayoutPanel1.Size = new System.Drawing.Size(339, 258);
             tableLayoutPanel1.TabIndex = 0;
             // 
             // flowLayoutPanel1
@@ -62,7 +63,7 @@
             flowLayoutPanel1.Controls.Add(btnOk);
             flowLayoutPanel1.Controls.Add(btnCancel);
             flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            flowLayoutPanel1.Location = new System.Drawing.Point(3, 175);
+            flowLayoutPanel1.Location = new System.Drawing.Point(3, 203);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
             flowLayoutPanel1.Size = new System.Drawing.Size(333, 52);
             flowLayoutPanel1.TabIndex = 0;
@@ -92,11 +93,12 @@
             flowLayoutPanel2.Controls.Add(radCreations);
             flowLayoutPanel2.Controls.Add(radOther);
             flowLayoutPanel2.Controls.Add(radBoth);
+            flowLayoutPanel2.Controls.Add(radBlocked);
             flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             flowLayoutPanel2.Location = new System.Drawing.Point(3, 3);
             flowLayoutPanel2.Name = "flowLayoutPanel2";
-            flowLayoutPanel2.Size = new System.Drawing.Size(333, 166);
+            flowLayoutPanel2.Size = new System.Drawing.Size(333, 194);
             flowLayoutPanel2.TabIndex = 1;
             // 
             // radCreations
@@ -132,11 +134,22 @@
             radBoth.Text = "Both";
             radBoth.UseVisualStyleBackColor = true;
             // 
+            // radBlocked
+            // 
+            radBlocked.AutoSize = true;
+            radBlocked.Location = new System.Drawing.Point(3, 129);
+            radBlocked.Name = "radBlocked";
+            radBlocked.Size = new System.Drawing.Size(196, 36);
+            radBlocked.TabIndex = 3;
+            radBlocked.TabStop = true;
+            radBlocked.Text = "Blocked Mods";
+            radBlocked.UseVisualStyleBackColor = true;
+            // 
             // frmMoveMods
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(13F, 32F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(339, 230);
+            ClientSize = new System.Drawing.Size(339, 258);
             Controls.Add(tableLayoutPanel1);
             MaximizeBox = false;
             MinimizeBox = false;
@@ -161,5 +174,6 @@
         private System.Windows.Forms.RadioButton radBoth;
         private System.Windows.Forms.Button btnOk;
         private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.RadioButton radBlocked;
     }
 }

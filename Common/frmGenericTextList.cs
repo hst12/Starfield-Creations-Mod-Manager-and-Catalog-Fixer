@@ -8,6 +8,7 @@ namespace hstCMM.Common
         public frmGenericTextList(string windowTitle, List<string> textLines)
         {
             InitializeComponent();
+            frmLoadOrder.returnStatus = 1;
             this.Text = windowTitle;
             foreach (var item in textLines)
                 richTextBox1.Text += item + "\n";
@@ -15,6 +16,12 @@ namespace hstCMM.Common
 
         private void btnOk_Click(object sender, System.EventArgs e)
         {
+            this.Close();
+        }
+
+        private void btnCancel_Click(object sender, System.EventArgs e)
+        {
+            frmLoadOrder.returnStatus = 0; // No choice made
             this.Close();
         }
     }
