@@ -669,7 +669,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 activityLog.WriteLog($"InitDatagrid called from {frame.GetMethod().Name}");
             }
 #endif
-            int enabledCount=0,IndexCount = 1, i, versionDelimiter, dotIndex;
+            int enabledCount = 0, IndexCount = 1, i, versionDelimiter, dotIndex;
             string loText = Path.Combine(Tools.GameAppData, "Plugins.txt"),
                    LOOTPath = Properties.Settings.Default.LOOTPath, pluginName, rawVersion;
 
@@ -934,12 +934,12 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
             // -- Process mod stats if the game path is set --
             if (!string.IsNullOrEmpty(GamePath) && Properties.Settings.Default.ModStats)
-                Task.Run(() => ShowModStats(CreationsPlugin,enabledCount));
+                Task.Run(() => ShowModStats(CreationsPlugin, enabledCount));
             else
                 sbar("");
         }
 
-        private void ShowModStats(List<string> CreationsPlugin,int enabledCount)
+        private void ShowModStats(List<string> CreationsPlugin, int enabledCount)
         {
             string loText = Path.Combine(Tools.GameAppData, "Plugins.txt"), StatText;
             int ba2Count, esmCount, espCount, mainCount;

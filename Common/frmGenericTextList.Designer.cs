@@ -31,8 +31,8 @@
             richTextBox1 = new System.Windows.Forms.RichTextBox();
             btnOk = new System.Windows.Forms.Button();
             flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             btnCancel = new System.Windows.Forms.Button();
+            tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             flowLayoutPanel1.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
@@ -67,6 +67,16 @@
             flowLayoutPanel1.Size = new System.Drawing.Size(1059, 52);
             flowLayoutPanel1.TabIndex = 2;
             // 
+            // btnCancel
+            // 
+            btnCancel.Location = new System.Drawing.Point(159, 3);
+            btnCancel.Name = "btnCancel";
+            btnCancel.Size = new System.Drawing.Size(150, 46);
+            btnCancel.TabIndex = 2;
+            btnCancel.Text = "Cancel";
+            btnCancel.UseVisualStyleBackColor = true;
+            btnCancel.Click += btnCancel_Click;
+            // 
             // tableLayoutPanel1
             // 
             tableLayoutPanel1.ColumnCount = 1;
@@ -82,16 +92,6 @@
             tableLayoutPanel1.Size = new System.Drawing.Size(1065, 763);
             tableLayoutPanel1.TabIndex = 3;
             // 
-            // btnCancel
-            // 
-            btnCancel.Location = new System.Drawing.Point(159, 3);
-            btnCancel.Name = "btnCancel";
-            btnCancel.Size = new System.Drawing.Size(150, 46);
-            btnCancel.TabIndex = 2;
-            btnCancel.Text = "Cancel";
-            btnCancel.UseVisualStyleBackColor = true;
-            btnCancel.Click += btnCancel_Click;
-            // 
             // frmGenericTextList
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(13F, 32F);
@@ -99,6 +99,7 @@
             ClientSize = new System.Drawing.Size(1065, 763);
             Controls.Add(tableLayoutPanel1);
             Name = "frmGenericTextList";
+            StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             Text = "frmGenericTextList";
             flowLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.ResumeLayout(false);
