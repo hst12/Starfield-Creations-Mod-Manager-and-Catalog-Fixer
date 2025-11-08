@@ -669,7 +669,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 activityLog.WriteLog($"InitDatagrid called from {frame.GetMethod().Name}");
             }
 #endif
-            int EnabledCount = 0, IndexCount = 1, i, versionDelimiter, dotIndex;
+            int enabledCount=0,IndexCount = 1, i, versionDelimiter, dotIndex;
             string loText = Path.Combine(Tools.GameAppData, "Plugins.txt"),
                    LOOTPath = Properties.Settings.Default.LOOTPath, pluginName, rawVersion;
 
@@ -864,7 +864,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     row.Cells[13].Value = true; // Blocked
                 }
 
-                EnabledCount += modEnabled ? 1 : 0;
+                enabledCount += modEnabled ? 1 : 0;
 
                 // Special handling for Bethesda Game Studios mods.
                 if (pluginName.StartsWith("sfbgs", StringComparison.OrdinalIgnoreCase))
@@ -934,15 +934,15 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
             // -- Process mod stats if the game path is set --
             if (!string.IsNullOrEmpty(GamePath) && Properties.Settings.Default.ModStats)
-                Task.Run(() => ShowModStats(CreationsPlugin));
+                Task.Run(() => ShowModStats(CreationsPlugin,enabledCount));
             else
                 sbar("");
         }
 
-        private void ShowModStats(List<string> CreationsPlugin)
+        private void ShowModStats(List<string> CreationsPlugin,int enabledCount)
         {
             string loText = Path.Combine(Tools.GameAppData, "Plugins.txt"), StatText;
-            int ba2Count, esmCount, espCount, mainCount, EnabledCount = 0;
+            int ba2Count, esmCount, espCount, mainCount;
             try
             {
                 // Cache file paths and load BGS archives once
@@ -1011,7 +1011,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 // Build status text
                 var statusBuilder = new StringBuilder();
                 statusBuilder.Append($"Creations {CreationsPlugin.Count}, Other {dataGridView1.RowCount - CreationsPlugin.Count}, ");
-                statusBuilder.Append($"Enabled: {EnabledCount}, esm: {esmCount}, Archives: {ba2Count}, ");
+                statusBuilder.Append($"Enabled: {enabledCount}, esm: {esmCount}, Archives: {ba2Count}, ");
                 statusBuilder.Append($"Enabled - Main: {mainCount}, Textures: {textureCount}");
 
                 if (espCount > 0)
