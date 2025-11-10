@@ -335,7 +335,7 @@ namespace hstCMM.Common // Various functions used by the app
             AboutBox.Width = screenWidth / 2;
             AboutBox.Height = screenHeight / 2;
             AboutBox.StartPosition = FormStartPosition.CenterScreen;
-            AboutBox.Show();
+            AboutBox.ShowAsync();
         }
 
         public string SetGamePath() // Prompt for game path

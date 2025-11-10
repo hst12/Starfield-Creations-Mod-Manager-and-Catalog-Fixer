@@ -92,8 +92,8 @@
             // 
             flowLayoutPanel2.Controls.Add(radCreations);
             flowLayoutPanel2.Controls.Add(radOther);
-            flowLayoutPanel2.Controls.Add(radBoth);
             flowLayoutPanel2.Controls.Add(radBlocked);
+            flowLayoutPanel2.Controls.Add(radBoth);
             flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             flowLayoutPanel2.Location = new System.Drawing.Point(3, 3);
@@ -126,18 +126,18 @@
             // radBoth
             // 
             radBoth.AutoSize = true;
-            radBoth.Location = new System.Drawing.Point(3, 87);
+            radBoth.Location = new System.Drawing.Point(3, 129);
             radBoth.Name = "radBoth";
-            radBoth.Size = new System.Drawing.Size(95, 36);
+            radBoth.Size = new System.Drawing.Size(171, 36);
             radBoth.TabIndex = 2;
             radBoth.TabStop = true;
-            radBoth.Text = "Both";
+            radBoth.Text = "All Disabled";
             radBoth.UseVisualStyleBackColor = true;
             // 
             // radBlocked
             // 
             radBlocked.AutoSize = true;
-            radBlocked.Location = new System.Drawing.Point(3, 129);
+            radBlocked.Location = new System.Drawing.Point(3, 87);
             radBlocked.Name = "radBlocked";
             radBlocked.Size = new System.Drawing.Size(196, 36);
             radBlocked.TabIndex = 3;

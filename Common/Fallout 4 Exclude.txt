@@ -1,0 +1,17 @@
+DLCCoast.esm
+DLCNukaWorld.esm
+DLCRobot.esm
+DLCUltraHighResolution.esm
+DLCworkshop01.esm
+DLCworkshop02.esm
+DLCworkshop03.esm
+Fallout4.esm
+ccBGSFO4044-HellfirePowerArmor.esl
+ccFSVFO4007-Halloween.esl
+ccSBJFO4003-Grenade.esl
+ccBGSFO4096-AS_Enclave.esl
+ccBGSFO4110-WS_Enclave.esl
+ccBGSFO4115-X02.esl
+ccBGSFO4046-TesCan.esl
+ccOTMFO4001-Remnants.esl
+ccBGSFO4116-HeavyFlamer.esl

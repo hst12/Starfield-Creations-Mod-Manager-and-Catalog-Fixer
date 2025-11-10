@@ -861,7 +861,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 if (blockedMods.Contains(pluginName))
                 {
                     modEnabled = false;
-                    row.Cells[13].Value = true; // Blocked
+                    row.Cells[13].Value = true; // Blocked column
                 }
 
                 enabledCount += modEnabled ? 1 : 0;
@@ -4598,7 +4598,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             }
         }
 
-        private async Task UpdateArchiveModsAsync()
+        private async void UpdateArchiveModsAsync()
         {
             cancellationTokenSource = new CancellationTokenSource();
             try
@@ -6245,21 +6245,53 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 Title = "Dev Mode"
             };
 
-            JumpListLink DemoTask = new JumpListLink(Application.ExecutablePath, "Demo Profile")
+            /*JumpListLink DemoTask = new JumpListLink(Application.ExecutablePath, "Demo Profile")
             {
                 Arguments = "-profile Demo.txt",
                 IconReference = new IconReference(Application.ExecutablePath, 0),
                 WorkingDirectory = Path.GetDirectoryName(Application.ExecutablePath),
                 Title = "Demo Profile"
-            };
+            };*/
 
-            jumpList.AddUserTasks(runGameTask, devModeTask, DemoTask);
+            jumpList.AddUserTasks(runGameTask, devModeTask/*, DemoTask*/);
             jumpList.Refresh();
         }
 
         private void frmLoadOrder_Shown(object sender, EventArgs e)
         {
             SetupJumpList();
+        }
+
+        private void generateExcludeFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(GamePath) || !Directory.Exists(GamePath))
+            {
+                MessageBox.Show("Game path not set or invalid.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            string[] patterns = { "*.esm", "*.esl","*.esp" }; // Build a list of mod files
+            List<string> excludefiles = new();
+            foreach (var pattern in patterns)
+            {
+                var modFiles = Directory.EnumerateFiles(Path.Combine(GamePath, "Data"), pattern, SearchOption.TopDirectoryOnly);
+                foreach (var modFile in modFiles)
+                {
+                    excludefiles.Add(Path.GetFileName(modFile));
+                }
+            }
+            foreach (var row in dataGridView1.Rows) // Remove installed mods from the list
+            {
+                excludefiles.Remove(((DataGridViewRow)row).Cells["PluginName"].Value.ToString());
+            }
+            using (StreamWriter writer = new StreamWriter(Tools.CommonFolder+ "\\"+(GameName + " Exclude.txt")))
+            {
+                foreach (var item in excludefiles)
+                {
+                    writer.WriteLine(Path.GetFileName(item));
+                    Debug.WriteLine(Path.GetFileName(item));
+                }
+            }
         }
     }
 }

@@ -296,6 +296,7 @@
             aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             generateBGSArchivestxtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            generateExcludeFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             generateTestPluginstxtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             videoLoadscreenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
@@ -2188,7 +2189,7 @@
             // 
             // testToolStripMenuItem
             // 
-            testToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { generateBGSArchivestxtToolStripMenuItem, generateTestPluginstxtToolStripMenuItem, videoLoadscreenToolStripMenuItem });
+            testToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { generateBGSArchivestxtToolStripMenuItem, generateExcludeFileToolStripMenuItem, generateTestPluginstxtToolStripMenuItem, videoLoadscreenToolStripMenuItem });
             testToolStripMenuItem.Name = "testToolStripMenuItem";
             testToolStripMenuItem.Size = new System.Drawing.Size(76, 38);
             testToolStripMenuItem.Text = "Dev";
@@ -2200,6 +2201,13 @@
             generateBGSArchivestxtToolStripMenuItem.Size = new System.Drawing.Size(422, 44);
             generateBGSArchivestxtToolStripMenuItem.Text = "Generate BGS Archives.txt";
             generateBGSArchivestxtToolStripMenuItem.Click += generateBGSArchivestxtToolStripMenuItem_Click;
+            // 
+            // generateExcludeFileToolStripMenuItem
+            // 
+            generateExcludeFileToolStripMenuItem.Name = "generateExcludeFileToolStripMenuItem";
+            generateExcludeFileToolStripMenuItem.Size = new System.Drawing.Size(422, 44);
+            generateExcludeFileToolStripMenuItem.Text = "Generate Exclude File";
+            generateExcludeFileToolStripMenuItem.Click += generateExcludeFileToolStripMenuItem_Click;
             // 
             // generateTestPluginstxtToolStripMenuItem
             // 
@@ -2836,5 +2844,6 @@
         private System.Windows.Forms.ToolStripMenuItem videoLoadscreenToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator50;
         private System.Windows.Forms.ToolStripMenuItem detectToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem generateExcludeFileToolStripMenuItem;
     }
 }
