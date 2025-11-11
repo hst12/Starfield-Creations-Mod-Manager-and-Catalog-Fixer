@@ -34,7 +34,7 @@ namespace hstCMM.Load_Order_Editor
                     flowLayoutPanel1.Controls.Add(rb);
                 }
             }
-            if (Directory.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", "Fallout4")))
+            /*if (Directory.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", "Fallout4")))
             {
                 //gamePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", "Fallout4");
                 RadioButton rb = new RadioButton
@@ -46,7 +46,7 @@ namespace hstCMM.Load_Order_Editor
                     Checked = GameIndex == 2
                 };
                 flowLayoutPanel1.Controls.Add(rb);
-            }
+            }*/
         }
 
         private void btnCancel_Click(object sender, EventArgs e)

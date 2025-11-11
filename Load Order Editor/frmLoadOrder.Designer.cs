@@ -2230,6 +2230,7 @@
             // 
             // videoLoadscreenToolStripMenuItem
             // 
+            videoLoadscreenToolStripMenuItem.Enabled = false;
             videoLoadscreenToolStripMenuItem.Name = "videoLoadscreenToolStripMenuItem";
             videoLoadscreenToolStripMenuItem.Size = new System.Drawing.Size(422, 44);
             videoLoadscreenToolStripMenuItem.Text = "Video Loadscreen";

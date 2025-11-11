@@ -1777,7 +1777,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
             string dataDir = Path.Combine(GamePath, "Data");
 
-            string[] patterns = { "*.esp", "*.esml","*.esl" };
+            string[] patterns = { "*.esp", "*.esml", "*.esl" };
             foreach (var pattern in patterns)
             {
                 try
@@ -2442,20 +2442,22 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     // Build the base file path.
                     string modBasePath = Path.Combine(dataDirectory, modName);
 
-                    // Special handling: if a .esp file exists, delete it, save and skip further deletions.
-                    string espFile = modBasePath + ".esp";
-                    if (File.Exists(espFile))
+                    string[] patterns = { ".esp", ".esl" }; // Delete .esp and .esl files
+                    foreach (var pattern in patterns)
                     {
-                        File.Delete(espFile);
-                        if (log)
-                            activityLog.WriteLog($"Deleted: {espFile}");
-                        SavePlugins();
-                        sbar3("esp uninstalled - esm and archive files skipped");
-                        continue;
+                        string modFile = modBasePath + pattern;
+                        if (File.Exists(modFile))
+                        {
+                            File.Delete(modFile);
+                            if (log)
+                                activityLog.WriteLog($"Deleted: {modFile}");
+                            SavePlugins();
+                            sbar3($"{modFile} uninstalled");
+                            continue;
+                        }
                     }
 
                     // Define the file extensions for the mod files to delete.
-
                     var extensions = new string[]
                     {
                 ".esm",
@@ -5307,6 +5309,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
         private void gameSelectToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            bool profilesEnabled = Profiles;
             if (Profiles)
                 ToggleProfiles();
             frmGameSelect gameSelectForm = new frmGameSelect();
@@ -5326,6 +5329,11 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     GetSteamGamePath();
                 pluginList = tools.GetPluginList(Game);
                 Application.Exit();
+            }
+            else
+            {
+                if (profilesEnabled)
+                    ToggleProfiles();
             }
         }
 
@@ -5804,14 +5812,13 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             else
                 modifiedLines = new(bgsArchives.Select(line => line + ".bsa"));
 
-
             System.Windows.Forms.SaveFileDialog saveDialog = new()
-                {
-                    InitialDirectory = Tools.CommonFolder,
-                    Filter = "Txt File|*.txt",
-                    Title = "Create Game Archives.txt",
-                    FileName = GameName + " Archives.txt"
-                };
+            {
+                InitialDirectory = Tools.CommonFolder,
+                Filter = "Txt File|*.txt",
+                Title = "Create Game Archives.txt",
+                FileName = GameName + " Archives.txt"
+            };
 
             if (saveDialog.ShowDialog() != DialogResult.OK || string.IsNullOrEmpty(saveDialog.FileName))
                 return;
