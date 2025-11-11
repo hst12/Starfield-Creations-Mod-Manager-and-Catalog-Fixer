@@ -6219,8 +6219,8 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
         private void videoLoadscreenToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            frmSplashScreenVideo ssVideo = new();
-            ssVideo.Show();
+            /*frmSplashScreenVideo ssVideo = new();
+            ssVideo.Show();*/
         }
 
         private void detectToolStripMenuItem_Click(object sender, EventArgs e)

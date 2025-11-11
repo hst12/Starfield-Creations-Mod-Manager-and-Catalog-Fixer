@@ -102,6 +102,13 @@
     <None Remove="Output\**" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Remove="Shared\frmSplashScreenVideo.cs" />
+    <Compile Remove="Shared\frmSplashScreenVideo.Designer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Remove="Shared\frmSplashScreenVideo.resx" />
+  </ItemGroup>
+  <ItemGroup>
     <None Remove="Banner.jpg" />
     <None Remove="Common\App Version.txt" />
     <None Remove="Common\Catalog Version.txt" />
@@ -185,13 +192,11 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="LibVLCSharp.WinForms" Version="3.9.4" />
     <PackageReference Include="Microsoft-WindowsAPICodePack-Shell" Version="1.1.5" />
     <PackageReference Include="Narod.SteamGameFinder" Version="2.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="QuestPDF" Version="2025.7.4" />
     <PackageReference Include="SevenZipExtractor" Version="1.0.19" />
-    <PackageReference Include="VideoLAN.LibVLC.Windows" Version="3.0.21" />
     <PackageReference Include="YamlDotNet" Version="16.3.0" />
   </ItemGroup>
   <ItemGroup>
@@ -205,9 +210,6 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Compile>
     <Compile Update="Shared\frmSplashScreen.cs">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Compile>
-    <Compile Update="Shared\frmSplashScreenVideo.cs">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Compile>
     <Compile Update="Properties\Resources.Designer.cs">
