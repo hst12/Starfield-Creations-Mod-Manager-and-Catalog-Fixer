@@ -1,4 +1,4 @@
-﻿using hstCMM.Common;
+﻿using hstCMM.Shared;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,11 +17,11 @@ namespace hstCMM.Load_Order_Editor
             InitializeComponent();
 
             int GameIndex = Properties.Settings.Default.Game;
-            string gamePath;
+            string gamePath = "";
             for (int i = 0; i < gl.Games.Count; i++)
             {
-                gamePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", gl.GameName(i));
-                if (Directory.Exists(gamePath)) // Only show games that are installed
+                if (Directory.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", gl.GameName(i))))
+                //gamePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", gl.GameName(i));
                 {
                     RadioButton rb = new RadioButton
                     {
@@ -33,6 +33,19 @@ namespace hstCMM.Load_Order_Editor
                     };
                     flowLayoutPanel1.Controls.Add(rb);
                 }
+            }
+            if (Directory.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", "Fallout4")))
+            {
+                //gamePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", "Fallout4");
+                RadioButton rb = new RadioButton
+                {
+                    Text = "Fallout 4",
+                    Name = $"radioButton{2}",
+                    AutoSize = true,
+                    Tag = 2,
+                    Checked = GameIndex == 2
+                };
+                flowLayoutPanel1.Controls.Add(rb);
             }
         }
 

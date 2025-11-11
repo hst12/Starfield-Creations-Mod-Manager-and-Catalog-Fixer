@@ -297,7 +297,9 @@
             testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             generateBGSArchivestxtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             generateExcludeFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripSeparator51 = new System.Windows.Forms.ToolStripSeparator();
             generateTestPluginstxtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripSeparator52 = new System.Windows.Forms.ToolStripSeparator();
             videoLoadscreenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             btnUp = new System.Windows.Forms.Button();
@@ -2189,7 +2191,7 @@
             // 
             // testToolStripMenuItem
             // 
-            testToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { generateBGSArchivestxtToolStripMenuItem, generateExcludeFileToolStripMenuItem, generateTestPluginstxtToolStripMenuItem, videoLoadscreenToolStripMenuItem });
+            testToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { generateBGSArchivestxtToolStripMenuItem, generateExcludeFileToolStripMenuItem, toolStripSeparator51, generateTestPluginstxtToolStripMenuItem, toolStripSeparator52, videoLoadscreenToolStripMenuItem });
             testToolStripMenuItem.Name = "testToolStripMenuItem";
             testToolStripMenuItem.Size = new System.Drawing.Size(76, 38);
             testToolStripMenuItem.Text = "Dev";
@@ -2209,12 +2211,22 @@
             generateExcludeFileToolStripMenuItem.Text = "Generate Exclude File";
             generateExcludeFileToolStripMenuItem.Click += generateExcludeFileToolStripMenuItem_Click;
             // 
+            // toolStripSeparator51
+            // 
+            toolStripSeparator51.Name = "toolStripSeparator51";
+            toolStripSeparator51.Size = new System.Drawing.Size(419, 6);
+            // 
             // generateTestPluginstxtToolStripMenuItem
             // 
             generateTestPluginstxtToolStripMenuItem.Name = "generateTestPluginstxtToolStripMenuItem";
             generateTestPluginstxtToolStripMenuItem.Size = new System.Drawing.Size(422, 44);
             generateTestPluginstxtToolStripMenuItem.Text = "Generate test Plugins.txt";
             generateTestPluginstxtToolStripMenuItem.Click += generateTestPluginstxtToolStripMenuItem_Click;
+            // 
+            // toolStripSeparator52
+            // 
+            toolStripSeparator52.Name = "toolStripSeparator52";
+            toolStripSeparator52.Size = new System.Drawing.Size(419, 6);
             // 
             // videoLoadscreenToolStripMenuItem
             // 
@@ -2845,5 +2857,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator50;
         private System.Windows.Forms.ToolStripMenuItem detectToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem generateExcludeFileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator51;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator52;
     }
 }

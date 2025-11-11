@@ -9,7 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace hstCMM.Common // Various functions used by the app
+namespace hstCMM.Shared // Various functions used by the app
 {
     internal class Tools
     {
@@ -111,7 +111,10 @@ namespace hstCMM.Common // Various functions used by the app
 
             try
             {
-                GameAppData = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), GameName);
+                if (GameName == "Fallout 4")
+                    GameAppData = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Fallout4"); // Hack for Fallout 4
+                else
+                    GameAppData = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), GameName);
             }
             catch (Exception ex)
             {
@@ -517,7 +520,7 @@ namespace hstCMM.Common // Various functions used by the app
             try
             {
                 if (Game == 0) // Starfield or possibly future BGS games without ESL support
-                    patterns = new[] {"*.esm", "*.esp" };
+                    patterns = new[] { "*.esm", "*.esp" };
                 else
                     patterns = new[] { "*.esm", "*.esl", "*.esp" };
                 foreach (var pattern in patterns)
@@ -575,12 +578,14 @@ namespace hstCMM.Common // Various functions used by the app
         public class GameInfo
         {
             public GameNames GameId { get; set; } // See GameNames class
+            public GameNames[] GameName { get; set; } // See GameNames class
             public string GamePath { get; set; } // Path to game .exe
             public string GameAppData { get; set; } // Path to %LocalAppData% game folder
             public string SteamAppId { get; set; } // Steam AppID
             public string MSStoreId { get; set; } // MS Store ID ?
             public string[] Modfiles { get; set; } // Supported mod file types - .esm, esp, etc.
             public string[] ModArchives { get; set; } // Supported mod archive types - .bsa, ba2, etc.
+
         }
 
         public class GameNames
@@ -589,10 +594,9 @@ namespace hstCMM.Common // Various functions used by the app
             {
                 { 0, "Starfield"},
                 { 1, "Skyrim Special Edition"},
-                { 2, "Fallout4"},
-                { 3, "Fallout 4 Aniversary Edition"},
-                { 4, "Elder Scrolls 6"},
-                { 5, "Fallout 5" }
+                { 2, "Fallout 4"},
+                { 3, "Elder Scrolls 6"},
+                { 4, "Fallout 5" }
             };
 
             public string GameName(int id)
@@ -601,6 +605,14 @@ namespace hstCMM.Common // Various functions used by the app
             }
 
             public IReadOnlyDictionary<int, string> Games => _games;
+        }
+
+        public class ModFiles
+        {
+            private string[] newModFormat = { ".esm", ".esp" };
+            private string[] oldModFormat = { ".esm", ".esp", ".esl" };
+            private const string newArchiveFormat = ".ba2";
+            private const string oldArchiveFormat = ".bsa";
         }
     }
 }

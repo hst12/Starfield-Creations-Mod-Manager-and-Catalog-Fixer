@@ -1,6 +1,6 @@
 ﻿using hstCMM.Common;
 using hstCMM.Load_Order_Editor;
-using Microsoft.Data.SqlClient;
+using hstCMM.Shared;
 using Microsoft.VisualBasic;
 using Microsoft.Win32;
 using Microsoft.WindowsAPICodePack.Shell;
@@ -26,7 +26,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
-using static hstCMM.Common.Tools;
+using static hstCMM.Shared.Tools;
 using File = System.IO.File;
 
 namespace hstCMM
@@ -47,7 +47,7 @@ namespace hstCMM
 
         private readonly Tools tools = new();
         private List<string> pluginList;
-        private List<Tools.GameInfo> gameInfo = new();
+        private readonly List<Tools.GameInfo> gameInfo = new();
 
         private string LastProfile, tempstr;
 
@@ -264,7 +264,7 @@ namespace hstCMM
             //SetupDB();
         }
 
-        private void SetupDB()
+        /*private void SetupDB()
         {
             string connectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=\"" +
                 Tools.CommonFolder + "\\db\\hstCMM.mdf\";Integrated Security=True;Connect Timeout=30";
@@ -306,7 +306,7 @@ namespace hstCMM
                     cmd.ExecuteNonQuery();
                 }
             }
-        }
+        }*/
 
         private void SetTheme()
         {
@@ -1777,7 +1777,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
             string dataDir = Path.Combine(GamePath, "Data");
 
-            string[] patterns = { "*.esp", "*.esl" };
+            string[] patterns = { "*.esp", "*.esml","*.esl" };
             foreach (var pattern in patterns)
             {
                 try
@@ -2097,11 +2097,15 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 esmFile = Directory.GetFiles(extractPath, "*.esm", SearchOption.AllDirectories).FirstOrDefault();
             if (Directory.EnumerateFiles(extractPath, "*.esp", SearchOption.AllDirectories).Any())
                 esmFile = Directory.GetFiles(extractPath, "*.esp", SearchOption.AllDirectories).FirstOrDefault();
+            if (Directory.EnumerateFiles(extractPath, "*.esl", SearchOption.AllDirectories).Any())
+                esmFile = Directory.GetFiles(extractPath, "*.esl", SearchOption.AllDirectories).FirstOrDefault();
 
             // Move .esm and .ba2 files to the game's Data folder.
             filesInstalled += MoveExtractedFiles("*.esm", "esm");
             filesInstalled += MoveExtractedFiles("*.esp", "esp");
             filesInstalled += MoveExtractedFiles("*.ba2", "archive");
+            filesInstalled += MoveExtractedFiles("*.bsa", "archive");
+            filesInstalled += MoveExtractedFiles("*.esl", "esl");
 
             // Install SFSE plugin if found.
             try
@@ -3799,7 +3803,6 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
             if (log)
                 activityLog.WriteLog("Disabling all settings");
-            DisableLog();
             sbar5("");
         }
 
@@ -5312,7 +5315,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             gameSelectForm.ShowDialog();
             if (returnStatus == 0)
             {
-                MessageBox.Show("App will restart. Profiles Disabled", "Restart Required", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("App will exit. Profiles Disabled", "Restart Required", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 Game = Properties.Settings.Default.Game;
                 GameNames gl = new GameNames();
                 GameName = gl.GameName(Properties.Settings.Default.Game);
@@ -5775,8 +5778,10 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
         private void generateBGSArchivestxtToolStripMenuItem_Click(object sender, EventArgs e)
         {
             List<string> plugins = tools.GetPluginList(Game).Select(p => Path.GetFileNameWithoutExtension(p)).ToList();
-            List<string> allArchives = Directory.EnumerateFiles(Path.Combine(GamePath, "Data"), "*.ba2").Select(p => Path.GetFileNameWithoutExtension(p)).ToList();
+            List<string> ba2Archives = Directory.EnumerateFiles(Path.Combine(GamePath, "Data"), "*.ba2").Select(p => Path.GetFileNameWithoutExtension(p)).ToList();
+            List<string> bsaArchives = Directory.EnumerateFiles(Path.Combine(GamePath, "Data"), "*.bsa").Select(p => Path.GetFileNameWithoutExtension(p)).ToList();
             List<string> bgsArchives = new List<string>();
+            List<string> allArchives = ba2Archives.Concat(bsaArchives).ToList();
 
             foreach (string fileName in allArchives)
             {
@@ -5785,22 +5790,28 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     if (fileName.StartsWith(plugin))
                     {
                         bgsArchives.Add(fileName);
+#if DEBUG
                         Debug.WriteLine($"Found  archive: {fileName}, plugin: {plugin}");
+#endif
                     }
                     //break; // Found a match, skip to next fileName
                 }
             }
             bgsArchives = allArchives.Except(bgsArchives).ToList();
-            Debug.WriteLine(bgsArchives.Count);
-            var modifiedLines = bgsArchives.Select(line => line + ".ba2");
+            List<string> modifiedLines;
+            if (Game == 0)
+                modifiedLines = new(bgsArchives.Select(line => line + ".ba2"));
+            else
+                modifiedLines = new(bgsArchives.Select(line => line + ".bsa"));
+
 
             System.Windows.Forms.SaveFileDialog saveDialog = new()
-            {
-                InitialDirectory = Tools.CommonFolder,
-                Filter = "Txt File|*.txt",
-                Title = "Create Game Archives.txt",
-                FileName = GameName + " Archives.txt"
-            };
+                {
+                    InitialDirectory = Tools.CommonFolder,
+                    Filter = "Txt File|*.txt",
+                    Title = "Create Game Archives.txt",
+                    FileName = GameName + " Archives.txt"
+                };
 
             if (saveDialog.ShowDialog() != DialogResult.OK || string.IsNullOrEmpty(saveDialog.FileName))
                 return;
@@ -6270,7 +6281,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 return;
             }
 
-            string[] patterns = { "*.esm", "*.esl","*.esp" }; // Build a list of mod files
+            string[] patterns = { "*.esm", "*.esl", "*.esp" }; // Build a list of mod files
             List<string> excludefiles = new();
             foreach (var pattern in patterns)
             {
@@ -6284,7 +6295,19 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             {
                 excludefiles.Remove(((DataGridViewRow)row).Cells["PluginName"].Value.ToString());
             }
-            using (StreamWriter writer = new StreamWriter(Tools.CommonFolder+ "\\"+(GameName + " Exclude.txt")))
+
+            System.Windows.Forms.SaveFileDialog saveDialog = new()
+            {
+                InitialDirectory = Tools.CommonFolder,
+                Filter = "Txt File|*.txt",
+                Title = "Create Game Exclude File",
+                FileName = Tools.CommonFolder + "\\" + (GameName + " Exclude.txt")
+            };
+
+            if (saveDialog.ShowDialog() != DialogResult.OK || string.IsNullOrEmpty(saveDialog.FileName))
+                return;
+
+            using (StreamWriter writer = new StreamWriter(saveDialog.FileName))
             {
                 foreach (var item in excludefiles)
                 {

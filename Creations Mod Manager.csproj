@@ -107,7 +107,15 @@
     <None Remove="Common\Catalog Version.txt" />
     <None Remove="Common\dummy.esm" />
     <None Remove="Common\exclude.txt" />
+    <None Remove="Common\Fallout 4 Archives.txt" />
+    <None Remove="Common\Fallout 4 Exclude.txt" />
+    <None Remove="Common\Fallout4 Archives.txt" />
+    <None Remove="Common\Fallout4 Exclude.txt" />
     <None Remove="Common\Header.txt" />
+    <None Remove="Common\Readfile.txt" />
+    <None Remove="Common\Skyrim Special Edition Exclude.txt" />
+    <None Remove="Common\Starfield Archives.txt" />
+    <None Remove="Common\Starfield Exclude.txt" />
     <None Remove="Common\Starfield.ini" />
     <None Remove="Common\StarFieldCustom.ini" />
     <None Remove="Documentation\Buttons.htm" />
@@ -130,7 +138,25 @@
     <Content Include="Common\exclude.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Common\Fallout 4 Archives.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Fallout 4 Exclude.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Common\Header.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Readfile.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Skyrim Special Edition Exclude.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Starfield Archives.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Starfield Exclude.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Common\Starfield.ini">
@@ -161,7 +187,6 @@
   <ItemGroup>
     <PackageReference Include="LibVLCSharp.WinForms" Version="3.9.4" />
     <PackageReference Include="Microsoft-WindowsAPICodePack-Shell" Version="1.1.5" />
-    <PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.2" />
     <PackageReference Include="Narod.SteamGameFinder" Version="2.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="QuestPDF" Version="2025.7.4" />
@@ -170,6 +195,21 @@
     <PackageReference Include="YamlDotNet" Version="16.3.0" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="Shared\frmAbout.cs">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Compile>
+    <Compile Update="Shared\frmGenericTextList.cs">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Compile>
+    <Compile Update="Shared\frmLoading.cs">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Compile>
+    <Compile Update="Shared\frmSplashScreen.cs">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Compile>
+    <Compile Update="Shared\frmSplashScreenVideo.cs">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Compile>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -191,26 +231,11 @@
     <None Update="cmm_log.ldf">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
-    <None Update="Common\db\hstCMM.mdf">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </None>
-    <None Update="Common\db\hstCMM_log.ldf">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </None>
     <None Update="Common\hstCMMdb">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
     <None Update="Common\hstCMMlog">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </None>
-    <None Update="Common\Skyrim Special Edition Exclude.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Common\Starfield Archives.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Common\Starfield Exclude.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Common\hstCMM Video.mp4">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
@@ -219,9 +244,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Common\LooseFilesOn.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Common\Readfile.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="docs\index.html">

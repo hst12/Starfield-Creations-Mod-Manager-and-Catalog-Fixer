@@ -1,4 +1,4 @@
-﻿using hstCMM.Common;
+﻿using hstCMM.Shared;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;

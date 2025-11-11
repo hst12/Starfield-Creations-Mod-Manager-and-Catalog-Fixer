@@ -1,4 +1,5 @@
-﻿using LibVLCSharp.Shared;
+﻿using hstCMM.Shared;
+using LibVLCSharp.Shared;
 using LibVLCSharp.WinForms;
 using System;
 using System.Drawing;
