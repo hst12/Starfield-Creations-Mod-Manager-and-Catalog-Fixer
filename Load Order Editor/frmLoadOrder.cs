@@ -141,7 +141,7 @@ namespace hstCMM
             this.Font = Properties.Settings.Default.FontSize;
 
             //DetectApps(); // Detect other apps
-            Task.Run(() => DetectApps());
+            DetectApps();
 
             SetTheme(); // Light/Dark mode
 
@@ -192,12 +192,6 @@ namespace hstCMM
 
             foreach (var arg in Environment.GetCommandLineArgs()) // Handle command line arguments
             {
-                //MessageBox.Show(arg); // Show all arguments for debugging
-                if (arg.Equals("-run", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    RunGame();
-                    Application.Exit();
-                }
                 if (arg.StartsWith("-profile", StringComparison.InvariantCultureIgnoreCase))
                 {
                     tempstr = Path.Combine(Properties.Settings.Default.ProfileFolder, Environment.GetCommandLineArgs()[2]);
@@ -223,6 +217,16 @@ namespace hstCMM
                 GetProfiles();
             else
                 InitDataGrid();
+
+            foreach (var arg in Environment.GetCommandLineArgs()) // Handle run command line argument
+            {
+                if (arg.Equals("-run", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    RunGame();
+                    Application.Exit();
+                }
+               
+            }
 
             // Creations update
             bool BackupStatus = false;
@@ -2607,6 +2611,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
             tempstr = Properties.Settings.Default.RunProgramPath;
             if (Properties.Settings.Default.RunProgram && !string.IsNullOrEmpty(tempstr))
+            {
                 if (File.Exists(tempstr))
                 {
                     if (Process.GetProcessesByName(Path.GetFileNameWithoutExtension(tempstr)).Length == 0)
@@ -2618,6 +2623,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                         MessageBoxIcon.Error) == DialogResult.Yes)
                         return;
                 }
+            }
 
             Properties.Settings.Default.GameVersion = GameVersion;
             SaveSettings();
@@ -2633,7 +2639,8 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
             if (isModified)
                 SavePlugins();
-
+            if (log)
+                activityLog.WriteLog($"Starting game: {GameName}");
             result = Tools.StartGame(GameVersion);
             if (log)
                 activityLog.WriteLog($"Game started: {GameVersion}, Status: {result}");
@@ -5511,6 +5518,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     container.Page(page =>
                     {
                         page.MaxSize(PageSizes.A0.Landscape());
+                        page.Size(PageSizes.A4.Landscape());
                         page.Margin(20);
                         page.DefaultTextStyle(x => x.FontSize(12).FontColor(Colors.Black));
 
@@ -5550,7 +5558,8 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                                 {
                                     foreach (var width in columnWidths)
                                     {
-                                        columns.ConstantColumn(width);
+                                        //columns.ConstantColumn(width);
+                                        columns.RelativeColumn(1);
                                     }
                                 });
 
