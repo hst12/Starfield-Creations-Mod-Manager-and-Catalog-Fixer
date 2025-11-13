@@ -1,100 +1,76 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
-	<title>Starfield Creations Mod Manager</title>
-	<meta name="generator" content="LibreOffice 25.8.2.2 (Windows)"/>
-	<meta name="created" content="00:00:00"/>
-	<meta name="changed" content="2025-11-13T08:25:38.808153300"/>
-	<meta name="" content=""/>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-	<meta name="created" content="00:00:00">
-	<style type="text/css">
-		h1 { color: #333333; font-family: "Verdana", sans-serif; line-height: 160%; margin-bottom: 0.21cm; background: transparent }
-		p { margin-bottom: 0.25cm; color: #333333; font-family: "Arial", sans-serif; background: transparent; line-height: 115% }
-		h2 { color: #333333; font-family: "Verdana", sans-serif; line-height: 160%; margin-top: 0.35cm; margin-bottom: 0.21cm; background: transparent }
-		a:link { color: #0056b3; text-decoration: none }
-		code.western { font-family: "Liberation Mono", monospace }
-		code.cjk { font-family: "NSimSun", monospace }
-		code.ctl { font-family: "Liberation Mono", monospace }
-		a:visited { color: #0056b3; text-decoration: none }
-	</style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Starfield Creations Mod Manager</title>
+<meta name="description" content="Effortlessly manage Starfield Creations mods, fix ContentCatalog.txt files, reorder mods and manage profiles.">
+<meta name="author" content="hst12">
+<style>
+:root { --bg:#f9f9f9; --text:#333; --link:#0056b3; --muted:#666; --card:#fff; }
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--text);background:var(--bg);line-height:1.5}
+.container{max-width:900px;margin:3rem auto;padding:1.5rem}
+header h1{font-family:Verdana, Geneva, sans-serif;margin:0 0 .5rem;color:var(--text)}
+header p.lead{margin:0 0 1rem;color:var(--muted)}
+nav{margin-bottom:1rem}
+nav a{margin-right:1rem;color:var(--link);text-decoration:none}
+section{background:var(--card);padding:1rem;border-radius:8px;margin-bottom:1rem;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+h2{font-family:Verdana, Geneva, sans-serif;margin-top:0}
+ul,ol{padding-left:1.25rem}
+code{font-family:monospace;background:#f3f4f6;padding:.1rem .3rem;border-radius:4px}
+@media (prefers-color-scheme: dark){
+:root{--bg:#0b0b0d;--text:#e6e6e6;--link:#7fb0ff;--muted:#9aa6b2;--card:#0f1113}
+}
+a:focus, a:hover{text-decoration:underline}
+footer{font-size:.9rem;color:var(--muted);text-align:center;margin-top:1rem}
+</style>
 </head>
-<body lang="en-ZA" text="#333333" link="#0056b3" vlink="#0056b3" bgcolor="#f9f9f9" dir="ltr"><h1>
-Starfield Creations Mod Manager</h1>
-<p>Effortlessly Manage Your Starfield Mods</p>
-<p><a href="#features">Features</a> <a href="#usage">Usage</a>
-<a href="#support">Support</a> 
-</p>
-<h2 style="margin-left: 0.53cm; margin-right: 0.53cm; margin-top: 0.53cm; margin-bottom: 0.53cm">
-<span style="display: inline-block; border: none; padding: 0cm">Key
-Features</span></h2>
+<body>
+<div class="container">
+<header>
+<h1>Starfield Creations Mod Manager</h1>
+<p class="lead">Effortlessly manage your Starfield mods</p>
+<nav aria-label="Main">
+<a href="#features">Features</a>
+<a href="#usage">Usage</a>
+<a href="#support">Support</a>
+</nav>
+</header>
+
+<section id="features" aria-labelledby="features-heading">
+<h2 id="features-heading">Key Features</h2>
 <ul>
-	<li><p style="margin-right: 0.53cm; margin-top: 0.53cm; margin-bottom: 0.53cm">
-	<span style="display: inline-block; border: none; padding: 0cm">Manage
-	Creations mods for Starfield with ease. </span>
-	</p></li>
-	<li><p style="margin-right: 0.53cm; margin-top: 0.53cm; margin-bottom: 0.53cm">
-	<span style="display: inline-block; border: none; padding: 0cm">Check
-	and repair corrupted <code class="western">ContentCatalog.txt</code>
-	files. </span>
-	</p></li>
-	<li><p style="margin-right: 0.53cm; margin-top: 0.53cm; margin-bottom: 0.53cm">
-	<span style="display: inline-block; border: none; padding: 0cm">Reorder
-	mods using drag-and-drop or keyboard shortcuts. </span>
-	</p></li>
-	<li><p style="margin-right: 0.53cm; margin-top: 0.53cm; margin-bottom: 0.53cm">
-	<span style="display: inline-block; border: none; padding: 0cm">Enable
-	or disable mods without removing files. </span>
-	</p></li>
-	<li><p style="margin-right: 0.53cm; margin-top: 0.53cm; margin-bottom: 0.53cm">
-	<span style="display: inline-block; border: none; padding: 0cm">Create
-	and switch between mod profiles for different save games. </span>
-	</p></li>
-	<li><p style="margin-right: 0.53cm; margin-top: 0.53cm; margin-bottom: 0.53cm">
-	<span style="display: inline-block; border: none; padding: 0cm">Backup
-	and restore your original mod configurations. </span>
-	</p></li>
-	<li><p style="margin-right: 0.53cm; margin-top: 0.53cm; margin-bottom: 0.53cm">
-	<span style="display: inline-block; border: none; padding: 0cm">Dark
-	mode support for better usability. </span>
-	</p></li>
+<li>Manage Creations mods for Starfield with ease.</li>
+<li>Check and repair corrupted <code>ContentCatalog.txt</code> files.</li>
+<li>Reorder mods using drag-and-drop or keyboard shortcuts.</li>
+<li>Enable or disable mods without removing files.</li>
+<li>Create and switch between mod profiles for different save games.</li>
+<li>Backup and restore your original mod configurations.</li>
+<li>Dark mode support for better usability.</li>
 </ul>
-<h2 style="margin-left: 0.53cm; margin-right: 0.53cm; margin-top: 0.53cm; margin-bottom: 0.53cm">
-<span style="display: inline-block; border: none; padding: 0cm">How
-to Use</span></h2>
-<p style="margin-left: 0.53cm; margin-right: 0.53cm; margin-top: 0.53cm; margin-bottom: 0.53cm">
-<span style="display: inline-block; border: none; padding: 0cm">Follow
-these steps to get started with the Starfield Creations Mod Manager:</span></p>
+</section>
+
+<section id="usage" aria-labelledby="usage-heading">
+<h2 id="usage-heading">How to Use</h2>
+<p>Follow these steps to get started with the Starfield Creations Mod Manager:</p>
 <ol>
-	<li><p style="margin-right: 0.53cm; margin-top: 0.53cm; margin-bottom: 0.53cm">
-	<span style="display: inline-block; border: none; padding: 0cm">Download
-	and install the application. </span>
-	</p></li>
-	<li><p style="margin-right: 0.53cm; margin-top: 0.53cm; margin-bottom: 0.53cm">
-	<span style="display: inline-block; border: none; padding: 0cm">Launch
-	the tool and use the intuitive interface to manage your mods. </span>
-	</p></li>
-	<li><p style="margin-right: 0.53cm; margin-top: 0.53cm; margin-bottom: 0.53cm">
-	<span style="display: inline-block; border: none; padding: 0cm">Use
-	the &quot;Fix Catalog&quot; feature to repair any issues with your
-	<code class="western">ContentCatalog.txt</code> file. </span>
-	</p></li>
-	<li><p style="margin-right: 0.53cm; margin-top: 0.53cm; margin-bottom: 0.53cm">
-	<span style="display: inline-block; border: none; padding: 0cm">Organize
-	your mods by dragging and dropping them in the desired order. </span>
-	</p></li>
-	<li><p style="margin-right: 0.53cm; margin-top: 0.53cm; margin-bottom: 0.53cm">
-	<span style="display: inline-block; border: none; padding: 0cm">Switch
-	between different mod profiles for separate save files. </span>
-	</p></li>
+<li>Download and install the application.</li>
+<li>Launch the tool and use the intuitive interface to manage your mods.</li>
+<li>Use the "Fix Catalog" feature to repair any issues with your <code>ContentCatalog.txt</code> file.</li>
+<li>Organize your mods by dragging and dropping them in the desired order.</li>
+<li>Switch between different mod profiles for separate save files.</li>
 </ol>
-<h2 style="margin-left: 0.53cm; margin-right: 0.53cm; margin-top: 0.53cm; margin-bottom: 0.53cm">
-<span style="display: inline-block; border: none; padding: 0cm">Support</span></h2>
-<p style="margin-left: 0.53cm; margin-right: 0.53cm; margin-top: 0.53cm; margin-bottom: 0.53cm">
-<span style="display: inline-block; border: none; padding: 0cm">If
-you encounter any issues or need assistance, please visit the <a href="https://github.com/hst12/Starfield-Creations-Mod-Manager-and-Catalog-Fixer/issues" target="_blank">GitHub
-Repository</a> and create an issue.</span></p>
-<p>© 2025 Starfield Creations Mod Manager. Developed by <a href="https://github.com/hst12" target="_blank">hst12</a>.</p>
+</section>
+
+<section id="support" aria-labelledby="support-heading">
+<h2 id="support-heading">Support</h2>
+<p>If you encounter any issues or need assistance, please visit the https://github.com/hst12/Starfield-Creations-Mod-Manager-and-Catalog-Fixer/issues and create an issue.</p>
+</section>
+
+<footer>
+<p>© 2025 Starfield Creations Mod Manager. Developed by https://github.com/hst12.</p>
+</footer>
+</div>
 </body>
 </html>
