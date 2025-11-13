@@ -57,9 +57,9 @@
     <SignAssembly>True</SignAssembly>
     <Description>Creations Mod Manager</Description>
     <PackageTags>Starfield;Bethesda</PackageTags>
-    <FileVersion>1.17.1</FileVersion>
-    <AssemblyVersion>1.17.1</AssemblyVersion>
-    <Version>1.17.1</Version>
+    <FileVersion>1.17.2</FileVersion>
+    <AssemblyVersion>1.17.2</AssemblyVersion>
+    <Version>1.17.2</Version>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <OutputPath>bin\x64\Debug\</OutputPath>
@@ -269,5 +269,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="C:\Users\hst12\.nuget\packages\sevenzipextractor\1.0.19\build\x86\7z.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="bin\Debug\net10.0-windows10.0.17763.0\win-x64\" />
   </ItemGroup>
 </Project>

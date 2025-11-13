@@ -294,6 +294,7 @@
             toolStripMenuShortcuts = new System.Windows.Forms.ToolStripMenuItem();
             documentationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            githubLatestReleaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             generateBGSArchivestxtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             generateExcludeFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -2161,7 +2162,7 @@
             // 
             // helpToolStripMenuItem
             // 
-            helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuShortcuts, documentationToolStripMenuItem, aboutToolStripMenuItem });
+            helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuShortcuts, documentationToolStripMenuItem, aboutToolStripMenuItem, githubLatestReleaseToolStripMenuItem });
             helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             helpToolStripMenuItem.Size = new System.Drawing.Size(84, 38);
             helpToolStripMenuItem.Text = "&Help";
@@ -2188,6 +2189,13 @@
             aboutToolStripMenuItem.Size = new System.Drawing.Size(419, 44);
             aboutToolStripMenuItem.Text = "&About / Readme.txt";
             aboutToolStripMenuItem.Click += aboutToolStripMenuItem_Click;
+            // 
+            // githubLatestReleaseToolStripMenuItem
+            // 
+            githubLatestReleaseToolStripMenuItem.Name = "githubLatestReleaseToolStripMenuItem";
+            githubLatestReleaseToolStripMenuItem.Size = new System.Drawing.Size(419, 44);
+            githubLatestReleaseToolStripMenuItem.Text = "Github Latest Release";
+            githubLatestReleaseToolStripMenuItem.Click += githubLatestReleaseToolStripMenuItem_Click;
             // 
             // testToolStripMenuItem
             // 
@@ -2860,5 +2868,6 @@
         private System.Windows.Forms.ToolStripMenuItem generateExcludeFileToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator51;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator52;
+        private System.Windows.Forms.ToolStripMenuItem githubLatestReleaseToolStripMenuItem;
     }
 }

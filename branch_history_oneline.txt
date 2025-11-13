@@ -1,0 +1,927 @@
+2cf8d70 Removed Task.Run from DetectApps to avoid random thread exception
+f74213c Removed more uncessary files to reduce size .NET 10 public release
+af9dc8a Removed some unused code
+1ea2856 FO4 support WIP Don't disable log when using disable all settings
+4258afb Added Dev menu option to generate game .esm exclude file
+296dbd5 Updated `StartPosition` of `frmGenericTextList` to center the form on screen.
+e3cdadd Fixed mod stats not showing count of mods enabled
+aecea7b Added Cancel button to frmGenericTextList
+0940b11 Add message to indicate that existing files won't be moved.
+d98f50a Removed Task.Run from SetupGame() - was causing an app crash with a missing Plugins.txt
+db27bec Show message if no mods found to move and exit function.
+7d530a4 Move inactive mods feature can be used to move Creations mods, other mods or both
+7995575 Added Ok button to frmGenericTextList
+940ec28 Update image link syntax in README.md
+b299856 Updated Readme.md
+d22c193 Renamed GameLibrary to GameNames
+71bc45a More future game support WIP
+a1c9671 Updated screenshot
+4287876 Moved Log button next to Filter button
+b16753c Make Log button bold if enabled
+26d41f6 Renamed Filter Active button to Filter
+8852e7f Some start up tweaks to decrease loading time
+cfc9904 Added confirmation for move inactive mods out of Data folder
+44d5302 Added jumplist experiment
+dc0d501 Added support for saving backups to the `Documents` folder.
+dfd4ca7 Install function installs .esp files as well as .esm files
+7755a53 Updated Skyrim exclude file, added partial .esl support
+1a6585c Support for other BGS games - more WIP
+ab4e87d Removed F3 for repeat search - interferes with DataGrid operation
+22ac96f Updated app version to cater for some Github weirdness
+05b9e2f Repeat search with F3 or Enter Current testing on .Net 10 RC2
+b0f3c8e Seperated light/dark theme code from startup function
+6ce5225 Renamed BGS archives.txt and BGS Exclude.txt to game specific names. Moved some game setup code out of frmLoadOrder
+1c2449f Support for other BGS games - WIP
+ec7fbaa Added cancel option when un-installing multiple mods
+a9bbe1e Removed unecessay project reference
+2c77331 Detailed message for yaml decoding error
+73802ef Updated `AssemblyVersion` to 1.17.0 and removed unused `Microsoft.CSharp` package reference. Introduced `pluginList` caching to improve performance and reduce redundant calls. Added a new `frmGenericTextList` form for better display of unused plugins and other text lists.
+bb21ea2 .Net 10 RC1 testing
+a653978 Update to v1.17.0: Installer, UI, and refactoring
+d24b16f removed starfieldtools.db
+4cfbfd6 Udate version no.
+03d1d99 Abort update profiles if filter is on. Allow cancellation of update all profiles
+4c26d90 Un-install shows full name of .esm or .esp to be deleted.
+4e3e9a3 Replaced app backup code
+ab4bd4c Renamed namespace
+5784b93 Renamed project
+68bd03f Renamed project
+b2a6e71 Merge branch 'master' of https://github.com/hst12/Starfield-Creations-Mod-Manager-and-Catalog-Fixer
+7ecf06a Merge branch 'master' of https://github.com/hst12/Starfield-Creations-Mod-Manager-and-Catalog-Fixer
+ae0e7ac Merge branch 'master' of https://github.com/hst12/Starfield-Creations-Mod-Manager-and-Catalog-Fixer
+e43a975 Testing Inno Installer
+627d152 Testing Inno Installer
+b865329 Fixed bug with starting Star UI Configurator
+74a0f24 Added a new "Select All" button to the `frmCacheConfig` form, Updated `frmLoadOrder.cs` to include support for Xbox-specific files by adding `- main_xbox.ba2` to the `extensions` array used during the cleanup process.
+6052fbc Re-enable loose file conversion
+ddb0126 Enhanced game environment checks with `Tools.CheckGame()` across multiple methods to ensure operations only proceed in valid contexts. Added `#if DEBUG` directives for better debugging support, including detailed error messages in exception handling. Updated UI behavior: set `gameSelectToolStripMenuItem` visibility to `false` by default, and enabled developer-specific features with the `-dev` argument. Added `RefreshDataGrid` calls to ensure UI reflects updated states.
+c8f74e4 Updated app version Added confimation for removing unised mods from catalog
+c8102d3 WIP: Future Bethesda game support
+f261077 Further changes to support future Creation engine games
+e5f5ee7 SyncPlugins no longer adds .esp files
+14c50c8 Removed an unused `using System.Diagnostics;` directive from `frmModContents.cs`. Fixed minor formatting issues, i
+c3495bf WIP: Generalize app for multi-game support
+bc53549 Added `displayAllSettingsToolStripMenuItem` for accessing all application settings. Created `frmDisplaySettings` form to display settings in a rich text box.
+39ad3e4 Simplified 'Blocked' cell initialization in frmLoadOrder.cs using the null-coalescing assignment operator. Updated version in Starfield Tools.csproj from 1.15.1 to 1.15.7 and added PackageProjectUrl. Updated Narod.SteamGameFinder to version 2.1.0 and QuestPDF to version 2025.7.1. Changed project GUID for "Starfield Tools Setup" in Starfield Tools.sln and updated solution configuration accordingly.
+a3b34dc Added option to backup or restore app settings
+ea2a658 Added option to allow launching xEdit
+0f04d37 Updated shortucts.txt
+9af5c8f Updated error handling to prompt user for confirmation before stopping game launch if the program path is not found.
+9bfc102 - Updated `RestoreCatalog` method to check return value before updating status. - Adjusted `PluginName`, `Group`, `Version`, and `AuthorVersion` columns for better display in `frmLoadOrder.Designer.cs`. - Changed F12 key press message for clearer user feedback. - Updated SFSE mod installation status message. - Implemented check for installed files and updated user feedback. - Modified confirmation message for renaming mods to clarify potential impacts. - Streamlined texture file handling by simplifying code. - Cleaned user input for mod renaming by removing file extensions.
+ee5efb4 Update BGS Archives - Added new menu items and adjusted layout in `frmLoadOrder.Designer.cs`. - Improved user interface in `frmLoadOrder.cs`, including initial directory for folder dialog and enhanced archiving process with logging. - Refined dynamic texture file handling for better file matching.
+a4967e4 Added warning for renaming mods
+af3690a Updated mod rename to handle multiple texture files
+9de526a Added mod rename function
+b6f2b36 Added `readfileBatchPath` in frmCacheConfig.cs to set the SaveFileDialog path based on user settings or default to Desktop.
+088c199 merge conflict
+9438249 Revert "Bugfix in archive creation with filenames containing periods."
+e5ee65e Reverted last changes
+5393295 Revert "Performance update for update function with large mod lists."
+ba0effe Performance update for update function with large mod lists.
+eb56a24 Bugfix in archive creation with filenames containing periods.
+7500383 Update splash screen text and enhance file handling
+93e320a Added link to SteamDB
+4930ca2 Status bar items adjusted
+3951fea Center window if resized
+e44026a Update texture handling and BGS archive management
+70272a3 Added menu item to open script log directory
+dfb4d07 Add ReadFileBatchPath setting Introduce a new setting `ReadFileBatchPath` in the application configuration to allow users to specify a batch file path. Update `frmCacheConfig.cs` to save the selected path and add a new menu item `runBatchFileToolStripMenuItem` in `frmLoadOrder.Designer.cs` for executing the batch file.
+81f567c Fixed disable mod stats not working
+5b4884c Add LoadScreenEnabled setting - Introduced `LoadScreenEnabled` setting in `App.config` and `Settings.settings`, - Added `btnReadFile` in `frmCacheConfig` to open `Readfile.txt`. - Updated context menu in `Shortcuts.txt` for clarity on mod installation. - Implemented functionality to toggle splash screen visibility based on user preference.
+a6df78a Refactor UI and backup functionality in Load Order
+12f0e8c - Removed the advanced options menu item from the Tools menu. - Adjusted DataGridView layout and introduced new auto-sizing modes for columns. - Enhanced error handling to display messages for data errors. - Modified logic for starting external programs to ensure valid paths. - Added user prompts to restart the application for theme changes. - Improved calculations for visible column widths and adjusted form size. - Refactored mod statistics processing for better readability. - Introduced a new event handler for DataGridView data errors.
+d1ae1a8 Added event handlers for checkboxes in frmCacheConfig to dynamically update cache size. Reintroduced txtCacheSize in the layout. Adjusted sizes of UI elements in frmLoadOrder for better consistency. Refactored frmLoadOrder to use StringBuilder for status text and improved error handling for plugin statistics. Added frmLoadOrder_Resize event handler for dynamic progress bar positioning.
+1925fb8 Add resize functionality and UI adjustments
+f575c03 Merge conflict
+a324deb Add ReadfilePath setting - Updated `Readfile.txt` comments and entries for clarity. - Added `readfileToolStripMenuItem` and `readfilePathToolStripMenuItem` in the UI for better access to readfile functionalities. - Modified command generation in `generateReadfileTextToolStripMenuItem_Click` to use the new `ReadfilePath`. - Implemented `readfilePathToolStripMenuItem_Click` method to allow users to set the readfile path via a file dialog. - Updated `Settings.Designer.cs` to manage the new `ReadfilePath` property.
+b4ce54b Add ReadfilePath setting - Updated `Readfile.txt` comments and entries for clarity. - Added `readfileToolStripMenuItem` and `readfilePathToolStripMenuItem` in the UI for better access to readfile functionalities. - Modified command generation in `generateReadfileTextToolStripMenuItem_Click` to use the new `ReadfilePath`. - Implemented `readfilePathToolStripMenuItem_Click` method to allow users to set the readfile path via a file dialog. - Updated `Settings.Designer.cs` to manage the new `ReadfilePath` property.
+b7519cf Updated readfile precache generator
+4e44d99 Added Generate Readfile pre-cache text option in Tools->Advanced https://www.winimage.com/readfile.htm Include log file path in starting log message
+e2eb58f File menu-> moved backup menu items into Backup and Restore sections
+f6d141f Fixed bug in mod backup for filenames containing a period
+263e5b7 Fix for uninstaller not detecting some mod files names
+756c5ce Updated version no. to 1.15.5 Add message about selecting the content folder for the MS Store version of the game
+d5dc5a9 Added page number to PDF export footer
+61c3632 Merge conflict
+a7c55e9 Added Mod Contents menu item to context menu to show associated mod files and optionally view archive contents if Archive2 is installed. Modified to allow multiple selections
+a90d2e1 Added Mod Contents menu item to context menu to show associated mod files and optionally view archive contents if Archive2 is installed.
+67020ef Added option to launch a program before game launch in Game menu. Moved some game related settings from Tools to Game menu
+2b57e82 Added option to launch a program before game launch in Game menu
+abdf128 Escape key clears the search box and focuses it.
+1535040 Add menu items and settings management functionality
+e20244c Refactor mod export functionality and UI text
+859db8f Update version no. Made PDF export moar pretty.
+fdcdc79 Made PDF export moar pretty.
+b068977 Updated project file to decrease installer size
+c4842c3 Merge conflict
+7730173 Export mods to PDF WIP
+e628c52 Export mods to PDF WIP
+aee3743 Added ContentCatalog.txt backup and restore functions to File menu
+6423b95 Changed the background color of a DataGridView cell in `frmLoadOrder.cs` to `Color.Gray` for better visual distinction.
+14a6bc1 Add GameSelect feature and improve error handling
+fc4cf2a Added check for read-only Plugins.txt
+0536e28 Updated Shortcuts.txt
+83b1233 Added error handling in File->Explore menu
+07f8138 Update to version 1.15.1 with performance improvements - Modified row addition logic to batch updates for better performance. - Added debug assertion for row count consistency with `CreationsPlugin`. - Resumed `DataGridView` layout after processing all rows.
+f73359e Disabling all settings in Tools menu turns filter off
+32ef2fd Added Show All in View->Columns
+17f720c Update version to 1.15.0 and refactor DataGridView
+be2ade3 Removed some unecessay log entries
+975ae54 Version no. 1.14.9 Added option to set log file directory in Tools->Logging Ctrl-F to focus on search box. Esc to clear search box contents. Updated Shortcuts.txt.
+432e365 Added option to set log file directory in Tools->Logging
+b3f1d1a Merge branch 'master' of https://github.com/hst12/Starfield-Tools---ContentCatalog.txt-fixer
+9d3a03c Search function searches for esm name and description
+76cc7a1 Search function searches for esm name and description
+70812ad Modified export confirmation dialog to prompt user before opening the file.
+930b85a Update version to 1.14.8 and add explore mod backups directory.
+1a7df8c Removed duplicate log entry for Creations download workaround
+3fe64b0 Add LOOT Userlist editing functionality
+b58ab7c Implement a check for an empty `DeletedFiles` collection. If no files are found to delete, log a message stating "No files found to delete" before closing the form.
+7c8e18e Remove .esm extension from txtEsm input
+edf55f4 Added option to remove deleted mods from BlockMods.txt in File-Edit menu
+bfafcde Add logging for default Starfield.ini matches
+9546a22 Export CSV function will export active mods only if filter active.
+c108c53 Resolved issue with setting initial directory for loose file conversion
+f9e0d50 Refactored `frmLoadOrder.cs` by introducing the `UpdatePlugins` method to improve code organization. Commented out a try-catch block to adjust error handling. The `UpdatePlugins` method is now called after converting loose files to ensure the plugins list is refreshed.
+ba4d55c Block install from attempting to install fomod archives
+c93a304 Refactor column setup and fix typo in form text
+5c471eb Update version to 1.14.7 and improve folder dialog
+94085ea Fix for space character in catalog version no.
+6e78c40 Update to version 1.14.6
+2e26ec4 Command line options: -install [path to mod file] -profile [profile name including extenstion but excluding path]
+c605c46 Update version to 1.14.5 and refactor DataGridView
+6973cd4 Refactor settings management and UI enhancements
+c740e31 - Added logging for catalog status confirmation in frmCatalogFixer.cs. - Updated exclude.txt to change media file reference. - Modified frmLoadOrder.cs to include automatic catalog checks based on user settings. - Added logging for archived mods in frmLoadOrder.cs. - Improved formatting for the path string in frmLoadOrder.cs. - Enabled AutoCheck setting during Creations Update in frmLoadOrder.cs.
+d445b39 Bugfix: Blockedmods.txt editing with Notepad wasn't working
+78e47b5 In `frmLoadOrder.cs`, added detailed logging statements for various actions: - Logged when all mods are enabled or disabled. - Updated log messages for adding and removing plugins for clarity. - Added logs for enabling achievement-friendly mods and updating profile changes.
+f8d7c0e Renamed form1 to frmCatalogFixer Added more logging
+17ae1ae Refactor logging system to use frmLoadOrder.ActivityLog
+13835af Refactor file handling and UI layout improvements
+fcebb2b Update version to 1.14.3 and improve sound archive logic
+bc3fedd Merge branch 'master' of https://github.com/hst12/Starfield-Tools---ContentCatalog.txt-fixer
+b54caaf Version no. to 1.14.2 Changed sound compression for archive creation to none
+f15ad60 Changed sound compression for archive creation to none
+88efa56 - Updated `frmConvertLooseFiles.cs` to use `string.IsNullOrEmpty(esm)` for better validation. - Simplified command line string for archive creation and adjusted process handling for improved responsiveness. - Enhanced `.esm` file retrieval in `frmLoadOrder.cs` to search all directories, allowing for better file discovery.
+c7724b3 - Updated application version from 1.14.0 to 1.14.1. - Added "textures\clothes" to `LooseFolders` in `Tools.cs`. - Modified `exclude.txt` to include "sound" in exclusions. - Updated `TabIndex` for `btnClose` and `btnStart` in `frmConvertLooseFiles.Designer.cs` and added `Shown` event handler. - Declared `cmdLine` in `frmConvertLooseFiles.cs` and updated command line for texture and sound archive creation. - Enhanced logging in `frmLoadOrder.cs` for archive creation. - Changed confirmation dialog text for deleting loose file folders.
+4e7666e - Added a new label to indicate required dummy esm name. - Adjusted layout and control sizes for better UI fit. - Refactored btnStart_Click method for improved archive processing. - Added error handling for missing Archive2.exe file.
+dcf93f7 Refactor file handling and UI in conversion forms
+91c0b71 Add loose file conversion feature and UI enhancements
+75ffb5f For those suffering from triskaidekaphobia, skipped version no. to 14.
+dfeb622 Updated `Shortcuts.txt` Implemented logging in `frmAddModToProfile.cs` to track mod changes in profiles.
+8ec2f28 Implemented a logging feature in `Form1.cs`
+49950b0 Add logging for profile compare
+329ad59 Add logging functionality and UI adjustments Implemented logging in `frmDeleteLooseFiles.cs`, `frmLoadOrder.cs`, and `frmOrphaned.cs` to track file operations, deletions, and user actions. Made minor UI adjustments in `frmLoadOrder.Designer.cs` to improve layout without affecting functionality.
+693a3ba Added a new `btnLog` button in `frmLoadOrder.Designer.cs` to allow users to view the activity log. Adjusted sizes and locations of UI elements for consistency. Modified `viewLogToolStripMenuItem_Click` to utilize a new `ShowLog` method for improved log access. Added `btnLog_Click` event handler for the new button. Updated `EnableLog` method to ensure proper initialization of the activity log.
+3388965 Bugfix for archive not being updated when it already exists
+aa630e4 Add Nexus Mods menu items and enhance logging
+a858a7b Add logging features and update menu items
+4035b34 Add logging functionality and UI enhancements
+3a46433 Refactor StatText formatting in frmLoadOrder.cs
+a3c48c1 Add downloads menu item and handler
+7f8b421 Update version and improve code formatting
+29f6a95 Update file path handling for BlockedMods.txt
+f2394d9 Fiddled with web page.
+9e31fac Add HTML structure for Starfield Creations Mod Manager
+1b9d55c Add credit for ZeeOgre in documentation
+6d76955 Improve Readme.txt for clarity and conciseness
+3d16eb7 Improve README files for clarity and organization
+da457d8 Update documentation on mod support and installation
+1a245e6 Update version to 1.12.2 and improve row handling
+0a95ac5 Update BGS Exclude.txt asset exclusions
+ba321dd Improve plugin file handling and code robustness
+8f58369 Steam beta compatibility
+ae58091 Steam beta compatibility
+f938785 Enforce minimum size for form and center on screen
+a81ac5d Update README.md for clarity and organization
+4061b8e Refactor code and remove UI components
+8007a8e Removed most string concat statements in favour of Path.Combine
+7135840 Allow only a single instance to run
+05a40bb Added startup check and reset for invalid window size or position
+f46be36 Reset window size on startup if <500x100
+b500d36 Fixed bug with file extraction - huge speedup
+0bba126 Some code optimisations
+e1e04b5 Added option to open SFSE plugins folder
+03651a6 Added update all profiles option for enable/disable mod in other profiles.
+44247c6 Added function to update all profiles - add/remove missing mods, sort with LOOT.
+75a970b Added folder select for delete loose file folders.
+25c33b7 Merge branch 'master' of https://github.com/hst12/Starfield-Tools---ContentCatalog.txt-fixer
+28cb5a7 Moved LOOT yaml decoding out of initdatagrid function
+a7266dc Moved LOOT yaml decoding out of initdatagrid function
+0c023db Updated version no.
+f41d507 Another bugfix to Move up function - clear phantom selection.
+f3b4b7f Fix View->Columns-Blocked not being ticked if set.
+f44b4fd Fix bug with Move up keyboard shortuct
+af7cc03 Hide Vortex menu option if not detected
+5b62a14 Added File delete StarfieldCustom.ini
+2f46284 Delete loose file function deletes in Documents folder and game Data folder
+dd8b9ba Multi select works with open website function
+b69941c Backup and restore functions added for BlockedMods.txt in file menu
+92ce18c Install function: Extract archive within archive if found.
+b57332d Remember backup directory
+f23f1a4 Mangled some code with Copilot
+116e312 Remember last used direcotry for mod installation
+e5e403f Tweaks to game version switching
+6310cbf Updated version no.
+826673d Create BlockedMods.txt if it doesn't exist. Error checking
+119971a Install function handles SFSE plugins. SFSE must still be installed manually first. No uninstall function for SFSE plugins. Updated Readme.txt
+4f2e7bf Testing: Install SFSE plugins from mod install menu
+9e8698a Profile backup and restore added to File menu
+869c815 Updated README.md
+1661180 Updated Readme.txt
+cfb0a07 Merge branch 'master' of https://github.com/hst12/Starfield-Tools---ContentCatalog.txt-fixer
+22bf157 Update Readme.md For real this time
+601da5a Update Readme.md
+a2de02f Make Filter Active button bold when active
+32b34c0 Added mod stats toggle to View menu
+f68f15d Archive count shows active archives only. For real this time.
+ebc8363 Made switching between Steam and MS store game versions more reliable.
+08a458b Show starting game in status bar
+9d75ce8 Enable or Disable selected mod in other profiles now works multiple selected rows
+aca8909 Fix potential crash in Steam game path detection function
+8e8829a Only show switch profile prompt when swtiching to or from MS Store version
+daa9d1c Changes to default columns
+c2145d9 Display list of folder deleted for delete loose files function.
+f7087f6 Updated version no. Changed loadscreen for Steam game launch
+437e048 Updated Readme.txt
+f8b9d8d Added command line option and menu option to reset user preferences. Command line: -reset
+bdd5c7f Updated Readme.txt
+23a05b9 Option to restore default Starfield.ini
+cbf0114 Display notice if yaml decoding error occurs in status bar
+87f9754 Added -run command line option
+3f5f7bc -noauto command line parameter to disable most Tools menu settings on startup.
+128b0e8 Added option to launch StarUI Configurator if installed.
+cf5085e Updated Readme.txt for delete loose folder files feature
+beb225d Delete xbox files in check for orphaned archives.
+a9cbf89 Added feature to archive only new mods to archive folder
+24525ea Disabled achievement setting code Context menu cleaned up Re-arranged File->Reset/Delete Files menu
+5e0226e Disabled achievement setting code
+710d769 Changed Toggle Active button text to Filter Active Add File->Explorer->Profiles menu option
+a930d11 Changed Toggle Active button to Filter Active
+65b085b archive - voices_en.ba2 files.
+4bd468f Change Tools.ConfirmAction function to return DialogResult type
+5bab79d Include support for uninstall of language files. en only for the time being.
+04d9909 Updated menu description for delete and uninstall functions for clarity
+a96dead Updated readme.md again
+39e220e Updated readme.md
+60a82af Update status while archiving mods
+d68ddce Show total of installed mods for multiple mod installs.
+0caf5d3 Drag drop mods to install seems to be working. Removed repeated runs of LOOT while installing.
+cb9c1d8 Drap drop mods onto datagrid to install More testing needed.
+7185d00 Merge conflict
+c63344b Archive multiple selected mods
+57cb249 Archive multiple selected mods
+16a780b Multi-select for un-install mod
+b7584c2 Block mods function works with multi select
+4ae6427 Limited multi select functions Enable/Disable Delete from plugins
+2ed9ad0 Prevent multiple profile change windows
+b37157b Fix bug with remove duplicates function
+722be51 Add override paramater for Tools.Confimaction to always show dialog
+b1e3ced Show splash screen for Steam game version only
+3ffdaea Abort mod installation if no esp files found.
+2950e0d Updated link for Nexus latest mods due to Nexus changes.
+e068377 Display total of _main archives. Apparently there is a limit of around 255
+9369ec8 Orphaned archive delete: check for files such as bogus_main1.ba2
+c5e0ba1 Bugfix for missing ContentCatalog.txt
+b1a9d66 Bugfix for missing contentcatalog.txt
+5881e1a Option to run game after choosing prepare for Creations update.
+d2da84a Bugfix: Plugins.txt not being saved when mod is blocked and mod is active.
+ad6d78e Updated Readme.txt Updated popup messages for Creations Update feature.
+c4fef1b Show backup status for Creations update feature.
+d692723 Add info in MessageBox describing how to cancel the Creations update feature.
+457277b Removed Test menu. Added Prepare for Creations Update option to Mods menu
+308d2cb Testing a function to avoid the situation where Creation mods re-download even when they are already up to date.
+808916e Background colour of status bar set to black for dark mode.
+b7048f7 More verbose menu descriptions for context menu
+2b8c905 Removed BlockedMods.txt from app common folder Updated Readme.txt
+f69fc50 Disable mod if blocked.
+59b7c8b Updated Readme.txt Error checking for missing BlockedMods.txt
+1deba7d return null from Tools.BloickedMods if file doesn't exist.
+5fec2ff Blocked mods feature working without app restart. More testing required.
+6885e85 WIP: Blocked mods feature. Context menu added.
+1af398d WIP Blocked mods
+f573aa0 Sample BlockedMods.txt. Remove # symbol to uncomment
+e4770bd Added File->Edit Files->Edit BlockedMods.txt menu option. Mods listed in this file will be blocked from being activated.
+c2a1f7a Merge conflict
+07056c2 WIP blocked mods list via BlockedMods.txt in app common folder
+d87d8f7 WIP blocked mods list via BlockedMods.txt in app common folder
+11bc0ed Show in status bar is revert catalog backupu is on at startup
+41629df Bugfix: Possible crash in search function if disabled mods are hidden
+aab5f4c Added catalog check button back
+190c77e Added feature to always revert catalog to backup up version
+ad3d21e Error checking when opening mod web link
+97b15dc Updated version
+56960bc Added show recommended columns and hide all columns except mod name and enabled state
+57c73d9 Allow hiding of Description column
+7949c92 Added error checking for missing Plugins.txt in RemoveDuplicates function
+a942699 Added option to disable LOOT group lookup in datagrid
+5772f8f Updated version no.
+d0e6c66 Bugfix: Tools.Confirmaction not recognising Yes choice
+4f96821 Added default parameters for Tools.ConfirmAction function
+9acf988 A few tweaks to CSV export function
+434b723 Corrected typo Added CSV export
+2579d68 Catalog check button removed. Still available from Tools menu
+5eeee96 Updated Readme.md
+ed122d3 Centre progress bar
+efcdea3 Added back some optimisations
+796ec53 Reverted some changes.
+1d77659 Revert "Some code optimising"
+4f861ba Some code optimising
+e887a54 Add feedback for enable disable mod in other profile
+4a7a9a5 Tweaked remove duplicates function
+d30ceda Merge branch 'master' of https://github.com/hst12/Starfield-Tools---ContentCatalog.txt-fixer
+b1f0131 Added Tools menu option to disable all warning. Error checking for valid profile
+75475c6 Added Tools menu option to disable all warning. Error checking for valid profile
+547256f Enabling mods in other profiles shouldn't create duplicates.
+62df4d1 Added File->Reset->Reset window size
+d4f29a4 Save window size on exit Save window position on exit
+eb439cd Changed text for enable/disable mod in other profile
+e22069f Some changes to other profile add/remove mods
+d473699 Selected mod can be added or removed from other profiles
+713e60a Added feature to add currently selected mod to other profiles via right-click menu Update button does check and remove for duplicates
+d71bea5 Merge conflict
+221fc24 Added delete plugins.txt option in File->Reset/Delete Files Amended warning message wording.
+bb3cc44 Added delete plugins.txt option in File->Reset/Delete Files
+8de155b Fixes related to game versioin switching between MS and Steam
+e486973 Bugfix: Fixed broken LOOT autosort
+c16cf7c Look for LOOT in default directory if not configured. Changed some column default visibility settings.
+b8c0214 Prompt for path if autodetect of Steam game path fails.
+da93639 Auto detect Steam game install path
+74d7082 Updated Shortcuts.txt
+04cc81f Changed game path setting dialog to show exe name
+1f81ef0 Added warning about shwitching profiles before switching game mode.
+cf63094 Removed unnecessary confimation for orphaned archives function
+03ccaec Hide CK option if exe not found
+b25ce0c Show total filesize for orphaned archives
+eb71b23 Updated readme.txt
+65f14ac Added error checking for orphaned archive feature
+17972ca Some tweaks to delete orphaned archive feature.
+9ae1fe6 Added another confirmation check for orphaned archive deletion.
+5b54251 Added feature to delete orphaned .ba2 archives File->Reset/Delete Files->Check for Orphaned Archives
+70dd932 Prevent double refresh after running LOOT
+820b6d4 Added a progress bar to datagrid loading
+a9bf9f5 Various small optimsations
+70ed1fd Turn on Achievements column if enable all achievement safe mods is selected.
+847cf5c Turn on Achievements column if enable all achievement safe mods is selected.
+37d153e Various minor internal tweaks
+8b8c3df Confirmation prompts for enable all/disable all mods menu actions
+7570ddc Update readme.txt
+f3364cf Show warning before enabling achievement safe mods
+84d0989 Bugfix: Should fix possible crash on startup
+2174a95 Show no. of mods added or removed after Update button clicked.
+c17bb88 File save as switches to new profile
+8476169 Bugfix: View webstie wasn't working on inactive mods.
+b8ff660 Feature to open all enabled mod web pages.
+fb27e1e Removed double seperator in File menu
+915f17c Set filename for export active mods to Plugins.txt instead of blank
+b39610e Disable game version switch to SFSE if not installed.
+fd6c109 Dark mode defaults to system setting
+f86ddaa 1 time backup of StarfieldCustom.ini
+2fc66a2 Added button to delete ContentCatalog.txt
+6b4d47c Do autosort after mod install if enabled
+f58f59b File menu re-arranged
+e08cee7 Updated Shortcuts.txt and Readme.txt
+f48d3bc Updated readme.md
+1bcc1b7 Run autosort at startup if enabled.
+d345f61 Fix skip intro in ini editor not working. Add suggested settings button
+28d47f1 Updated Shortcuts.txt
+cd219e2 Moar text edits.
+e4098fc Check if StarfieldCustom.ini exists before trying to read it.
+dbb9c1e Minor text changes
+8b0eedb Update loose files settings from custom ini editor.
+e52a60c StarfieldCustom.ini settings editor completed.
+233833f Added more checks for game folder path.
+140e681 Check game path before un-install
+16481a9 Update version again
+b5194a5 Bugfix: Crash if selecting install without game path. Update version no.
+10b27e0 Merge branch 'master' of https://github.com/hst12/Starfield-Tools---ContentCatalog.txt-fixer
+27a71f9 Bugfix: Archive overwriting itself
+1e64961 Bugfix: Archive overwriting itself
+6975080 Updated shortcuts.txt
+1c38a45 Added mod archive features. Creates zip file from mod files and copies to specified folder
+29b976d Run LOOT after Update if AutoSort && plugins modified
+1713d1b Merge conflict
+874991c Merge conflict
+de5da9f Merge conflict
+81e78dd Display status bar message for catalog/plugins mismatch
+d1fa2b9 Display status bar message for catalog/plugins mismatch
+3ee1c5f Merge branch 'master' of https://github.com/hst12/Starfield-Tools---ContentCatalog.txt-fixer
+8cf46cd Save changes automatically for enable/disable all
+9564882 Save changes automatically for enable/disable all
+9b6ff0f Various tweaks to save plugins automatically.
+90a8a76 Version date column displays date only
+0fe98aa App now tells the time if you want
+29014e6 Amended some tooltips
+e9e8a27 Fix type set not send
+03c10cc Added A1_EMPTY_STUB_XXXXXXXXXX.esm to BGSExclude.txt file if using plugin bridge
+b77c419 Added Enable/Disable Achievement flag on right-click menu for individual mods.
+4b6687f Merge branch 'master' of https://github.com/hst12/Starfield-Tools---ContentCatalog.txt-fixer
+b481c39 Publish test
+d5f680a Publish test
+86a1ad3 Merge Conflict
+9b5d742 Merge Conflict
+272d1dc Publish test
+1b1fe9f Publish test
+4f43d80 Merge branch 'master' of https://github.com/hst12/Starfield-Tools---ContentCatalog.txt-fixer
+fdc14a0 Github is fighting me
+bce0bee Github is fighting me
+dd8ba78 Merge conflict
+ab1445f Merge conflict
+42c6470 Merge conflict
+ab7d11e Merge conflict
+20cf7af Update README.md
+a4c2f31 Update README.md
+f3f937e Publish test
+f0ace4e Added code to check for correct game path
+7f115c8 Move up/down keys disable View->Active only
+161e94b Merge conflict
+c2608e7 Updated readme
+c2c71cb Updated readme
+2f891ea Experimental feature: Set all achievement flags in catalog to true.
+f9b5290 Added to Mod Menu function to only enable Achievement Safe mods
+1d73486 Display group name from LOOT if set for Bethesda mods.
+32b8c4c Version columns can be hidden
+b2780ac Fix installation path for MS store mods. Added game version command line args for LOOT Changed Creations link to show PC only.
+820262d Fix installation path for MS store mods. Added game version command line args for LOOT
+e878364 Updated readme.txt
+61a7f48 Store seperate game path for MS Store version of game to allow proper switching between Steam or MS Store versions of game.
+e7f8f31 Fixed support for MS Store version of game. Note that switching between Steam and MS Store version will mess up you Plugins.txt and profiles, so back them up first.
+c688948 Clean up left over files are mod install.
+301ec98 Updated readme
+ef42b57 Changed button text Toggle Active
+78f221c Added profile to enable/disable all settings
+e936231 WIP: StarfieldCustom.ini settings form
+bb66e2b Added enable and disable all settings under tools menu
+63d2c86 Bugfix: Changing game version from Custom to Steam wasn't working 1st time.
+7c53aca Run game saves plugins
+b4d4d1b More readme updates
+06fe0cd Removed broken and redundant Mods-Add mod function More readme.txt updates.
+fcee232 Updated Readme.md
+e1c65c3 Updated readme.txt
+a323cdb Reverted save on drag-drop or movement keys. Save on game launch or quit instead.
+fefd88c Changed behaviour: Mod move functions now save changes, no need to press Save button.
+c16002c Merge branch 'master' of https://github.com/hst12/Starfield-Tools---ContentCatalog.txt-fixer
+39d8d9b Mods menu - added option launch Creation Kit
+2bef676 Mods menu - added option launch Creation Kit
+7eaaad3 Removed some debug popups
+8b2db1f Permissions bugfix in FileCompare function
+94e0432 Clean temp folder before extracting archive.
+0361b36 Merge branch 'master' of https://github.com/hst12/Starfield-Tools---ContentCatalog.txt-fixer
+fca0c96 Merge branch 'master' of https://github.com/hst12/Starfield-Tools---ContentCatalog.txt-fixer
+a177b4c Merge branch 'master' of https://github.com/hst12/Starfield-Tools---ContentCatalog.txt-fixer
+c40bf2e Added support for a bunch of other archive file types. Complete list at: https://github.com/adoconnection/SevenZipExtractor?tab=readme-ov-file#readme
+c21f3c3 Added support for a bunch of other archive file types. Complete list at: https://github.com/adoconnection/SevenZipExtractor?tab=readme-ov-file#readme
+a0cad03 Updated readme
+a2a3008 Merge branch 'master' of https://github.com/hst12/Starfield-Tools---ContentCatalog.txt-fixer
+994c3f0 Merge conflict
+64f2dcf Merge conflict
+44ad7e1 Added support for installing 7z archives
+551e78e Added support for installing 7z archives
+2e4d768 Merge branch 'master' of https://github.com/hst12/Starfield-Tools---ContentCatalog.txt-fixer
+9514542 Merge branch 'master' of https://github.com/hst12/Starfield-Tools---ContentCatalog.txt-fixer
+8b76065 Merge branch 'master' of https://github.com/hst12/Starfield-Tools---ContentCatalog.txt-fixer
+81b6ad6 Updated readme
+12bc7d0 Updated readme
+7a8729e Re-arranged some menu options
+e0f061f Add button to toggle show all mods or active only
+7b0f331 Merge conflict
+96ba635 Bugfix: Open plugins not working when profiles deactivated.
+42ae3fe Bugfix: Open plugins not working when profiles deactivated.
+c3f1b85 Show added/removed mods after pressing Update button.
+0b9fa90 Updated screenshot
+1f47118 Moved readme files. Added check for modified plugin order before running game.
+1390278 Moar tweaks to dark mode.
+a190680 Updated screenshot
+c4129b2 Tweaks to column layout
+61c51d9 Merge conflict
+8bd59b9 Merge conflict
+8a2ebfd Merge conflict
+b9beff2 Moar dark mode tweaks.
+8766507 Moar dark mode tweaks.
+cfca549 Screenshot of dark mode
+f09aba1 Dark mode appearance improved a bit. App requires a restart for full effect.
+7da4e34 Removed images from load order up/down/top/bottom buttons
+af3be10 Made dark mode option a light/dark mode switch.
+35bed3f Bugfix: Mod install feature was broken
+a175642 Did some spell-checking
+f2c26a0 Merge Conflict
+a2e174f Additional screenshot
+ec7fa8b Update README.md
+44598e2 Additional screenshot
+a0387d9 .Net 9. Experimental dark mode support
+d23998c Bugfix for missing Plugins.txt - create dummy file
+31f62ad Merge branch 'master' of https://github.com/hst12/Starfield-Tools---ContentCatalog.txt-fixer
+e7af9b2 Bugfix for missing StarfieldCustom.ini
+9023650 Bugfix for missing StarfieldCustom.ini
+c77d6df Added msg and req fiels to LOOT yaml decoding.
+2397732 Some starter files added for documentation
+9096bd9 Detect Loose files settings on startup. Added Messagebox exception display for debug builds.
+f9d7363 Detect Loose files settings on startup.
+929dd81 Added error checking if Vortex launch fails. App auto-quits after Vortex launch.
+fd9ac5f Populate URL column with Creations links
+74a50db Merge conflict
+1f5f6f7 Url and description info read from Loot
+94856b6 Url and description info read from Loot
+2892db8 Fix bug with opening link to Creations for Creations mods.
+37b839a Added LOOT Autsort option when Update button is pressed. Add menu item to launch Vortex.
+40ce6bf Remove blueprintshps.esm if added by LOOT
+df04004 Bugfix: file open not working properly.
+078a964 Merge branch 'master' of https://github.com/hst12/Starfield-Tools---ContentCatalog.txt-fixer
+62c1050 Updated screenshot
+81e604f Updated screenshot
+94bcdc1 Merge conflict
+9d3ed4d Fixes to LOOT autosort Some changes for large font settings.
+c17d6e2 Fixes to LOOT autosort Some changes for large font settings.
+ec51ad9 commit issues
+9e4efc8 View active mods only option in View->Active only Updated Shortucts text
+760dc31 View active mods only option in View->Active only
+f88444e Amended code for remove Vortex files option
+c59f0db 
+6e83441 
+9665405 
+565886b 
+25413a0 
+6dff49f 
+c1e1596 
+11bffd1 Added function to remove duplicate mods in mods menu.
+339895a Added function to remove duplicate mods in mods menu.
+9977b07 Merge branch 'master' of https://github.com/hst12/Starfield-Tools---ContentCatalog.txt-fixer
+471dbbb Skip deleting esm and archive files if deleting esp
+2b95877 Skip deleting esm and archive files if deleting esp
+ec6c5d3 Update tab indexes
+d428459 Un-install function will delete .esp files as well as .esm and archives.
+ca7994c Game version can be set to SFSE. Starfield path setting needs to be made first.
+d03a16f Added LOOT button. Some resizing to fit 1080p screens.
+c0e8f3e Merge branch 'master' of https://github.com/hst12/Starfield-Tools---ContentCatalog.txt-fixer
+f7b75dc Merge branch 'master' of https://github.com/hst12/Starfield-Tools---ContentCatalog.txt-fixer
+ae7e39f Merge branch 'master' of https://github.com/hst12/Starfield-Tools---ContentCatalog.txt-fixer
+489529a Automate LOOT autosort function. Disable/Enable profile, remove invalid LOOT entries from Plugins.txt, delete Starfield.ccc.
+1dd28b2 Automate LOOT autosort function. Disable/Enable profile, remove invalid LOOT entries from Plugins.txt, delete Starfield.ccc.
+b0b1605 Added refresh button
+12b9d14 Moved game version menu options from Tools to Game
+60107b0 Display status bar message for loose files enabled/disabled.
+1ff5a70 Fix loose files enable/disable code
+0717258 
+e5cfebc Added option in tools menu to automatically add or remove mods in Plugins.txt
+91686c5 Add profile name to export profile function
+ca88de9 Fixed bug with retrieving catalog data for mod file names containing a period.
+d7a3d1d Fixed bug with retrieving catalog data for mod file names containing a period.
+bd972bc Add tooltip for Update button
+5c05902 
+f77f90d Added Update button - adds mods not in Plugins.txt, removes missing mods, saves changes. Experimental feature: File->Reset/Delete Files->Undo vortex changes reverses modifications to files in My Games\Starfield made my Vortex.
+e627f28 Experimental feature: File->Reset/Delete Files->Undo vortex changes reverses modifications to files in My Games\Starfield made my Vortex.
+922c867 Tested. Compatible with Shattered Space expansion.Updated BGS Exclude
+fc3ad9a Updated BGS Exclude
+b90603d Preliminary update for Shattered Space
+5760a13 Preliminary update for Shattered Space
+ea4b940 Re-arranged Columns menu to View menu
+013971c Exported active mods list includes '*' for active mods
+adc3906 Added reset load screen
+7f76864 Merge branch 'master' of https://github.com/hst12/Starfield-Tools---ContentCatalog.txt-fixer
+577239b Updates to readme files
+99b2755 Update Readme.txt
+2dced6a Support for adding .eps files and removing unused .esp entries from catalog. Don't activate esp mods automatically when adding.
+4254c75 Support for adding .eps files and removing unused .esp entries from catalog.
+a0b7831 Support for adding .eps files and removing unused .esp entries from catalog.
+6c0dd1f Merge branch 'master' of https://github.com/hst12/Starfield-Tools---ContentCatalog.txt-fixer
+a2e77a9 Merge branch 'master' of https://github.com/hst12/Starfield-Tools---ContentCatalog.txt-fixer
+c8f1801 Merge branch 'master' of https://github.com/hst12/Starfield-Tools---ContentCatalog.txt-fixer
+2cb271f Allow adding of esp files to Plugins.txt
+c2ae39e Add warning for esp files found in catalog.
+4e3fbda Add warning for esp files found in catalog.
+1ff016b Merge branch 'master' of https://github.com/hst12/Starfield-Tools---ContentCatalog.txt-fixer
+458dbe2 Bugfix: Check for valid numbers and characters in catalog version.
+59f4659 Bugfix: Check for valid numbers and characters in catalog version.
+1307e0d Merge branch 'master' of https://github.com/hst12/Starfield-Tools---ContentCatalog.txt-fixer
+76eec14 Merge branch 'master' of https://github.com/hst12/Starfield-Tools---ContentCatalog.txt-fixer
+7c7b1a3 Merge branch 'master' of https://github.com/hst12/Starfield-Tools---ContentCatalog.txt-fixer
+62cb491 Bugfix for crash on startup if ContentCatalog.txt.bak doesn't exist. Bugfix for crash when opening mod link.
+39f03a8 Bugfix for crash on startup if ContentCatalog.txt.bak doesn't exist.
+2b582ad Make Author ver column read-only Add toggle for TimeStamp column
+d3014ec Catalog auto check functions default to only auto check.
+930af48 Export plugins automatically opens file after export
+4d26821 Some changes to export active mods function.
+0742d5b Support for url column
+472c8f6 Seperate Creations author version no and mod version date.
+4fbff05 Display indicatation if Starield.ccc is auto deleted.
+40fd070 Changed edit BGS exclude file to open app common folder instead.
+0f7c857 Added option to edit BGS Exclude.txt file to File menu can be used to exclude any esm files from Plugins.txt including the Bethesda main files.
+3a1721e Tidy up comments written when exporting mod list
+796d561 Some tweaks to add/remove command
+12b4e06 When searching press enter to search next
+35c1f02 When searching press enter to search next
+f8b4cb1 Use full path to read files from common folder
+9adaf10 Fix game version not being saved.
+48b6cdd Add File Size column
+ed3ed99 Error checking when reading app text files
+a8285f2 Updated screenshot
+de68bed Removed thread.sleep from game launch code. Some code simplification
+368d381 Renamed Quit button to Exit
+4c3f211 Removed Ok button
+ee1c418 Added catalog check button
+b25299b Fix crash when launching tool with blank Plugins.txt file.
+26a28de Add/Remove only save if changes made. Some File menu changes/re-ordering
+729e047 Add File menu option to overwrite StarfieldCustom.ini
+fae3745 Load screen set to 85% of screen dimensions
+a3391d6 Merge branch 'master' of https://github.com/hst12/Starfield-Tools---ContentCatalog.txt-fixer
+60162c9 Windows scaling change to 0.85% for 1080p
+04259d6 Windows scaling change to 0.85% for 1080p
+fa70799 Merge branch 'master' of https://github.com/hst12/Starfield-Tools---ContentCatalog.txt-fixer
+c594ba2 Support for launching via custom exe fixed. e.g. SFSE
+48b2dca Support for launching via custom exe fixed. e.g. SFSE
+8cc02a7 Remove old setup file
+9ff3bf4 resolve conflict
+4e2df42 Re-try icon change
+7db7f61 Re-try icon change
+e374d96 Added icon for Content Catalog Check in Tools menu
+bfb7bee Added icon for Content Catalog Check in Tools menu
+420b849 Merge branch 'master' of https://github.com/hst12/Starfield-Tools---ContentCatalog.txt-fixer
+737d8e5 Update README.md
+07f6735 Update README.md
+b398ff1 Updated screenshot
+68f3c4f Bugfix: Crash if all checks turned off in catalog checker.
+eb6082d Merge branch 'master' of https://github.com/hst12/Starfield-Tools---ContentCatalog.txt-fixer
+e4e7b44 Added support to launch custom exe e.g. SFSE
+1ea9fc7 Added support to launch custom exe e.g. SFSE
+1e0bb81 Removed Load Order button
+fe41ed8 Removed some more buttons from catalog fixer.
+09074c6 Updated readme and version
+eac3a8e Removed -lo command line parameter. Tool now always starts in Plugins.txt edit mode Catalog fixer is only shown if errors found in catalog. Removed duplicate functionality from catalog fixer window. Catalog fixer can be called from Tools menu.
+60f6338 Added 2nd status text box
+923128d Catalog version no. moved to text file.
+fbd3ab8 Compare catalog backup with catalog contents instead of only last modified dates.
+7ec9355 Output group name if defined for Export active mods to file
+f6af017 Fix mod add/remove count not being dispalyed.
+4f81fff Update version no. to 1.8.3
+f7c3ad9 Fix for BGS files not being removed from plugins.txt
+617b3cc Updated Screenshot 2
+c008d08 Disabled multi-select on datagrid.
+1d8b848 Keyboard shortcut - R to run game
+df19b80 Added Datagridview endedit to avoid datagridview display bug.
+29c0aa9 Drag drop support added
+d09ea81 Index count column added. Enable it under the columns menu.
+cc458ce Update Readme.txt and readme.md
+d1ea838 Update to handle new BGS file SFBGS004.esm. Now stored in seperate file common\BGS Exclude.txt
+cc3a593 Space to toggle mod on/off
+6d581e9 WASD keys move plugins up, top, down and bottom
+1fb7d47 Catalog header definition put into text file Common\Header.txt
+afc1624 Scale loading screen
+46cf557 Re-ordered Tools menu
+362bf6d Made profiles setting persistant.
+1dabd79 Updated readme.txt
+81a9c03 Updated screenshots
+a1a6fb3 Game select via radio buttons on main screen
+0a13eed Added option to delete Starfield.ccc
+c8a0ea0 Update readme and version
+9df4c02 Catch out of range date/time conversion error
+056eb28 Slightly more verbose reporting of catalog fixes.
+4a07ac4 Added experimental support for reading LOOT groups. Turn on the Group column in the Columns menu to use it.
+844189a Mod installer updates plugins.txt and active profile
+412d7ff Added winget installation instructions to readme.md
+f228d11 Re-arranged some menus
+a9acbd9 Pass status bar message to load order editor
+331c95c Update README.md
+b814abc Load editor bugfix: Don't try to open a non-Creations mod web page at Bethesda Creatons.
+c5d2965 Updated screenshot
+a21d92d Added verbose messages toggle
+a37330b Profiles saved when Plugins.txt is saved.
+e8a0497 Various code cleanups. Adde option to run LOOT with autosort
+e12d59a More readme.txt edits.
+65a3ec2 Update readme.txt. Clicked things to make code analysis happy.
+ceb776d Update readme.txt
+3ccdc1b Changed folder layout
+53dbe87 Made button margins same
+d95e373 Reverted change to load order window topmost
+390e95f Add TopMost method for -LO command line parameter.
+40813d0 Fix index error in search
+6db8c9b Update readme.md
+ed518e5 Update Readme.md
+418e327 Update readme.md
+85aeff4 Update README.md
+370ee5b Check if Starfield exists in AppData
+57b250a Load order editor: Enabled double-click to save Plugins.txt again. Made disabled columns persistant.
+31d8106 Pick your own loading screen
+5132695 Error handling for launching Steam version of the game.
+0842c70 Modified catalog check to only check version number up to first period. Added version no. display to help
+41e708d Disabled check for non-numberic version numbers to handle the Midas Manor Player home mod.
+deb73ce Remove context menu text mentioning double-click
+8090c8d Removed double-click save - interferes with column re-ordering.
+fbf1c80 Update status strip if plugins.txt backup made.
+e379894 Some tweaks to game launching
+9f84008 Some tweaks to column resizing
+5efc329 Load order editor: Enabled hiding some columns.
+af03dfb Load order editor: Column re-ordering and re-sizing enabled for some columns
+d4096d1 Load order editor: Added GitHub link
+5d1618c Updated readme
+8c02704 Load order editor: some UI tweaking. Added Quit button.
+c08dc40 Change from .Net Framework 4.8 to .Net 8 Size load order screen to 75% of screen size
+a6cf89e Load order columns re-arranged.
+10953da Added right-click View on Creations site option in load order editor
+dbae66a Bugfix in load order editor move up/down functions
+bd4fdbc Change load order editor Exit menu to exit app instead of closing window
+97dc946 Re-arranged columns in load order editor
+b9088df Improved handling of force clean with missing catalog.
+436b773 Added links to BGS Discord and X
+67ce321 Merge branch 'master' of https://github.com/hst12/Starfield-Tools---ContentCatalog.txt-fixer
+bb0fcb1 Updated main screenshot
+cd2b76c Update load order editor screenshot
+43a5b03 Add archive file count to load order editor
+6fd15be Update readme.md
+ba11b4c Update README.md
+9ab50fb Some tweaks to log window info.
+2089f92 Removed all log text box clearing.
+da0aa68 Load order editor: Changed move buttons to icons
+5684f01 Load order editor: Added Save and Run buttons
+435f5f1 Load order editor: Double click toggles mod on/off and saves Plugins.txt
+0789c22 Adde tooltips to load order editor
+48c80d9 Select default game version to launch - Steam or MS in load editor
+87f3174 Added save option to context menu
+656fc12 Added install mod to context menu
+90929dc Added game launch option to load order editor menu
+9ec6d37 Load order editor: set description field to read-only
+2f79746 Show shortcut keys for context menu
+50e3769 Double click anywhere on a line in load order editor to enable/disable a mod.
+cfaca87 Additional functions for context menu
+cb9378c Added right-click context menu for load order editor
+674f67a Made a bunch of changes recently so might as well call this v1.6
+be29094 Added explore appdata folder menu otion under File menu
+c0c7207 Added Explore game data folder menu option under File menu
+e785f09 Enabled Mod install and un-install for release version. Added Edit->Delete menu option
+e31f6a6 Debug build only: Mod installation and un-installation added. Will only install from .Zip files and won't work with loose file mods.
+cb00a6a Removed print menu options. Replaced with Export Active Mods - creates a text file containing only active mods.
+14967bf Added Clear Log button
+7d3831b Backup catalog after removing unused entries if enabled
+03147ed Removed profile from Tools menu, added checkbox instead
+f1f2c98 Profiles feature disabled by default since it can cause some issues with Plugins.txt reverting automatically. Can be turned on in Tools menu.
+2a6bbe3 Working on mod install feature
+d118e95 Changed catalog restore notification wording.
+5e6def0 1-time only auto backup of Plugins.txt to Plugins.txt.bak
+bc4b3a4 Disable load order save menu if plugins sorted. Save As still enabled.
+704c2cd Update Readme.md
+5a502f3 Enabled all auto functions except Force Clean by default. Updated Readme.txt
+952ad31 Small update to Readme.txt
+7f3d41b Experimental profile system implemented in load order editor. Some additional source code comments.
+36364b4 Logging made a bit more vebose.
+d3a8167 Minor changes to log display.
+aa654c7 Fix -run command line arguments not shutting the tool down.
+55dc6f6 fix typo
+aa1dc5e Prompt to save changes in load editor if necessary
+d5ff3b5 Add and remove missing menu option added to add mods missing from Plugins.txt and remove mods listed in Plugins.txt but not present in Data folder.
+cfd5f28 Load order editor: Add missing - looks for .esm files not listed in Plugins.txt and adds them. Remove missing - looks for .ems files listed in Plugins.txt but not present in game Data folder. Removes them
+be5f585 add ,v to version column in load editor for a bit more readability
+569f42e Disabele File->New since it doesn't do anything.
+96e9809 Some code changes to make splitting the load order editor into a seperate app easier.
+c72f48d Tracked down odd bug with Starfield path.
+28d41c2 A few changes to game launch functions.
+c2d43c6 Bugfix: Starfield game folder path not being saved
+ab87ba9 Added feature to scan for new esm files to add to Plugins.txt
+19d3df4 Rename Tools->Option to Tools->Font
+0b9c8f1 Mods->Show Stats menu option addded mainly to clear other status bar messages.
+4ff37a3 Mod delete shortcut
+f21cebb Basic add/remove esm file facility added. Doesn't actually delete any files, just removes from Plugins.txt
+abcc0ca Mod profiles save to Documents folder by default. Store last used folder
+c3d53e0 Cleanup of load order editor, removed some buttons, added menu items. Printing not implemented (yet?) Added simple mod profile load/save Updated screenshot
+40af975 Updated screenshot2
+472248e Change catalog preview window / log window size to 50/50 split
+1f94fbd Search feature in Load Order Editor. Searches mod file names only, case insensitive. Example: Searching for test will return hits for xxtestxxx.ems
+ced037d Merge branch 'master' of https://github.com/hst12/Starfield-Tools---ContentCatalog.txt-fixer
+206c007 Added Load Editor screenshot
+5242688 Update README.md
+e9fba5b Merge branch 'master' of https://github.com/hst12/Starfield-Tools---ContentCatalog.txt-fixer
+4b97896 Updated screenshot
+7ca2d47 Update README.md
+4332c80 Display errors in Load Order Editor in status bar instead of message box popup.
+18b3469 Descrition of file access added to Readme.txt
+50ecb0c Updated Readme.txt
+dac8a51 Change About button text to Help
+8ebaad8 Don't re-write catalog if Remove unused is used when no changes are needed.
+4c854f5 Add button to open Creations website
+59dd545 Additional check for missing or corrupt catalog
+4d5948d Confirm to create dummy Catalog.txt if necessary.
+f66970f Additional error checking
+c6bd0c7 Font selection option added to load order editor
+45e9e54 Add default comments back in to plugins.txt file
+8783716 Remove . from version number display
+720641a Added version date info to load order editor
+404c63a Check button show title, date and version
+4604d95 Show converted date/time and version for Check button.
+bbcfbdd Press Check button to see date/time info for version numbers.
+92f4066 Changed icon. Now includes moar AI
+eec1ea9 Removed not needed onsole.writeln statements
+d294a08 Command line options: -auto -noauto -runSteam -runMs See Readme.txt for details
+c64e608 Updated Readme.txt
+8ea9c31 Load order width increased a bit. Splashscreen when launching game from within tool. Just to show that something is happening. Command line option -noauto will clear all auto checkboxes.
+1c155df Small increase in load editor width
+75adc03 Merge branch 'master' of https://github.com/hst12/Starfield-Tools---ContentCatalog.txt-fixer
+a4c5b62 Removed font size override in load editor. Buttons re-arranged. Added enable all button
+bfef731 Added enable all mods button in load editor
+1f677c7 Update README.md
+87c3bf8 A few more UI tweaks
+02ba300 A few small UI tweaks
+f3b9a02 Merge branch 'master' of https://github.com/hst12/Starfield-Tools---ContentCatalog.txt-fixer
+d2fa137 Some feedback in the UI for number of errors found or cleaning changes made.
+48b1ff9 Update README.md
+880f384 Credit to ZeeOgre
+e26e832 Detection for out of range version number 18446744073709551615.0 added.
+ecc149f About text displays in re-sizable window
+2c72ad8 Added Readme.txt. Also shown from About button
+cf55578 Merge branch 'master' of https://github.com/hst12/Starfield-Tools---ContentCatalog.txt-fixer
+ceb504e Minor change to MS store launch function
+c5d490b Update README.md
+40ee83a Bugfix: remove trailing \r in file list for Remove Unused button
+4f4f584 Default auto settings to check only.
+ab22910 Version and timestamp comparison in catalog. overwrite version number with 704067200.0 if invalid.
+eed1e30 Fix bug potential deleting catalog.
+f2a9c51 Fix bug with Remove Unused potentially wiping catalog.
+37000b0 Remove unused button to debug build only.
+0d1fe86 Confirmation for reset version numbers.
+dc85dfd Test feature - Remove Unused button deletes missing mods from ContentCatalog.txt file. Experimental for now but should help to prevent catalog corruption.
+0130c70 Removed debug only condition on Tim button.
+2eea9f9 Testing new feature to remove old entries from catalog that refer to deleted mods. Use Trim button to try it out.
+01a86fc Save settings before game launch
+a548c02 Revised auto checks
+1999ac5 App closes after using launch game buttons
+7cad64a Tweaks to load editor layout
+8f89db1 Updated missing Plugins.txt message
+37a445e Clean code now changes corrupted version numver to 0.1
+35679dc Version number and files info added to load order editor
+db32b92 Addded force clean check box
+4e066ef Catalog check now considers a backslash character as the catalog being corrupt.
+1edd11c Scaling adjustments for main window
+b159f34 More adjustments to load order editor scaling
+4a4efe0 Load order editor improved scaling
+564f91d Another change to MS Store game launch function
+29d4c12 Another go at the Store version of the game.
+706fb34 Another attempt to launch store version
+62756d2 Change cmd line for MS Store version of game.
+b12de98 Added 2 method to try and start store version of game.
+c67167f Further testing, MS store Starfield launch.
+e03c00d Testing launch Starfield for MS Store version
+918350b Stretch main window a bit - quick hack for 5k screens.
+e647bf8 Additional checks for missing files
+b5f1976 Disabled esm and esp count temporarily
+344034d Some additional mod stats shown in Load Order screen
+b63cbf3 Added GitHub link
+6eb132b Don't backup plugins if modified but not saved.
+a0beab3 Merge branch 'master' of https://github.com/hst12/Starfield-Tools---ContentCatalog.txt-fixer
+1137790 Included Visual Studio Setup Project
+5710c06 Update README.md
+63eb947 Update README.md
+c6b3792 Updated screenshot
+553e194 Auto functions can be disabled.
+57f4afc Font size changes for load order editor
+99b7cef Added disable all mods. Warning about sorting mods.
+0785b18 Merge branch 'master' of https://github.com/hst12/Starfield-Tools---ContentCatalog.txt-fixer
+6fc5785 Add check for missing Plugins.txt file.
+94bd3c5 Update README.md
+b781fe5 Added installer. Creates desktop shortcut and entry in installed apps.
+e03dcbe Fixed mod description not re-ordering.
+5ad17ea Added top and bottom buttons to load order editor
+1b180e2 Removed test button
+83a8b6b Read description from catalog for load order editor
+d828ac3 Load order window starts maximised to work around a display issue.
+33d95a8 Backup and restore Plugins.txt added for the load order editor. No warnings about overwrite, so use with caution.
+582837f Added some additional checks if using the button to launch Starfield from the app.
+f51d8a5 Update README.md
+4275e83 Updated screenshot
+85aa934 Merge branch 'master' of https://github.com/hst12/Starfield-Tools---ContentCatalog.txt-fixer
+cc7b551 Changed button spacing
+d724cd2 Update README.md
+e426b39 Font size changes
+6ed140f Enabled load order editor resizing
+956b294 Merge branch 'master' of https://github.com/hst12/Starfield-Tools---ContentCatalog.txt-fixer
+eb72e6b Mod load order up/down buttons
+467e6fd Update README.md
+796c127 Update README.md
+06745e2 Update README.md
+7c53510 Updated screenshot
+277d97c Added Enable/Disable mods
+c6fe13a Merge branch 'master' of https://github.com/hst12/Starfield-Tools---ContentCatalog.txt-fixer
+fefa9a0 Updated about text
+53abd49 Update README.md
+762f59d Updated tab indexes
+94af0c5 Update app version
+6f9236c Backup after clean only if Auto backup is enabled
+6bc4cc8 Auto back up catalog after clean
+1cef5cd Added auto actions
+4cb0a7a Amended restore or clean message
+48ad882 Update readme
+3b9272d Update README.md
+ec292da Update README.md
+e3f5d20 Update README.md
+16c20e3 Update README.md
+c72dd69 Merge branch 'master' of https://github.com/hst12/Starfield-Tools---ContentCatalog.txt-fixer
+cbc8942 Added tooltip to Restore button
+0c5a003 Update README.md
+7e3d543 Update README.md
+17a3cb7 Update README.md
+8c041e8 Added screenshot
+735473e Merge branch 'master' of https://github.com/hst12/Starfield-Tools---ContentCatalog.txt-fixer
+efdd9c7 Added status bar message for backup
+98b6cfc Update README.md
+3b443c1 Tabindexs updated
+15f2a35 Added backup and restore functions
+2065234 Update README.md
+f5fc7c6 Create README.md
+b563a26 Added explore folder function.
+a6b3b79 Add project files.
+7de03b5 Add .gitattributes and .gitignore.

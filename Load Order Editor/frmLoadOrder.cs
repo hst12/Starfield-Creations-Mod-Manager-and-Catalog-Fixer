@@ -140,8 +140,7 @@ namespace hstCMM
             menuStrip1.Font = Properties.Settings.Default.FontSize; // Set custom font size
             this.Font = Properties.Settings.Default.FontSize;
 
-            //DetectApps(); // Detect other apps
-            DetectApps();
+            DetectApps(); // Detect other apps
 
             SetTheme(); // Light/Dark mode
 
@@ -225,7 +224,7 @@ namespace hstCMM
                     RunGame();
                     Application.Exit();
                 }
-               
+
             }
 
             // Creations update
@@ -6331,6 +6330,11 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     Debug.WriteLine(Path.GetFileName(item));
                 }
             }
+        }
+
+        private void githubLatestReleaseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Tools.OpenUrl("https://github.com/hst12/Starfield-Creations-Mod-Manager-and-Catalog-Fixer/releases/latest");
         }
     }
 }
