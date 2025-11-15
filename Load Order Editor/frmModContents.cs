@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -27,7 +28,7 @@ namespace hstCMM.Load_Order_Editor
                 files.Add(ModFile + ".esm");
 
             // match files like 'modname - textures.ba2', 'modname - textures01.ba2', 'modname - textures02.ba2', etc.
-            string[] textureFiles = Directory.GetFiles(directoryPath, modName[..^4] + "* - textures*.ba2");
+            string[] textureFiles = Directory.GetFiles(directoryPath, Path.GetFileNameWithoutExtension(modName) + "* - textures*.ba2");
 
             btnShowArchives.Enabled = false;
 
