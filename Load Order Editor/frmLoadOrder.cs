@@ -2009,9 +2009,6 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
             // Obtain the mod file path either from the parameter or by showing a file dialog.
             string modFilePath = InstallMod;
-#if DEBUG
-            //MessageBox.Show($"Installing {InstallMod}");
-#endif
             if (string.IsNullOrEmpty(modFilePath))
             {
                 using (System.Windows.Forms.OpenFileDialog openMod = new System.Windows.Forms.OpenFileDialog
@@ -4029,8 +4026,11 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     if (File.Exists(ModFile + ".esm"))
                         files.Add(ModFile + ".esm");
 
-                    if (File.Exists(ModFile + " - textures.ba2"))
-                        files.Add(ModFile + " - textures.ba2");
+                    foreach (var textureFile in Directory.EnumerateFiles(directoryPath, ModName + " - textures*.ba2"))
+                    {
+                        if (File.Exists(textureFile))
+                            files.Add(textureFile);
+                    }
 
                     if (File.Exists(ModFile + " - main.ba2"))
                         files.Add(ModFile + " - main.ba2");
@@ -4123,8 +4123,13 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     if (File.Exists(ModFile + ".esm"))
                         files.Add(ModFile + ".esm");
 
-                    if (File.Exists(ModFile + " - textures.ba2"))
-                        files.Add(ModFile + " - textures.ba2");
+                    foreach (var textureFile in Directory.EnumerateFiles(directoryPath, ModName + " - textures*.ba2"))
+                    {
+                        if (File.Exists(textureFile))
+                            files.Add(textureFile);
+                    }
+                    /*if (File.Exists(ModFile + " - textures.ba2"))
+                        files.Add(ModFile + " - textures.ba2");*/
 
                     if (File.Exists(ModFile + " - main.ba2"))
                         files.Add(ModFile + " - main.ba2");
