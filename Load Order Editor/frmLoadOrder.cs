@@ -224,7 +224,6 @@ namespace hstCMM
                     RunGame();
                     Application.Exit();
                 }
-
             }
 
             // Creations update
@@ -1912,16 +1911,12 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     int idx = rows.Add();
                     var row = rows[idx];
 
-                    // Direct cell access for maximum speed
-                    /*row.Cells[modEnabledIndex].Value = (file.Length > 4 &&
-                        string.Equals(file.Substring(file.Length - 4), ".esm", StringComparison.Ordinal))
-                        && activateNew;*/
                     row.Cells[modEnabledIndex].Value =
-    (file.Length > 4 &&
-     (file.EndsWith(".esm", StringComparison.OrdinalIgnoreCase) ||
-      file.EndsWith(".esl", StringComparison.OrdinalIgnoreCase) ||
-      file.EndsWith(".esp", StringComparison.OrdinalIgnoreCase)))
-    && activateNew;
+                        (file.Length > 4 &&
+                        (file.EndsWith(".esm", StringComparison.OrdinalIgnoreCase) ||
+                        file.EndsWith(".esl", StringComparison.OrdinalIgnoreCase) ||
+                        file.EndsWith(".esp", StringComparison.OrdinalIgnoreCase)))
+                        && activateNew;
                     row.Cells[pluginNameIndex].Value = file;
 
                     addLogEntries?.Add($"Adding {file} to Plugins.txt");
@@ -4131,7 +4126,6 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                         if (File.Exists(textureFile))
                             files.Add(textureFile);
                     }
-
 
                     if (File.Exists(ModFile + " - main.ba2"))
                         files.Add(ModFile + " - main.ba2");

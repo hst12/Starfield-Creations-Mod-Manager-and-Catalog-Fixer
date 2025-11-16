@@ -370,7 +370,7 @@ namespace hstCMM
                     // Check the entire version string for invalid characters (anything other than letters, digits, or '.')
                     foreach (char c in versionStr)
                     {
-                        if (!char.IsLetterOrDigit(c) && c != '.' && c != '\\' && c != ' ')
+                        if (!char.IsLetterOrDigit(c) && c != '.' && c != '\\' && c != ' ' && c!= '=')
                         {
                             errorCount++;
                             richTextBox2.AppendText($"Non numeric version number detected in {creation.Title} - {c}\n");
