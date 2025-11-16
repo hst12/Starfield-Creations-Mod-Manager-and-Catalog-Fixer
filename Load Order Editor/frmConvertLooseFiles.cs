@@ -11,6 +11,7 @@ namespace hstCMM.Load_Order_Editor
         private string esm;
         private frmLoadOrder.ActivityLog activityLog = frmLoadOrder.activityLog;
 
+        private bool log = Properties.Settings.Default.Log;
         public frmConvertLooseFiles(string esmFile = "")
         {
             InitializeComponent();
@@ -55,26 +56,22 @@ namespace hstCMM.Load_Order_Editor
             string workingDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"My Games\Starfield\Data");
 
             // Create texture archive
-            /*if (Directory.Exists(Path.Combine(workingDirectory, "textures")))
-            {*/
             cmdLine = @"textures -create=""" + Path.Combine(frmLoadOrder.GamePath, "Data", Path.GetFileNameWithoutExtension(esm)) + " - textures.ba2" + @""""
            + " -format=DDS -maxSizeMB=1024 -excludefile=" + "\""
            + Path.Combine(Tools.CommonFolder, "exclude.txt" + "\"");
 
             if (!File.Exists(Path.Combine(frmLoadOrder.GamePath, "Data", Path.GetFileNameWithoutExtension(esm) + " - textures.ba2")))
             {
-                //activityLog.WriteLog($"Creating texture archive\n{archive2Path} {cmdLine}");
+                if (log)
+                    activityLog.WriteLog($"Creating texture archive\n{archive2Path} {cmdLine}");
                 MakeArchive(archive2Path, cmdLine, workingDirectory);
-#if DEBUG
-                Debug.WriteLine(cmdLine);
-#endif
                 frmLoadOrder.returnStatus++;
             }
             else
             {
                 MessageBox.Show("Skipping texture archive creation.", "Textures archive already exists.", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
-            /*}*/
+
 
             // Create main archive
             cmdLine = @"interface,geometries,materials,meshes,scripts -create="""
@@ -83,7 +80,8 @@ namespace hstCMM.Load_Order_Editor
 
             if (!File.Exists(Path.Combine(frmLoadOrder.GamePath, "Data", Path.GetFileNameWithoutExtension(esm) + " - main.ba2")))
             {
-                //activityLog.WriteLog($"Creating main archive\n{archive2Path} {cmdLine}");
+                if (log)
+                    activityLog.WriteLog($"Creating main archive\n{archive2Path} {cmdLine}");
                 MakeArchive(archive2Path, cmdLine, workingDirectory);
                 frmLoadOrder.returnStatus++;
             }
@@ -92,6 +90,7 @@ namespace hstCMM.Load_Order_Editor
                 MessageBox.Show("Skipping main archive creation.", "Main archive already exists.", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
 
+            // Create sound archive
             if (Directory.Exists(Path.Combine(workingDirectory, "sound")))
             {
                 cmdLine = @"sound -create="""
@@ -100,7 +99,8 @@ namespace hstCMM.Load_Order_Editor
 
                 if (!File.Exists(Path.Combine(frmLoadOrder.GamePath, "Data", Path.GetFileNameWithoutExtension(esm) + " - main.ba2")))
                 {
-                    activityLog.WriteLog($"Creating sound archive\n{archive2Path} {cmdLine}");
+                    if (log)
+                        activityLog.WriteLog($"Creating sound archive\n{archive2Path} {cmdLine}");
                     MakeArchive(archive2Path, cmdLine, workingDirectory);
                     frmLoadOrder.returnStatus++;
                 }

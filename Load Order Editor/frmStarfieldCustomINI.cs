@@ -41,7 +41,7 @@ namespace hstCMM.Load_Order_Editor
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) ,@"My Games\Starfield\StarfieldCustom.ini");
+            string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"My Games\Starfield\StarfieldCustom.ini");
 
             List<string> INILines = new();
             INILines.Add(@"[General]");

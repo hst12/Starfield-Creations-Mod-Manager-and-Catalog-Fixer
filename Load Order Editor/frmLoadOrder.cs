@@ -1049,8 +1049,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             cmbProfile.Items.Clear();
             ProfileFolder = Properties.Settings.Default.ProfileFolder;
             ProfileFolder = string.IsNullOrEmpty(ProfileFolder)
-        ? Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
-        : ProfileFolder;
+        ? Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) : ProfileFolder;
 
             //LastProfile ??= Properties.Settings.Default.LastProfile;
             try
@@ -1775,12 +1774,10 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             statusStrip1.Refresh();
             dataGridView1.SuspendLayout();
 
-            // 2) Gather all on-disk plugin filenames with parallel processing
+            // 2) Gather all on-disk plugin filenames
             var pluginFiles = tools.GetPluginList(Game);
-
             string dataDir = Path.Combine(GamePath, "Data");
-
-            string[] patterns = { "*.esp", "*.esml", "*.esl" };
+            string[] patterns = { "*.esp", "*.esm", "*.esl" };
             foreach (var pattern in patterns)
             {
                 try
@@ -1916,9 +1913,15 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     var row = rows[idx];
 
                     // Direct cell access for maximum speed
-                    row.Cells[modEnabledIndex].Value = (file.Length > 4 &&
+                    /*row.Cells[modEnabledIndex].Value = (file.Length > 4 &&
                         string.Equals(file.Substring(file.Length - 4), ".esm", StringComparison.Ordinal))
-                        && activateNew;
+                        && activateNew;*/
+                    row.Cells[modEnabledIndex].Value =
+    (file.Length > 4 &&
+     (file.EndsWith(".esm", StringComparison.OrdinalIgnoreCase) ||
+      file.EndsWith(".esl", StringComparison.OrdinalIgnoreCase) ||
+      file.EndsWith(".esp", StringComparison.OrdinalIgnoreCase)))
+    && activateNew;
                     row.Cells[pluginNameIndex].Value = file;
 
                     addLogEntries?.Add($"Adding {file} to Plugins.txt");
@@ -4128,8 +4131,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                         if (File.Exists(textureFile))
                             files.Add(textureFile);
                     }
-                    /*if (File.Exists(ModFile + " - textures.ba2"))
-                        files.Add(ModFile + " - textures.ba2");*/
+
 
                     if (File.Exists(ModFile + " - main.ba2"))
                         files.Add(ModFile + " - main.ba2");
@@ -4170,8 +4172,6 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 return 0;
 
             // Build a list of all plugins excluding base game files
-            /*plugins = tools.GetPluginList().Select(s => s[..^4].ToLower()).ToList();
-             */
             plugins = pluginList.Select(s => s[..^4].ToLower()).ToList();
 
             foreach (string file in Directory.EnumerateFiles(Path.Combine(GamePath, "Data"), "*.ba2", SearchOption.TopDirectoryOnly)) // Build a list of all archives
@@ -5058,6 +5058,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             if (activityLog is null)
                 EnableLog();
             btnLog.Font = new System.Drawing.Font(btnLog.Font, log ? FontStyle.Bold : FontStyle.Regular);
+            SaveSettings();
         }
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e) // Log Delete

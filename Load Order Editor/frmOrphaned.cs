@@ -11,7 +11,7 @@ namespace hstCMM.Load_Order_Editor
     {
         readonly Tools tools = new();
         private frmLoadOrder.ActivityLog activityLog = frmLoadOrder.activityLog;
-        bool log= Properties.Settings.Default.Log;
+        bool log = Properties.Settings.Default.Log;
         public frmOrphaned(List<string> orphaned)
         {
             InitializeComponent();
