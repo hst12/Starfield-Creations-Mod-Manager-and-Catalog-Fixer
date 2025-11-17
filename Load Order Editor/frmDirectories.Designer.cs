@@ -44,6 +44,7 @@
             txtxEdit = new System.Windows.Forms.TextBox();
             label1 = new System.Windows.Forms.Label();
             label2 = new System.Windows.Forms.Label();
+            btnDetect = new System.Windows.Forms.Button();
             fontDialog1 = new System.Windows.Forms.FontDialog();
             openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             tableLayoutPanel1.SuspendLayout();
@@ -113,6 +114,7 @@
             tableLayoutPanel1.Controls.Add(txtxEdit, 1, 5);
             tableLayoutPanel1.Controls.Add(label1, 0, 0);
             tableLayoutPanel1.Controls.Add(label2, 0, 6);
+            tableLayoutPanel1.Controls.Add(btnDetect, 1, 7);
             tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -236,6 +238,17 @@
             label2.Text = "Other Options";
             label2.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             // 
+            // btnDetect
+            // 
+            btnDetect.AutoSize = true;
+            btnDetect.Location = new System.Drawing.Point(218, 381);
+            btnDetect.Name = "btnDetect";
+            btnDetect.Size = new System.Drawing.Size(363, 42);
+            btnDetect.TabIndex = 13;
+            btnDetect.Text = "Detect Game Path - Steam Only";
+            btnDetect.UseVisualStyleBackColor = true;
+            btnDetect.Click += btnDetect_Click;
+            // 
             // openFileDialog1
             // 
             openFileDialog1.FileName = "openFileDialog1";
@@ -274,5 +287,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.FontDialog fontDialog1;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.Button btnDetect;
     }
 }

@@ -1846,7 +1846,6 @@
             detectToolStripMenuItem.Name = "detectToolStripMenuItem";
             detectToolStripMenuItem.Size = new System.Drawing.Size(483, 44);
             detectToolStripMenuItem.Text = "Detect Game Path (Steam Only)";
-            detectToolStripMenuItem.Click += detectToolStripMenuItem_Click;
             // 
             // toolStripMenuMods
             // 

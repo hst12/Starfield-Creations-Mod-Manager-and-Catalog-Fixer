@@ -20,6 +20,16 @@ namespace hstCMM.Load_Order_Editor
         public frmDirectories()
         {
             InitializeComponent();
+            var settings = Properties.Settings.Default;
+            if (settings.GameVersion != frmLoadOrder.MS)
+                txtGame.Text = settings.GamePath;
+            else
+                txtGame.Text = settings.GamePathMS;
+            txtLOOT.Text= settings.LOOTPath;
+            txtMO2.Text = settings.MO2Path;
+            txtVortex.Text = settings.VortexPath;
+            txtxEdit.Text = settings.xEditPath;
+
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -118,6 +128,15 @@ namespace hstCMM.Load_Order_Editor
                 Properties.Settings.Default.xEditPath = openFileDialog1.FileName;
                 //xEditToolStripMenuItem.Visible = true;
             }
+        }
+
+        private void btnDetect_Click(object sender, EventArgs e)
+        {
+            frmLoadOrder.GamePath = tools.GetSteamGamePath();
+            if (!String.IsNullOrEmpty(GamePath))
+                MessageBox.Show($"Game Path set to {GamePath}", $"{frmLoadOrder.GameName} Detected", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            else
+                MessageBox.Show("Error detecting game path", "Game Path Not Found", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
         }
     }
 }

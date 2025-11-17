@@ -432,7 +432,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 GamePath = Properties.Settings.Default.GamePath;
                 if (GamePath == "")
                 {
-                    GetSteamGamePath(); // Detect Steam path
+                    GamePath=tools.GetSteamGamePath(); // Detect Steam path
                     if (GamePath == "")
                     {
                         GamePath = tools.SetGamePath();
@@ -4889,25 +4889,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             progressBar1.Hide();
         }
 
-        private bool GetSteamGamePath()
-        {
-            try
-            {
-                SteamGameLocator steamGameLocator = new SteamGameLocator();
-                GamePath = steamGameLocator.getGameInfoByFolder(GameName).steamGameLocation;
-                Properties.Settings.Default.GamePath = GamePath;
-                SaveSettings();
-                return true;
-            }
-            catch (Exception ex)
-            {
-#if DEBUG
-                MessageBox.Show(ex.Message);
-#endif
-                LogError(ex.Message);
-                return false;
-            }
-        }
+
 
         private void updateAllProfilesToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -5226,7 +5208,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
                 SetupGame();
                 if (GameVersion is Steam || GameVersion is SFSE)
-                    GetSteamGamePath();
+                    GamePath=tools.GetSteamGamePath();
                 pluginList = tools.GetPluginList(Game);
                 Application.Exit();
             }
@@ -6125,13 +6107,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             ssVideo.Show();*/
         }
 
-        private void detectToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (GetSteamGamePath())
-                MessageBox.Show($"Game Path set to {GamePath}", $"{GameName} Detected", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            else
-                MessageBox.Show("Error detecting game path", "Game Path Not Found", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-        }
+
 
         public static void SetupJumpList()
         {

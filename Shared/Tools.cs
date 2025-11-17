@@ -179,6 +179,26 @@ namespace hstCMM.Shared // Various functions used by the app
             }
         }
 
+
+        public string GetSteamGamePath()
+        {
+            try
+            {
+                SteamGameLocator steamGameLocator = new SteamGameLocator();
+                GamePath = steamGameLocator.getGameInfoByFolder(GameName).steamGameLocation;
+                Properties.Settings.Default.GamePath = GamePath;
+                SaveSettings();
+                return GamePath;
+            }
+            catch (Exception ex)
+            {
+#if DEBUG
+                MessageBox.Show(ex.Message);
+#endif
+                //LogError(ex.Message);
+                return string.Empty;
+            }
+        }
         public static DateTime ConvertTime(double TimeToConvert) // Convert catalog time format to human readable
         {
             DateTime start = new(1970, 1, 1, 0, 0, 0, 0);
