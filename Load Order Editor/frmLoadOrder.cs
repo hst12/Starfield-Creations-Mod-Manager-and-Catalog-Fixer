@@ -128,8 +128,7 @@ namespace hstCMM
             }
             catch (Exception ex)
             {
-                if (log)
-                    activityLog.WriteLog($"Error reading {filePath} " + ex.Message);
+                LogError(ex.Message);
 #if DEBUG
                 MessageBox.Show(ex.Message, "Error opening file");
 #endif
@@ -154,8 +153,7 @@ namespace hstCMM
             }
             catch (Exception ex)
             {
-                if (log)
-                    activityLog.WriteLog("Error creating BlockedMods.txt: " + ex.Message);
+                LogError(ex.Message);
                 MessageBox.Show(ex.Message);
             }
 
@@ -406,6 +404,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 #if DEBUG
                     MessageBox.Show(ex.Message, "Error creating Plugins.txt");
 #endif
+                    LogError(ex.Message);
                 }
             }
 
@@ -420,8 +419,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             }
             catch (Exception ex)
             {
-                if (log)
-                    activityLog.WriteLog("Error backing up Plugins.txt: " + ex.Message);
+                LogError(ex.Message);
 #if DEBUG
                 MessageBox.Show(ex.Message, "Error backing up Plugins.txt");
 #endif
@@ -632,9 +630,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             {
                 MessageBox.Show("LOOT userlist.yaml possibly corrupt\nPossible missing display field in required mods\nRun LOOT to edit metadata",
                     "Yaml decoding error", MessageBoxButtons.OK, MessageBoxIcon.Stop);
-                sbar3(ex.Message);
-                if (log)
-                    activityLog.WriteLog("Error decoding LOOT userlist.yaml: " + ex.Message);
+                LogError(ex.Message);
             }
         }
 
@@ -747,9 +743,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 #if DEBUG
                 MessageBox.Show(ex.Message);
 #endif
-                if (log)
-                    activityLog.WriteLog("Error reading catalog: " + ex.Message);
-                sbar(ex.Message);
+                LogError(ex.Message);
             }
 
             // Pre-build a dictionary for quick lookup from plugin name (.esm and .esp) to index
@@ -829,8 +823,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                         {
                             // Log or handle unexpected exceptions
                             modVersion = $"Error: {ex.Message}";
-                            if (log)
-                                activityLog.WriteLog($"Error parsing Creations version data {ex.Message}");
+                            LogError(ex.Message);
                         }
                     }
                     modFiles = CreationsFiles[idx];
@@ -1037,10 +1030,11 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             }
             catch (Exception ex)
             {
-                sbar($"{GameName} path needs to be set for mod stats");
+                LogError(ex.Message);
 #if DEBUG
                 MessageBox.Show($"Mod stats error: {ex.Message}");
 #endif
+                sbar(ex.Message);
             }
         }
 
@@ -1072,8 +1066,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             }
             catch (Exception ex)
             {
-                if (log)
-                    activityLog.WriteLog("Error reading profiles: " + ex.Message);
+                LogError(ex.Message);
 #if DEBUG
                 MessageBox.Show(ex.Message, "Error reading profiles");
 #endif
@@ -1119,9 +1112,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             }
             catch (Exception ex)
             {
-                if (log)
-                    activityLog.WriteLog($"Error saving plugins file {PluginFileName}: {ex.Message}");
-
+                LogError(ex.Message);
                 FileInfo fileInfo = new FileInfo(PluginFileName);
 
                 if (fileInfo.Exists)
@@ -1224,8 +1215,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             }
             catch (Exception ex)
             {
-                if (log)
-                    activityLog.WriteLog($"Backup of {Path.GetFileName(sourceFileName)} failed: {ex.Message}");
+                LogError("Backup failed "+ex.Message);
                 MessageBox.Show($"Error: {ex.Message}", "Backup failed");
             }
         }
@@ -1250,8 +1240,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             catch (Exception ex)
             {
                 MessageBox.Show($"Error: {ex.Message}", "Restore failed");
-                if (log)
-                    activityLog.WriteLog($"Restore of {Path.GetFileName(sourceFileName)} failed: {ex.Message}");
+                LogError("Restore failed "+ex.Message);
             }
         }
 
@@ -1540,9 +1529,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             }
             catch (Exception ex)
             {
-                if (log)
-                    activityLog.WriteLog($"Error switching profile: {ex.Message}");
-                sbar2("Error switching profile");
+                LogError(ex.Message);
                 MessageBox.Show(ex.Message, "Error switching profile", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -1669,6 +1656,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             }
             catch (Exception ex)
             {
+                LogError(ex.Message);
                 MessageBox.Show($"Error reading plugin files: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return 0;
             }
@@ -1725,6 +1713,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             }
             catch (Exception ex)
             {
+                LogError(ex.Message);
                 MessageBox.Show($"Error reading plugin files: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return 0;
             }
@@ -1794,8 +1783,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 }
                 catch (Exception ex)
                 {
-                    if (log)
-                        activityLog.WriteLog($"Error reading plugin files: {ex.Message}");
+                    LogError("Error reading plugins "+ex.Message);
                     MessageBox.Show(
                         $"Error reading plugin files: {ex.Message}",
                         "Error",
@@ -2004,8 +1992,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 try { Directory.Delete(extractPath, true); }
                 catch (Exception ex)
                 {
-                    if (log)
-                        activityLog.WriteLog($"Error deleting temp directory: {ex.Message}");
+                    LogError(ex.Message);
                 }
             }
 
@@ -2088,8 +2075,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             }
             catch (Exception ex)
             {
-                if (log)
-                    activityLog.WriteLog($"Error extracting mod: {ex.Message}");
+                LogError(ex.Message);
                 MessageBox.Show(ex.Message);
                 loadScreen.Close();
                 return;
@@ -2125,8 +2111,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             }
             catch (Exception ex)
             {
-                if (log)
-                    activityLog.WriteLog($"Error installing SFSE mod: {ex.Message}");
+                LogError(ex.Message);
                 MessageBox.Show($"An error occurred: {ex.Message}");
             }
 
@@ -2889,8 +2874,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             catch (Exception ex)
             {
                 MessageBox.Show("Run the game to correct this", $"Error opening {GameName} game documents folder");
-                if (log)
-                    activityLog.WriteLog($"Error opening {GameName} game documents folder: " + ex.Message);
+                LogError("Error opening game documents folder "+ex.Message);
             }
         }
 
@@ -2915,8 +2899,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             }
             catch (Exception ex)
             {
-                if (log)
-                    activityLog.WriteLog($"Error deleting {GameName}.ccc: " + ex.Message);
+                LogError("Error deleting .ccc file "+ex.Message);
 #if DEBUG
                 MessageBox.Show(ex.Message);
 #endif
@@ -2977,6 +2960,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 }
                 catch (Exception ex)
                 {
+                    LogError(ex.Message);
 #if DEBUG
                     MessageBox.Show(ex.Message);
 #endif
@@ -3092,6 +3076,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             }
             catch (Exception ex)
             {
+                LogError("Error opening Shortcuts.txt "+ex.Message);
                 MessageBox.Show(ex.Message, "Error opening Shortcuts.txt");
             }
         }
@@ -3140,8 +3125,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, $"Error restoring {GameName}Custom.ini");
-                if (log)
-                    activityLog.WriteLog($"Error restoring {GameName}Custom.ini: " + ex.Message);
+                LogError(ex.Message);
                 return false;
             }
         }
@@ -3562,6 +3546,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 }
                 catch (Exception ex)
                 {
+                    LogError(ex.Message);
                     MessageBox.Show(ex.Message);
                 }
             }
@@ -3647,6 +3632,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 }
                 catch (Exception ex)
                 {
+                    LogError(ex.Message);
                     MessageBox.Show(ex.Message);
                 }
             }
@@ -3745,6 +3731,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 }
                 catch (Exception ex)
                 {
+                    LogError(ex.Message);
                     MessageBox.Show(ex.Message);
                 }
             }
@@ -3837,8 +3824,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             }
             catch (Exception ex)
             {
-                if (log)
-                    activityLog.WriteLog("Error reading StarfieldCustom.ini: " + ex.Message);
+                LogError(ex.Message);
 #if DEBUG
                 MessageBox.Show(ex.Message);
 #endif
@@ -4207,8 +4193,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             }
             catch (Exception ex)
             {
-                if (log)
-                    activityLog.WriteLog("Error checking archives: " + ex.Message);
+                LogError(ex.Message);
                 MessageBox.Show("Error: " + ex.Message);
                 return 0;
             }
@@ -4266,8 +4251,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 }
                 catch (Exception ex)
                 {
-                    if (log)
-                        activityLog.WriteLog("Error adding mod to profile: " + ex.Message);
+                    LogError(ex.Message);
 #if DEBUG
                     MessageBox.Show("Error: " + ex.Message);
 #endif
@@ -4402,8 +4386,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 }
                 catch (Exception ex)
                 {
-                    if (log)
-                        activityLog.WriteLog("Error while exporting data: " + ex.Message);
+                    LogError(ex.Message);
                     MessageBox.Show("Error while exporting data: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
 
@@ -4590,6 +4573,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             }
             catch (Exception ex)
             {
+                LogError(ex.Message);
                 MessageBox.Show("Error opening profile folder: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -4605,6 +4589,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 }
                 catch (Exception ex)
                 {
+                    LogError(ex.Message);
 #if DEBUG
                     MessageBox.Show(ex.Message);
 #endif
@@ -4673,6 +4658,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 }
                 catch (Exception ex)
                 {
+                    LogError(ex.Message);
                     MessageBox.Show(ex.Message);
                 }
             }
@@ -4696,6 +4682,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 }
                 catch (Exception ex)
                 {
+                    LogError(ex.Message);
                     MessageBox.Show(ex.Message);
                     return 0;
                 }
@@ -4870,6 +4857,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             }
             catch (Exception ex)
             {
+                LogError(ex.Message);
                 MessageBox.Show($"An error occurred while backing up BlockedMods.txt: {ex.Message}", "Backup Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
@@ -4908,6 +4896,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 }
                 catch (Exception ex)
                 {
+                    LogError(ex.Message);
                     MessageBox.Show($"An error occurred while restoring BlockedMods.txt: {ex.Message}", "Restore Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
@@ -4928,6 +4917,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             }
             catch (Exception ex)
             {
+                LogError(ex.Message);
                 MessageBox.Show(ex.Message);
             }
         }
@@ -5140,6 +5130,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             }
             catch (Exception ex)
             {
+                LogError(ex.Message);
                 MessageBox.Show($"Error converting loose files. {ex.Message}.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
@@ -5168,6 +5159,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             }
             catch (Exception ex)
             {
+                LogError(ex.Message);
                 MessageBox.Show("Error deleting BlockedMods.txt: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -5199,6 +5191,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             }
             catch (Exception ex)
             {
+                LogError(ex.Message);
                 MessageBox.Show("Error writing BlockedMods.txt: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -5411,6 +5404,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 }
                 catch (Exception ex)
                 {
+                    LogError(ex.Message);
                     MessageBox.Show($"An error occurred while restoring ContentCatalog.txt: {ex.Message}", "Restore Failed",
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
@@ -5900,6 +5894,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 }
                 catch (Exception ex)
                 {
+                    LogError(ex.Message);
                     MessageBox.Show($"Failed to rename {Path.GetFileName(oldPath)}:\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
@@ -5926,6 +5921,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 }
                 catch (Exception ex)
                 {
+                    LogError(ex.Message);
                     MessageBox.Show(ex.Message);
                 }
             }
@@ -5978,6 +5974,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             }
             catch (Exception ex)
             {
+                LogError(ex.Message);
                 MessageBox.Show(this, "Export failed: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -6011,6 +6008,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             }
             catch (Exception ex)
             {
+                LogError(ex.Message);
                 MessageBox.Show(this, "Import failed: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -6227,6 +6225,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                         }
                         catch (Exception ex)
                         {
+                            LogError(ex.Message);
                             sbar($"Failed to move {Path.GetFileName(file)}:\n{ex.Message}");
                         }
                     }
@@ -6346,6 +6345,12 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             if (Tools.ConfirmAction("Are you sure you want to delete ContentCatalog.txt?", "This will delete ContentCatalog.txt", MessageBoxButtons.YesNo) == DialogResult.No)
                 return;
             File.Delete(Path.Combine(Tools.GameAppData, "ContentCatalog.txt"));
+        }
+        private void LogError(string message)
+        {
+            if (log)
+                activityLog.WriteLog("ERROR: " + message);
+            sbar(message);
         }
     }
 }
