@@ -26,6 +26,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
+using static hstCMM.frmLoadOrder;
 using static hstCMM.Shared.Tools;
 using File = System.IO.File;
 
@@ -38,7 +39,7 @@ namespace hstCMM
         public const byte Steam = 0, MS = 1, Custom = 2, SFSE = 3;
         public static string GamePath, GameName;
         private static int Game = Properties.Settings.Default.Game;
-        public static bool NoWarn;
+        public static bool NoWarn, log;
         public static int returnStatus;
         public static ActivityLog activityLog;
 
@@ -52,7 +53,7 @@ namespace hstCMM
         private string LastProfile, tempstr;
 
         private bool Profiles = false, GridSorted = false, AutoUpdate = false, ActiveOnly = false, AutoSort = false, isModified = false,
-            LooseFiles, log, GameExists, devMode = false;
+            LooseFiles, GameExists, devMode = false;
 
         private Tools.Configuration Groups = new();
 
@@ -1215,7 +1216,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             }
             catch (Exception ex)
             {
-                LogError("Backup failed "+ex.Message);
+                LogError("Backup failed " + ex.Message);
                 MessageBox.Show($"Error: {ex.Message}", "Backup failed");
             }
         }
@@ -1240,7 +1241,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             catch (Exception ex)
             {
                 MessageBox.Show($"Error: {ex.Message}", "Restore failed");
-                LogError("Restore failed "+ex.Message);
+                LogError("Restore failed " + ex.Message);
             }
         }
 
@@ -1334,17 +1335,6 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 activityLog.WriteLog("All mods enabled");
         }
 
-        private void FontSelect()
-        {
-            if (fontDialog1.ShowDialog() != DialogResult.Cancel)
-            {
-                this.Font = fontDialog1.Font;
-                menuStrip1.Font = fontDialog1.Font;
-            }
-            this.CenterToScreen();
-            Properties.Settings.Default.FontSize = this.Font;
-        }
-
         private void SearchMod()
         {
             // Exit if the search box is empty.
@@ -1428,11 +1418,6 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             if (Tools.ConfirmAction("This will reset your current load order", "Disable all mods?", MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question) == DialogResult.Yes || NoWarn)
                 DisableAll();
-        }
-
-        private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            FontSelect();
         }
 
         private void toolStripMenuCreations_Click(object sender, EventArgs e)
@@ -1627,13 +1612,6 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             AddMissing();
         }
 
-        private void toolStripMenuSetPath_Click(object sender, EventArgs e)
-        {
-            if (GameVersion != MS)
-                GamePath = tools.SetGamePath();
-            else
-                GamePath = tools.SetGamePathMS();
-        }
 
         private void toolStripMenuCleanup_Click(object sender, EventArgs e)
         {
@@ -1783,7 +1761,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 }
                 catch (Exception ex)
                 {
-                    LogError("Error reading plugins "+ex.Message);
+                    LogError("Error reading plugins " + ex.Message);
                     MessageBox.Show(
                         $"Error reading plugin files: {ex.Message}",
                         "Error",
@@ -2874,7 +2852,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             catch (Exception ex)
             {
                 MessageBox.Show("Run the game to correct this", $"Error opening {GameName} game documents folder");
-                LogError("Error opening game documents folder "+ex.Message);
+                LogError("Error opening game documents folder " + ex.Message);
             }
         }
 
@@ -2899,7 +2877,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             }
             catch (Exception ex)
             {
-                LogError("Error deleting .ccc file "+ex.Message);
+                LogError("Error deleting .ccc file " + ex.Message);
 #if DEBUG
                 MessageBox.Show(ex.Message);
 #endif
@@ -3076,7 +3054,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             }
             catch (Exception ex)
             {
-                LogError("Error opening Shortcuts.txt "+ex.Message);
+                LogError("Error opening Shortcuts.txt " + ex.Message);
                 MessageBox.Show(ex.Message, "Error opening Shortcuts.txt");
             }
         }
@@ -3476,22 +3454,6 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             Properties.Settings.Default.LooseFiles = LooseFiles;
         }
 
-        private void vortexPathToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (!DetectVortex())
-            {
-                openFileDialog1.Filter = "Executable Files|*.exe";
-                openFileDialog1.Title = "Set the path to the Vortex executable";
-                openFileDialog1.FileName = "Vortex.exe";
-                DialogResult VortexPath = openFileDialog1.ShowDialog();
-                if (VortexPath == DialogResult.OK && openFileDialog1.FileName != "")
-                {
-                    Properties.Settings.Default.VortexPath = openFileDialog1.FileName;
-                    vortexToolStripMenuItem.Visible = true;
-                }
-            }
-        }
-
         private void uRLToolStripMenuItem_Click(object sender, EventArgs e)
         {
             uRLToolStripMenuItem.Checked = !uRLToolStripMenuItem.Checked;
@@ -3500,33 +3462,6 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             else
                 dataGridView1.Columns["URL"].Visible = false;
             Properties.Settings.Default.URL = uRLToolStripMenuItem.Checked;
-        }
-
-        private bool DetectVortex()
-        {
-            string keyName = @"HKEY_CLASSES_ROOT\nxm\shell\open\command";
-            string valueName = ""; // Default value
-
-            if (Properties.Settings.Default.VortexPath == "")
-            {
-                // Read the registry value
-                object value = Registry.GetValue(keyName, valueName, null);
-                if (value != null)
-                {
-                    int startIndex = value.ToString().IndexOf('"') + 1;
-                    int endIndex = value.ToString().IndexOf('"', startIndex);
-
-                    if (startIndex > 0 && endIndex > startIndex)
-                    {
-                        string extracted = value.ToString()[startIndex..endIndex];
-                        Properties.Settings.Default.VortexPath = extracted;
-                        SaveSettings();
-                        vortexToolStripMenuItem.Visible = true;
-                        return true;
-                    }
-                }
-            }
-            return false;
         }
 
         private void vortexToolStripMenuItem_Click(object sender, EventArgs e)
@@ -3612,45 +3547,6 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
         private void btnActiveOnly_Click(object sender, EventArgs e)
         {
             ActiveOnlyToggle();
-        }
-
-        private void mO2ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            string MO2Path = Properties.Settings.Default.MO2Path;
-            if (MO2Path != "")
-            {
-                try
-                {
-                    var result = Process.Start(MO2Path);
-                    if (result != null)
-                    {
-                        SaveSettings();
-                        if (log)
-                            activityLog.WriteLog("Starting Mod Organizer 2");
-                        System.Windows.Forms.Application.Exit();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    LogError(ex.Message);
-                    MessageBox.Show(ex.Message);
-                }
-            }
-            else
-                MessageBox.Show("MO2 doesn't seem to be installed or path not configured.");
-        }
-
-        private void modOrganizer2PathToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            openFileDialog1.Filter = "Executable Files|*.exe";
-            openFileDialog1.Title = "Set the path to the MO2 executable";
-            openFileDialog1.FileName = "ModOrganizer.exe";
-            DialogResult MO2Path = openFileDialog1.ShowDialog();
-            if (MO2Path == DialogResult.OK && openFileDialog1.FileName != "")
-            {
-                Properties.Settings.Default.MO2Path = openFileDialog1.FileName;
-                mO2ToolStripMenuItem.Visible = true;
-            }
         }
 
         private int ResetDefaults()
@@ -4993,7 +4889,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             progressBar1.Hide();
         }
 
-        private static bool GetSteamGamePath()
+        private bool GetSteamGamePath()
         {
             try
             {
@@ -5008,6 +4904,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 #if DEBUG
                 MessageBox.Show(ex.Message);
 #endif
+                LogError(ex.Message);
                 return false;
             }
         }
@@ -5929,19 +5826,6 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 MessageBox.Show("xEdit doesn't seem to be installed or path not configured.");
         }
 
-        private void xEditPathToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            openFileDialog1.Filter = "Executable Files|*.exe";
-            openFileDialog1.Title = "Set the path to the xEdit executable";
-            openFileDialog1.FileName = "SF1Edit.exe";
-            DialogResult xEditPath = openFileDialog1.ShowDialog();
-            if (xEditPath == DialogResult.OK && openFileDialog1.FileName != "")
-            {
-                Properties.Settings.Default.xEditPath = openFileDialog1.FileName;
-                xEditToolStripMenuItem.Visible = true;
-            }
-        }
-
         private void BackupAppSettings(bool useDocuments = false)
         {
             string fileName;
@@ -6346,11 +6230,48 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 return;
             File.Delete(Path.Combine(Tools.GameAppData, "ContentCatalog.txt"));
         }
+
+        private void mO2ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string MO2Path = Properties.Settings.Default.MO2Path;
+            if (MO2Path != "")
+            {
+                try
+                {
+                    var result = Process.Start(MO2Path);
+                    if (result != null)
+                    {
+                        SaveSettings();
+                        if (frmLoadOrder.log)
+                            activityLog.WriteLog("Starting Mod Organizer 2");
+                        System.Windows.Forms.Application.Exit();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    //frmLoadOrder.LogError(ex.Message);
+                    MessageBox.Show(ex.Message);
+                }
+            }
+            else
+                MessageBox.Show("MO2 doesn't seem to be installed or path not configured.");
+        }
+
         private void LogError(string message)
         {
             if (log)
                 activityLog.WriteLog("ERROR: " + message);
             sbar(message);
+        }
+
+        private void directoriesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmDirectories fd = new();
+            fd.Show();
+            if (returnStatus == 1)
+            {
+                SetUpMenus();
+            }
         }
     }
 }

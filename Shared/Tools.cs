@@ -344,12 +344,10 @@ namespace hstCMM.Shared // Various functions used by the app
         public string SetGamePath() // Prompt for game path
         {
             using System.Windows.Forms.OpenFileDialog openFileDialog = new();
-            if (!string.IsNullOrEmpty(frmLoadOrder.GamePath))
-                openFileDialog.InitialDirectory = frmLoadOrder.GamePath;
+            if (!string.IsNullOrEmpty(Properties.Settings.Default.GamePath))
+                openFileDialog.InitialDirectory = Properties.Settings.Default.GamePath;
             else
-            {
                 openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
-            }
 
             openFileDialog.Title = $"Set the path to the {GameName} executable - {GameName}.exe";
             openFileDialog.FileName = $"{GameName}.exe";
@@ -575,6 +573,37 @@ namespace hstCMM.Shared // Various functions used by the app
             }
         }
 
+        public bool DetectVortex()
+        {
+            string keyName = @"HKEY_CLASSES_ROOT\nxm\shell\open\command";
+            string valueName = ""; // Default value
+
+            if (Properties.Settings.Default.VortexPath == "")
+            {
+                // Read the registry value
+                object value = Registry.GetValue(keyName, valueName, null);
+                if (value != null)
+                {
+                    int startIndex = value.ToString().IndexOf('"') + 1;
+                    int endIndex = value.ToString().IndexOf('"', startIndex);
+
+                    if (startIndex > 0 && endIndex > startIndex)
+                    {
+                        string extracted = value.ToString()[startIndex..endIndex];
+                        Properties.Settings.Default.VortexPath = extracted;
+                        SaveSettings();
+                        //vortexToolStripMenuItem.Visible = true;
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        private void SaveSettings()
+        {
+            Properties.Settings.Default.Save();
+        }
         public class GameInfo
         {
             public GameNames GameId { get; set; } // See GameNames class
@@ -585,7 +614,6 @@ namespace hstCMM.Shared // Various functions used by the app
             public string MSStoreId { get; set; } // MS Store ID ?
             public string[] Modfiles { get; set; } // Supported mod file types - .esm, esp, etc.
             public string[] ModArchives { get; set; } // Supported mod archive types - .bsa, ba2, etc.
-
         }
 
         public class GameNames
@@ -609,8 +637,8 @@ namespace hstCMM.Shared // Various functions used by the app
 
         public class ModFiles
         {
-            private string[] newModFormat = { ".esm", ".esp" };
-            private string[] oldModFormat = { ".esm", ".esp", ".esl" };
+            private readonly string[] newModFormat = { ".esm", ".esp" };
+            private readonly string[] oldModFormat = { ".esm", ".esp", ".esl" };
             private const string newArchiveFormat = ".ba2";
             private const string oldArchiveFormat = ".bsa";
         }
