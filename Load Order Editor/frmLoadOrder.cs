@@ -432,7 +432,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 GamePath = Properties.Settings.Default.GamePath;
                 if (GamePath == "")
                 {
-                    GamePath=tools.GetSteamGamePath(); // Detect Steam path
+                    GamePath = tools.GetSteamGamePath(); // Detect Steam path
                     if (GamePath == "")
                     {
                         GamePath = tools.SetGamePath();
@@ -5208,7 +5208,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
                 SetupGame();
                 if (GameVersion is Steam || GameVersion is SFSE)
-                    GamePath=tools.GetSteamGamePath();
+                    GamePath = tools.GetSteamGamePath();
                 pluginList = tools.GetPluginList(Game);
                 Application.Exit();
             }

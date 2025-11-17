@@ -1,15 +1,7 @@
 ﻿using hstCMM.Shared;
-using Microsoft.VisualBasic.Logging;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 using static hstCMM.frmLoadOrder;
-using static hstCMM.Shared.Tools;
 
 namespace hstCMM.Load_Order_Editor
 {
@@ -25,11 +17,10 @@ namespace hstCMM.Load_Order_Editor
                 txtGame.Text = settings.GamePath;
             else
                 txtGame.Text = settings.GamePathMS;
-            txtLOOT.Text= settings.LOOTPath;
+            txtLOOT.Text = settings.LOOTPath;
             txtMO2.Text = settings.MO2Path;
             txtVortex.Text = settings.VortexPath;
             txtxEdit.Text = settings.xEditPath;
-
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -44,7 +35,6 @@ namespace hstCMM.Load_Order_Editor
                 GamePath = tools.SetGamePath();
             else
                 GamePath = tools.SetGamePathMS();
-
         }
 
         private void btnFont_Click(object sender, EventArgs e)
