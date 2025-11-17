@@ -95,11 +95,6 @@ namespace hstCMM
             DisplayCatalog();
         }
 
-        public static string GetGameAppData()
-        {
-            return (Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Tools.GameName));
-        }
-
         public bool BackupCatalog()
         {
             bool BackupStatus = false;
@@ -370,7 +365,7 @@ namespace hstCMM
                     // Check the entire version string for invalid characters (anything other than letters, digits, or '.')
                     foreach (char c in versionStr)
                     {
-                        if (!char.IsLetterOrDigit(c) && c != '.' && c != '\\' && c != ' ' && c!= '=')
+                        if (!char.IsLetterOrDigit(c) && c != '.' && c != '\\' && c != ' ' && c != '=')
                         {
                             errorCount++;
                             richTextBox2.AppendText($"Non numeric version number detected in {creation.Title} - {c}\n");
@@ -624,12 +619,12 @@ namespace hstCMM
             if (log)
                 activityLog.WriteLog("Checking for unused items in catalog.");
 
-            string filePath = Path.Combine(GetGameAppData(), "Plugins.txt");
+            string filePath= Path.Combine(Tools.GameAppData, "Plugins.txt");
 
             // Split the content into lines
             List<string> lines = File.ReadLines(filePath)
-                                     .Select(line => line.Trim())
-                                     .ToList();
+                                         .Select(line => line.Trim())
+                                         .ToList();
 
             foreach (var file in lines) // Process Plugins.txt to a list of .esm files
             {

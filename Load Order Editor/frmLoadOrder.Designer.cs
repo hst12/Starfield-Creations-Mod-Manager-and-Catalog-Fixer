@@ -122,6 +122,7 @@
             toolStripMenuDeleteCCC = new System.Windows.Forms.ToolStripMenuItem();
             deleteStarfieldCustominiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuItemDeletePlugins = new System.Windows.Forms.ToolStripMenuItem();
+            deleteContentCatalogtxtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             deleteBlockedModstxtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator42 = new System.Windows.Forms.ToolStripSeparator();
             deleteLooseFileFoldersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -1001,7 +1002,7 @@
             // 
             // resetDeleteFilesToolStripMenuItem
             // 
-            resetDeleteFilesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuDeleteCCC, deleteStarfieldCustominiToolStripMenuItem, toolStripMenuItemDeletePlugins, deleteBlockedModstxtToolStripMenuItem, toolStripSeparator42, deleteLooseFileFoldersToolStripMenuItem, toolStripSeparator33, compareStarfieldCustominiToBackupToolStripMenuItem, resetStarfieldCustominiToolStripMenuItem, restoreStarfieldiniToolStripMenuItem, toolStripSeparator37, toolStripMenuResetWindow, toolStripSeparator35, undoVortexChangesToolStripMenuItem, resetToVanillaStarfieldSettingsToolStripMenuItem, toolStripSeparator34, checkArchivesToolStripMenuItem, toolStripSeparator38, resetAppPreferencesToolStripMenuItem, toolStripSeparator39, resetEverythingToolStripMenuItem });
+            resetDeleteFilesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuDeleteCCC, deleteStarfieldCustominiToolStripMenuItem, toolStripMenuItemDeletePlugins, deleteContentCatalogtxtToolStripMenuItem, deleteBlockedModstxtToolStripMenuItem, toolStripSeparator42, deleteLooseFileFoldersToolStripMenuItem, toolStripSeparator33, compareStarfieldCustominiToBackupToolStripMenuItem, resetStarfieldCustominiToolStripMenuItem, restoreStarfieldiniToolStripMenuItem, toolStripSeparator37, toolStripMenuResetWindow, toolStripSeparator35, undoVortexChangesToolStripMenuItem, resetToVanillaStarfieldSettingsToolStripMenuItem, toolStripSeparator34, checkArchivesToolStripMenuItem, toolStripSeparator38, resetAppPreferencesToolStripMenuItem, toolStripSeparator39, resetEverythingToolStripMenuItem });
             resetDeleteFilesToolStripMenuItem.Name = "resetDeleteFilesToolStripMenuItem";
             resetDeleteFilesToolStripMenuItem.Size = new System.Drawing.Size(504, 44);
             resetDeleteFilesToolStripMenuItem.Text = "Reset/Delete Files";
@@ -1026,6 +1027,13 @@
             toolStripMenuItemDeletePlugins.Size = new System.Drawing.Size(888, 44);
             toolStripMenuItemDeletePlugins.Text = "Delete Plugins.txt";
             toolStripMenuItemDeletePlugins.Click += toolStripMenuItemDeletePlugins_Click;
+            // 
+            // deleteContentCatalogtxtToolStripMenuItem
+            // 
+            deleteContentCatalogtxtToolStripMenuItem.Name = "deleteContentCatalogtxtToolStripMenuItem";
+            deleteContentCatalogtxtToolStripMenuItem.Size = new System.Drawing.Size(888, 44);
+            deleteContentCatalogtxtToolStripMenuItem.Text = "Delete ContentCatalog.txt";
+            deleteContentCatalogtxtToolStripMenuItem.Click += deleteContentCatalogtxtToolStripMenuItem_Click;
             // 
             // deleteBlockedModstxtToolStripMenuItem
             // 
@@ -2869,5 +2877,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator51;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator52;
         private System.Windows.Forms.ToolStripMenuItem githubLatestReleaseToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem deleteContentCatalogtxtToolStripMenuItem;
     }
 }

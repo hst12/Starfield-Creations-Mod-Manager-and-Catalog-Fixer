@@ -730,7 +730,8 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     // Add files that end with .esm or .esp (ignoring case)
                     CreationsPlugin.AddRange(files.Where(file =>
                         file.EndsWith(".esm", StringComparison.OrdinalIgnoreCase) ||
-                        file.EndsWith(".esp", StringComparison.OrdinalIgnoreCase)));
+                        file.EndsWith(".esp", StringComparison.OrdinalIgnoreCase) ||
+                        file.EndsWith(".esl", StringComparison.OrdinalIgnoreCase)));
 
                     CreationsTitle.Add(item.Title);
                     CreationsVersion.Add(item.Version);
@@ -761,6 +762,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     string baseName = CreationsPlugin[i][..dotIndex];
                     creationLookup[baseName + ".esm"] = i;
                     creationLookup[baseName + ".esp"] = i;
+                    creationLookup[baseName + ".esl"] = i;
                 }
             }
 
@@ -827,6 +829,8 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                         {
                             // Log or handle unexpected exceptions
                             modVersion = $"Error: {ex.Message}";
+                            if (log)
+                                activityLog.WriteLog($"Error parsing Creations version data {ex.Message}");
                         }
                     }
                     modFiles = CreationsFiles[idx];
@@ -6335,6 +6339,13 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
         private void githubLatestReleaseToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Tools.OpenUrl("https://github.com/hst12/Starfield-Creations-Mod-Manager-and-Catalog-Fixer/releases/latest");
+        }
+
+        private void deleteContentCatalogtxtToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Tools.ConfirmAction("Are you sure you want to delete ContentCatalog.txt?", "This will delete ContentCatalog.txt", MessageBoxButtons.YesNo) == DialogResult.No)
+                return;
+            File.Delete(Path.Combine(Tools.GameAppData, "ContentCatalog.txt"));
         }
     }
 }
