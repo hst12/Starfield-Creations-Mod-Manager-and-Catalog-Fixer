@@ -3,6 +3,9 @@ Important Notes
 - May conflict with mod managers like Vortex or MO2. Running Vortex after using this tool can disrupt your load order.
 - Works with .esm and .ba2 files but has limited support for loose file mods.
 
+Experimental support for Fallout 4 Aniversary Edition and Skyrim Special Edition
+- To enable, pin the app to the taskbar, right-click the icon, then select Dev Mode. Game switching options are under the menu Game -> Game Select
+
 Key Features
 Mod Management
 - Reorder mods using drag-and-drop or hotkeys (WASD).
