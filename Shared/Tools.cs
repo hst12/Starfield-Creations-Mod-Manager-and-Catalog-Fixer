@@ -558,7 +558,7 @@ namespace hstCMM.Shared // Various functions used by the app
         public List<string> BGSArchives()
         {
             List<string> bgsArchives = new();
-            using (StreamReader sr = new StreamReader(Path.Combine(CommonFolder, GameApp + " Archives.txt")))
+            using (StreamReader sr = new StreamReader(Path.Combine(CommonFolder, Tools.GameLibrary.GetById(Properties.Settings.Default.Game).ExcludeFile + " Archives.txt")))
             {
                 string line;
                 while ((line = sr.ReadLine()) != null)

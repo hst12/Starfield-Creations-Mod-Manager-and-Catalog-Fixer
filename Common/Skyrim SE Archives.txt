@@ -1,0 +1,93 @@
+ccafdsse001-dwesanctuary.bsa
+ccasvsse001-almsivi.bsa
+ccbgssse001-fish.bsa
+ccbgssse002-exoticarrows.bsa
+ccbgssse003-zombies.bsa
+ccbgssse004-ruinsedge.bsa
+ccbgssse005-goldbrand.bsa
+ccbgssse006-stendarshammer.bsa
+ccbgssse007-chrysamere.bsa
+ccbgssse008-wraithguard.bsa
+ccbgssse010-petdwarvenarmoredmudcrab.bsa
+ccbgssse011-hrsarmrelvn.bsa
+ccbgssse012-hrsarmrstl.bsa
+ccbgssse013-dawnfang.bsa
+ccbgssse014-spellpack01.bsa
+ccbgssse016-umbra.bsa
+ccbgssse018-shadowrend.bsa
+ccbgssse019-staffofsheogorath.bsa
+ccbgssse020-graycowl.bsa
+ccbgssse021-lordsmail.bsa
+ccbgssse025-advdsgs.bsa
+ccbgssse031-advcyrus.bsa
+ccbgssse034-mntuni.bsa
+ccbgssse035-petnhound.bsa
+ccbgssse036-petbwolf.bsa
+ccbgssse037-curios.bsa
+ccbgssse038-bowofshadows.bsa
+ccbgssse040-advobgobs.bsa
+ccbgssse041-netchleather.bsa
+ccbgssse043-crosselv.bsa
+ccbgssse045-hasedoki.bsa
+ccbgssse050-ba_daedric.bsa
+ccbgssse051-ba_daedricmail.bsa
+ccbgssse052-ba_iron.bsa
+ccbgssse053-ba_leather.bsa
+ccbgssse054-ba_orcish.bsa
+ccbgssse055-ba_orcishscaled.bsa
+ccbgssse056-ba_silver.bsa
+ccbgssse057-ba_stalhrim.bsa
+ccbgssse058-ba_steel.bsa
+ccbgssse059-ba_dragonplate.bsa
+ccbgssse060-ba_dragonscale.bsa
+ccbgssse061-ba_dwarven.bsa
+ccbgssse062-ba_dwarvenmail.bsa
+ccbgssse063-ba_ebony.bsa
+ccbgssse064-ba_elven.bsa
+ccbgssse066-staves.bsa
+ccbgssse067-daedinv.bsa
+ccbgssse068-bloodfall.bsa
+ccbgssse069-contest.bsa
+cccbhsse001-gaunt.bsa
+ccedhsse001-norjewel.bsa
+ccedhsse002-splkntset.bsa
+ccedhsse003-redguard.bsa
+cceejsse001-hstead.bsa
+cceejsse002-tower.bsa
+cceejsse003-hollow.bsa
+cceejsse004-hall.bsa
+cceejsse005-cave.bsa
+ccffbsse001-imperialdragon.bsa
+ccffbsse002-crossbowpack.bsa
+ccfsvsse001-backpacks.bsa
+cckrtsse001_altar.bsa
+ccmtysse001-knightsofthenine.bsa
+ccmtysse002-ve.bsa
+ccpewsse002-armsofchaos.bsa
+ccqdrsse001-survivalmode.bsa
+ccqdrsse002-firewood.bsa
+ccrmssse001-necrohouse.bsa
+cctwbsse001-puzzledungeon.bsa
+ccvsvsse001-winter.bsa
+ccvsvsse002-pets.bsa
+ccvsvsse003-necroarts.bsa
+ccvsvsse004-beafarmer.bsa
+MarketplaceTextures.bsa
+Skyrim - Animations.bsa
+Skyrim - Interface.bsa
+Skyrim - Meshes0.bsa
+Skyrim - Meshes1.bsa
+Skyrim - Misc.bsa
+Skyrim - Shaders.bsa
+Skyrim - Sounds.bsa
+Skyrim - Textures0.bsa
+Skyrim - Textures1.bsa
+Skyrim - Textures2.bsa
+Skyrim - Textures3.bsa
+Skyrim - Textures4.bsa
+Skyrim - Textures5.bsa
+Skyrim - Textures6.bsa
+Skyrim - Textures7.bsa
+Skyrim - Textures8.bsa
+Skyrim - Voices_en0.bsa
+_ResourcePack.bsa

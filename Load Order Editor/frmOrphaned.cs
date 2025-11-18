@@ -19,9 +19,12 @@ namespace hstCMM.Load_Order_Editor
 
             foreach (var item in orphaned)
             {
-                checkedListBox1.Items.Add(Path.GetFileName(item));
-                FileInfo fileInfo = new FileInfo(item);
-                fileSize += fileInfo.Length;
+                if (File.Exists(item))
+                {
+                    checkedListBox1.Items.Add(Path.GetFileName(item));
+                    FileInfo fileInfo = new FileInfo(item);
+                    fileSize += fileInfo.Length;
+                }
             }
             toolStripStatusLabel1.Text = "Total Size: " + (fileSize / (1024 * 1024)).ToString() + " Mbytes";
         }

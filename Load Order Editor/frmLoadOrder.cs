@@ -833,7 +833,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     modTimeStamp = Tools.ConvertTime(TimeStamp[idx]).ToString();
                     modID = CreationsID[idx];
                     modFileSize = FileSize[idx] / 1024;
-                    url = $"https://creations.bethesda.net/en/{Tools.GameLibrary.GetById(Properties.Settings.Default.Game).CreationsSite}/{(modID.Length > 3 ? modID[webskipchars..] : modID)}/" +
+                    url = $"https://creations.bethesda.net/en/{Tools.GameLibrary.GetById(Properties.Settings.Default.Game).CreationsSite}/details/{(modID.Length > 3 ? modID[webskipchars..] : modID)}/" +
                         CreationsTitle[idx].Replace(" ", "_").Replace("[", "_").Replace("]", "_");
                 }
 
@@ -4052,7 +4052,14 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             // Build a list of all plugins excluding base game files
             plugins = pluginList.Select(s => s[..^4].ToLower()).ToList();
 
-            foreach (string file in Directory.EnumerateFiles(Path.Combine(GamePath, "Data"), "*.ba2", SearchOption.TopDirectoryOnly)) // Build a list of all archives
+            foreach (string file in Directory.EnumerateFiles(Path.Combine(GamePath, "Data"), "*.ba2", SearchOption.TopDirectoryOnly))
+                // Build a list of all .ba 2archives
+            {
+                archives.Add(Path.GetFileName(file).ToLower());
+            }
+
+            foreach (string file in Directory.EnumerateFiles(Path.Combine(GamePath, "Data"), "*.bsa", SearchOption.TopDirectoryOnly))
+                // Build a list of all .bsa archives
             {
                 archives.Add(Path.GetFileName(file).ToLower());
             }
@@ -4061,12 +4068,15 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             {
                 List<string> modArchives = archives.Except(tools.BGSArchives()) // Exclude BGS Archives
                     .Select(s => s.ToLower().Replace(".ba2", string.Empty)) // Remove ".ba2" from archive names
+                    .Select(s => s.ToLower().Replace(".bsa", string.Empty)) // Remove ".bsa" from archive names
                     .ToList();
 
                 foreach (var archive in modArchives) // Check if archive is orphaned
                 {
                     if (!plugins.Any(plugin => archive.StartsWith(plugin))) // If no plugin starts with the archive name
                         toDelete.Add(Path.Combine(GamePath, "Data", archive) + ".ba2");
+                    if (!plugins.Any(plugin => archive.StartsWith(plugin))) // If no plugin starts with the archive name
+                        toDelete.Add(Path.Combine(GamePath, "Data", archive) + ".bsa");
                 }
 
                 if (toDelete.Count > 0)
@@ -5684,7 +5694,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             List<string> bsaArchives = Directory.EnumerateFiles(Path.Combine(GamePath, "Data"), "*.bsa").Select(p => Path.GetFileNameWithoutExtension(p)).ToList();
             List<string> bgsArchives = new List<string>();
             List<string> allArchives = ba2Archives.Concat(bsaArchives).ToList();
-            string GameFolder=Tools.GameLibrary.GetById(Properties.Settings.Default.Game).AppData;
+            string GameFolder = Tools.GameLibrary.GetById(Properties.Settings.Default.Game).ExcludeFile;
 
             foreach (string fileName in allArchives)
             {
@@ -6189,7 +6199,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 InitialDirectory = Tools.CommonFolder,
                 Filter = "Txt File|*.txt",
                 Title = "Create Game Exclude File",
-                FileName = Tools.CommonFolder + "\\" + (GameName + " Exclude.txt")
+                FileName = Tools.CommonFolder + "\\" + (Tools.GameLibrary.GetById(Properties.Settings.Default.Game).ExcludeFile + " Exclude.txt")
             };
 
             if (saveDialog.ShowDialog() != DialogResult.OK || string.IsNullOrEmpty(saveDialog.FileName))
