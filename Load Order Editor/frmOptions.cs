@@ -5,11 +5,11 @@ using static hstCMM.frmLoadOrder;
 
 namespace hstCMM.Load_Order_Editor
 {
-    public partial class frmDirectories : Form
+    public partial class frmOptions : Form
     {
         private readonly Tools tools = new();
 
-        public frmDirectories()
+        public frmOptions()
         {
             InitializeComponent();
             var settings = Properties.Settings.Default;
@@ -32,7 +32,7 @@ namespace hstCMM.Load_Order_Editor
         private void btnGame_Click(object sender, EventArgs e)
         {
             if (Properties.Settings.Default.GameVersion != frmLoadOrder.MS)
-                GamePath = tools.SetGamePath();
+                GamePath = tools.GetSteamGamePath(frmLoadOrder.GameName);
             else
                 GamePath = tools.SetGamePathMS();
         }
@@ -122,9 +122,10 @@ namespace hstCMM.Load_Order_Editor
 
         private void btnDetect_Click(object sender, EventArgs e)
         {
-            frmLoadOrder.GamePath = tools.GetSteamGamePath();
+            frmLoadOrder.GamePath = tools.GetSteamGamePath(frmLoadOrder.GameName);
             if (!String.IsNullOrEmpty(GamePath))
-                MessageBox.Show($"Game Path set to {GamePath}", $"{frmLoadOrder.GameName} Detected", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                txtGame.Text = frmLoadOrder.GamePath;
+            //MessageBox.Show($"Game Path set to {GamePath}", $"{frmLoadOrder.GameName} Detected", MessageBoxButtons.OK, MessageBoxIcon.Information);
             else
                 MessageBox.Show("Error detecting game path", "Game Path Not Found", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
         }

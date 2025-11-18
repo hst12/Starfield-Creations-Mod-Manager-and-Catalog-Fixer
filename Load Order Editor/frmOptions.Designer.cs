@@ -1,6 +1,6 @@
 ﻿namespace hstCMM.Load_Order_Editor
 {
-    partial class frmDirectories
+    partial class frmOptions
     {
         /// <summary>
         /// Required designer variable.
@@ -148,7 +148,7 @@
             btnOk.Location = new System.Drawing.Point(3, 489);
             btnOk.Name = "btnOk";
             btnOk.Size = new System.Drawing.Size(209, 46);
-            btnOk.TabIndex = 11;
+            btnOk.TabIndex = 12;
             btnOk.Text = "Ok";
             btnOk.UseVisualStyleBackColor = true;
             btnOk.Click += btnOk_Click;
@@ -158,7 +158,7 @@
             btnCancel.Location = new System.Drawing.Point(218, 489);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new System.Drawing.Size(209, 46);
-            btnCancel.TabIndex = 12;
+            btnCancel.TabIndex = 13;
             btnCancel.Text = "Cancel";
             btnCancel.UseVisualStyleBackColor = true;
             btnCancel.Click += btnCancel_Click;
@@ -176,43 +176,58 @@
             // 
             // txtGame
             // 
-            txtGame.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            txtGame.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            txtGame.Dock = System.Windows.Forms.DockStyle.Fill;
             txtGame.Location = new System.Drawing.Point(218, 57);
             txtGame.Name = "txtGame";
-            txtGame.Size = new System.Drawing.Size(841, 39);
+            txtGame.ReadOnly = true;
+            txtGame.Size = new System.Drawing.Size(841, 32);
             txtGame.TabIndex = 1;
+            txtGame.TabStop = false;
             // 
             // txtLOOT
             // 
-            txtLOOT.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            txtLOOT.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            txtLOOT.Dock = System.Windows.Forms.DockStyle.Fill;
             txtLOOT.Location = new System.Drawing.Point(218, 111);
             txtLOOT.Name = "txtLOOT";
-            txtLOOT.Size = new System.Drawing.Size(841, 39);
+            txtLOOT.ReadOnly = true;
+            txtLOOT.Size = new System.Drawing.Size(841, 32);
             txtLOOT.TabIndex = 3;
+            txtLOOT.TabStop = false;
             // 
             // txtMO2
             // 
-            txtMO2.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            txtMO2.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            txtMO2.Dock = System.Windows.Forms.DockStyle.Fill;
             txtMO2.Location = new System.Drawing.Point(218, 165);
             txtMO2.Name = "txtMO2";
-            txtMO2.Size = new System.Drawing.Size(841, 39);
+            txtMO2.ReadOnly = true;
+            txtMO2.Size = new System.Drawing.Size(841, 32);
             txtMO2.TabIndex = 5;
+            txtMO2.TabStop = false;
             // 
             // txtVortex
             // 
-            txtVortex.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            txtVortex.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            txtVortex.Dock = System.Windows.Forms.DockStyle.Fill;
             txtVortex.Location = new System.Drawing.Point(218, 219);
             txtVortex.Name = "txtVortex";
-            txtVortex.Size = new System.Drawing.Size(841, 39);
+            txtVortex.ReadOnly = true;
+            txtVortex.Size = new System.Drawing.Size(841, 32);
             txtVortex.TabIndex = 7;
+            txtVortex.TabStop = false;
             // 
             // txtxEdit
             // 
-            txtxEdit.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            txtxEdit.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            txtxEdit.Dock = System.Windows.Forms.DockStyle.Fill;
             txtxEdit.Location = new System.Drawing.Point(218, 273);
             txtxEdit.Name = "txtxEdit";
-            txtxEdit.Size = new System.Drawing.Size(841, 39);
+            txtxEdit.ReadOnly = true;
+            txtxEdit.Size = new System.Drawing.Size(841, 32);
             txtxEdit.TabIndex = 9;
+            txtxEdit.TabStop = false;
             // 
             // label1
             // 
@@ -244,7 +259,7 @@
             btnDetect.Location = new System.Drawing.Point(218, 381);
             btnDetect.Name = "btnDetect";
             btnDetect.Size = new System.Drawing.Size(363, 42);
-            btnDetect.TabIndex = 13;
+            btnDetect.TabIndex = 11;
             btnDetect.Text = "Detect Game Path - Steam Only";
             btnDetect.UseVisualStyleBackColor = true;
             btnDetect.Click += btnDetect_Click;
@@ -253,13 +268,13 @@
             // 
             openFileDialog1.FileName = "openFileDialog1";
             // 
-            // frmDirectories
+            // frmOptions
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(13F, 32F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(1062, 548);
             Controls.Add(tableLayoutPanel1);
-            Name = "frmDirectories";
+            Name = "frmOptions";
             StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             Text = "Options";
             tableLayoutPanel1.ResumeLayout(false);

@@ -48,7 +48,7 @@
             // btnCancel
             // 
             btnCancel.Dock = System.Windows.Forms.DockStyle.Right;
-            btnCancel.Location = new System.Drawing.Point(328, 231);
+            btnCancel.Location = new System.Drawing.Point(640, 231);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new System.Drawing.Size(150, 46);
             btnCancel.TabIndex = 2;
@@ -62,7 +62,7 @@
             flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             flowLayoutPanel1.Location = new System.Drawing.Point(3, 3);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new System.Drawing.Size(314, 222);
+            flowLayoutPanel1.Size = new System.Drawing.Size(522, 222);
             flowLayoutPanel1.TabIndex = 6;
             // 
             // tableLayoutPanel1
@@ -79,14 +79,14 @@
             tableLayoutPanel1.RowCount = 2;
             tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            tableLayoutPanel1.Size = new System.Drawing.Size(481, 280);
+            tableLayoutPanel1.Size = new System.Drawing.Size(793, 280);
             tableLayoutPanel1.TabIndex = 7;
             // 
             // frmGameSelect
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(13F, 32F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(481, 280);
+            ClientSize = new System.Drawing.Size(793, 280);
             Controls.Add(tableLayoutPanel1);
             MaximizeBox = false;
             Name = "frmGameSelect";

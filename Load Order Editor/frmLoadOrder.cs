@@ -5,7 +5,6 @@ using Microsoft.VisualBasic;
 using Microsoft.Win32;
 using Microsoft.WindowsAPICodePack.Shell;
 using Microsoft.WindowsAPICodePack.Taskbar;
-using Narod.SteamGameFinder;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
@@ -26,7 +25,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
-using static hstCMM.frmLoadOrder;
 using static hstCMM.Shared.Tools;
 using File = System.IO.File;
 
@@ -38,7 +36,7 @@ namespace hstCMM
 
         public const byte Steam = 0, MS = 1, Custom = 2, SFSE = 3;
         public static string GamePath, GameName;
-        private static int Game = Properties.Settings.Default.Game;
+        public int Game = Properties.Settings.Default.Game;
         public static bool NoWarn, log;
         public static int returnStatus;
         public static ActivityLog activityLog;
@@ -380,8 +378,10 @@ namespace hstCMM
         {
             GameVersion = Properties.Settings.Default.GameVersion;
             Game = Properties.Settings.Default.Game;
-            GameNames gl = new();
-            GameName = gl.GameName(Properties.Settings.Default.Game);
+
+            //GameName = gl.GameName(Properties.Settings.Default.Game);
+            var x = Properties.Settings.Default.Game;
+            GameName = Tools.GameLibrary.GetById(Properties.Settings.Default.Game).GameName;
             if (log)
                 activityLog.WriteLog($"Game set to {GameName}");
             GameExists = Tools.CheckGame(); // Check if game appdata folder exists
@@ -432,7 +432,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 GamePath = Properties.Settings.Default.GamePath;
                 if (GamePath == "")
                 {
-                    GamePath = tools.GetSteamGamePath(); // Detect Steam path
+                    GamePath = tools.GetSteamGamePath(GameName); // Detect Steam path
                     if (GamePath == "")
                     {
                         GamePath = tools.SetGamePath();
@@ -832,7 +832,11 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     modTimeStamp = Tools.ConvertTime(TimeStamp[idx]).ToString();
                     modID = CreationsID[idx];
                     modFileSize = FileSize[idx] / 1024;
-                    url = $"https://creations.bethesda.net/en/{GameName}/details/{(modID.Length > 3 ? modID[3..] : modID)}";
+                    if (GameName != "Fallout4")
+                        url = $"https://creations.bethesda.net/en/{GameName}/details/{(modID.Length > 3 ? modID[3..] : modID)}";
+                    else
+                        url = $"https://creations.bethesda.net/en/fallout4/details/{(modID.Length > 3 ? modID[5..] : modID)}/" +
+                            CreationsTitle[idx].Replace(" ", "_").Replace("[", "_").Replace("]", "_"); // Fallout 4 hack
                 }
 
                 // Buffer the row before adding.
@@ -1611,7 +1615,6 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
         {
             AddMissing();
         }
-
 
         private void toolStripMenuCleanup_Click(object sender, EventArgs e)
         {
@@ -4889,8 +4892,6 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             progressBar1.Hide();
         }
 
-
-
         private void updateAllProfilesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             UpdateAllProfiles();
@@ -5201,15 +5202,18 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             if (returnStatus == 0)
             {
                 MessageBox.Show("App will exit. Profiles Disabled", "Restart Required", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                Game = Properties.Settings.Default.Game;
-                GameNames gl = new GameNames();
-                GameName = gl.GameName(Properties.Settings.Default.Game);
-                GamePath = tools.GamePath;
-
-                SetupGame();
-                if (GameVersion is Steam || GameVersion is SFSE)
-                    GamePath = tools.GetSteamGamePath();
-                pluginList = tools.GetPluginList(Game);
+                if (GameVersion != MS)
+                {
+                    if (GamePath == "")
+                        GamePath = tools.SetGamePath();
+                }
+                else
+                {
+                    if (Properties.Settings.Default.GamePathMS == "")
+                        tools.SetGamePathMS();
+                    GamePath = Properties.Settings.Default.GamePathMS;
+                }
+                SaveSettings();
                 Application.Exit();
             }
             else
@@ -6107,8 +6111,6 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             ssVideo.Show();*/
         }
 
-
-
         public static void SetupJumpList()
         {
             if (!TaskbarManager.IsPlatformSupported)
@@ -6233,7 +6235,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 MessageBox.Show("MO2 doesn't seem to be installed or path not configured.");
         }
 
-        private void LogError(string message)
+        public void LogError(string message)
         {
             if (log)
                 activityLog.WriteLog("ERROR: " + message);
@@ -6242,7 +6244,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
         private void directoriesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            frmDirectories fd = new();
+            frmOptions fd = new();
             fd.Show();
             if (returnStatus == 1)
             {

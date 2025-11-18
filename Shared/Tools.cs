@@ -4,6 +4,7 @@ using Narod.SteamGameFinder;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -19,8 +20,6 @@ namespace hstCMM.Shared // Various functions used by the app
         public string GamePath { get; set; }
 
         public static string GameName { get; set; }
-
-        //public static byte Game { get; set; } // 0=Starfield, 1=Fallout 5, 2=Elder Scrolls 6, 3=Skyrim SE, 4= Fallout 4 SE
 
         public string GamePathMS { get; set; }
         public List<string> BethFiles { get; set; }
@@ -83,19 +82,19 @@ namespace hstCMM.Shared // Various functions used by the app
             LocalAppDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "hstCMM");
 
             DocumentationFolder = Path.Combine(Environment.CurrentDirectory, "Documentation");
+            GameName = GameLibrary.GetById(Properties.Settings.Default.Game).GameName;
 
-            GameNames gl = new();
-            GameName = gl.GameName(Properties.Settings.Default.Game);
+            //var Game=GameLibrary.GetById(Properties.Settings.Default.Game);
 
             try
             {
-                BethFiles = new(File.ReadAllLines(Path.Combine(CommonFolder, GameName + " Exclude.txt"))); // Exclude these files from Plugin list
+                BethFiles = new(File.ReadAllLines(Path.Combine(CommonFolder, GameLibrary.GetById(Properties.Settings.Default.Game).ExcludeFile + " Exclude.txt"))); // Exclude these files from Plugin list
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Exclude file missing. Repair or re-install the app", MessageBoxButtons.OK, MessageBoxIcon.Stop);
-                File.WriteAllText(Path.Combine(CommonFolder, GameName + " Exclude.txt"), string.Empty);
-                BethFiles = new(File.ReadAllLines(Path.Combine(CommonFolder, GameName + " Exclude.txt"))); // Exclude these files from Plugin list
+                File.WriteAllText(Path.Combine(CommonFolder, GameLibrary.GetById(Properties.Settings.Default.Game).ExcludeFile + " Exclude.txt"), string.Empty);
+                BethFiles = new(File.ReadAllLines(Path.Combine(CommonFolder, GameLibrary.GetById(Properties.Settings.Default.Game).ExcludeFile + " Exclude.txt"))); // Exclude these files from Plugin list
                 //Environment.Exit(1);
             }
 
@@ -111,10 +110,8 @@ namespace hstCMM.Shared // Various functions used by the app
 
             try
             {
-                if (GameName == "Fallout 4")
-                    GameAppData = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Fallout4"); // Hack for Fallout 4
-                else
-                    GameAppData = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), GameName);
+                GameAppData = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                    GameLibrary.GetById(Properties.Settings.Default.Game).AppData);
             }
             catch (Exception ex)
             {
@@ -179,14 +176,15 @@ namespace hstCMM.Shared // Various functions used by the app
             }
         }
 
-
-        public string GetSteamGamePath()
+        public string GetSteamGamePath(string gameName)
         {
             try
             {
                 SteamGameLocator steamGameLocator = new SteamGameLocator();
-                GamePath = steamGameLocator.getGameInfoByFolder(GameName).steamGameLocation;
-                Properties.Settings.Default.GamePath = GamePath;
+
+                Properties.Settings.Default.GamePath = GamePath =
+                steamGameLocator.getGameInfoByName(gameName).steamGameLocation.Replace(@"\\", @"\");
+
                 SaveSettings();
                 return GamePath;
             }
@@ -199,6 +197,7 @@ namespace hstCMM.Shared // Various functions used by the app
                 return string.Empty;
             }
         }
+
         public static DateTime ConvertTime(double TimeToConvert) // Convert catalog time format to human readable
         {
             DateTime start = new(1970, 1, 1, 0, 0, 0, 0);
@@ -508,7 +507,11 @@ namespace hstCMM.Shared // Various functions used by the app
             {
                 string stringValue = (string)Registry.GetValue(keyName, "SteamExe", ""); // Get Steam path from Registry
                 SteamGameLocator steamGameLocator = new();
-                var gameID = steamGameLocator.getGameInfoByFolder(GameName).steamGameID;
+                string gameID;
+                if (GameName != "Fallout4")
+                    gameID = steamGameLocator.getGameInfoByFolder(GameName).steamGameID;
+                else
+                    gameID = "377160"; // Fallout 4 hack
                 var processInfo = new ProcessStartInfo(stringValue, $"-applaunch {gameID}");
                 var process = Process.Start(processInfo);
                 return true;
@@ -624,43 +627,70 @@ namespace hstCMM.Shared // Various functions used by the app
         {
             Properties.Settings.Default.Save();
         }
+
+        public static class ModFiles
+        {
+            public static readonly string[] NewModFormat = { ".esm", ".esp" };
+            public static readonly string[] OldModFormat = { ".esm", ".esp", ".esl" };
+
+            public static bool IsValidModExtension(string extension, bool useNewFormat = true)
+            {
+                var formats = useNewFormat ? NewModFormat : OldModFormat;
+                return formats.Contains(extension.ToLower());
+            }
+        }
+
+        public static class ModArchives
+        {
+            public const string NewArchiveFormat = ".ba2";
+            public const string OldArchiveFormat = ".bsa";
+        }
+
         public class GameInfo
         {
-            public GameNames GameId { get; set; } // See GameNames class
-            public GameNames[] GameName { get; set; } // See GameNames class
-            public string GamePath { get; set; } // Path to game .exe
-            public string GameAppData { get; set; } // Path to %LocalAppData% game folder
-            public string SteamAppId { get; set; } // Steam AppID
-            public string MSStoreId { get; set; } // MS Store ID ?
-            public string[] Modfiles { get; set; } // Supported mod file types - .esm, esp, etc.
-            public string[] ModArchives { get; set; } // Supported mod archive types - .bsa, ba2, etc.
-        }
+            public int Id { get; }
+            public string GameName { get; }
+            public string AppData { get; }
+            public string ExcludeFile { get; }
+            public string DocFolder { get; }
+            public string Executable { get; }
+            public string[] ModFormats { get; }
+            public string ArchiveFormat { get; }
 
-        public class GameNames
-        {
-            private readonly Dictionary<int, string> _games = new()
+            public GameInfo(int id, string name, string appdata, string excludefile, string docfolder, string executable, string[] modFormats, string archiveFormat)
             {
-                { 0, "Starfield"},
-                { 1, "Skyrim Special Edition"},
-                { 2, "Fallout 4"},
-                { 3, "Elder Scrolls 6"},
-                { 4, "Fallout 5" }
-            };
-
-            public string GameName(int id)
-            {
-                return _games.TryGetValue(id, out var title) ? title : "Unknown";
+                Id = id;
+                GameName = name; // Display name
+                AppData = appdata; // Game AppData folder name
+                ExcludeFile = excludefile; // Exclude file name
+                DocFolder = docfolder; // My Games folder
+                Executable = executable;
+                ModFormats = modFormats;
+                ArchiveFormat = archiveFormat;
             }
-
-            public IReadOnlyDictionary<int, string> Games => _games;
         }
 
-        public class ModFiles
+        public static class GameLibrary
         {
-            private readonly string[] newModFormat = { ".esm", ".esp" };
-            private readonly string[] oldModFormat = { ".esm", ".esp", ".esl" };
-            private const string newArchiveFormat = ".ba2";
-            private const string oldArchiveFormat = ".bsa";
+            public static readonly List<GameInfo> Games = new List<GameInfo>
+    {
+        new GameInfo(0, "Starfield", "Starfield","Starfield","Starfield","Starfield.exe", ModFiles.NewModFormat, ModArchives.NewArchiveFormat),
+        new GameInfo(1, "The Elder Scrolls V: Skyrim Special Edition", "Skyrim Special Edition","Skyrim SE",
+            "Skyrim Special Edition","SkyrimSe.exe", ModFiles.OldModFormat, ModArchives.OldArchiveFormat),
+        new GameInfo(2, "Fallout 4", "Fallout4","Fallout 4","Fallout 4","Fallout4.exe", ModFiles.OldModFormat, ModArchives.OldArchiveFormat),
+        new GameInfo(3, "Elder Scrolls 6", "ES6","ES6","ES6","ES6.exe", ModFiles.NewModFormat, ModArchives.NewArchiveFormat),
+        new GameInfo(4, "Fallout 5", "Fallout5","Fallout 5","Fallout 5","Fallout5.exe", ModFiles.NewModFormat, ModArchives.NewArchiveFormat)
+    };
+
+            // Lookup helpers
+            public static GameInfo GetById(int id) =>
+                Games.FirstOrDefault(g => g.Id == id);
+
+            public static GameInfo GetByName(string name) =>
+                Games.FirstOrDefault(g => g.GameName.Equals(name, StringComparison.OrdinalIgnoreCase));
+
+            public static GameInfo GetByExecutable(string exeName) =>
+                Games.FirstOrDefault(g => g.Executable.Equals(exeName, StringComparison.OrdinalIgnoreCase));
         }
     }
 }
