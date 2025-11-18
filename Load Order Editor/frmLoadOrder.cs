@@ -84,6 +84,7 @@ namespace hstCMM
                 btnLog.Font = new System.Drawing.Font(btnLog.Font, log ? FontStyle.Bold : FontStyle.Regular);
             }
 
+            
             foreach (var arg in Environment.GetCommandLineArgs()) // Handle some command line arguments
             {
                 if (arg.Equals("-noauto", StringComparison.InvariantCultureIgnoreCase))
@@ -5211,7 +5212,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 ProcessStartInfo psi = new ProcessStartInfo
                 {
                     FileName = Application.ExecutablePath,
-                    Arguments = "",
+                    Arguments = "-dev",
                     UseShellExecute = true
                 };
 
