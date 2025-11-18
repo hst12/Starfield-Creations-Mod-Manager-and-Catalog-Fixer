@@ -1,4 +1,4 @@
-﻿# Starfield Tools - Load Order Editor
+﻿# Creations Mod Manager
 
 ## Important Notes
 
