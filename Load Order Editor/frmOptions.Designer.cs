@@ -34,8 +34,6 @@
             btnxEdit = new System.Windows.Forms.Button();
             tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             btnFont = new System.Windows.Forms.Button();
-            btnOk = new System.Windows.Forms.Button();
-            btnCancel = new System.Windows.Forms.Button();
             btnGame = new System.Windows.Forms.Button();
             txtGame = new System.Windows.Forms.TextBox();
             txtLOOT = new System.Windows.Forms.TextBox();
@@ -45,6 +43,11 @@
             label1 = new System.Windows.Forms.Label();
             label2 = new System.Windows.Forms.Label();
             btnDetect = new System.Windows.Forms.Button();
+            btnOk = new System.Windows.Forms.Button();
+            btnCancel = new System.Windows.Forms.Button();
+            label3 = new System.Windows.Forms.Label();
+            lblCK = new System.Windows.Forms.Label();
+            lblSpacer = new System.Windows.Forms.Label();
             fontDialog1 = new System.Windows.Forms.FontDialog();
             openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             tableLayoutPanel1.SuspendLayout();
@@ -53,7 +56,7 @@
             // btnLOOT
             // 
             btnLOOT.AutoSize = true;
-            btnLOOT.Location = new System.Drawing.Point(3, 111);
+            btnLOOT.Location = new System.Drawing.Point(3, 83);
             btnLOOT.Name = "btnLOOT";
             btnLOOT.Size = new System.Drawing.Size(209, 42);
             btnLOOT.TabIndex = 2;
@@ -64,7 +67,7 @@
             // btnMO2
             // 
             btnMO2.AutoSize = true;
-            btnMO2.Location = new System.Drawing.Point(3, 165);
+            btnMO2.Location = new System.Drawing.Point(3, 131);
             btnMO2.Name = "btnMO2";
             btnMO2.Size = new System.Drawing.Size(209, 42);
             btnMO2.TabIndex = 4;
@@ -75,7 +78,7 @@
             // btnVortex
             // 
             btnVortex.AutoSize = true;
-            btnVortex.Location = new System.Drawing.Point(3, 219);
+            btnVortex.Location = new System.Drawing.Point(3, 179);
             btnVortex.Name = "btnVortex";
             btnVortex.Size = new System.Drawing.Size(209, 42);
             btnVortex.TabIndex = 6;
@@ -86,7 +89,7 @@
             // btnxEdit
             // 
             btnxEdit.AutoSize = true;
-            btnxEdit.Location = new System.Drawing.Point(3, 273);
+            btnxEdit.Location = new System.Drawing.Point(3, 227);
             btnxEdit.Name = "btnxEdit";
             btnxEdit.Size = new System.Drawing.Size(209, 42);
             btnxEdit.TabIndex = 8;
@@ -100,8 +103,6 @@
             tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             tableLayoutPanel1.Controls.Add(btnFont, 0, 7);
-            tableLayoutPanel1.Controls.Add(btnOk, 0, 9);
-            tableLayoutPanel1.Controls.Add(btnCancel, 1, 9);
             tableLayoutPanel1.Controls.Add(btnGame, 0, 1);
             tableLayoutPanel1.Controls.Add(txtGame, 1, 1);
             tableLayoutPanel1.Controls.Add(btnxEdit, 0, 5);
@@ -115,27 +116,33 @@
             tableLayoutPanel1.Controls.Add(label1, 0, 0);
             tableLayoutPanel1.Controls.Add(label2, 0, 6);
             tableLayoutPanel1.Controls.Add(btnDetect, 1, 7);
+            tableLayoutPanel1.Controls.Add(btnOk, 0, 10);
+            tableLayoutPanel1.Controls.Add(btnCancel, 1, 10);
+            tableLayoutPanel1.Controls.Add(label3, 0, 8);
+            tableLayoutPanel1.Controls.Add(lblCK, 1, 8);
+            tableLayoutPanel1.Controls.Add(lblSpacer, 0, 9);
             tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
-            tableLayoutPanel1.RowCount = 10;
-            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            tableLayoutPanel1.Size = new System.Drawing.Size(1062, 548);
+            tableLayoutPanel1.RowCount = 11;
+            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            tableLayoutPanel1.Size = new System.Drawing.Size(1062, 493);
             tableLayoutPanel1.TabIndex = 5;
             // 
             // btnFont
             // 
             btnFont.AutoSize = true;
-            btnFont.Location = new System.Drawing.Point(3, 381);
+            btnFont.Location = new System.Drawing.Point(3, 307);
             btnFont.Name = "btnFont";
             btnFont.Size = new System.Drawing.Size(209, 42);
             btnFont.TabIndex = 10;
@@ -143,30 +150,10 @@
             btnFont.UseVisualStyleBackColor = true;
             btnFont.Click += btnFont_Click;
             // 
-            // btnOk
-            // 
-            btnOk.Location = new System.Drawing.Point(3, 489);
-            btnOk.Name = "btnOk";
-            btnOk.Size = new System.Drawing.Size(209, 46);
-            btnOk.TabIndex = 12;
-            btnOk.Text = "Ok";
-            btnOk.UseVisualStyleBackColor = true;
-            btnOk.Click += btnOk_Click;
-            // 
-            // btnCancel
-            // 
-            btnCancel.Location = new System.Drawing.Point(218, 489);
-            btnCancel.Name = "btnCancel";
-            btnCancel.Size = new System.Drawing.Size(209, 46);
-            btnCancel.TabIndex = 13;
-            btnCancel.Text = "Cancel";
-            btnCancel.UseVisualStyleBackColor = true;
-            btnCancel.Click += btnCancel_Click;
-            // 
             // btnGame
             // 
             btnGame.AutoSize = true;
-            btnGame.Location = new System.Drawing.Point(3, 57);
+            btnGame.Location = new System.Drawing.Point(3, 35);
             btnGame.Name = "btnGame";
             btnGame.Size = new System.Drawing.Size(209, 42);
             btnGame.TabIndex = 0;
@@ -178,7 +165,7 @@
             // 
             txtGame.BorderStyle = System.Windows.Forms.BorderStyle.None;
             txtGame.Dock = System.Windows.Forms.DockStyle.Fill;
-            txtGame.Location = new System.Drawing.Point(218, 57);
+            txtGame.Location = new System.Drawing.Point(218, 35);
             txtGame.Name = "txtGame";
             txtGame.ReadOnly = true;
             txtGame.Size = new System.Drawing.Size(841, 32);
@@ -189,7 +176,7 @@
             // 
             txtLOOT.BorderStyle = System.Windows.Forms.BorderStyle.None;
             txtLOOT.Dock = System.Windows.Forms.DockStyle.Fill;
-            txtLOOT.Location = new System.Drawing.Point(218, 111);
+            txtLOOT.Location = new System.Drawing.Point(218, 83);
             txtLOOT.Name = "txtLOOT";
             txtLOOT.ReadOnly = true;
             txtLOOT.Size = new System.Drawing.Size(841, 32);
@@ -200,7 +187,7 @@
             // 
             txtMO2.BorderStyle = System.Windows.Forms.BorderStyle.None;
             txtMO2.Dock = System.Windows.Forms.DockStyle.Fill;
-            txtMO2.Location = new System.Drawing.Point(218, 165);
+            txtMO2.Location = new System.Drawing.Point(218, 131);
             txtMO2.Name = "txtMO2";
             txtMO2.ReadOnly = true;
             txtMO2.Size = new System.Drawing.Size(841, 32);
@@ -211,7 +198,7 @@
             // 
             txtVortex.BorderStyle = System.Windows.Forms.BorderStyle.None;
             txtVortex.Dock = System.Windows.Forms.DockStyle.Fill;
-            txtVortex.Location = new System.Drawing.Point(218, 219);
+            txtVortex.Location = new System.Drawing.Point(218, 179);
             txtVortex.Name = "txtVortex";
             txtVortex.ReadOnly = true;
             txtVortex.Size = new System.Drawing.Size(841, 32);
@@ -222,7 +209,7 @@
             // 
             txtxEdit.BorderStyle = System.Windows.Forms.BorderStyle.None;
             txtxEdit.Dock = System.Windows.Forms.DockStyle.Fill;
-            txtxEdit.Location = new System.Drawing.Point(218, 273);
+            txtxEdit.Location = new System.Drawing.Point(218, 227);
             txtxEdit.Name = "txtxEdit";
             txtxEdit.ReadOnly = true;
             txtxEdit.Size = new System.Drawing.Size(841, 32);
@@ -234,7 +221,7 @@
             label1.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             label1.AutoSize = true;
             label1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            label1.Location = new System.Drawing.Point(3, 22);
+            label1.Location = new System.Drawing.Point(3, 0);
             label1.Name = "label1";
             label1.Size = new System.Drawing.Size(209, 32);
             label1.TabIndex = 11;
@@ -246,7 +233,7 @@
             label2.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             label2.AutoSize = true;
             label2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            label2.Location = new System.Drawing.Point(3, 346);
+            label2.Location = new System.Drawing.Point(3, 272);
             label2.Name = "label2";
             label2.Size = new System.Drawing.Size(209, 32);
             label2.TabIndex = 12;
@@ -256,13 +243,63 @@
             // btnDetect
             // 
             btnDetect.AutoSize = true;
-            btnDetect.Location = new System.Drawing.Point(218, 381);
+            btnDetect.Location = new System.Drawing.Point(218, 307);
             btnDetect.Name = "btnDetect";
             btnDetect.Size = new System.Drawing.Size(363, 42);
             btnDetect.TabIndex = 11;
             btnDetect.Text = "Detect Game Path - Steam Only";
             btnDetect.UseVisualStyleBackColor = true;
             btnDetect.Click += btnDetect_Click;
+            // 
+            // btnOk
+            // 
+            btnOk.Location = new System.Drawing.Point(3, 419);
+            btnOk.Name = "btnOk";
+            btnOk.Size = new System.Drawing.Size(209, 46);
+            btnOk.TabIndex = 12;
+            btnOk.Text = "Ok";
+            btnOk.UseVisualStyleBackColor = true;
+            btnOk.Click += btnOk_Click;
+            // 
+            // btnCancel
+            // 
+            btnCancel.Location = new System.Drawing.Point(218, 419);
+            btnCancel.Name = "btnCancel";
+            btnCancel.Size = new System.Drawing.Size(209, 46);
+            btnCancel.TabIndex = 13;
+            btnCancel.Text = "Cancel";
+            btnCancel.UseVisualStyleBackColor = true;
+            btnCancel.Click += btnCancel_Click;
+            // 
+            // label3
+            // 
+            label3.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            label3.AutoSize = true;
+            label3.Location = new System.Drawing.Point(3, 352);
+            label3.Name = "label3";
+            label3.Size = new System.Drawing.Size(209, 32);
+            label3.TabIndex = 14;
+            label3.Text = "Creation Kit";
+            label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblCK
+            // 
+            lblCK.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
+            lblCK.AutoSize = true;
+            lblCK.Location = new System.Drawing.Point(218, 352);
+            lblCK.Name = "lblCK";
+            lblCK.Size = new System.Drawing.Size(126, 32);
+            lblCK.TabIndex = 15;
+            lblCK.Text = "Undefined";
+            lblCK.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblSpacer
+            // 
+            lblSpacer.AutoSize = true;
+            lblSpacer.Location = new System.Drawing.Point(3, 384);
+            lblSpacer.Name = "lblSpacer";
+            lblSpacer.Size = new System.Drawing.Size(0, 32);
+            lblSpacer.TabIndex = 16;
             // 
             // openFileDialog1
             // 
@@ -272,7 +309,7 @@
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(13F, 32F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(1062, 548);
+            ClientSize = new System.Drawing.Size(1062, 493);
             Controls.Add(tableLayoutPanel1);
             Name = "frmOptions";
             StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -303,5 +340,8 @@
         private System.Windows.Forms.FontDialog fontDialog1;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.Button btnDetect;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label lblCK;
+        private System.Windows.Forms.Label lblSpacer;
     }
 }

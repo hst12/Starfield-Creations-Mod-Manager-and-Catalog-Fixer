@@ -4,7 +4,6 @@ using Narod.SteamGameFinder;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -14,18 +13,20 @@ namespace hstCMM.Shared // Various functions used by the app
 {
     internal class Tools
     {
-        public static string CommonFolder { get; set; }
-        public static string DocumentationFolder { get; set; }
-        public static string LocalAppDataPath { get; set; }
+        public static string CommonFolder { get; set; } = Path.Combine(Environment.CurrentDirectory, "Common"); // Used to read misc txt files used by the app
+        public static string DocumentationFolder { get; set; } = Path.Combine(Environment.CurrentDirectory, "Documentation");
+        public static string LocalAppDataPath { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "hstCMM");
+
         public string GamePath { get; set; }
 
-        public static string GameName { get; set; }
+        public static string GameName { get; set; } = GameLibrary.GetById(Properties.Settings.Default.Game).GameName;
 
         public string GamePathMS { get; set; }
         public List<string> BethFiles { get; set; }
         public static string CatalogVersion { get; set; }
         public static string GameAppData { get; set; }
         public List<string> PluginList { get; set; }
+        public string GameApp { get; set; } = GameLibrary.GetById(Properties.Settings.Default.Game).AppData;
 
         public static readonly List<string> Suffixes =
 [
@@ -77,24 +78,17 @@ namespace hstCMM.Shared // Various functions used by the app
 
         public Tools() // Constructor
         {
-            CommonFolder = Path.Combine(Environment.CurrentDirectory, "Common"); // Used to read misc txt files used by the app
-
-            LocalAppDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "hstCMM");
-
-            DocumentationFolder = Path.Combine(Environment.CurrentDirectory, "Documentation");
-            GameName = GameLibrary.GetById(Properties.Settings.Default.Game).GameName;
-
-            //var Game=GameLibrary.GetById(Properties.Settings.Default.Game);
-
             try
             {
-                BethFiles = new(File.ReadAllLines(Path.Combine(CommonFolder, GameLibrary.GetById(Properties.Settings.Default.Game).ExcludeFile + " Exclude.txt"))); // Exclude these files from Plugin list
+                BethFiles = new(File.ReadAllLines(Path.Combine(CommonFolder,
+                    GameLibrary.GetById(Properties.Settings.Default.Game).ExcludeFile + " Exclude.txt"))); // Exclude these files from Plugin list
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Exclude file missing. Repair or re-install the app", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 File.WriteAllText(Path.Combine(CommonFolder, GameLibrary.GetById(Properties.Settings.Default.Game).ExcludeFile + " Exclude.txt"), string.Empty);
-                BethFiles = new(File.ReadAllLines(Path.Combine(CommonFolder, GameLibrary.GetById(Properties.Settings.Default.Game).ExcludeFile + " Exclude.txt"))); // Exclude these files from Plugin list
+                BethFiles = new(File.ReadAllLines(Path.Combine(CommonFolder,
+                    GameLibrary.GetById(Properties.Settings.Default.Game).ExcludeFile + " Exclude.txt"))); // Exclude these files from Plugin list
                 //Environment.Exit(1);
             }
 
@@ -394,8 +388,8 @@ namespace hstCMM.Shared // Various functions used by the app
         public string SetGamePathMS()
         {
             string selectedPath = Properties.Settings.Default.GamePathMS;
-            MessageBox.Show($"Please select the path to the game installation folder where {GameName}.exe is located", "Select Game Path - Choose the Content Folder",
-                MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show($"Please select the path to the game installation folder where {GameName}.exe is located",
+                "Select Game Path - Choose the Content Folder", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             using (FolderBrowserDialog folderBrowserDialog = new())
             {
@@ -507,11 +501,7 @@ namespace hstCMM.Shared // Various functions used by the app
             {
                 string stringValue = (string)Registry.GetValue(keyName, "SteamExe", ""); // Get Steam path from Registry
                 SteamGameLocator steamGameLocator = new();
-                string gameID;
-                if (GameName != "Fallout4")
-                    gameID = steamGameLocator.getGameInfoByFolder(GameName).steamGameID;
-                else
-                    gameID = "377160"; // Fallout 4 hack
+                string gameID = steamGameLocator.getGameInfoByName(GameName).steamGameID;
                 var processInfo = new ProcessStartInfo(stringValue, $"-applaunch {gameID}");
                 var process = Process.Start(processInfo);
                 return true;
@@ -565,10 +555,10 @@ namespace hstCMM.Shared // Various functions used by the app
             }
         }
 
-        public static List<string> BGSArchives()
+        public List<string> BGSArchives()
         {
             List<string> bgsArchives = new();
-            using (StreamReader sr = new StreamReader(Path.Combine(CommonFolder, GameName + " Archives.txt")))
+            using (StreamReader sr = new StreamReader(Path.Combine(CommonFolder, GameApp + " Archives.txt")))
             {
                 string line;
                 while ((line = sr.ReadLine()) != null)
@@ -656,8 +646,11 @@ namespace hstCMM.Shared // Various functions used by the app
             public string Executable { get; }
             public string[] ModFormats { get; }
             public string ArchiveFormat { get; }
+            public string CKId { get; }
+            public int WebSkipChars { get; }
 
-            public GameInfo(int id, string name, string appdata, string excludefile, string docfolder, string executable, string[] modFormats, string archiveFormat)
+            public GameInfo(int id, string name, string appdata, string excludefile, string docfolder, string executable,
+                string[] modFormats, string archiveFormat, string ckid, int webskipchars)
             {
                 Id = id;
                 GameName = name; // Display name
@@ -667,6 +660,8 @@ namespace hstCMM.Shared // Various functions used by the app
                 Executable = executable;
                 ModFormats = modFormats;
                 ArchiveFormat = archiveFormat;
+                CKId = ckid; // Creation Kit Steam ID
+                WebSkipChars = webskipchars;
             }
         }
 
@@ -674,12 +669,12 @@ namespace hstCMM.Shared // Various functions used by the app
         {
             public static readonly List<GameInfo> Games = new List<GameInfo>
     {
-        new GameInfo(0, "Starfield", "Starfield","Starfield","Starfield","Starfield.exe", ModFiles.NewModFormat, ModArchives.NewArchiveFormat),
+        new GameInfo(0, "Starfield", "Starfield","Starfield","Starfield","Starfield.exe", ModFiles.NewModFormat, ModArchives.NewArchiveFormat,"2722710",3),
         new GameInfo(1, "The Elder Scrolls V: Skyrim Special Edition", "Skyrim Special Edition","Skyrim SE",
-            "Skyrim Special Edition","SkyrimSe.exe", ModFiles.OldModFormat, ModArchives.OldArchiveFormat),
-        new GameInfo(2, "Fallout 4", "Fallout4","Fallout 4","Fallout 4","Fallout4.exe", ModFiles.OldModFormat, ModArchives.OldArchiveFormat),
-        new GameInfo(3, "Elder Scrolls 6", "ES6","ES6","ES6","ES6.exe", ModFiles.NewModFormat, ModArchives.NewArchiveFormat),
-        new GameInfo(4, "Fallout 5", "Fallout5","Fallout 5","Fallout 5","Fallout5.exe", ModFiles.NewModFormat, ModArchives.NewArchiveFormat)
+            "Skyrim Special Edition","SkyrimSe.exe", ModFiles.OldModFormat, ModArchives.OldArchiveFormat,"1946180",5),
+        new GameInfo(2, "Fallout 4", "Fallout4","Fallout 4","Fallout 4","Fallout4.exe", ModFiles.OldModFormat, ModArchives.OldArchiveFormat,"1946160",5),
+        new GameInfo(3, "Elder Scrolls 6", "ES6","ES6","ES6","ES6.exe", ModFiles.NewModFormat, ModArchives.NewArchiveFormat,"Unknown",3),
+        new GameInfo(4, "Fallout 5", "Fallout5","Fallout 5","Fallout 5","Fallout5.exe", ModFiles.NewModFormat, ModArchives.NewArchiveFormat,"Unknown", 3)
     };
 
             // Lookup helpers

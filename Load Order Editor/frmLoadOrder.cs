@@ -25,7 +25,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
-using static hstCMM.Shared.Tools;
 using File = System.IO.File;
 
 namespace hstCMM
@@ -344,8 +343,8 @@ namespace hstCMM
 
         private void DetectApps()
         {
-            if (!File.Exists(Path.Combine(GamePath, "CreationKit.exe"))) // Hide option to launch CK if not found
-                creationKitToolStripMenuItem.Visible = false;
+            /*if (!File.Exists(Path.Combine(GamePath, "CreationKit.exe"))) // Hide option to launch CK if not found
+                creationKitToolStripMenuItem.Visible = false;*/
 
             if (!File.Exists(Path.Combine(GamePath, "sfse_loader.exe")))
                 gameVersionSFSEToolStripMenuItem.Visible = false;
@@ -668,7 +667,8 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 activityLog.WriteLog($"InitDatagrid called from {frame.GetMethod().Name}");
             }
 #endif
-            int enabledCount = 0, IndexCount = 1, i, versionDelimiter, dotIndex;
+            int enabledCount = 0, IndexCount = 1, i, versionDelimiter, dotIndex,
+                webskipchars = Tools.GameLibrary.GetById(Properties.Settings.Default.Game).WebSkipChars;
             string loText = Path.Combine(Tools.GameAppData, "Plugins.txt"),
                    LOOTPath = Properties.Settings.Default.LOOTPath, pluginName, rawVersion;
 
@@ -832,11 +832,8 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     modTimeStamp = Tools.ConvertTime(TimeStamp[idx]).ToString();
                     modID = CreationsID[idx];
                     modFileSize = FileSize[idx] / 1024;
-                    if (GameName != "Fallout4")
-                        url = $"https://creations.bethesda.net/en/{GameName}/details/{(modID.Length > 3 ? modID[3..] : modID)}";
-                    else
-                        url = $"https://creations.bethesda.net/en/fallout4/details/{(modID.Length > 3 ? modID[5..] : modID)}/" +
-                            CreationsTitle[idx].Replace(" ", "_").Replace("[", "_").Replace("]", "_"); // Fallout 4 hack
+                    url = $"https://creations.bethesda.net/en/fallout4/details/{(modID.Length > 3 ? modID[webskipchars..] : modID)}/" +
+                        CreationsTitle[idx].Replace(" ", "_").Replace("[", "_").Replace("]", "_");
                 }
 
                 // Buffer the row before adding.
@@ -927,14 +924,14 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                         row.Visible = false;
             }
 
-            if (Properties.Settings.Default.Resize)
-                ResizeFormToFitDataGridView(this);
-
             progressBar1.Value = progressBar1.Maximum;
             progressBar1.Hide();
 
             dataGridView1.ResumeLayout(); // Resume layout
             dataGridView1.EndEdit();
+
+            if (Properties.Settings.Default.Resize)
+                ResizeFormToFitDataGridView(this);
 
             // -- Process mod stats if the game path is set --
             if (!string.IsNullOrEmpty(GamePath) && Properties.Settings.Default.ModStats)
@@ -945,13 +942,14 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
         private void ShowModStats(List<string> CreationsPlugin, int enabledCount)
         {
-            string loText = Path.Combine(Tools.GameAppData, "Plugins.txt"), StatText;
+            string loText = Path.Combine(Tools.GameAppData, "Plugins.txt"), StatText,
+                GameFolder= Tools.GameLibrary.GetById(Properties.Settings.Default.Game).AppData; ;
             int ba2Count, esmCount, espCount, mainCount;
             try
             {
                 // Cache file paths and load BGS archives once
                 var dataDirectory = Path.Combine(GamePath, "Data");
-                var bgsArchives = File.ReadLines(Path.Combine(Tools.CommonFolder, GameName + " Archives.txt"))
+                var bgsArchives = File.ReadLines(Path.Combine(Tools.CommonFolder, GameFolder + " Archives.txt"))
                     .Where(line => line.Length > 4)
                     .Select(line => line[..^4].ToLowerInvariant())
                     .ToHashSet(StringComparer.OrdinalIgnoreCase);
@@ -1014,7 +1012,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
                 // Build status text
                 var statusBuilder = new StringBuilder();
-                statusBuilder.Append($"Creations {CreationsPlugin.Count}, Other {dataGridView1.RowCount - CreationsPlugin.Count}, ");
+                statusBuilder.Append($"Creations {CreationsPlugin.Count}, Other {Math.Abs(dataGridView1.RowCount - CreationsPlugin.Count)}, ");
                 statusBuilder.Append($"Enabled: {enabledCount}, esm: {esmCount}, Archives: {ba2Count}, ");
                 statusBuilder.Append($"Enabled - Main: {mainCount}, Textures: {textureCount}");
 
@@ -2699,6 +2697,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
         private void RunLOOT(bool LOOTMode) // True for autosort
         {
+            string GameFolder= Tools.GameLibrary.GetById(Properties.Settings.Default.Game).AppData;
             bool profilesActive = Profiles;
             string lootPath = Properties.Settings.Default.LOOTPath;
 
@@ -2723,7 +2722,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             }
 
             lootPath = Properties.Settings.Default.LOOTPath;
-            string cmdLine = (GameVersion != MS) ? $"--game=\"{GameName}\"" : $"--game=\"{GameName} (MS Store)\"";
+            string cmdLine = (GameVersion != MS) ? $"--game=\"{GameFolder}\"" : $"--game=\"{GameFolder} (MS Store)\"";
             if (LOOTMode) cmdLine += " --auto-sort";
 
             // Temporarily disable profiles
@@ -3616,13 +3615,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 {
                     SaveSettings();
                     string stringValue = (string)Registry.GetValue(keyName, "SteamExe", ""); // Get Steam path from Registry
-                    /*SteamGameLocator steamGameLocator = new SteamGameLocator();
-                    var gameName = steamGameLocator.getGameInfoByFolder(GameName).steamGameName;
-                    MessageBox.Show(gameName.ToString());
-                    Environment.Exit(1);
-                    gameID = steamGameLocator.getGameInfoByFolder(GameName).steamGameID;*/
-                    var processInfo = new ProcessStartInfo(stringValue, $"-applaunch 2722710");
-                    /*var processInfo = new ProcessStartInfo(stringValue, $"-applaunch {gameID}");*/
+                    var processInfo = new ProcessStartInfo(stringValue, $"-applaunch {Tools.GameLibrary.GetById(Properties.Settings.Default.Game).CKId}");
                     var process = Process.Start(processInfo);
                     if (log)
                         activityLog.WriteLog("Starting Creation Kit");
@@ -4046,7 +4039,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
         private int CheckArchives()
         {
-            List<string> BGSArchives = Tools.BGSArchives();
+            
             List<string> archives = [];
             List<string> plugins = [];
             List<string> toDelete = [];
@@ -4064,7 +4057,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
             try
             {
-                List<string> modArchives = archives.Except(BGSArchives) // Exclude BGS Archives
+                List<string> modArchives = archives.Except(tools.BGSArchives()) // Exclude BGS Archives
                     .Select(s => s.ToLower().Replace(".ba2", string.Empty)) // Remove ".ba2" from archive names
                     .ToList();
 
@@ -5201,7 +5194,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             gameSelectForm.ShowDialog();
             if (returnStatus == 0)
             {
-                MessageBox.Show("App will exit. Profiles Disabled", "Restart Required", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("App will restart. Profiles Disabled", "Restart Required", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 if (GameVersion != MS)
                 {
                     if (GamePath == "")
@@ -5214,7 +5207,16 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     GamePath = Properties.Settings.Default.GamePathMS;
                 }
                 SaveSettings();
-                Application.Exit();
+
+                ProcessStartInfo psi = new ProcessStartInfo
+                {
+                    FileName = Application.ExecutablePath,
+                    Arguments = "",
+                    UseShellExecute = true
+                };
+
+                Process.Start(psi);
+                Environment.Exit(0); // Ensure graceful shutdown
             }
             else
             {
@@ -5679,6 +5681,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             List<string> bsaArchives = Directory.EnumerateFiles(Path.Combine(GamePath, "Data"), "*.bsa").Select(p => Path.GetFileNameWithoutExtension(p)).ToList();
             List<string> bgsArchives = new List<string>();
             List<string> allArchives = ba2Archives.Concat(bsaArchives).ToList();
+            string GameFolder=Tools.GameLibrary.GetById(Properties.Settings.Default.Game).AppData;
 
             foreach (string fileName in allArchives)
             {
@@ -5706,7 +5709,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 InitialDirectory = Tools.CommonFolder,
                 Filter = "Txt File|*.txt",
                 Title = "Create Game Archives.txt",
-                FileName = GameName + " Archives.txt"
+                FileName = GameFolder + " Archives.txt"
             };
 
             if (saveDialog.ShowDialog() != DialogResult.OK || string.IsNullOrEmpty(saveDialog.FileName))
@@ -6151,6 +6154,8 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
         private void frmLoadOrder_Shown(object sender, EventArgs e)
         {
             SetupJumpList();
+            if (Properties.Settings.Default.Resize)
+                ResizeFormToFitDataGridView(this);
         }
 
         private void generateExcludeFileToolStripMenuItem_Click(object sender, EventArgs e)

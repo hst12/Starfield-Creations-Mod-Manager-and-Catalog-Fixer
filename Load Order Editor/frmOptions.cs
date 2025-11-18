@@ -21,6 +21,7 @@ namespace hstCMM.Load_Order_Editor
             txtMO2.Text = settings.MO2Path;
             txtVortex.Text = settings.VortexPath;
             txtxEdit.Text = settings.xEditPath;
+            lblCK.Text = Tools.GameLibrary.GetById(Properties.Settings.Default.Game).CKId;
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -32,7 +33,7 @@ namespace hstCMM.Load_Order_Editor
         private void btnGame_Click(object sender, EventArgs e)
         {
             if (Properties.Settings.Default.GameVersion != frmLoadOrder.MS)
-                GamePath = tools.GetSteamGamePath(frmLoadOrder.GameName);
+                GamePath = tools.SetGamePath();
             else
                 GamePath = tools.SetGamePathMS();
         }
