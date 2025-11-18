@@ -2850,7 +2850,8 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
         {
             try
             {
-                Tools.OpenFolder(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), Path.Combine("My Games", GameName)));
+                Tools.OpenFolder(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), 
+                    Path.Combine("My Games", Tools.GameLibrary.GetById(Properties.Settings.Default.Game).DocFolder)));
             }
             catch (Exception ex)
             {
