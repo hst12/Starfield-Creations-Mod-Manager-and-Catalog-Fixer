@@ -5207,6 +5207,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                         tools.SetGamePathMS();
                     GamePath = Properties.Settings.Default.GamePathMS;
                 }
+                Properties.Settings.Default.AutoRestore= false;
                 SaveSettings();
 
                 ProcessStartInfo psi = new ProcessStartInfo
