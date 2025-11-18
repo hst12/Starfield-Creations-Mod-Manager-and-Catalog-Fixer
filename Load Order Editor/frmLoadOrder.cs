@@ -833,7 +833,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     modTimeStamp = Tools.ConvertTime(TimeStamp[idx]).ToString();
                     modID = CreationsID[idx];
                     modFileSize = FileSize[idx] / 1024;
-                    url = $"https://creations.bethesda.net/en/fallout4/details/{(modID.Length > 3 ? modID[webskipchars..] : modID)}/" +
+                    url = $"https://creations.bethesda.net/en/{Tools.GameLibrary.GetById(Properties.Settings.Default.Game).CreationsSite}/{(modID.Length > 3 ? modID[webskipchars..] : modID)}/" +
                         CreationsTitle[idx].Replace(" ", "_").Replace("[", "_").Replace("]", "_");
                 }
 

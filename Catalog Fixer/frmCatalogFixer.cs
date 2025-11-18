@@ -325,7 +325,7 @@ namespace hstCMM
                     Tools.Creation creation = kvp.Value;
 
                     // Check each file for an ".esp" entry
-                    if (creation.Files != null)
+                    /*if (creation.Files != null)
                     {
                         foreach (string file in creation.Files)
                         {
@@ -338,7 +338,7 @@ namespace hstCMM
                                 warningCount++;
                             }
                         }
-                    }
+                    }*/
 
                     string versionStr = creation.Version;
                     int dotIndex = versionStr.IndexOf('.');

@@ -648,9 +648,10 @@ namespace hstCMM.Shared // Various functions used by the app
             public string ArchiveFormat { get; }
             public string CKId { get; }
             public int WebSkipChars { get; }
+            public string CreationsSite { get; }
 
             public GameInfo(int id, string name, string appdata, string excludefile, string docfolder, string executable,
-                string[] modFormats, string archiveFormat, string ckid, int webskipchars)
+                string[] modFormats, string archiveFormat, string ckid, int webskipchars,string creationssite)
             {
                 Id = id;
                 GameName = name; // Display name
@@ -662,6 +663,7 @@ namespace hstCMM.Shared // Various functions used by the app
                 ArchiveFormat = archiveFormat;
                 CKId = ckid; // Creation Kit Steam ID
                 WebSkipChars = webskipchars;
+                CreationsSite = creationssite;
             }
         }
 
@@ -669,12 +671,12 @@ namespace hstCMM.Shared // Various functions used by the app
         {
             public static readonly List<GameInfo> Games = new List<GameInfo>
     {
-        new GameInfo(0, "Starfield", "Starfield","Starfield","Starfield","Starfield.exe", ModFiles.NewModFormat, ModArchives.NewArchiveFormat,"2722710",3),
+        new GameInfo(0, "Starfield", "Starfield","Starfield","Starfield","Starfield.exe", ModFiles.NewModFormat, ModArchives.NewArchiveFormat,"2722710",3,"Starfield"),
         new GameInfo(1, "The Elder Scrolls V: Skyrim Special Edition", "Skyrim Special Edition","Skyrim SE",
-            "Skyrim Special Edition","SkyrimSe.exe", ModFiles.OldModFormat, ModArchives.OldArchiveFormat,"1946180",5),
-        new GameInfo(2, "Fallout 4", "Fallout4","Fallout 4","Fallout 4","Fallout4.exe", ModFiles.OldModFormat, ModArchives.OldArchiveFormat,"1946160",5),
-        new GameInfo(3, "Elder Scrolls 6", "ES6","ES6","ES6","ES6.exe", ModFiles.NewModFormat, ModArchives.NewArchiveFormat,"Unknown",3),
-        new GameInfo(4, "Fallout 5", "Fallout5","Fallout 5","Fallout 5","Fallout5.exe", ModFiles.NewModFormat, ModArchives.NewArchiveFormat,"Unknown", 3)
+            "Skyrim Special Edition","SkyrimSe.exe", ModFiles.OldModFormat, ModArchives.OldArchiveFormat,"1946180",5,"Skyrim"),
+        new GameInfo(2, "Fallout 4", "Fallout4","Fallout 4","Fallout 4","Fallout4.exe", ModFiles.OldModFormat, ModArchives.OldArchiveFormat,"1946160",5,"Fallout4"),
+        new GameInfo(3, "Elder Scrolls 6", "ES6","ES6","ES6","ES6.exe", ModFiles.NewModFormat, ModArchives.NewArchiveFormat,"Unknown",3,"ES6"),
+        new GameInfo(4, "Fallout 5", "Fallout5","Fallout 5","Fallout 5","Fallout5.exe", ModFiles.NewModFormat, ModArchives.NewArchiveFormat,"Unknown", 3,"Fallout5")
     };
 
             // Lookup helpers
