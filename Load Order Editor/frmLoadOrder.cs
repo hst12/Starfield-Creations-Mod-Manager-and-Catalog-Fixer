@@ -22,6 +22,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Forms;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
@@ -83,8 +84,8 @@ namespace hstCMM
                 log = true;
                 btnLog.Font = new System.Drawing.Font(btnLog.Font, log ? FontStyle.Bold : FontStyle.Regular);
             }
-
             
+
             foreach (var arg in Environment.GetCommandLineArgs()) // Handle some command line arguments
             {
                 if (arg.Equals("-noauto", StringComparison.InvariantCultureIgnoreCase))
@@ -95,6 +96,12 @@ namespace hstCMM
 
                 if (arg.Equals("-reset", StringComparison.InvariantCultureIgnoreCase))
                     ResetPreferences();
+            }
+            frmLogWindow flw = new();
+            if (Properties.Settings.Default.LogWindow)  
+            {
+                flw.Show();
+                flw.AppendLog(activityLog.ReadLog());
             }
 
             SetupGame();
@@ -490,11 +497,16 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             {
                 try
                 {
+                    // Update log window if enabled
+                    if (Properties.Settings.Default.LogWindow && Application.OpenForms.OfType<frmLogWindow>().FirstOrDefault() is frmLogWindow logWindow)
+                    {
+                        logWindow.AppendLog($"{DateTime.Now}: {message}\n");
+
+                    }
                     // Insert message at the top of the file
                     string[] existingLines = File.Exists(logFilePath) ? File.ReadAllLines(logFilePath) : Array.Empty<string>();
 
-                    List<string> updatedLines = new List<string> { DateTime.Now.ToString() + ": " + message }; // Prepend the new entry
-                    updatedLines.AddRange(existingLines);
+                    List<string> updatedLines = [DateTime.Now.ToString() + ": " + message, .. existingLines]; // Prepend the new entry
                     File.WriteAllLines(logFilePath, updatedLines);
                 }
                 catch (Exception ex)
@@ -569,6 +581,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             runProgramToolStripMenuItem.Checked = settings.RunProgram;
             resizeToolStripMenuItem.Checked = settings.Resize;
             enableSplashScreenToolStripMenuItem.Checked = Properties.Settings.Default.LoadScreenEnabled;
+            logWindowToolStripMenuItem.Checked=Properties.Settings.Default.LogWindow;
         }
 
         private void SetupColumns()
@@ -673,7 +686,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             string loText = Path.Combine(Tools.GameAppData, "Plugins.txt"),
                    LOOTPath = Properties.Settings.Default.LOOTPath, pluginName, rawVersion;
 
-            List<string> CreationsPlugin = new(), CreationsTitle = new(), CreationsFiles = new(), CreationsVersion = new();
+            List<string> CreationsPlugin = [], CreationsTitle = [], CreationsFiles = [], CreationsVersion = new();
             List<bool> AchievementSafe = new();
             List<long> TimeStamp = new(), FileSize = new();
             List<string> CreationsID = new(), blockedMods = Tools.BlockedMods();
@@ -944,7 +957,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
         private void ShowModStats(List<string> CreationsPlugin, int enabledCount)
         {
             string loText = Path.Combine(Tools.GameAppData, "Plugins.txt"), StatText,
-                GameFolder= Tools.GameLibrary.GetById(Properties.Settings.Default.Game).AppData; ;
+                GameFolder = Tools.GameLibrary.GetById(Properties.Settings.Default.Game).AppData; ;
             int ba2Count, esmCount, espCount, mainCount;
             try
             {
@@ -2698,7 +2711,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
         private void RunLOOT(bool LOOTMode) // True for autosort
         {
-            string GameFolder= Tools.GameLibrary.GetById(Properties.Settings.Default.Game).AppData;
+            string GameFolder = Tools.GameLibrary.GetById(Properties.Settings.Default.Game).AppData;
             bool profilesActive = Profiles;
             string lootPath = Properties.Settings.Default.LOOTPath;
 
@@ -2850,7 +2863,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
         {
             try
             {
-                Tools.OpenFolder(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), 
+                Tools.OpenFolder(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                     Path.Combine("My Games", Tools.GameLibrary.GetById(Properties.Settings.Default.Game).DocFolder)));
             }
             catch (Exception ex)
@@ -4041,7 +4054,6 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
         private int CheckArchives()
         {
-            
             List<string> archives = [];
             List<string> plugins = [];
             List<string> toDelete = [];
@@ -4053,13 +4065,13 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             plugins = pluginList.Select(s => s[..^4].ToLower()).ToList();
 
             foreach (string file in Directory.EnumerateFiles(Path.Combine(GamePath, "Data"), "*.ba2", SearchOption.TopDirectoryOnly))
-                // Build a list of all .ba 2archives
+            // Build a list of all .ba 2archives
             {
                 archives.Add(Path.GetFileName(file).ToLower());
             }
 
             foreach (string file in Directory.EnumerateFiles(Path.Combine(GamePath, "Data"), "*.bsa", SearchOption.TopDirectoryOnly))
-                // Build a list of all .bsa archives
+            // Build a list of all .bsa archives
             {
                 archives.Add(Path.GetFileName(file).ToLower());
             }
@@ -4211,10 +4223,11 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             if (this.Width < minWidth || this.Height < minHeight)
             {
                 this.Size = new System.Drawing.Size(minWidth, minHeight);
-                this.Location = new Point(
-        (Screen.PrimaryScreen.WorkingArea.Width - this.Width) / 2,
-        (Screen.PrimaryScreen.WorkingArea.Height - this.Height) / 2
-    );
+                this.Location = new Point
+                (
+                    (Screen.PrimaryScreen.WorkingArea.Width - this.Width) / 2,
+                     (Screen.PrimaryScreen.WorkingArea.Height - this.Height) / 2
+                );
             }
 
             progressBar1.Width = 400; // Set the width of the progress bar
@@ -5007,17 +5020,17 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             if (log)
                 activityLog.WriteLog("Converting loose files to archive(s)");
             returnStatus = 0;
+            /*try
+            {*/
             frmConvertLooseFiles frmCLF = new frmConvertLooseFiles(esm);
             frmCLF.StartPosition = FormStartPosition.CenterScreen;
-            try
-            {
-                frmCLF.ShowDialog(this);
-            }
+            frmCLF.ShowDialog();
+            /*}
             catch (Exception ex)
             {
                 LogError(ex.Message);
-                MessageBox.Show($"Error converting loose files. {ex.Message}.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+                //MessageBox.Show($"Error converting loose files. {ex.Message}.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }*/
 
             if (returnStatus > 0)
             {
@@ -5058,10 +5071,6 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
         private void removeMissingModsFromBlockedModstxtToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var blockedMods = Tools.BlockedMods();
-            /*List<string> plugins = tools.GetPluginList(); // Add .esm files
-             */
-            /*List<string> plugins = pluginList; // Add .esm files
-            */
             var missingMods = pluginList.Intersect(blockedMods);
 
             try
@@ -5117,8 +5126,6 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             var yamlPlugins = lootConfig.plugins?.Select(p => p.name).ToHashSet(StringComparer.OrdinalIgnoreCase) ?? new HashSet<string>();
 
             // Get current plugins from game data
-            /*var gamePlugins = new HashSet<string>(tools.GetPluginList(), StringComparer.OrdinalIgnoreCase);
-             */
             var gamePlugins = new HashSet<string>(pluginList, StringComparer.OrdinalIgnoreCase);
 
             // Find unused plugins (in userlist.yaml but not in game data)
@@ -5218,7 +5225,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                         tools.SetGamePathMS();
                     GamePath = Properties.Settings.Default.GamePathMS;
                 }
-                Properties.Settings.Default.AutoRestore= false;
+                Properties.Settings.Default.AutoRestore = false;
                 SaveSettings();
 
                 ProcessStartInfo psi = new ProcessStartInfo
@@ -6268,6 +6275,17 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             {
                 SetUpMenus();
             }
+        }
+
+        private void logWindowToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            logWindowToolStripMenuItem.Checked = !logWindowToolStripMenuItem.Checked;
+            Properties.Settings.Default.LogWindow = logWindowToolStripMenuItem.Checked;
+            frmLogWindow frmLogWindow = new();
+ //           if (!Properties.Settings.Default.LogWindow && Application.OpenForms.OfType<frmLogWindow>().FirstOrDefault()
+   //             is frmLogWindow logWindow && logWindowToolStripMenuItem.Checked)
+ 
+
         }
     }
 }

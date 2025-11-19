@@ -12,6 +12,7 @@ namespace hstCMM.Load_Order_Editor
         private frmLoadOrder.ActivityLog activityLog = frmLoadOrder.activityLog;
 
         private bool log = Properties.Settings.Default.Log;
+
         public frmConvertLooseFiles(string esmFile = "")
         {
             InitializeComponent();
@@ -29,7 +30,7 @@ namespace hstCMM.Load_Order_Editor
             if (!string.IsNullOrEmpty(esm))
             {
                 ProcessArchives();
-                this.Close();
+                //this.Close();
             }
         }
 
@@ -71,7 +72,6 @@ namespace hstCMM.Load_Order_Editor
             {
                 MessageBox.Show("Skipping texture archive creation.", "Textures archive already exists.", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
-
 
             // Create main archive
             cmdLine = @"interface,geometries,materials,meshes,scripts -create="""

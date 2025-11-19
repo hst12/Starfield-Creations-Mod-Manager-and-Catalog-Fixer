@@ -765,5 +765,17 @@ namespace hstCMM.Properties {
                 this["Game"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool LogWindow {
+            get {
+                return ((bool)(this["LogWindow"]));
+            }
+            set {
+                this["LogWindow"] = value;
+            }
+        }
     }
 }
