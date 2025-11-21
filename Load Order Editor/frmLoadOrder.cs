@@ -232,7 +232,7 @@ namespace hstCMM
             bool BackupStatus = false;
             if (Properties.Settings.Default.CreationsUpdate)
             {
-                prepareForCreationsUpdateToolStripMenuItem.Checked = false;
+                cretionsUpdateToolStripMenuItem.Checked = false;
                 Properties.Settings.Default.CreationsUpdate = false;
                 SaveSettings();
                 BackupStatus = catalogFixer.BackupCatalog();
@@ -701,7 +701,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             activateNewModsToolStripMenuItem.Checked = settings.ActivateNew;
             disableAllWarningToolStripMenuItem.Checked = NoWarn = settings.NoWarn;
             toolStripMenuLOOTToggle.Checked = settings.LOOTEnabled;
-            prepareForCreationsUpdateToolStripMenuItem.Checked = settings.CreationsUpdate;
+            cretionsUpdateToolStripMenuItem.Checked = settings.CreationsUpdate;
             modStatsToolStripMenuItem.Checked = settings.ModStats;
             blockedToolStripMenuItem.Checked = settings.Blocked;
             blockedModsToolStripMenuItem.Checked = settings.BlockedView;
@@ -4587,7 +4587,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
         {
             if (!Properties.Settings.Default.CreationsUpdate) // Catalog Auto Restore off etc.
             {
-                prepareForCreationsUpdateToolStripMenuItem.Checked = true;
+                cretionsUpdateToolStripMenuItem.Checked = true;
                 Properties.Settings.Default.CreationsUpdate = true;
                 Properties.Settings.Default.AutoRestore = false;
                 Properties.Settings.Default.AutoCheck = true;
@@ -4604,7 +4604,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             }
             else
             {
-                prepareForCreationsUpdateToolStripMenuItem.Checked = false; // Cancel Creations update
+                cretionsUpdateToolStripMenuItem.Checked = false; // Cancel Creations update
                 Properties.Settings.Default.CreationsUpdate = false;
                 Properties.Settings.Default.AutoRestore = true;
                 MessageBox.Show("Catalog Auto Restore set to on", "Creations Update Cancelled");
