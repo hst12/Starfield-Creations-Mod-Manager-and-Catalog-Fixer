@@ -36,7 +36,7 @@
             txtLog.Dock = System.Windows.Forms.DockStyle.Fill;
             txtLog.Location = new System.Drawing.Point(0, 0);
             txtLog.Name = "txtLog";
-            txtLog.Size = new System.Drawing.Size(800, 450);
+            txtLog.Size = new System.Drawing.Size(1187, 450);
             txtLog.TabIndex = 0;
             txtLog.Text = "";
             // 
@@ -44,7 +44,7 @@
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(13F, 32F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(800, 450);
+            ClientSize = new System.Drawing.Size(1187, 450);
             Controls.Add(txtLog);
             Name = "frmLogWindow";
             Text = "Log Window";

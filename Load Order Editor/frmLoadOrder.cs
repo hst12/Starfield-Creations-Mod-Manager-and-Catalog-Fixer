@@ -22,7 +22,6 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Controls;
 using System.Windows.Forms;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
@@ -81,8 +80,10 @@ namespace hstCMM
                 tempstr = Properties.Settings.Default.LogFileDirectory;
                 if (tempstr == "")
                     tempstr = Tools.LocalAppDataPath;
-                activityLog = new ActivityLog(Path.Combine(tempstr, "Activity Log.txt")); // Create activity log if enabled
+                //activityLog = new ActivityLog(Path.Combine(tempstr, "Activity Log.txt")); // Create activity log if enabled
+                activityLog = new ActivityLog();
                 log = true;
+                activityLog.LoadLog(Path.Combine(tempstr, "Activity Log.txt"));
                 btnLog.Font = new System.Drawing.Font(btnLog.Font, log ? FontStyle.Bold : FontStyle.Regular);
             }
 
@@ -480,7 +481,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             }
         }
 
-        public class ActivityLog
+        /*public class ActivityLog
         {
             private readonly string logFilePath;
 
@@ -544,6 +545,138 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
             public void Dispose()
             {
+            }
+        }*/
+
+        public class ActivityLog : IDisposable
+        {
+            private readonly MemoryStream memoryStream;
+            private readonly StreamWriter writer;
+
+            public ActivityLog()
+            {
+                memoryStream = new MemoryStream();
+                writer = new StreamWriter(memoryStream, Encoding.UTF8, 1024, true);
+                WriteLog("Starting log in memory");
+            }
+
+            public void WriteLog(string message)
+            {
+                try
+                {
+                    // Update log window if enabled
+                    if (Properties.Settings.Default.LogWindow &&
+                        Application.OpenForms.OfType<frmLogWindow>().FirstOrDefault() is frmLogWindow logWindow)
+                    {
+                        logWindow.AppendLog($"{DateTime.Now}: {message}\n");
+                    }
+
+                    // Prepend new entry at the top (requires reordering)
+                    string existing = ReadLog();
+                    string newEntry = $"{DateTime.Now}: {message}\n{existing}";
+
+                    // Reset memory stream and rewrite
+                    memoryStream.SetLength(0);
+                    writer.BaseStream.Position = 0;
+                    writer.Write(newEntry);
+                    writer.Flush();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error writing to log: {ex.Message}");
+                }
+            }
+
+            public string ReadLog()
+            {
+                try
+                {
+                    writer.Flush();
+                    memoryStream.Position = 0;
+                    using (var reader = new StreamReader(memoryStream, Encoding.UTF8, true, 1024, true))
+                    {
+                        return reader.ReadToEnd();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error reading log: {ex.Message}");
+                    return string.Empty;
+                }
+            }
+
+            public void DeleteLog()
+            {
+                try
+                {
+                    memoryStream.SetLength(0);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error deleting log: {ex.Message}");
+                }
+                try
+                {
+                    string logFilePath = Path.Combine(string.IsNullOrEmpty(Properties.Settings.Default.LogFileDirectory)
+                        ? Tools.LocalAppDataPath : Properties.Settings.Default.LogFileDirectory, "Activity Log.txt");
+                    if (File.Exists(logFilePath))
+                    {
+                        File.Delete(logFilePath);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error deleting log file: {ex.Message}");
+                }
+            }
+
+            public void PersistLog(string filePath)
+            {
+                try
+                {
+                    writer.Flush();
+                    memoryStream.Position = 0;
+
+                    using (var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write))
+                    {
+                        memoryStream.CopyTo(fileStream);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error persisting log: {ex.Message}");
+                }
+            }
+
+            public void LoadLog(string filePath)
+            {
+                try
+                {
+                    if (File.Exists(filePath))
+                    {
+                        // Clear current memory stream
+                        memoryStream.SetLength(0);
+
+                        // Copy file contents into memory
+                        using (var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+                        {
+                            fileStream.CopyTo(memoryStream);
+                        }
+
+                        // Reset position for future reads/writes
+                        memoryStream.Position = memoryStream.Length;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error loading log file: {ex.Message}");
+                }
+            }
+
+            public void Dispose()
+            {
+                writer?.Dispose();
+                memoryStream?.Dispose();
             }
         }
 
@@ -1945,7 +2078,13 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 SavePlugins();
             SaveSettings();
             if (log)
+            {
                 activityLog.WriteLog("Shutting down");
+
+                string pathToFile = Path.Combine(string.IsNullOrEmpty(Properties.Settings.Default.LogFileDirectory)
+                ? Tools.LocalAppDataPath : Properties.Settings.Default.LogFileDirectory, "Activity Log.txt");
+                activityLog.PersistLog(pathToFile);
+            }
         }
 
         private static void SaveSettings()
@@ -1968,7 +2107,8 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
         private void InstallMod(string InstallMod = "")
         {
-            string extractPath = Path.Combine(Path.GetTempPath(), "hstTools"), esmFile = "";
+            string esmFile = "";
+            string extractPath = Path.Combine(Path.GetTempPath(), "hstCMM");
             bool SFSEMod = false, looseFileMod = false;
             int filesInstalled = 0;
 
@@ -2023,6 +2163,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     if (log)
                         activityLog.WriteLog($"Extracting: {modFilePath}");
                     archiveFile.Extract(extractPath);
+
                     if (Directory.Exists(Path.Combine(extractPath, "fomod")))
                     {
                         if (Tools.ConfirmAction("Attempt installation anyway?", "Fomod detected - mod will probably not install correctly", MessageBoxButtons.YesNo,
@@ -2995,6 +3136,8 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 dataGridView1.Rows.RemoveAt(rowIndexFromMouseDown);
                 dataGridView1.Rows.Insert(rowIndexOfItemUnderMouseToDrop, rowToMove);
                 isModified = true;
+                if (log)
+                    activityLog.WriteLog($"Row moved: {rowToMove.Cells["PluginName"].Value}");
                 SavePlugins();
             }
         }
@@ -4964,6 +5107,32 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 sbar3("Activity Log not found.");
         }
 
+        /*private void ShowLog() // Show Activity Log
+        {
+            ActivityLog log = activityLog;
+            try
+            {
+                string logContents = log.ReadLog();
+
+                if (!string.IsNullOrEmpty(logContents))
+                {
+                    // Open in your existing log window form
+                    if (Application.OpenForms.OfType<frmLogWindow>().FirstOrDefault() is frmLogWindow logWindow)
+                    {
+                        logWindow.AppendLog("\n=== Current Memory Log ===\n" + logContents);
+                    }
+                }
+                else
+                {
+                    sbar3("Activity Log is empty.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error showing log: {ex.Message}");
+            }
+        }*/
+
         private void viewLogToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ShowLog();
@@ -4997,7 +5166,8 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             tempstr = Properties.Settings.Default.LogFileDirectory;
             if (tempstr == "")
                 tempstr = Tools.LocalAppDataPath;
-            activityLog = new ActivityLog(Path.Combine(tempstr, "Activity Log.txt"));
+            //activityLog = new ActivityLog(Path.Combine(tempstr, "Activity Log.txt"));
+            activityLog = new();
             log = true;
         }
 
@@ -6291,8 +6461,6 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             {
                 logWindow?.Hide();
             }
-
-
-            }
+        }
     }
 }
