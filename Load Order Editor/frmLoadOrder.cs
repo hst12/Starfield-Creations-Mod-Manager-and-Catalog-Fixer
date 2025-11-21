@@ -54,6 +54,7 @@ namespace hstCMM
             LooseFiles, GameExists, devMode = false;
 
         private Tools.Configuration Groups = new();
+        private frmLogWindow logWindow;
 
         public class AppSettings
         {
@@ -84,7 +85,6 @@ namespace hstCMM
                 log = true;
                 btnLog.Font = new System.Drawing.Font(btnLog.Font, log ? FontStyle.Bold : FontStyle.Regular);
             }
-            
 
             foreach (var arg in Environment.GetCommandLineArgs()) // Handle some command line arguments
             {
@@ -98,11 +98,8 @@ namespace hstCMM
                     ResetPreferences();
             }
             frmLogWindow flw = new();
-            if (Properties.Settings.Default.LogWindow)  
-            {
+            if (Properties.Settings.Default.LogWindow)
                 flw.Show();
-                flw.AppendLog(activityLog.ReadLog());
-            }
 
             SetupGame();
 
@@ -501,7 +498,6 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     if (Properties.Settings.Default.LogWindow && Application.OpenForms.OfType<frmLogWindow>().FirstOrDefault() is frmLogWindow logWindow)
                     {
                         logWindow.AppendLog($"{DateTime.Now}: {message}\n");
-
                     }
                     // Insert message at the top of the file
                     string[] existingLines = File.Exists(logFilePath) ? File.ReadAllLines(logFilePath) : Array.Empty<string>();
@@ -581,7 +577,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             runProgramToolStripMenuItem.Checked = settings.RunProgram;
             resizeToolStripMenuItem.Checked = settings.Resize;
             enableSplashScreenToolStripMenuItem.Checked = Properties.Settings.Default.LoadScreenEnabled;
-            logWindowToolStripMenuItem.Checked=Properties.Settings.Default.LogWindow;
+            logWindowToolStripMenuItem.Checked = Properties.Settings.Default.LogWindow;
         }
 
         private void SetupColumns()
@@ -6281,11 +6277,22 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
         {
             logWindowToolStripMenuItem.Checked = !logWindowToolStripMenuItem.Checked;
             Properties.Settings.Default.LogWindow = logWindowToolStripMenuItem.Checked;
-            frmLogWindow frmLogWindow = new();
- //           if (!Properties.Settings.Default.LogWindow && Application.OpenForms.OfType<frmLogWindow>().FirstOrDefault()
-   //             is frmLogWindow logWindow && logWindowToolStripMenuItem.Checked)
- 
 
-        }
+            if (logWindowToolStripMenuItem.Checked)
+            {
+                // If the window was closed/disposed, recreate it
+                if (logWindow == null || logWindow.IsDisposed)
+                {
+                    logWindow = new frmLogWindow();
+                }
+                logWindow.Show();
+            }
+            else
+            {
+                logWindow?.Hide();
+            }
+
+
+            }
     }
 }
