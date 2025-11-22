@@ -28,5 +28,10 @@ namespace hstCMM.Load_Order_Editor
                 txtLog.ScrollToCaret();
             }
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            txtLog.Clear();
+        }
     }
 }
