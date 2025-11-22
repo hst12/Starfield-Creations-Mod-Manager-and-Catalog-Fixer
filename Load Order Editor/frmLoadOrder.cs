@@ -711,6 +711,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             resizeToolStripMenuItem.Checked = settings.Resize;
             enableSplashScreenToolStripMenuItem.Checked = Properties.Settings.Default.LoadScreenEnabled;
             logWindowToolStripMenuItem.Checked = Properties.Settings.Default.LogWindow;
+            saveOnExitToolStripMenuItem.Checked = Properties.Settings.Default.SaveLog;
         }
 
         private void SetupColumns()
@@ -2077,13 +2078,15 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             if (isModified)
                 SavePlugins();
             SaveSettings();
+            string pathToFile = string.Empty;
             if (log)
             {
                 activityLog.WriteLog("Shutting down");
-
-                string pathToFile = Path.Combine(string.IsNullOrEmpty(Properties.Settings.Default.LogFileDirectory)
-                ? Tools.LocalAppDataPath : Properties.Settings.Default.LogFileDirectory, "Activity Log.txt");
-                activityLog.PersistLog(pathToFile);
+                if (Properties.Settings.Default.SaveLog)
+                    pathToFile = Path.Combine(string.IsNullOrEmpty(Properties.Settings.Default.LogFileDirectory)
+                   ? Tools.LocalAppDataPath : Properties.Settings.Default.LogFileDirectory, "Activity Log.txt");
+                if (!String.IsNullOrEmpty(pathToFile))
+                    activityLog.PersistLog(pathToFile);
             }
         }
 
@@ -6461,6 +6464,11 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             {
                 logWindow?.Hide();
             }
+        }
+
+        private void saveOnExitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            saveOnExitToolStripMenuItem.Checked = Properties.Settings.Default.SaveLog = !saveOnExitToolStripMenuItem.Checked;
         }
     }
 }
