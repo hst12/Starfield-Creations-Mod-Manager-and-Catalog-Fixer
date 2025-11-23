@@ -1977,7 +1977,15 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             // Removal using batch operations
             if (rowsToRemove.Count > 0)
             {
-                if (Tools.ConfirmAction("Choose Yes to proceed and remove the missing mods from Plugins.txt or No cancel",
+                if (log)
+                {
+                    foreach (var row in rowsToRemove)
+                    {
+                        activityLog.WriteLog($"Found missing mods {row.Cells[pluginNameIndex].Value} from Plugins.txt");
+
+                    }
+                }
+                    if (Tools.ConfirmAction("Choose Yes to proceed and remove the missing mods from Plugins.txt or No cancel",
                     "Missing mods found", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No)
                 {
                     if (Tools.ConfirmAction("Copy mods from backup folder?", "Attempt to Restore Missing Mods",
@@ -2151,7 +2159,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             SwitchProfile(Path.Combine(Properties.Settings.Default.ProfileFolder, (string)cmbProfile.SelectedItem));
         }
 
-        private void InstallMod(string InstallMod = "")
+        private bool InstallMod(string InstallMod = "") // false for cancel
         {
             string esmFile = "";
             string extractPath = Path.Combine(Path.GetTempPath(), "hstCMM");
@@ -2159,7 +2167,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             int filesInstalled = 0;
 
             if (!CheckGamePath()) // Bail out if game path not set
-                return;
+                return false;
 
             // Clean the extract directory if it exists.
             if (Directory.Exists(extractPath))
@@ -2188,7 +2196,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             }
 
             if (string.IsNullOrEmpty(modFilePath))
-                return;
+                return false;
 
             string[] modFileTypes = { ".esp", ".esm", ".esl", ".ba2", ".bsa" }; // Install unzipped files directly
 
@@ -2201,7 +2209,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                         if (!NoWarn)
                             if (Tools.ConfirmAction($"Overwrite existing file {Path.GetFileName(modFilePath)} in Data folder?",
                                 "File exists", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
-                                return;
+                                return false;
                     }
                     File.Copy(modFilePath, Path.Combine(GamePath, "Data", Path.GetFileName(modFilePath)), true);
                     sbar2($"Copied {Path.GetFileName(modFilePath)} to Data folder");
@@ -2214,7 +2222,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     LogError(ex.Message);
                     MessageBox.Show($"An error occurred: {ex.Message}");
                 }
-                return;
+                return false;
             }
 
             if (log)
@@ -2245,7 +2253,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                             if (Directory.Exists(extractPath))
                                 Directory.Delete(extractPath, true);
                             loadScreen.Close();
-                            return;
+                            return false;
                         }
                     }
 
@@ -2281,7 +2289,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 LogError(ex.Message);
                 MessageBox.Show(ex.Message);
                 loadScreen.Close();
-                return;
+                return false;
             }
 
             if (Directory.EnumerateFiles(extractPath, "*.esm", SearchOption.AllDirectories).Any())
@@ -2292,11 +2300,21 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 esmFile = Directory.GetFiles(extractPath, "*.esl", SearchOption.AllDirectories).FirstOrDefault();
 
             // Move .esm and .ba2 files to the game's Data folder.
-            filesInstalled += MoveExtractedFiles("*.esm", "esm");
-            filesInstalled += MoveExtractedFiles("*.esp", "esp");
-            filesInstalled += MoveExtractedFiles("*.ba2", "archive");
-            filesInstalled += MoveExtractedFiles("*.bsa", "archive");
-            filesInstalled += MoveExtractedFiles("*.esl", "esl");
+            try
+            {
+                filesInstalled += MoveExtractedFiles("*.esm", "esm");
+                filesInstalled += MoveExtractedFiles("*.esp", "esp");
+                filesInstalled += MoveExtractedFiles("*.ba2", "archive");
+                filesInstalled += MoveExtractedFiles("*.bsa", "archive");
+                filesInstalled += MoveExtractedFiles("*.esl", "esl");
+            }
+            catch (OperationCanceledException)
+            {
+                sbar3("Mod installation cancelled by user");
+                if (log)
+                    activityLog.WriteLog("Mod installation cancelled by user");
+                return false;
+            }
 
             // Install SFSE plugin if found.
             try
@@ -2387,7 +2405,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             if (log)
                 activityLog.WriteLog($"Mod files installed: {filesInstalled}");
 
-            return;
+            return true;
 
             // Helper local function that moves extracted files with confirmation if a destination file exists.
             int MoveExtractedFiles(string searchPattern, string fileTypeLabel)
@@ -2400,14 +2418,21 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
                     if (File.Exists(destinationPath))
                     {
-                        if (Tools.ConfirmAction($"Overwrite {fileTypeLabel} {destinationPath}", "Replace mod?", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                        var dlg = Tools.ConfirmAction($"Overwrite {fileTypeLabel} {destinationPath}", "Replace mod?", MessageBoxButtons.YesNoCancel);
+                        if (dlg == DialogResult.Yes)
                         {
                             File.Move(modFile, destinationPath, true);
                             if (log)
                                 activityLog.WriteLog($"Moving {modFile} to {destinationPath}");
                             count++;
                         }
-                        else
+                        if (dlg == DialogResult.Cancel)
+                        {
+                            loadScreen.Close();
+                            throw new OperationCanceledException();
+                        }
+                        if (DialogResult == DialogResult.No)
+                            break;
                         {
                             // If the user declines to overwrite, break out of this file loop
                             break;
@@ -3187,7 +3212,8 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 foreach (var item in files)
                 {
                     ModCounter++;
-                    InstallMod(item);
+                    if (!InstallMod(item))
+                        break;
                     isModified = true;
                     SavePlugins();
                 }
