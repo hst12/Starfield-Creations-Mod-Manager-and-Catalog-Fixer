@@ -1079,7 +1079,8 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
             // -- Process mod stats if the game path is set --
             if (!string.IsNullOrEmpty(GamePath) && Properties.Settings.Default.ModStats)
-                Task.Run(() => ShowModStats(CreationsPlugin, enabledCount));
+                //Task.Run(() => ShowModStats(CreationsPlugin, enabledCount));
+                ShowModStats(CreationsPlugin, enabledCount);
             else
                 sbar("");
         }
@@ -1938,6 +1939,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
             // Cache frequently used values
             var pluginNameIndex = dataGridView1.Columns["PluginName"].Index;
+            var pluginNameEnabled = dataGridView1.Columns["ModEnabled"].Index;
 
             // Process all rows
             for (int i = 0; i < rowCount; i++)
@@ -1972,15 +1974,50 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 }
             }
 
-            // Batch write logs to avoid I/O overhead
-            if (log && logEntries?.Count > 0)
-            {
-                activityLog.WriteLog(string.Join(Environment.NewLine, logEntries));
-            }
-
             // Removal using batch operations
             if (rowsToRemove.Count > 0)
             {
+                if (Tools.ConfirmAction("Choose Yes to proceed and remove the missing mods from Plugins.txt or No cancel",
+                    "Missing mods found", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No)
+                {
+                    if (Tools.ConfirmAction("Copy mods from backup folder?", "Attempt to Restore Missing Mods",
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    {
+                        string modName;
+                        using FolderBrowserDialog folderBrowserDialog = new();
+                        folderBrowserDialog.Description = "Choose Backup Folder";
+                        folderBrowserDialog.InitialDirectory = Properties.Settings.Default.BackupDirectory;
+                        if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+                        {
+                            string selectedFolderPath = folderBrowserDialog.SelectedPath;
+
+                            foreach (var mod in rowsToRemove)
+                            {
+                                if (bool.TryParse(mod.Cells["ModEnabled"].Value?.ToString(), out bool enabled) && enabled) // Enabled mods only
+                                {
+                                    modName = Path.GetFileNameWithoutExtension(mod.Cells[pluginNameIndex].Value.ToString());
+                                    var modFiles = Directory.EnumerateFiles(selectedFolderPath, modName + "*", SearchOption.TopDirectoryOnly);
+
+                                    foreach (var file in modFiles)
+                                    {
+                                        try
+                                        {
+                                            File.Copy(file, Path.Combine(dataDir, Path.GetFileName(file)), true);
+                                            activityLog.WriteLog("Copying " + file + "to " + Path.Combine(dataDir, Path.GetFileName(file)));
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            activityLog.WriteLog($"Error restoring {Path.GetFileName(file)}: {ex.Message}");
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    sbar3("Update cancelled");
+                    dataGridView1.ResumeLayout();
+                    return (0);
+                }
                 // Sort indices descending for safe removal
                 rowsToRemove.Sort((r1, r2) => r2.Index.CompareTo(r1.Index));
 
@@ -1997,6 +2034,12 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     rows.Remove(rowsToRemove[i]);
                     removalCounter--;
                 }
+            }
+
+            // Batch write logs to avoid I/O overhead
+            if (log && logEntries?.Count > 0)
+            {
+                activityLog.WriteLog(string.Join(Environment.NewLine, logEntries));
             }
 
             // 8) Addition with pre-computed values
@@ -2146,6 +2189,33 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
             if (string.IsNullOrEmpty(modFilePath))
                 return;
+
+            string[] modFileTypes = { ".esp", ".esm", ".esl", ".ba2", ".bsa" }; // Install unzipped files directly
+
+            if (modFileTypes.Contains(Path.GetExtension(modFilePath), StringComparer.OrdinalIgnoreCase))
+            {
+                try
+                {
+                    if (File.Exists(Path.Combine(GamePath, "Data", Path.GetFileName(modFilePath))))
+                    {
+                        if (!NoWarn)
+                            if (Tools.ConfirmAction($"Overwrite existing file {Path.GetFileName(modFilePath)} in Data folder?",
+                                "File exists", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                                return;
+                    }
+                    File.Copy(modFilePath, Path.Combine(GamePath, "Data", Path.GetFileName(modFilePath)), true);
+                    sbar2($"Copied {Path.GetFileName(modFilePath)} to Data folder");
+                    if (log)
+                        activityLog.WriteLog($"Copied {modFilePath} to {Path.Combine(GamePath, "Data", Path.GetFileName(modFilePath))}");
+                    //UpdatePlugins();
+                }
+                catch (Exception ex)
+                {
+                    LogError(ex.Message);
+                    MessageBox.Show($"An error occurred: {ex.Message}");
+                }
+                return;
+            }
 
             if (log)
                 activityLog.WriteLog($"Starting mod install: {modFilePath}");
@@ -2899,7 +2969,6 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             }
 
             if (Properties.Settings.Default.AutoDelccc) Delccc();
-            //RefreshDataGrid();
             InitDataGrid();
 
             // Remove base game files if LOOT added them
@@ -4853,7 +4922,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 return;
             }
 
-            if (Tools.ConfirmAction("Restore Backup", "Restore Backup", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.Cancel)
+            if (Tools.ConfirmAction("Restore Profile Backup", "Restore Backup", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.Cancel)
             {
                 sbar("Restore cancelled");
                 return;
@@ -6469,6 +6538,29 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
         private void saveOnExitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             saveOnExitToolStripMenuItem.Checked = Properties.Settings.Default.SaveLog = !saveOnExitToolStripMenuItem.Checked;
+        }
+
+        private void removeSFSEToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string[] files = Directory.GetFiles(GamePath, "sfse_*.dll", SearchOption.TopDirectoryOnly); // Delete the dll files as well
+            foreach (var file in files)
+            {
+                if (File.Exists(file))
+                    if (log)
+                        activityLog.WriteLog("Deleting " + tempstr);
+                File.Delete(file);
+            }
+
+            tempstr = Path.Combine(GamePath, "sfse_loader.exe");
+            if (File.Exists(tempstr))
+            {
+                if (log)
+                    activityLog.WriteLog("Deleting " + tempstr);
+                File.Delete(tempstr);
+            }
+            else
+                if (log)
+                activityLog.WriteLog($"{tempstr} not found");
         }
     }
 }
