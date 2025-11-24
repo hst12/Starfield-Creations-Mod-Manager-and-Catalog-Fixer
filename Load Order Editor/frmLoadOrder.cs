@@ -1620,7 +1620,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 StackFrame frame = stackTrace.GetFrame(1); // Get the caller
                 activityLog.WriteLog($"SwitchProfile called from {frame.GetMethod().Name} switching to {ProfileName}");
 #else
-                activityLog.WriteLog($"Switching profile to {ProfileName}");
+                activityLog.WriteLog($"Profile selected {ProfileName}");
 #endif
             }
             if (!File.Exists(ProfileName))
@@ -1982,11 +1982,10 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     foreach (var row in rowsToRemove)
                     {
                         activityLog.WriteLog($"Found missing mods {row.Cells[pluginNameIndex].Value} from Plugins.txt");
-
                     }
                 }
-                    if (Tools.ConfirmAction("Choose Yes to proceed and remove the missing mods from Plugins.txt or No cancel",
-                    "Missing mods found", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No)
+                if (Tools.ConfirmAction("Choose Yes to proceed and remove the missing mods from Plugins.txt or No cancel",
+                "Missing mods found", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No)
                 {
                     if (Tools.ConfirmAction("Copy mods from backup folder?", "Attempt to Restore Missing Mods",
                         MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
@@ -6587,6 +6586,48 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             else
                 if (log)
                 activityLog.WriteLog($"{tempstr} not found");
+        }
+
+        private void dockLogWindowToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int insertIndex = 2; // Insert at row 2 (0-based)
+            tableLayoutPanel1.RowCount++;
+
+            // Shift controls down
+            foreach (Control ctrl in tableLayoutPanel1.Controls)
+            {
+                int row = tableLayoutPanel1.GetRow(ctrl);
+                if (row >= insertIndex)
+                {
+                    tableLayoutPanel1.SetRow(ctrl, row + 1);
+                }
+            }
+
+            // Insert row style
+            tableLayoutPanel1.RowStyles.Insert(insertIndex, new RowStyle(SizeType.AutoSize));
+
+            // Add new control
+            var logRow = new RichTextBox { Text = activityLog.ReadLog() };
+            tableLayoutPanel1.Controls.Add(logRow, 0, insertIndex);
+            logRow.Dock = DockStyle.Fill;
+            // Assume you want row index 2 (third row) to be 100%
+            int fullRowIndex = 1;
+
+            for (int i = 0; i < tableLayoutPanel1.RowCount; i++)
+            {
+                if (i == fullRowIndex)
+                {
+                    // Set row  to fill 100% of available space
+                    tableLayoutPanel1.RowStyles[i].SizeType = SizeType.Percent;
+                    tableLayoutPanel1.RowStyles[i].Height = 100F;
+                }
+                else
+                {
+                    // All other rows auto-size to their content
+                    tableLayoutPanel1.RowStyles[i].SizeType = SizeType.AutoSize;
+                }
+            }
+            logRow.ScrollToCaret();
         }
     }
 }

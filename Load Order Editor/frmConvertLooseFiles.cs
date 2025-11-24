@@ -57,9 +57,12 @@ namespace hstCMM.Load_Order_Editor
             string workingDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"My Games\Starfield\Data");
 
             // Create texture archive
-            cmdLine = @"textures -create=""" + Path.Combine(frmLoadOrder.GamePath, "Data", Path.GetFileNameWithoutExtension(esm)) + " - textures.ba2" + @""""
+            /*cmdLine = @"textures -create=""" + Path.Combine(frmLoadOrder.GamePath, "Data", Path.GetFileNameWithoutExtension(esm)) + " - textures.ba2" + @""""
            + " -format=DDS -maxSizeMB=1024 -excludefile=" + "\""
-           + Path.Combine(Tools.CommonFolder, "exclude.txt" + "\"");
+           + Path.Combine(Tools.CommonFolder, "exclude.txt" + "\"");*/
+            cmdLine = @"textures -create=""" + Path.Combine(frmLoadOrder.GamePath, "Data",
+                Path.GetFileNameWithoutExtension(esm)) + " - textures.ba2" + @""""
+                + " -format=DDS -excludefile=" + "\"" + Path.Combine(Tools.CommonFolder, "exclude.txt" + "\"");
 
             if (!File.Exists(Path.Combine(frmLoadOrder.GamePath, "Data", Path.GetFileNameWithoutExtension(esm) + " - textures.ba2")))
             {
