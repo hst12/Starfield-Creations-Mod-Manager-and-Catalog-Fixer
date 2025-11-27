@@ -260,15 +260,13 @@ namespace hstCMM
                 }
             }
 
-
-            this.Text = Application.ProductName + " - "+GameName+ " ";
+            this.Text += " - " + GameName + " "; // Show selected game in title bar
 
 #if DEBUG
             this.Text = Application.ProductName + " " + File.ReadAllText(Path.Combine(Tools.CommonFolder, "App Version.txt")) + " Debug";
             testToolStripMenuItem.Visible = true; // Show test menu in debug mode
             gameSelectToolStripMenuItem.Visible = true;
 #endif
-
 
             //SetupDB();
         }
@@ -4980,44 +4978,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
         private void BackupBlockedMods(bool UseDocuments = false)
         {
             string blockedModsFilePath = Path.Combine(Tools.LocalAppDataPath, "BlockedMods.txt");
-            string destinationPath = string.Empty, selectedFolderPath = string.Empty;
-            using FolderBrowserDialog folderBrowserDialog = new();
-            folderBrowserDialog.Description = "Choose folder to use to backup BlockedMods.txt";
-            folderBrowserDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments); // Set initial directory to Documents Directory
-            if (!UseDocuments)
-            {
-                if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
-                {
-                    selectedFolderPath = folderBrowserDialog.SelectedPath;
-
-                    destinationPath = Path.Combine(selectedFolderPath, "BlockedMods.txt");
-                    if (!File.Exists(blockedModsFilePath))
-                    {
-                        MessageBox.Show("BlockedMods.txt not found");
-                        return;
-                    }
-                }
-            }
-            else
-            {
-                destinationPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "BlockedMods.txt");
-            }
-            try
-            {
-                if (destinationPath != string.Empty)
-                {
-                    File.Copy(blockedModsFilePath, destinationPath, true);
-                    sbar("BlockedMods.txt backed up successfully.");
-                    if (log)
-                        activityLog.WriteLog($"BlockedMods.txt backed up to {selectedFolderPath}");
-                }
-            }
-            catch (Exception ex)
-            {
-                LogError(ex.Message);
-                MessageBox.Show($"An error occurred while backing up BlockedMods.txt: {ex.Message}", "Backup Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
+            BackupFile(blockedModsFilePath,UseDocuments);
         }
 
         private void mnuBackupBlockedMods_Click(object sender, EventArgs e) // Backup BlockedMods.txt to a user selected folder
@@ -5514,32 +5475,8 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
         private void BackupContentCatalog(bool useDocuments = false)
         {
-            string selectedFolderPath = string.Empty, filePath = Path.Combine(Tools.GameAppData, "ContentCatalog.txt"),
-                destinationPath = string.Empty; ;
-            if (!useDocuments)
-            {
-                using FolderBrowserDialog folderBrowserDialog = new();
-                folderBrowserDialog.Description = "Choose folder to use to backup ContentCatalog.txt";
-                folderBrowserDialog.InitialDirectory =
-                    Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments); // Set initial directory to Documents Directory
-                if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
-                {
-                    selectedFolderPath = folderBrowserDialog.SelectedPath;
-                    destinationPath = Path.Combine(selectedFolderPath, "ContentCatalog.txt");
-                    if (!File.Exists(filePath))
-                    {
-                        MessageBox.Show("ContentCatalog.txt not found");
-                        return;
-                    }
-                }
-            }
-            else
-                destinationPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "ContentCatalog.txt");
-
-            File.Copy(filePath, destinationPath, true);
-            sbar("ContentCatalog.txt backed up.");
-            if (log)
-                activityLog.WriteLog($"ContentCatalog.txt backed up to {selectedFolderPath}");
+            string selectedFolderPath = string.Empty, filePath = Path.Combine(Tools.GameAppData, "ContentCatalog.txt");
+            BackupFile(filePath,useDocuments);
         }
 
         private void backupContentCatalogtxtToolStripMenuItem_Click(object sender, EventArgs e)
@@ -5926,12 +5863,62 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             sbar(e.Exception.Message);
         }
 
+        private void BackupFile(string file,bool UseDocuments)
+        {
+            string destinationPath = string.Empty, selectedFolderPath = string.Empty;
+            using FolderBrowserDialog folderBrowserDialog = new();
+            folderBrowserDialog.Description = $"Choose folder to use to backup {Path.GetFileName(file)}";
+            folderBrowserDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments); // Set initial directory to Documents Directory
+            if (!UseDocuments)
+            {
+                if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+                {
+                    selectedFolderPath = folderBrowserDialog.SelectedPath;
+                    destinationPath = Path.Combine(selectedFolderPath, Path.GetFileName(file));
+                    if (!File.Exists(file))
+                    {
+                        MessageBox.Show($"{file} not found","Source file not found", MessageBoxButtons.OK,MessageBoxIcon.Error);
+                        LogError($"Source {file} to be backed up not found");
+                        return;
+                    }
+                }
+            }
+            else
+            {
+                destinationPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), Path.GetFileName(file));
+            }
+            try
+            {
+                if (destinationPath != string.Empty)
+                {
+                    File.Copy(file, destinationPath, true);
+                    sbar($"{file} backed up successfully.");
+                    if (log)
+                        activityLog.WriteLog($"{file} backed up to {destinationPath}");
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(ex.Message);
+                MessageBox.Show($"An error occurred while backing up {file}: {ex.Message}", "Backup Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+        }
+        private void BackupLOOTUserlist(bool UseDocuments=false)
+        {
+            if (Properties.Settings.Default.LOOTPath == "")
+                return;
+            string yamlPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                $"LOOT\\games\\{GameName}\\userlist.yaml");
+            BackupFile(yamlPath,UseDocuments);
+        }
         private void allTheThingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             BackupPlugins();
             BackupBlockedMods(true); // Use Documents folder
             BackupContentCatalog(true);
             BackupProfiles();
+            BackupLOOTUserlist(true);
             BackupAppSettings(true);
         }
 
