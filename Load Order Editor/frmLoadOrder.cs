@@ -65,11 +65,6 @@ namespace hstCMM
         public frmLoadOrder(string parameter)
         {
             InitializeComponent();
-#if DEBUG
-            this.Text = Application.ProductName + " " + File.ReadAllText(Path.Combine(Tools.CommonFolder, "App Version.txt")) + " Debug";
-            testToolStripMenuItem.Visible = true; // Show test menu in debug mode
-            gameSelectToolStripMenuItem.Visible = true;
-#endif
 
             this.KeyPreview = true; // Ensure the form captures key presses
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(KeyEvent); // Handle <enter> for search
@@ -264,6 +259,16 @@ namespace hstCMM
                     //InitDataGrid();
                 }
             }
+
+
+            this.Text = Application.ProductName + " - "+GameName+ " ";
+
+#if DEBUG
+            this.Text = Application.ProductName + " " + File.ReadAllText(Path.Combine(Tools.CommonFolder, "App Version.txt")) + " Debug";
+            testToolStripMenuItem.Visible = true; // Show test menu in debug mode
+            gameSelectToolStripMenuItem.Visible = true;
+#endif
+
 
             //SetupDB();
         }
@@ -1079,27 +1084,26 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
             // -- Process mod stats if the game path is set --
             if (!string.IsNullOrEmpty(GamePath) && Properties.Settings.Default.ModStats)
-                //Task.Run(() => ShowModStats(CreationsPlugin, enabledCount));
-                ShowModStats(CreationsPlugin, enabledCount);
+                Task.Run(() => sbar(ShowModStats(CreationsPlugin, enabledCount)));
             else
                 sbar("");
         }
 
-        private void ShowModStats(List<string> CreationsPlugin, int enabledCount)
+        private string ShowModStats(List<string> CreationsPlugin, int enabledCount)
         {
-            string loText = Path.Combine(Tools.GameAppData, "Plugins.txt"), StatText,
+            string loText = Path.Combine(Tools.GameAppData, "Plugins.txt"), StatText = "",
                 GameFolder = Tools.GameLibrary.GetById(Properties.Settings.Default.Game).AppData; ;
             int ba2Count, esmCount, espCount, mainCount;
             try
             {
-                // Cache file paths and load BGS archives once
+                // Cache file paths and load BGS archives
                 var dataDirectory = Path.Combine(GamePath, "Data");
                 var bgsArchives = File.ReadLines(Path.Combine(Tools.CommonFolder, GameFolder + " Archives.txt"))
                     .Where(line => line.Length > 4)
                     .Select(line => line[..^4].ToLowerInvariant())
                     .ToHashSet(StringComparer.OrdinalIgnoreCase);
 
-                // Load enabled plugins once
+                // Load enabled plugins
                 var enabledPlugins = File.ReadLines(loText)
                     .Where(line => line.StartsWith('*') && line.Length > 1)
                     .Select(line => line[1..])
@@ -1174,7 +1178,6 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 {
                     sbar4("Catalog/Plugins mismatch - Run game to solve");
                 }
-                sbar(StatText);
             }
             catch (Exception ex)
             {
@@ -1184,6 +1187,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 #endif
                 sbar(ex.Message);
             }
+            return StatText;
         }
 
         private void GetProfiles()
