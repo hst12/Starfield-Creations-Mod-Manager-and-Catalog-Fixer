@@ -619,7 +619,7 @@ namespace hstCMM
             if (log)
                 activityLog.WriteLog("Checking for unused items in catalog.");
 
-            string filePath= Path.Combine(Tools.GameAppData, "Plugins.txt");
+            string filePath = Path.Combine(Tools.GameAppData, "Plugins.txt");
 
             // Split the content into lines
             List<string> lines = File.ReadLines(filePath)

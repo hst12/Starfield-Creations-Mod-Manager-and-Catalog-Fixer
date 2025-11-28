@@ -1,5 +1,6 @@
 ﻿using hstCMM.Shared;
 using System.IO;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace hstCMM
@@ -13,7 +14,7 @@ namespace hstCMM
             InitializeComponent();
 
             string Readme = File.ReadAllText(Path.Combine(Tools.DocumentationFolder, "Readme.txt"));
-            string AboutText = Application.ProductName + " " + System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription +
+            string AboutText = tools.AppName() + " " + System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription +
                 "\nVersion:" + File.ReadAllText(Path.Combine(Tools.CommonFolder, "App Version.txt")) + "\n\n" + Readme;
             richTextBox1.Text = AboutText;
         }

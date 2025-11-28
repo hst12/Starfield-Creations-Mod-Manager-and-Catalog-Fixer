@@ -235,8 +235,7 @@ namespace hstCMM
                 Properties.Settings.Default.AutoRestore = true;
                 MessageBox.Show(tempstr + "\nAuto Restore turned on\n\nYou can now play the game normally until the next time you want to update\n\n" +
                     "Remember to choose the Prepare for Creations Update option again before you update or add new mods", "Creations update complete");
-                if (log)
-                    activityLog.WriteLog("Creations update complete, backup status: " + BackupStatus);
+                activityLog.WriteLog("Creations update complete, backup status: " + BackupStatus);
             }
 
             // Apply bold styling when ActiveOnly is enabled
@@ -260,10 +259,10 @@ namespace hstCMM
                 }
             }
 
-            this.Text += " - " + GameName + " "; // Show selected game in title bar
+            this.Text = tools.AppName() + " - " + GameName + " "; // Show selected game in title bar
 
 #if DEBUG
-            this.Text = Application.ProductName + " " + File.ReadAllText(Path.Combine(Tools.CommonFolder, "App Version.txt")) + " Debug";
+            this.Text = tools.AppName() + " " + File.ReadAllText(Path.Combine(Tools.CommonFolder, "App Version.txt")) + " Debug";
             testToolStripMenuItem.Visible = true; // Show test menu in debug mode
             gameSelectToolStripMenuItem.Visible = true;
 #endif
@@ -390,8 +389,7 @@ namespace hstCMM
             //GameName = gl.GameName(Properties.Settings.Default.Game);
             var x = Properties.Settings.Default.Game;
             GameName = Tools.GameLibrary.GetById(Properties.Settings.Default.Game).GameName;
-            if (log)
-                activityLog.WriteLog($"Game set to {GameName}");
+            activityLog.WriteLog($"Game set to {GameName}");
             GameExists = Tools.CheckGame(); // Check if game appdata folder exists
 
             string PluginsPath = Path.Combine(Tools.GameAppData, "Plugins.txt");
@@ -565,6 +563,8 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
             public void WriteLog(string message)
             {
+                if (!log)
+                    return;
                 try
                 {
                     // Update log window if enabled
@@ -1282,8 +1282,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
             sbar2($"{Path.GetFileName(PluginFileName)} saved");
             isModified = false;
-            if (log)
-                activityLog.WriteLog($"{Path.GetFileName(PluginFileName)} saved");
+            activityLog.WriteLog($"{Path.GetFileName(PluginFileName)} saved");
         }
 
         private void btnOK_Click(object sender, EventArgs e)
@@ -1308,8 +1307,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             dataGridView1.ClearSelection();
             dataGridView1.Rows[rowIndex - 1].Selected = true;
             dataGridView1.Rows[rowIndex - 1].Cells[colIndex].Selected = true;
-            if (log)
-                activityLog.WriteLog($"Moved {selectedRow.Cells["PluginName"].Value} up the list from {selectedRow.Index + 2} to {selectedRow.Index + 1}");
+            activityLog.WriteLog($"Moved {selectedRow.Cells["PluginName"].Value} up the list from {selectedRow.Index + 2} to {selectedRow.Index + 1}");
             isModified = true;
         }
 
@@ -1335,8 +1333,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             dataGridView1.ClearSelection();
             dataGridView1.Rows[rowIndex + 1].Selected = true;
             dataGridView1.Rows[rowIndex + 1].Cells[colIndex].Selected = true;
-            if (log)
-                activityLog.WriteLog($"Moved {selectedRow.Cells["PluginName"].Value} down the list from {selectedRow.Index} to {selectedRow.Index + 1}");
+            activityLog.WriteLog($"Moved {selectedRow.Cells["PluginName"].Value} down the list from {selectedRow.Index} to {selectedRow.Index + 1}");
             isModified = true;
         }
 
@@ -1360,8 +1357,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             {
                 File.Copy(sourceFileName, destFileName, true); // overwrite
                 sbar("Plugins.txt backed up");
-                if (log)
-                    activityLog.WriteLog($"Backup of {Path.GetFileName(sourceFileName)} done to {Path.GetFileName(destFileName)}");
+                activityLog.WriteLog($"Backup of {Path.GetFileName(sourceFileName)} done to {Path.GetFileName(destFileName)}");
             }
             catch (Exception ex)
             {
@@ -1384,8 +1380,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 toolStripStatusStats.ForeColor = DefaultForeColor;
                 SavePlugins();
                 sbar("Restore done");
-                if (log)
-                    activityLog.WriteLog($"Restore of {Path.GetFileName(sourceFileName)} done to {Path.GetFileName(destFileName)}");
+                activityLog.WriteLog($"Restore of {Path.GetFileName(sourceFileName)} done to {Path.GetFileName(destFileName)}");
             }
             catch (Exception ex)
             {
@@ -1410,8 +1405,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             {
                 dataGridView1.FirstDisplayedScrollingRowIndex = 0; // Scroll to the first row
             }
-            if (log)
-                activityLog.WriteLog($"Moved {selectedRow.Cells["PluginName"].Value} to top of list");
+            activityLog.WriteLog($"Moved {selectedRow.Cells["PluginName"].Value} to top of list");
             isModified = true;
         }
 
@@ -1433,8 +1427,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             {
                 dataGridView1.FirstDisplayedScrollingRowIndex = lastRowIndex; // Scroll to the last row
             }
-            if (log)
-                activityLog.WriteLog($"Moved {selectedRow.Cells["PluginName"].Value} to bottom of list");
+            activityLog.WriteLog($"Moved {selectedRow.Cells["PluginName"].Value} to bottom of list");
             isModified = true;
         }
 
@@ -1465,8 +1458,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             sbar2("All mods disabled");
             isModified = true;
             SavePlugins();
-            if (log)
-                activityLog.WriteLog("All mods disabled");
+            activityLog.WriteLog("All mods disabled");
         }
 
         private void EnableAll()
@@ -1480,8 +1472,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             sbar2("All mods enabled");
             isModified = true;
             SavePlugins();
-            if (log)
-                activityLog.WriteLog("All mods enabled");
+            activityLog.WriteLog("All mods enabled");
         }
 
         private void SearchMod()
@@ -1703,8 +1694,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 // Check if the row is not a new row
                 if (!row.IsNewRow)
                 {
-                    if (log)
-                        activityLog.WriteLog($"Deleting {row.Cells["PluginName"].Value} from Plugins.txt");
+                    activityLog.WriteLog($"Deleting {row.Cells["PluginName"].Value} from Plugins.txt");
                     dataGridView1.Rows.Remove(row);
                 }
             }
@@ -1806,8 +1796,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 row.Cells["PluginName"].Value = file;
 
                 addedFiles++;
-                if (log)
-                    activityLog.WriteLog($"Adding {file} to Plugins.txt");
+                activityLog.WriteLog($"Adding {file} to Plugins.txt");
             }
 
             if (addedFiles > 0)
@@ -1817,8 +1806,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             }
 
             sbar4($"Plugins added: {addedFiles}");
-            if (log)
-                activityLog.WriteLog($"Plugins added: {addedFiles}");
+            activityLog.WriteLog($"Plugins added: {addedFiles}");
             return addedFiles;
         }
 
@@ -1862,8 +1850,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
                 foreach (var row in rowsToRemove)
                 {
-                    if (log)
-                        activityLog.WriteLog($"Removing {fileToRemove} from Plugins.txt");
+                    activityLog.WriteLog($"Removing {fileToRemove} from Plugins.txt");
                     dataGridView1.Rows.Remove(row);
                     removedFiles++;
                 }
@@ -1876,8 +1863,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             }
 
             sbar4($"Plugins removed: {removedFiles}");
-            if (log)
-                activityLog.WriteLog($"Plugins removed: {removedFiles}");
+            activityLog.WriteLog($"Plugins removed: {removedFiles}");
 
             return removedFiles;
         }
@@ -2101,8 +2087,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             int totalChanges = dupRemoved + added + removed;
             if (totalChanges > 0)
             {
-                if (log)
-                    activityLog.WriteLog($"Plugins added: {added}, removed: {removed}, duplicates removed: {dupRemoved}");
+                activityLog.WriteLog($"Plugins added: {added}, removed: {removed}, duplicates removed: {dupRemoved}");
                 isModified = true;
                 SavePlugins();
             }
@@ -2214,8 +2199,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     }
                     File.Copy(modFilePath, Path.Combine(GamePath, "Data", Path.GetFileName(modFilePath)), true);
                     sbar2($"Copied {Path.GetFileName(modFilePath)} to Data folder");
-                    if (log)
-                        activityLog.WriteLog($"Copied {modFilePath} to {Path.Combine(GamePath, "Data", Path.GetFileName(modFilePath))}");
+                    activityLog.WriteLog($"Copied {modFilePath} to {Path.Combine(GamePath, "Data", Path.GetFileName(modFilePath))}");
                     //UpdatePlugins();
                 }
                 catch (Exception ex)
@@ -2226,8 +2210,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 return false;
             }
 
-            if (log)
-                activityLog.WriteLog($"Starting mod install: {modFilePath}");
+            activityLog.WriteLog($"Starting mod install: {modFilePath}");
 
             // Show a loading screen while extracting.
             Form loadScreen = new frmLoading("Extracting mod...");
@@ -2242,8 +2225,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 {
                     sbar2($"Extracting: {modFilePath}");
                     statusStrip1.Refresh();
-                    if (log)
-                        activityLog.WriteLog($"Extracting: {modFilePath}");
+                    activityLog.WriteLog($"Extracting: {modFilePath}");
                     archiveFile.Extract(extractPath);
 
                     if (Directory.Exists(Path.Combine(extractPath, "fomod")))
@@ -2273,8 +2255,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                                     sbar2($"Extracting embedded archive: {file}");
                                     statusStrip1.Refresh();
                                     archiveFile2.Extract(extractPath);
-                                    if (log)
-                                        activityLog.WriteLog($"Extracting embedded archive: {file}");
+                                    activityLog.WriteLog($"Extracting embedded archive: {file}");
                                 }
                             }
                         }
@@ -2312,8 +2293,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             catch (OperationCanceledException)
             {
                 sbar3("Mod installation cancelled by user");
-                if (log)
-                    activityLog.WriteLog("Mod installation cancelled by user");
+                activityLog.WriteLog("Mod installation cancelled by user");
                 return false;
             }
 
@@ -2357,8 +2337,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 foreach (var sourceDir in directoriesFound)
                 {
                     CopyDirectory(sourceDir, Path.Combine(targetDir, dirName));
-                    if (log)
-                        activityLog.WriteLog($"Copying {sourceDir} to {Path.Combine(targetDir, dirName)}");
+                    activityLog.WriteLog($"Copying {sourceDir} to {Path.Combine(targetDir, dirName)}");
                     filesInstalled++;
                 }
                 if (directoriesFound.Length > 0)
@@ -2377,8 +2356,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             {
                 LooseFilesOnOff(true);
                 sbar3($"Directories installed (loose files): {filesInstalled}");
-                if (log)
-                    activityLog.WriteLog($"Directories installed (loose files): {filesInstalled}");
+                activityLog.WriteLog($"Directories installed (loose files): {filesInstalled}");
                 if (Tools.ConfirmAction("Do you want to convert them", "Loose Files found", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     if (esmFile != "")
@@ -2393,8 +2371,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             if (SFSEMod)
             {
                 sbar2("SFSE mod installed");
-                if (log)
-                    activityLog.WriteLog("SFSE mod installed");
+                activityLog.WriteLog("SFSE mod installed");
             }
 
             if (filesInstalled > 0)
@@ -2403,8 +2380,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 sbar2($"Files installed: {filesInstalled}");
             }
 
-            if (log)
-                activityLog.WriteLog($"Mod files installed: {filesInstalled}");
+            activityLog.WriteLog($"Mod files installed: {filesInstalled}");
 
             return true;
 
@@ -2423,8 +2399,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                         if (dlg == DialogResult.Yes)
                         {
                             File.Move(modFile, destinationPath, true);
-                            if (log)
-                                activityLog.WriteLog($"Moving {modFile} to {destinationPath}");
+                            activityLog.WriteLog($"Moving {modFile} to {destinationPath}");
                             count++;
                         }
                         if (dlg == DialogResult.Cancel)
@@ -2442,8 +2417,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     else
                     {
                         File.Move(modFile, destinationPath, true);
-                        if (log)
-                            activityLog.WriteLog($"Installing {modFile}");
+                        activityLog.WriteLog($"Installing {modFile}");
                         count++;
                     }
                 }
@@ -2644,8 +2618,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
                 string modName = pluginName.Substring(0, dotIndex);
 
-                if (log)
-                    activityLog.WriteLog($"Starting uninstall for mod: {pluginName}");
+                activityLog.WriteLog($"Starting uninstall for mod: {pluginName}");
                 dlg = Tools.ConfirmAction(
                         $"This will delete all files related to the '{pluginName}' mod",
                         $"Delete {pluginName} - Are you sure?",
@@ -2665,8 +2638,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                         if (File.Exists(modFile))
                         {
                             File.Delete(modFile);
-                            if (log)
-                                activityLog.WriteLog($"Deleted: {modFile}");
+                            activityLog.WriteLog($"Deleted: {modFile}");
                             SavePlugins();
                             sbar3($"{modFile} uninstalled");
                             continue;
@@ -2695,8 +2667,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                         if (File.Exists(filePath))
                         {
                             File.Delete(filePath);
-                            if (log)
-                                activityLog.WriteLog($"Deleted: {filePath}");
+                            activityLog.WriteLog($"Deleted: {filePath}");
                         }
                     }
 
@@ -2707,8 +2678,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     foreach (string file in textureFiles)
                     {
                         File.Delete(file);
-                        if (log)
-                            activityLog.WriteLog($"Deleted: {file}");
+                        activityLog.WriteLog($"Deleted: {file}");
                     }
 
                     SavePlugins();
@@ -2717,8 +2687,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 else
                 {
                     sbar2($"Un-install of '{pluginName}' cancelled.");
-                    if (log)
-                        activityLog.WriteLog($"Un-install of {pluginName} cancelled");
+                    activityLog.WriteLog($"Un-install of {pluginName} cancelled");
                     if (dlg == DialogResult.Cancel)
                         return;
                 }
@@ -2747,8 +2716,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 currentRow.Cells["ModEnabled"].Value = !(bool)(currentRow.Cells["ModEnabled"].Value);
             }
 
-            if (log)
-                activityLog.WriteLog($"Enable/Disable mod: {dataGridView1.CurrentRow.Cells["PluginName"].Value}, {dataGridView1.CurrentRow.Cells["ModEnabled"].Value}");
+            activityLog.WriteLog($"Enable/Disable mod: {dataGridView1.CurrentRow.Cells["PluginName"].Value}, {dataGridView1.CurrentRow.Cells["ModEnabled"].Value}");
             SavePlugins();
         }
 
@@ -2851,11 +2819,9 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
             if (isModified)
                 SavePlugins();
-            if (log)
-                activityLog.WriteLog($"Starting game: {GameName}");
+            activityLog.WriteLog($"Starting game: {GameName}");
             result = Tools.StartGame(GameVersion);
-            if (log)
-                activityLog.WriteLog($"Game started: {GameVersion}, Status: {result}");
+            activityLog.WriteLog($"Game started: {GameVersion}, Status: {result}");
 
             if (!result)
             {
@@ -2951,8 +2917,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             bool profilesActive = Profiles;
             string lootPath = Properties.Settings.Default.LOOTPath;
 
-            if (log)
-                activityLog.WriteLog($"Running LOOT: {LOOTMode}");
+            activityLog.WriteLog($"Running LOOT: {LOOTMode}");
 
             if (isModified) SavePlugins();
 
@@ -3117,8 +3082,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 {
                     File.Delete(Starfieldccc);
                     sbar3($"{GameName}.ccc deleted");
-                    if (log)
-                        activityLog.WriteLog($"GameName.ccc deleted");
+                    activityLog.WriteLog($"GameName.ccc deleted");
                     return true;
                 }
                 else
@@ -3235,8 +3199,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 dataGridView1.Rows.RemoveAt(rowIndexFromMouseDown);
                 dataGridView1.Rows.Insert(rowIndexOfItemUnderMouseToDrop, rowToMove);
                 isModified = true;
-                if (log)
-                    activityLog.WriteLog($"Row moved: {rowToMove.Cells["PluginName"].Value}");
+                activityLog.WriteLog($"Row moved: {rowToMove.Cells["PluginName"].Value}");
                 SavePlugins();
             }
         }
@@ -3289,8 +3252,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
         private string CheckCatalog()
         {
             frmCatalogFixer StarfieldTools = new();
-            if (log)
-                activityLog.WriteLog("Starting Catalog Checker");
+            activityLog.WriteLog("Starting Catalog Checker");
             StarfieldTools.Show();
             sbar4(StarfieldTools.CatalogStatus);
             return StarfieldTools.CatalogStatus;
@@ -3348,8 +3310,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                         Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                         "My Games", GameName, $"{GameName}Custom.ini"), true);
                     sbar3($"{GameName}Custom.ini restored");
-                    if (log)
-                        activityLog.WriteLog($"{GameName}Custom.ini restored");
+                    activityLog.WriteLog($"{GameName}Custom.ini restored");
                     return true;
                 }
                 else
@@ -3511,8 +3472,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             if (ChangeCount > 0)
             {
                 sbar3(ChangeCount + " Change(s) made to Vortex created files");
-                if (log)
-                    activityLog.WriteLog($"{ChangeCount} Vortex changes undone");
+                activityLog.WriteLog($"{ChangeCount} Vortex changes undone");
             }
             return ChangeCount;
         }
@@ -3556,8 +3516,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     File.AppendAllLines(filePath, linesToAppend.Where(line => !existingLines.Contains(line)));
                     LooseFiles = true;
                     sbarCCC("Loose Files Enabled");
-                    if (log)
-                        activityLog.WriteLog("Loose files enabled in StarfieldCustom.ini");
+                    activityLog.WriteLog("Loose files enabled in StarfieldCustom.ini");
                 }
             }
             else if (File.Exists(filePath))
@@ -3569,8 +3528,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 File.WriteAllLines(filePath, updatedLines);
                 LooseFiles = false;
                 sbarCCC("Loose Files Disabled");
-                if (log)
-                    activityLog.WriteLog("Loose files disabled in StarfieldCustom.ini");
+                activityLog.WriteLog("Loose files disabled in StarfieldCustom.ini");
             }
         }
 
@@ -3645,8 +3603,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             }
 
             int removedCount = originalCount - dataGridView1.RowCount;
-            if (log)
-                activityLog.WriteLog($"Duplicates Removed: {removedCount}");
+            activityLog.WriteLog($"Duplicates Removed: {removedCount}");
             sbar4($"Duplicates removed: {removedCount}");
             return removedCount;
         }
@@ -3729,8 +3686,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     if (result != null)
                     {
                         SaveSettings();
-                        if (log)
-                            activityLog.WriteLog("Starting Vortex");
+                        activityLog.WriteLog("Starting Vortex");
                         System.Windows.Forms.Application.Exit();
                     }
                 }
@@ -3870,8 +3826,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     string stringValue = (string)Registry.GetValue(keyName, "SteamExe", ""); // Get Steam path from Registry
                     var processInfo = new ProcessStartInfo(stringValue, $"-applaunch {Tools.GameLibrary.GetById(Properties.Settings.Default.Game).CKId}");
                     var process = Process.Start(processInfo);
-                    if (log)
-                        activityLog.WriteLog("Starting Creation Kit");
+                    activityLog.WriteLog("Starting Creation Kit");
                     System.Windows.Forms.Application.Exit();
                 }
                 catch (Exception ex)
@@ -3918,8 +3873,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) == DialogResult.OK)
             {
                 ChangeSettings(true);
-                if (log)
-                    activityLog.WriteLog("Enabling all settings");
+                activityLog.WriteLog("Enabling all settings");
                 ResetDefaults();
                 ShowRecommendedColumns();
                 modStatsToolStripMenuItem.Checked = true;
@@ -3939,9 +3893,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 ActiveOnlyToggle();
             ChangeSettings(false);
             disableAllWarnings();
-
-            if (log)
-                activityLog.WriteLog("Disabling all settings");
+            activityLog.WriteLog("Disabling all settings");
             sbar5("");
         }
 
@@ -4012,8 +3964,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 GamePath = Properties.Settings.Default.GamePathMS;
                 RefreshDataGrid();
             }
-            if (log)
-                activityLog.WriteLog($"Game version set to {GameVersion}");
+            activityLog.WriteLog($"Game version set to {GameVersion}");
             GameVersionDisplay();
         }
 
@@ -4062,8 +4013,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             sbar2("All achievement friendly mods enabled");
             isModified = true;
             SavePlugins();
-            if (log)
-                activityLog.WriteLog("Achievement friendly mods enabled");
+            activityLog.WriteLog("Achievement friendly mods enabled");
         }
 
         private void openAllActiveModWebPagesToolStripMenuItem_Click(object sender, EventArgs e)
@@ -4184,8 +4134,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                                 activityLog.WriteLog($"Archived {file}");
                         }
                         sbar3($"{ModName} archived");
-                        if (log)
-                            activityLog.WriteLog($"Created archive for {ModName} at {zipPath}");
+                        activityLog.WriteLog($"Created archive for {ModName} at {zipPath}");
                         statusStrip1.Refresh();
                         files.Clear();
                     }
@@ -4275,8 +4224,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     {
                         sbar($"Creating archive for {ModName}...");
                         statusStrip1.Refresh();
-                        if (log)
-                            activityLog.WriteLog($"Creating archive for {ModName} at {zipPath}");
+                        activityLog.WriteLog($"Creating archive for {ModName} at {zipPath}");
                         CreateZipFromFiles(files, zipPath); // Make zip
                         sbar($"{ModName} archived");
                         statusStrip1.Refresh();
@@ -4285,8 +4233,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     files.Clear();
                 }
                 sbar(modsArchived + " Mod(s) archived");
-                if (log)
-                    activityLog.WriteLog($"{modsArchived} mods archived to {selectedFolderPath}");
+                activityLog.WriteLog($"{modsArchived} mods archived to {selectedFolderPath}");
             }
         }
 
@@ -4331,8 +4278,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
                 if (toDelete.Count > 0)
                 {
-                    if (log)
-                        activityLog.WriteLog($"Checked for orphaned archives - {toDelete.Count} found");
+                    activityLog.WriteLog($"Checked for orphaned archives - {toDelete.Count} found");
                     Form Orphaned = new frmOrphaned(toDelete);
                     Orphaned.ShowDialog();
                     return toDelete.Count;
@@ -4340,8 +4286,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 else
                 {
                     sbar3("No orphaned archives found");
-                    if (log)
-                        activityLog.WriteLog("No orphaned archives found");
+                    activityLog.WriteLog("No orphaned archives found");
                     return 0;
                 }
             }
@@ -4429,8 +4374,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             this.Width = (int)(screenWidth * 0.85);
             this.Height = (int)(screenHeight * 0.85);
             this.StartPosition = FormStartPosition.CenterScreen;
-            if (log)
-                activityLog.WriteLog("Window size reset to default");
+            activityLog.WriteLog("Window size reset to default");
         }
 
         private void frmLoadOrder_Load(object sender, EventArgs e) // Do some initialisation when the form loads
@@ -4481,8 +4425,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
         private void disableAllWarnings()
         {
             disableAllWarningToolStripMenuItem.Checked = Properties.Settings.Default.NoWarn = NoWarn = false;
-            if (log)
-                activityLog.WriteLog("Disable all warnings set to " + NoWarn.ToString());
+            activityLog.WriteLog("Disable all warnings set to " + NoWarn.ToString());
         }
 
         private void disableAllWarningToolStripMenuItem_Click(object sender, EventArgs e)
@@ -4490,8 +4433,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             disableAllWarningToolStripMenuItem.Checked = !disableAllWarningToolStripMenuItem.Checked;
             Properties.Settings.Default.NoWarn = disableAllWarningToolStripMenuItem.Checked;
             NoWarn = disableAllWarningToolStripMenuItem.Checked;
-            if (log)
-                activityLog.WriteLog("Disable all warnings set to " + NoWarn.ToString());
+            activityLog.WriteLog("Disable all warnings set to " + NoWarn.ToString());
         }
 
         private void toolStripMenuExportCSV_Click(object sender, EventArgs e) // Export DataGridView to CSV file
@@ -4664,15 +4606,13 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     blockedMods.Add(currentRow.Cells["PluginName"].Value.ToString());
                     currentRow.Cells["ModEnabled"].Value = false;
                     sbar2(currentRow.Cells["PluginName"].Value.ToString() + " blocked");
-                    if (log)
-                        activityLog.WriteLog($"Blocked {currentRow.Cells["PluginName"].Value.ToString()}");
+                    activityLog.WriteLog($"Blocked {currentRow.Cells["PluginName"].Value.ToString()}");
                 }
                 else // Remove mod from blocked list
                 {
                     blockedMods.Remove(currentRow.Cells["PluginName"].Value.ToString());
                     sbar2(currentRow.Cells["PluginName"].Value.ToString() + " unblocked");
-                    if (log)
-                        activityLog.WriteLog($"Unblocked {currentRow.Cells["PluginName"].Value.ToString()}");
+                    activityLog.WriteLog($"Unblocked {currentRow.Cells["PluginName"].Value.ToString()}");
                 }
             }
 
@@ -4696,8 +4636,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     " click this menu option again\n\nRun the game now?", "Steps to Update Creations Mods", MessageBoxButtons.YesNo, MessageBoxIcon.Question,
                     true) == DialogResult.Yes)
                 {
-                    if (log)
-                        activityLog.WriteLog("Creations Update started, running game now");
+                    activityLog.WriteLog("Creations Update started, running game now");
                     RunGame(); ;
                 }
             }
@@ -4707,8 +4646,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 Properties.Settings.Default.CreationsUpdate = false;
                 Properties.Settings.Default.AutoRestore = true;
                 MessageBox.Show("Catalog Auto Restore set to on", "Creations Update Cancelled");
-                if (log)
-                    activityLog.WriteLog("Creations Update Cancelled");
+                activityLog.WriteLog("Creations Update Cancelled");
             }
         }
 
@@ -4808,8 +4746,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     };
 
                     Process process = Process.Start(startInfo);
-                    if (log)
-                        activityLog.WriteLog("Starting StarUI Configurator");
+                    activityLog.WriteLog("Starting StarUI Configurator");
                 }
                 catch (Exception ex)
                 {
@@ -4831,8 +4768,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 {
                     File.Copy(Path.Combine(Tools.CommonFolder, $"{GameName}.ini"), Path.Combine(GamePath, $"{GameName}.ini"), true); // Restore game.ini
                     sbar3($"{GameName}.ini restored");
-                    if (log)
-                        activityLog.WriteLog($"{GameName}.ini restored to default settings");
+                    activityLog.WriteLog($"{GameName}.ini restored to default settings");
                     return 1;
                 }
                 catch (Exception ex)
@@ -4845,8 +4781,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             else
             {
                 sbar3($"{GameName}.ini Matches Default");
-                if (log)
-                    activityLog.WriteLog($"{GameName}.ini Matches Default");
+                activityLog.WriteLog($"{GameName}.ini Matches Default");
                 return 0;
             }
         }
@@ -4863,15 +4798,13 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             if (Tools.ConfirmAction("This will reset all game settings and delete all loose files folders", "Are you sure?", MessageBoxButtons.YesNo,
                 MessageBoxIcon.Exclamation, true) == DialogResult.No)
                 return;
-            if (log)
-                activityLog.WriteLog("Starting reset everything.");
+            activityLog.WriteLog("Starting reset everything.");
             actionCount = RestoreStarfieldINI();
             actionCount += DeleteLooseFileFolders();
             actionCount += ResetDefaults();
             actionCount += CheckArchives();
             sbar3(actionCount.ToString() + " Change(s) made");
-            if (log)
-                activityLog.WriteLog("Reset everything: " + actionCount.ToString() + " Change(s) made");
+            activityLog.WriteLog("Reset everything: " + actionCount.ToString() + " Change(s) made");
         }
 
         public void ResetPreferences() // Reset user preferences
@@ -4886,8 +4819,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             if (Directory.Exists(appPreferencesPath))
             {
                 Directory.Delete(appPreferencesPath, true); // true to delete subdirectories and files
-                if (log)
-                    activityLog.WriteLog("User preferences reset successfully.");
+                activityLog.WriteLog("User preferences reset successfully.");
                 MessageBox.Show("Please Restart the app", "User preferences reset successfully.");
 
                 Environment.Exit(0); // Close the application
@@ -4923,15 +4855,13 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             {
                 Directory.CreateDirectory(Path.Combine(Properties.Settings.Default.ProfileFolder, "Backup"));
             }
-            if (log)
-                activityLog.WriteLog("Starting profile backup");
+            activityLog.WriteLog("Starting profile backup");
             foreach (var item in Directory.EnumerateFiles(Properties.Settings.Default.ProfileFolder, "*.txt", SearchOption.TopDirectoryOnly))
             {
                 string fileName = Path.GetFileName(item);
                 string destinationPath = Path.Combine(Properties.Settings.Default.ProfileFolder, "Backup", fileName);
                 File.Copy(item, destinationPath, true);
-                if (log)
-                    activityLog.WriteLog($"Backed up {item} to backup folder {destinationPath}.");
+                activityLog.WriteLog($"Backed up {item} to backup folder {destinationPath}.");
             }
             sbar("Profiles backed up to Backup folder");
         }
@@ -4963,8 +4893,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     string fileName = Path.GetFileName(item);
                     string destinationPath = Path.Combine(Properties.Settings.Default.ProfileFolder, fileName);
                     File.Copy(item, destinationPath, true);
-                    if (log)
-                        activityLog.WriteLog($"Restored {item} from backup folder {destinationPath}.");
+                    activityLog.WriteLog($"Restored {item} from backup folder {destinationPath}.");
                 }
                 sbar("Profiles restored from Backup folder");
                 RefreshDataGrid();
@@ -4978,7 +4907,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
         private void BackupBlockedMods(bool UseDocuments = false)
         {
             string blockedModsFilePath = Path.Combine(Tools.LocalAppDataPath, "BlockedMods.txt");
-            BackupFile(blockedModsFilePath,UseDocuments);
+            BackupFile(blockedModsFilePath, UseDocuments);
         }
 
         private void mnuBackupBlockedMods_Click(object sender, EventArgs e) // Backup BlockedMods.txt to a user selected folder
@@ -5009,8 +4938,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     File.Copy(backupFilePath, destinationPath, true);
                     RefreshDataGrid();
                     sbar("BlockedMods.txt restored successfully.");
-                    if (log)
-                        activityLog.WriteLog($"BlockedMods.txt restored from {selectedFolderPath}");
+                    activityLog.WriteLog($"BlockedMods.txt restored from {selectedFolderPath}");
                 }
                 catch (Exception ex)
                 {
@@ -5049,8 +4977,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             bool wasModStats = Properties.Settings.Default.ModStats;
             int totalChanges = 0;
 
-            if (log)
-                activityLog.WriteLog("Updating all profiles");
+            activityLog.WriteLog("Updating all profiles");
 
             // Temporarily disable CompareProfiles, ModStats and ActiveOnly filters
             Properties.Settings.Default.CompareProfiles = false;
@@ -5068,8 +4995,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             if (profiles.Length == 0 || activeProfile is null)
             {
                 MessageBox.Show("No valid profiles found");
-                if (log)
-                    activityLog.WriteLog("No valid profiles found");
+                activityLog.WriteLog("No valid profiles found");
 
                 // Restore original state
                 if (wasActiveOnly) ActiveOnlyToggle();
@@ -5106,8 +5032,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             SaveSettings();
 
             sbar3($"Changes made: {totalChanges}");
-            if (log)
-                activityLog.WriteLog($"UpdateAllProfiles – total changes: {totalChanges}");
+            activityLog.WriteLog($"UpdateAllProfiles – total changes: {totalChanges}");
             progressBar1.Hide();
         }
 
@@ -5245,8 +5170,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
         private void ConvertLooseFiles(string esm = "")
         {
-            if (log)
-                activityLog.WriteLog("Converting loose files to archive(s)");
+            activityLog.WriteLog("Converting loose files to archive(s)");
             returnStatus = 0;
             /*try
             {*/
@@ -5307,8 +5231,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 {
                     File.WriteAllLines(Path.Combine(Tools.LocalAppDataPath, "BlockedMods.txt"), missingMods);
                     sbar3("Removed missing mods from BlockedMods.txt");
-                    if (log)
-                        activityLog.WriteLog("Removed missing mods from BlockedMods.txt");
+                    activityLog.WriteLog("Removed missing mods from BlockedMods.txt");
                 }
             }
             catch (Exception ex)
@@ -5476,7 +5399,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
         private void BackupContentCatalog(bool useDocuments = false)
         {
             string selectedFolderPath = string.Empty, filePath = Path.Combine(Tools.GameAppData, "ContentCatalog.txt");
-            BackupFile(filePath,useDocuments);
+            BackupFile(filePath, useDocuments);
         }
 
         private void backupContentCatalogtxtToolStripMenuItem_Click(object sender, EventArgs e)
@@ -5508,8 +5431,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     File.Copy(backupFilePath, destinationPath, true);
                     RefreshDataGrid();
                     sbar("ContentCatalog.txt restored successfully.");
-                    if (log)
-                        activityLog.WriteLog($"ContentCatalog.txt restored from {selectedFolderPath}");
+                    activityLog.WriteLog($"ContentCatalog.txt restored from {selectedFolderPath}");
                 }
                 catch (Exception ex)
                 {
@@ -5790,8 +5712,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 Properties.Settings.Default.ReadfilePath = openReadfile.FileName;
                 SaveSettings();
                 sbar("Readfile path set to: " + openReadfile.FileName);
-                if (log)
-                    activityLog.WriteLog("Readfile path set to: " + openReadfile.FileName);
+                activityLog.WriteLog("Readfile path set to: " + openReadfile.FileName);
             }
         }
 
@@ -5863,7 +5784,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             sbar(e.Exception.Message);
         }
 
-        private void BackupFile(string file,bool UseDocuments)
+        private void BackupFile(string file, bool UseDocuments)
         {
             string destinationPath = string.Empty, selectedFolderPath = string.Empty;
             using FolderBrowserDialog folderBrowserDialog = new();
@@ -5877,24 +5798,21 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     destinationPath = Path.Combine(selectedFolderPath, Path.GetFileName(file));
                     if (!File.Exists(file))
                     {
-                        MessageBox.Show($"{file} not found","Source file not found", MessageBoxButtons.OK,MessageBoxIcon.Error);
+                        MessageBox.Show($"{file} not found", "Source file not found", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         LogError($"Source {file} to be backed up not found");
                         return;
                     }
                 }
             }
             else
-            {
                 destinationPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), Path.GetFileName(file));
-            }
             try
             {
                 if (destinationPath != string.Empty)
                 {
                     File.Copy(file, destinationPath, true);
                     sbar($"{file} backed up successfully.");
-                    if (log)
-                        activityLog.WriteLog($"{file} backed up to {destinationPath}");
+                    activityLog.WriteLog($"{file} backed up to {destinationPath}");
                 }
             }
             catch (Exception ex)
@@ -5904,21 +5822,23 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 return;
             }
         }
-        private void BackupLOOTUserlist(bool UseDocuments=false)
+
+        private void BackupLOOTUserlist(bool UseDocuments = false)
         {
             if (Properties.Settings.Default.LOOTPath == "")
                 return;
             string yamlPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                 $"LOOT\\games\\{GameName}\\userlist.yaml");
-            BackupFile(yamlPath,UseDocuments);
+            BackupFile(yamlPath, UseDocuments);
         }
+
         private void allTheThingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             BackupPlugins();
             BackupBlockedMods(true); // Use Documents folder
             BackupContentCatalog(true);
-            BackupProfiles();
             BackupLOOTUserlist(true);
+            BackupProfiles();
             BackupAppSettings(true);
         }
 
@@ -6049,8 +5969,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 try
                 {
                     File.Move(oldPath, newPath);
-                    if (log)
-                        activityLog.WriteLog($"Renamed: {Path.GetFileName(oldPath)} to {Path.GetFileName(newPath)}");
+                    activityLog.WriteLog($"Renamed: {Path.GetFileName(oldPath)} to {Path.GetFileName(newPath)}");
                 }
                 catch (Exception ex)
                 {
@@ -6074,8 +5993,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     if (result != null)
                     {
                         SaveSettings();
-                        if (log)
-                            activityLog.WriteLog("Starting xEdit");
+                        activityLog.WriteLog("Starting xEdit");
                         System.Windows.Forms.Application.Exit();
                     }
                 }
@@ -6118,6 +6036,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 var json = System.Text.Json.JsonSerializer.Serialize(dict, options);
                 File.WriteAllText(fileName, json);
                 sbar("Settings exported successfully");
+                activityLog.WriteLog($"Application settings exported to {fileName}");
             }
             catch (Exception ex)
             {
@@ -6367,8 +6286,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                             sbar($"Moving {Path.GetFileName(file)}...");
                             statusStrip1.Refresh();
                             File.Move(file, destPath);
-                            if (log)
-                                activityLog.WriteLog($"Moved inactive mod file {Path.GetFileName(file)} to Inactive Mods folder.");
+                            activityLog.WriteLog($"Moved inactive mod file {Path.GetFileName(file)} to Inactive Mods folder.");
                         }
                         catch (Exception ex)
                         {
@@ -6413,6 +6331,14 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 Title = "Dev Mode"
             };
 
+            JumpListLink disableSettings = new JumpListLink(Application.ExecutablePath, "Disable Settings")
+            {
+                Arguments = "-noauto",
+                IconReference = new IconReference(Application.ExecutablePath, 0),
+                WorkingDirectory = Path.GetDirectoryName(Application.ExecutablePath),
+                Title = "Disable Settings"
+            };
+
             /*JumpListLink DemoTask = new JumpListLink(Application.ExecutablePath, "Demo Profile")
             {
                 Arguments = "-profile Demo.txt",
@@ -6421,7 +6347,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 Title = "Demo Profile"
             };*/
 
-            jumpList.AddUserTasks(runGameTask, devModeTask/*, DemoTask*/);
+            jumpList.AddUserTasks(runGameTask, devModeTask, disableSettings);
             jumpList.Refresh();
         }
 
@@ -6516,8 +6442,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
         public void LogError(string message)
         {
-            if (log)
-                activityLog.WriteLog("ERROR: " + message);
+            activityLog.WriteLog("ERROR: " + message);
             sbar(message);
         }
 
@@ -6562,20 +6487,17 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             foreach (var file in files)
             {
                 if (File.Exists(file))
-                    if (log)
-                        activityLog.WriteLog("Deleting " + tempstr);
+                    activityLog.WriteLog("Deleting " + tempstr);
                 File.Delete(file);
             }
 
             tempstr = Path.Combine(GamePath, "sfse_loader.exe");
             if (File.Exists(tempstr))
             {
-                if (log)
-                    activityLog.WriteLog("Deleting " + tempstr);
+                activityLog.WriteLog("Deleting " + tempstr);
                 File.Delete(tempstr);
             }
             else
-                if (log)
                 activityLog.WriteLog($"{tempstr} not found");
         }
 
@@ -6601,7 +6523,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             var logRow = new RichTextBox { Text = activityLog.ReadLog() };
             tableLayoutPanel1.Controls.Add(logRow, 0, insertIndex);
             logRow.Dock = DockStyle.Fill;
-            // Assume you want row index 2 (third row) to be 100%
+            // Assume row index 1 (2nd row) to be 100%
             int fullRowIndex = 1;
 
             for (int i = 0; i < tableLayoutPanel1.RowCount; i++)
@@ -6619,6 +6541,12 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 }
             }
             logRow.ScrollToCaret();
+        }
+
+        private void lOOTUserlistToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            BackupFile(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                $"LOOT\\games\\{GameName}\\userlist.yaml"), false);
         }
     }
 }

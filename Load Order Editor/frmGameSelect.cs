@@ -16,11 +16,11 @@ namespace hstCMM.Load_Order_Editor
         public frmGameSelect()
         {
             InitializeComponent();
-            
+
 
             int GameIndex = Properties.Settings.Default.Game;
             var gl = GameLibrary.GetById(GameIndex);
-            for (int i = 0; i < Tools.GameLibrary.Games.Count ; i++)
+            for (int i = 0; i < Tools.GameLibrary.Games.Count; i++)
             {
                 if (Directory.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameLibrary.GetById(i).DocFolder)))
                 {
@@ -47,10 +47,10 @@ namespace hstCMM.Load_Order_Editor
         {
             List<string> GamePaths = new();
             string gamePath;
-            for (int i = 0; i <GameLibrary.Games.Count; i++)
+            for (int i = 0; i < GameLibrary.Games.Count; i++)
             {
                 gamePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameLibrary.GetById(i).DocFolder);
-  
+
                 if (Directory.Exists(gamePath))
                     GamePaths.Add(gamePath);
             }
