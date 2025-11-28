@@ -5685,19 +5685,6 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             }
         }
 
-        private void savesToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            string savesPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName, "Saves");
-            if (Directory.Exists(savesPath))
-            {
-                Tools.OpenFolder(savesPath);
-            }
-            else
-            {
-                MessageBox.Show("Save game directory not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
         private void readfilePathToolStripMenuItem_Click(object sender, EventArgs e)
         {
             System.Windows.Forms.OpenFileDialog openReadfile = new()
@@ -6547,6 +6534,15 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
         {
             BackupFile(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                 $"LOOT\\games\\{GameName}\\userlist.yaml"), false);
+        }
+
+        private void savedGameToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string savesPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName, "Saves");
+            if (Directory.Exists(savesPath))
+                Tools.OpenFolder(savesPath);
+            else
+                MessageBox.Show("Save game directory not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 }

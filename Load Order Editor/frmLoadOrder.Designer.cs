@@ -99,6 +99,7 @@
             toolStripMenuExploreAppData = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuExploreData = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuExploreGameDocs = new System.Windows.Forms.ToolStripMenuItem();
+            savedGameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             sFSEPluginsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             profileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             modBackupsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -148,7 +149,6 @@
             mnuBackupBlockedMods = new System.Windows.Forms.ToolStripMenuItem();
             backupContentCatalogtxtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             backupProfilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            savesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             appSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             lOOTUserlistToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator48 = new System.Windows.Forms.ToolStripSeparator();
@@ -847,7 +847,7 @@
             // 
             // exploreToolStripMenuItem
             // 
-            exploreToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { downloadsToolStripMenuItem, toolStripMenuExploreAppData, toolStripMenuExploreData, toolStripMenuExploreGameDocs, sFSEPluginsToolStripMenuItem, profileToolStripMenuItem, modBackupsToolStripMenuItem, appAppDataToolStripMenuItem, toolStripMenuExploreCommon, scriptLogsToolStripMenuItem });
+            exploreToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { downloadsToolStripMenuItem, toolStripMenuExploreAppData, toolStripMenuExploreData, toolStripMenuExploreGameDocs, savedGameToolStripMenuItem, sFSEPluginsToolStripMenuItem, profileToolStripMenuItem, modBackupsToolStripMenuItem, appAppDataToolStripMenuItem, toolStripMenuExploreCommon, scriptLogsToolStripMenuItem });
             exploreToolStripMenuItem.Name = "exploreToolStripMenuItem";
             exploreToolStripMenuItem.Size = new System.Drawing.Size(504, 44);
             exploreToolStripMenuItem.Text = "Explore";
@@ -855,70 +855,77 @@
             // downloadsToolStripMenuItem
             // 
             downloadsToolStripMenuItem.Name = "downloadsToolStripMenuItem";
-            downloadsToolStripMenuItem.Size = new System.Drawing.Size(338, 44);
+            downloadsToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
             downloadsToolStripMenuItem.Text = "Downloads";
             downloadsToolStripMenuItem.Click += downloadsToolStripMenuItem_Click;
             // 
             // toolStripMenuExploreAppData
             // 
             toolStripMenuExploreAppData.Name = "toolStripMenuExploreAppData";
-            toolStripMenuExploreAppData.Size = new System.Drawing.Size(338, 44);
+            toolStripMenuExploreAppData.Size = new System.Drawing.Size(359, 44);
             toolStripMenuExploreAppData.Text = "Game AppData";
             toolStripMenuExploreAppData.Click += toolStripMenuExploreAppData_Click;
             // 
             // toolStripMenuExploreData
             // 
             toolStripMenuExploreData.Name = "toolStripMenuExploreData";
-            toolStripMenuExploreData.Size = new System.Drawing.Size(338, 44);
+            toolStripMenuExploreData.Size = new System.Drawing.Size(359, 44);
             toolStripMenuExploreData.Text = "Game Data";
             toolStripMenuExploreData.Click += toolStripMenuExploreData_Click;
             // 
             // toolStripMenuExploreGameDocs
             // 
             toolStripMenuExploreGameDocs.Name = "toolStripMenuExploreGameDocs";
-            toolStripMenuExploreGameDocs.Size = new System.Drawing.Size(338, 44);
+            toolStripMenuExploreGameDocs.Size = new System.Drawing.Size(359, 44);
             toolStripMenuExploreGameDocs.Text = "Game Documents";
             toolStripMenuExploreGameDocs.Click += toolStripMenuExploreGameDocs_Click;
+            // 
+            // savedGameToolStripMenuItem
+            // 
+            savedGameToolStripMenuItem.Name = "savedGameToolStripMenuItem";
+            savedGameToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+            savedGameToolStripMenuItem.Text = "Saved Games";
+            savedGameToolStripMenuItem.Click += savedGameToolStripMenuItem_Click;
             // 
             // sFSEPluginsToolStripMenuItem
             // 
             sFSEPluginsToolStripMenuItem.Name = "sFSEPluginsToolStripMenuItem";
-            sFSEPluginsToolStripMenuItem.Size = new System.Drawing.Size(338, 44);
+            sFSEPluginsToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
             sFSEPluginsToolStripMenuItem.Text = "SFSE Plugins";
             sFSEPluginsToolStripMenuItem.Click += sFSEPluginsToolStripMenuItem_Click;
             // 
             // profileToolStripMenuItem
             // 
             profileToolStripMenuItem.Name = "profileToolStripMenuItem";
-            profileToolStripMenuItem.Size = new System.Drawing.Size(338, 44);
+            profileToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
             profileToolStripMenuItem.Text = "Profiles";
             profileToolStripMenuItem.Click += profileToolStripMenuItem_Click;
             // 
             // modBackupsToolStripMenuItem
             // 
             modBackupsToolStripMenuItem.Name = "modBackupsToolStripMenuItem";
-            modBackupsToolStripMenuItem.Size = new System.Drawing.Size(338, 44);
+            modBackupsToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
             modBackupsToolStripMenuItem.Text = "Mod Backups";
             modBackupsToolStripMenuItem.Click += modBackupsToolStripMenuItem_Click;
             // 
             // appAppDataToolStripMenuItem
             // 
             appAppDataToolStripMenuItem.Name = "appAppDataToolStripMenuItem";
-            appAppDataToolStripMenuItem.Size = new System.Drawing.Size(338, 44);
+            appAppDataToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
             appAppDataToolStripMenuItem.Text = "App AppData";
             appAppDataToolStripMenuItem.Click += appAppDataToolStripMenuItem_Click;
             // 
             // toolStripMenuExploreCommon
             // 
             toolStripMenuExploreCommon.Name = "toolStripMenuExploreCommon";
-            toolStripMenuExploreCommon.Size = new System.Drawing.Size(338, 44);
+            toolStripMenuExploreCommon.Size = new System.Drawing.Size(359, 44);
             toolStripMenuExploreCommon.Text = "App Common";
             toolStripMenuExploreCommon.Click += toolStripMenuExploreCommon_Click;
             // 
             // scriptLogsToolStripMenuItem
             // 
             scriptLogsToolStripMenuItem.Name = "scriptLogsToolStripMenuItem";
-            scriptLogsToolStripMenuItem.Size = new System.Drawing.Size(338, 44);
+            scriptLogsToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
             scriptLogsToolStripMenuItem.Text = "Script Logs";
             scriptLogsToolStripMenuItem.Click += scriptLogsToolStripMenuItem_Click;
             // 
@@ -1166,7 +1173,7 @@
             // 
             // backupToolStripMenuItem
             // 
-            backupToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuBackup, mnuBackupBlockedMods, backupContentCatalogtxtToolStripMenuItem, backupProfilesToolStripMenuItem, savesToolStripMenuItem, appSettingsToolStripMenuItem, lOOTUserlistToolStripMenuItem, toolStripSeparator48, allTheThingsToolStripMenuItem });
+            backupToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuBackup, mnuBackupBlockedMods, backupContentCatalogtxtToolStripMenuItem, backupProfilesToolStripMenuItem, appSettingsToolStripMenuItem, lOOTUserlistToolStripMenuItem, toolStripSeparator48, allTheThingsToolStripMenuItem });
             backupToolStripMenuItem.Name = "backupToolStripMenuItem";
             backupToolStripMenuItem.Size = new System.Drawing.Size(504, 44);
             backupToolStripMenuItem.Text = "Backup";
@@ -1198,13 +1205,6 @@
             backupProfilesToolStripMenuItem.Size = new System.Drawing.Size(346, 44);
             backupProfilesToolStripMenuItem.Text = "Profiles";
             backupProfilesToolStripMenuItem.Click += backupProfilesToolStripMenuItem_Click;
-            // 
-            // savesToolStripMenuItem
-            // 
-            savesToolStripMenuItem.Name = "savesToolStripMenuItem";
-            savesToolStripMenuItem.Size = new System.Drawing.Size(346, 44);
-            savesToolStripMenuItem.Text = "Saved Games";
-            savesToolStripMenuItem.Click += savesToolStripMenuItem_Click;
             // 
             // appSettingsToolStripMenuItem
             // 
@@ -2809,7 +2809,6 @@
         private System.Windows.Forms.ToolStripMenuItem modContentsToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator18;
         private System.Windows.Forms.ToolStripMenuItem backupToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem savesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuBackup;
         private System.Windows.Forms.ToolStripMenuItem mnuBackupBlockedMods;
         private System.Windows.Forms.ToolStripMenuItem backupContentCatalogtxtToolStripMenuItem;
@@ -2900,5 +2899,6 @@
         private System.Windows.Forms.ToolStripMenuItem removeSFSEToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem dockLogWindowToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem lOOTUserlistToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem savedGameToolStripMenuItem;
     }
 }
