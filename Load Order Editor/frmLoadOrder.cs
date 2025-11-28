@@ -93,9 +93,7 @@ namespace hstCMM
                 if (arg.Equals("-reset", StringComparison.InvariantCultureIgnoreCase))
                     ResetPreferences();
             }
-            frmLogWindow flw = new();
-            if (Properties.Settings.Default.LogWindow)
-                flw.Show();
+
 
             SetupGame();
 
@@ -141,6 +139,10 @@ namespace hstCMM
             DetectApps(); // Detect other apps
 
             SetTheme(); // Light/Dark mode
+
+            frmLogWindow flw = new();
+            if (Properties.Settings.Default.LogWindow)
+                flw.Show();
 
             // Create BlockedMods.txt if necessary
             try
