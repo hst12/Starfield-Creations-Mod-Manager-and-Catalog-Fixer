@@ -94,7 +94,6 @@ namespace hstCMM
                     ResetPreferences();
             }
 
-
             SetupGame();
 
             // Check catalog
@@ -343,7 +342,7 @@ namespace hstCMM
                (colorMode == SystemColorMode.System && System.Windows.Forms.Application.SystemColorMode == SystemColorMode.Dark))
             {
                 dataGridView1.EnableHeadersVisualStyles = false;
-                dataGridView1.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.Green; // Background color of selected cells
+                dataGridView1.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.Blue; // Background color of selected cells
                 dataGridView1.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.White; // Text color of selected cells
                 statusStrip1.BackColor = System.Drawing.Color.Black;
             }
