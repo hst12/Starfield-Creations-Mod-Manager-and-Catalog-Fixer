@@ -789,5 +789,17 @@ namespace hstCMM.Properties {
                 this["SaveLog"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool LogDisplayOption {
+            get {
+                return ((bool)(this["LogDisplayOption"]));
+            }
+            set {
+                this["LogDisplayOption"] = value;
+            }
+        }
     }
 }

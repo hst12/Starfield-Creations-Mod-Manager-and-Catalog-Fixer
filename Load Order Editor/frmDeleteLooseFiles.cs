@@ -39,7 +39,7 @@ namespace hstCMM.Load_Order_Editor
             if (DeletedFiles.Count == 0)
             {
                 if (log)
-                    activityLog.WriteLog("No files found to delete");
+                    activityLog.WriteLog("No loose files found to delete");
                 this.Close();
             }
         }

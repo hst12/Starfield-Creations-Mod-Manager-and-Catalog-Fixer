@@ -22,7 +22,9 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Forms;
+using System.Windows.Media.Animation;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 using File = System.IO.File;
@@ -50,10 +52,9 @@ namespace hstCMM
         private string LastProfile, tempstr;
 
         private bool Profiles = false, GridSorted = false, AutoUpdate = false, ActiveOnly = false, AutoSort = false, isModified = false,
-            LooseFiles, GameExists, devMode = false;
+            LooseFiles, GameExists, LogDisplayOption = Properties.Settings.Default.LogDisplayOption, devMode = false;
 
         private Tools.Configuration Groups = new();
-        private frmLogWindow logWindow;
 
         public class AppSettings
         {
@@ -70,16 +71,17 @@ namespace hstCMM
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(KeyEvent); // Handle <enter> for search
 
             // Logging
+            activityLog = new ActivityLog();
+            activityLog.LogRichTextBox = rtbLog; // reference the RichTextBox in TableLayoutPanel
             if (Properties.Settings.Default.Log)
             {
                 tempstr = Properties.Settings.Default.LogFileDirectory;
                 if (tempstr == "")
                     tempstr = Tools.LocalAppDataPath;
-                //activityLog = new ActivityLog(Path.Combine(tempstr, "Activity Log.txt")); // Create activity log if enabled
-                activityLog = new ActivityLog();
                 log = true;
                 activityLog.LoadLog(Path.Combine(tempstr, "Activity Log.txt"));
                 btnLog.Font = new System.Drawing.Font(btnLog.Font, log ? FontStyle.Bold : FontStyle.Regular);
+                SetupLogRow();
             }
 
             foreach (var arg in Environment.GetCommandLineArgs()) // Handle some command line arguments
@@ -138,10 +140,6 @@ namespace hstCMM
             DetectApps(); // Detect other apps
 
             SetTheme(); // Light/Dark mode
-
-            frmLogWindow flw = new();
-            if (Properties.Settings.Default.LogWindow)
-                flw.Show();
 
             // Create BlockedMods.txt if necessary
             try
@@ -267,53 +265,7 @@ namespace hstCMM
             testToolStripMenuItem.Visible = true; // Show test menu in debug mode
             gameSelectToolStripMenuItem.Visible = true;
 #endif
-
-            //SetupDB();
         }
-
-        /*private void SetupDB()
-        {
-            string connectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=\"" +
-                Tools.CommonFolder + "\\db\\hstCMM.mdf\";Integrated Security=True;Connect Timeout=30";
-
-            using (var connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-
-                // Optional: Clear the table before inserting new data
-                using (var clearCmd = new SqlCommand("DELETE FROM Mods", connection))
-                {
-                    clearCmd.ExecuteNonQuery();
-                }
-
-                // Prepare insert command (adjust column names/types as needed)
-                var cmd = new SqlCommand(
-                    @"INSERT INTO Mods (Enabled, Name, Description, LOOTGroup,  URL)
-              VALUES
-                (@Enabled, @Name, @Description, @LOOTGroup,   @URL)",
-                    connection);
-
-                // Add parameters
-                cmd.Parameters.Add("@Enabled", System.Data.SqlDbType.Bit);
-                cmd.Parameters.Add("@Name", System.Data.SqlDbType.NVarChar, 255);
-                cmd.Parameters.Add("@Description", System.Data.SqlDbType.NVarChar, 255);
-                cmd.Parameters.Add("@LOOTGroup", System.Data.SqlDbType.NVarChar, 255);
-                cmd.Parameters.Add("@URL", System.Data.SqlDbType.NVarChar, 255);
-
-                foreach (DataGridViewRow row in dataGridView1.Rows)
-                {
-                    if (row.IsNewRow || !row.Visible) continue;
-
-                    cmd.Parameters["@Enabled"].Value = row.Cells["ModEnabled"].Value ?? false;
-                    cmd.Parameters["@Name"].Value = row.Cells["PluginName"].Value ?? "";
-                    cmd.Parameters["@Description"].Value = row.Cells["Description"].Value ?? "";
-                    cmd.Parameters["@LOOTGroup"].Value = row.Cells["Group"].Value ?? "";
-                    cmd.Parameters["@URL"].Value = row.Cells["URL"].Value ?? "";
-
-                    cmd.ExecuteNonQuery();
-                }
-            }
-        }*/
 
         private void SetTheme()
         {
@@ -348,6 +300,29 @@ namespace hstCMM
             }
             else
                 dataGridView1.EnableHeadersVisualStyles = true;
+        }
+
+        private void SetupLogRow()
+        {
+            if (!Properties.Settings.Default.LogWindow)
+                return;
+            rtbLog.Visible = true;
+            rtbLog.Dock = DockStyle.Fill;
+            tableLayoutPanel1.RowStyles[1].SizeType = SizeType.Percent; // Set datagrid display height
+            tableLayoutPanel1.RowStyles[1].Height = 80f;
+            tableLayoutPanel1.RowStyles[2].SizeType = SizeType.Percent; // Set log display height
+            tableLayoutPanel1.RowStyles[2].Height = 20f;
+            rtbLog.ScrollToCaret();
+        }
+
+        private void HideLogRow()
+        {
+            rtbLog.Visible = false;
+            rtbLog.Dock = DockStyle.None;
+            tableLayoutPanel1.RowStyles[1].SizeType = SizeType.Percent; // Set datagrid display height
+            tableLayoutPanel1.RowStyles[1].Height = 100f;
+            tableLayoutPanel1.RowStyles[2].SizeType = SizeType.AutoSize; // Set log display height
+            //tableLayoutPanel1.RowStyles[2].Height = 20f;
         }
 
         private void DetectApps()
@@ -483,77 +458,12 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             }
         }
 
-        /*public class ActivityLog
-        {
-            private readonly string logFilePath;
-
-            public ActivityLog(string filePath)
-            {
-                logFilePath = filePath;
-                WriteLog($"Starting log - {logFilePath}\n");
-            }
-
-            public void WriteLog(string message)
-            {
-                try
-                {
-                    // Update log window if enabled
-                    if (Properties.Settings.Default.LogWindow && Application.OpenForms.OfType<frmLogWindow>().FirstOrDefault() is frmLogWindow logWindow)
-                    {
-                        logWindow.AppendLog($"{DateTime.Now}: {message}\n");
-                    }
-                    // Insert message at the top of the file
-                    string[] existingLines = File.Exists(logFilePath) ? File.ReadAllLines(logFilePath) : Array.Empty<string>();
-
-                    List<string> updatedLines = [DateTime.Now.ToString() + ": " + message, .. existingLines]; // Prepend the new entry
-                    File.WriteAllLines(logFilePath, updatedLines);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error writing to log file: {ex.Message}");
-                }
-            }
-
-            public string ReadLog()
-            {
-                try
-                {
-                    using (StreamReader reader = new StreamReader(logFilePath))
-                    {
-                        return reader.ReadToEnd();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error reading log file: {ex.Message}");
-                    return string.Empty;
-                }
-            }
-
-            public void DeleteLog()
-            {
-                try
-                {
-                    if (File.Exists(logFilePath))
-                    {
-                        File.Delete(logFilePath);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error deleting log file: {ex.Message}");
-                }
-            }
-
-            public void Dispose()
-            {
-            }
-        }*/
-
         public class ActivityLog : IDisposable
         {
             private readonly MemoryStream memoryStream;
             private readonly StreamWriter writer;
+
+            public System.Windows.Forms.RichTextBox LogRichTextBox { get; set; } // assign externally
 
             public ActivityLog()
             {
@@ -568,11 +478,11 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     return;
                 try
                 {
-                    // Update log window if enabled
-                    if (Properties.Settings.Default.LogWindow &&
-                        Application.OpenForms.OfType<frmLogWindow>().FirstOrDefault() is frmLogWindow logWindow)
+                    // Update log row if enabled
+                    if (Properties.Settings.Default.LogWindow && LogRichTextBox is not null)
                     {
-                        logWindow.AppendLog($"{DateTime.Now}: {message}\n");
+                        LogRichTextBox.AppendText($"{DateTime.Now}: {message}\n");
+                        LogRichTextBox.ScrollToCaret();
                     }
 
                     // Prepend new entry at the top (requires reordering)
@@ -611,14 +521,14 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
             public void DeleteLog()
             {
-                try
+                /*try
                 {
                     memoryStream.SetLength(0);
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show($"Error deleting log: {ex.Message}");
-                }
+                }*/
                 try
                 {
                     string logFilePath = Path.Combine(string.IsNullOrEmpty(Properties.Settings.Default.LogFileDirectory)
@@ -690,8 +600,8 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
             // Assign values
             toggleToolStripMenuItem.Checked = settings.Log;
-            if (activityLog is null && settings.Log)
-                EnableLog();
+            /*if (activityLog is null && settings.Log)
+                EnableLog();*/
 
             toolStripMenuProfilesOn.Checked = settings.ProfileOn;
             compareProfilesToolStripMenuItem.Checked = settings.CompareProfiles;
@@ -1083,7 +993,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
             // -- Process mod stats if the game path is set --
             if (!string.IsNullOrEmpty(GamePath) && Properties.Settings.Default.ModStats)
-                Task.Run(() => sbar(ShowModStats(CreationsPlugin, enabledCount)));
+                sbar(ShowModStats(CreationsPlugin, enabledCount));
             else
                 sbar("");
         }
@@ -1180,11 +1090,10 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             }
             catch (Exception ex)
             {
-                LogError(ex.Message);
+                LogError($"Mod stats: {ex.Message}");
 #if DEBUG
                 MessageBox.Show($"Mod stats error: {ex.Message}");
 #endif
-                sbar(ex.Message);
             }
             return StatText;
         }
@@ -1263,7 +1172,6 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             }
             catch (Exception ex)
             {
-                LogError(ex.Message);
                 FileInfo fileInfo = new FileInfo(PluginFileName);
 
                 if (fileInfo.Exists)
@@ -1277,7 +1185,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
                     MessageBox.Show($"{PluginFileName} does not exist.", "Save Profiles");
 #endif
-                    sbar($"Error saving {Path.GetFileName(PluginFileName)}: {ex.Message}");
+                    LogError($"Error saving {Path.GetFileName(PluginFileName)}: {ex.Message}");
                 }
             }
 
@@ -2003,7 +1911,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                                         }
                                         catch (Exception ex)
                                         {
-                                            activityLog.WriteLog($"Error restoring {Path.GetFileName(file)}: {ex.Message}");
+                                            LogError($"Error restoring {Path.GetFileName(file)}: {ex.Message}");
                                         }
                                     }
                                 }
@@ -2162,7 +2070,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 try { Directory.Delete(extractPath, true); }
                 catch (Exception ex)
                 {
-                    LogError(ex.Message);
+                    LogError("Unable to clear extract directory " + ex.Message);
                 }
             }
 
@@ -2206,7 +2114,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 catch (Exception ex)
                 {
                     LogError(ex.Message);
-                    MessageBox.Show($"An error occurred: {ex.Message}");
+                    MessageBox.Show(ex.Message);
                 }
                 return false;
             }
@@ -2293,7 +2201,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             }
             catch (OperationCanceledException)
             {
-                sbar3("Mod installation cancelled by user");
+                sbar("Mod installation cancelled by user");
                 activityLog.WriteLog("Mod installation cancelled by user");
                 return false;
             }
@@ -2933,7 +2841,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             // Prompt for LOOT path if not found
             if (string.IsNullOrEmpty(lootPath) && !SetLOOTPath())
             {
-                sbar2("LOOT path is required to run LOOT");
+                sbar("LOOT path is required to run LOOT");
                 return;
             }
 
@@ -2942,9 +2850,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             if (LOOTMode) cmdLine += " --auto-sort";
 
             // Temporarily disable profiles
-            Profiles = false;
-            cmbProfile.Enabled = false;
-            chkProfile.Checked = false;
+            Profiles = cmbProfile.Enabled = chkProfile.Checked = false;
 
             // Start LOOT process and wait for it to close
             ProcessStartInfo startInfo = new()
@@ -2960,7 +2866,8 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 ReadLOOTGroups();
             }
 
-            if (Properties.Settings.Default.AutoDelccc) Delccc();
+            if (Properties.Settings.Default.AutoDelccc)
+                Delccc();
             InitDataGrid();
 
             // Remove base game files if LOOT added them
@@ -3030,7 +2937,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
         private void sbar5(string StatusMessage)
         {
-            toolStripStatus5.Text = StatusMessage;
+            toolStripStatusTime.Text = StatusMessage;
         }
 
         private void sbarCCC(string sbarMessage)
@@ -3098,7 +3005,6 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 #if DEBUG
                 MessageBox.Show(ex.Message);
 #endif
-                sbar3($"Error deleting {GameName}.ccc " + ex.Message);
                 return false;
             }
         }
@@ -3320,7 +3226,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, $"Error restoring {GameName}Custom.ini");
-                LogError(ex.Message);
+                LogError("Unable to reset INI " + ex.Message);
                 return false;
             }
         }
@@ -3814,9 +3720,9 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
         private void creationKitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            const string userRoot = "HKEY_CURRENT_USER";
-            const string subkey = @"Software\Valve\Steam";
-            const string keyName = userRoot + "\\" + subkey;
+            const string UserRoot = "HKEY_CURRENT_USER";
+            const string Subkey = @"Software\Valve\Steam";
+            const string KeyName = UserRoot + "\\" + Subkey;
 
             string executable = GamePath;
             if (executable != null)
@@ -3824,7 +3730,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 try
                 {
                     SaveSettings();
-                    string stringValue = (string)Registry.GetValue(keyName, "SteamExe", ""); // Get Steam path from Registry
+                    string stringValue = (string)Registry.GetValue(KeyName, "SteamExe", ""); // Get Steam path from Registry
                     var processInfo = new ProcessStartInfo(stringValue, $"-applaunch {Tools.GameLibrary.GetById(Properties.Settings.Default.Game).CKId}");
                     var process = Process.Start(processInfo);
                     activityLog.WriteLog("Starting Creation Kit");
@@ -5079,6 +4985,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             if (activityLog is null)
                 return;
             activityLog.DeleteLog();
+            activityLog.Dispose();
             if (log)
                 EnableLog();
         }
@@ -5094,32 +5001,6 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             else
                 sbar3("Activity Log not found.");
         }
-
-        /*private void ShowLog() // Show Activity Log
-        {
-            ActivityLog log = activityLog;
-            try
-            {
-                string logContents = log.ReadLog();
-
-                if (!string.IsNullOrEmpty(logContents))
-                {
-                    // Open in your existing log window form
-                    if (Application.OpenForms.OfType<frmLogWindow>().FirstOrDefault() is frmLogWindow logWindow)
-                    {
-                        logWindow.AppendLog("\n=== Current Memory Log ===\n" + logContents);
-                    }
-                }
-                else
-                {
-                    sbar3("Activity Log is empty.");
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error showing log: {ex.Message}");
-            }
-        }*/
 
         private void viewLogToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -5154,13 +5035,19 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             tempstr = Properties.Settings.Default.LogFileDirectory;
             if (tempstr == "")
                 tempstr = Tools.LocalAppDataPath;
-            //activityLog = new ActivityLog(Path.Combine(tempstr, "Activity Log.txt"));
             activityLog = new();
             log = true;
+            activityLog.LogRichTextBox = rtbLog; // reference the RichTextBox in TableLayoutPanel
         }
 
         private void btnLog_Click(object sender, EventArgs e)
         {
+            string pathToFile = "";
+            if (Properties.Settings.Default.SaveLog)
+                pathToFile = Path.Combine(string.IsNullOrEmpty(Properties.Settings.Default.LogFileDirectory)
+               ? Tools.LocalAppDataPath : Properties.Settings.Default.LogFileDirectory, "Activity Log.txt");
+            if (!String.IsNullOrEmpty(pathToFile))
+                activityLog.PersistLog(pathToFile);
             ShowLog();
         }
 
@@ -5716,7 +5603,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             maxHeight = Screen.PrimaryScreen.WorkingArea.Height - 250;
             maxWidth = Screen.PrimaryScreen.WorkingArea.Width - 250;
 
-            int totalRowHeight = dataGridView1.ColumnHeadersHeight;
+            int totalRowHeight = dataGridView1.ColumnHeadersHeight + rtbLog.Height;
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
                 if (row.Visible)
@@ -5748,7 +5635,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                              + (dataGridView1.BorderStyle == BorderStyle.None ? 0 : 2);
 
             // Calculate total client width needed
-            int requiredClientWidth = Math.Max(totalColumnWidth + extraPadding, flowLayoutPanel1.Width);
+            int requiredClientWidth = Math.Max(totalColumnWidth + extraPadding, flowLayoutPanel1.Width + extraPadding);
 
             // Adjust the form's client size
             parentForm.Width = Math.Max(minWidth, Math.Min(requiredClientWidth, maxWidth));
@@ -5800,7 +5687,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 {
                     File.Copy(file, destinationPath, true);
                     sbar($"{file} backed up successfully.");
-                    activityLog.WriteLog($"{file} backed up to {destinationPath}");
+                    activityLog.WriteLog($"Backup up {file} to {destinationPath}");
                 }
             }
             catch (Exception ex)
@@ -6171,17 +6058,17 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
         private void generateTestPluginstxtToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            const int count = 5000;
-            const int minLength = 8;
-            const int maxLength = 16;
+            const int Count = 5000;
+            const int MinLength = 8;
+            const int MaxLength = 16;
             var rand = new Random();
             var set = new HashSet<string>();
             var chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             using var writer = new StreamWriter(Path.Combine(Properties.Settings.Default.ProfileFolder, "unique_plugins.txt"));
 
-            while (set.Count < count)
+            while (set.Count < Count)
             {
-                int len = rand.Next(minLength, maxLength + 1);
+                int len = rand.Next(MinLength, MaxLength + 1);
                 var arr = new char[len];
                 for (int i = 0; i < len; i++)
                     arr[i] = chars[rand.Next(chars.Length)];
@@ -6420,7 +6307,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 }
                 catch (Exception ex)
                 {
-                    //frmLoadOrder.LogError(ex.Message);
+                    LogError(ex.Message);
                     MessageBox.Show(ex.Message);
                 }
             }
@@ -6450,18 +6337,9 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             Properties.Settings.Default.LogWindow = logWindowToolStripMenuItem.Checked;
 
             if (logWindowToolStripMenuItem.Checked)
-            {
-                // If the window was closed/disposed, recreate it
-                if (logWindow == null || logWindow.IsDisposed)
-                {
-                    logWindow = new frmLogWindow();
-                }
-                logWindow.Show();
-            }
+                SetupLogRow();
             else
-            {
-                logWindow?.Hide();
-            }
+                HideLogRow();
         }
 
         private void saveOnExitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -6486,55 +6364,14 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 File.Delete(tempstr);
             }
             else
-                activityLog.WriteLog($"{tempstr} not found");
+                LogError($"{tempstr} not found");
         }
 
-        private void dockLogWindowToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            int insertIndex = 2; // Insert at row 2 (0-based)
-            tableLayoutPanel1.RowCount++;
 
-            // Shift controls down
-            foreach (Control ctrl in tableLayoutPanel1.Controls)
-            {
-                int row = tableLayoutPanel1.GetRow(ctrl);
-                if (row >= insertIndex)
-                {
-                    tableLayoutPanel1.SetRow(ctrl, row + 1);
-                }
-            }
-
-            // Insert row style
-            tableLayoutPanel1.RowStyles.Insert(insertIndex, new RowStyle(SizeType.AutoSize));
-
-            // Add new control
-            var logRow = new RichTextBox { Text = activityLog.ReadLog() };
-            tableLayoutPanel1.Controls.Add(logRow, 0, insertIndex);
-            logRow.Dock = DockStyle.Fill;
-            // Assume row index 1 (2nd row) to be 100%
-            int fullRowIndex = 1;
-
-            for (int i = 0; i < tableLayoutPanel1.RowCount; i++)
-            {
-                if (i == fullRowIndex)
-                {
-                    // Set row  to fill 100% of available space
-                    tableLayoutPanel1.RowStyles[i].SizeType = SizeType.Percent;
-                    tableLayoutPanel1.RowStyles[i].Height = 100F;
-                }
-                else
-                {
-                    // All other rows auto-size to their content
-                    tableLayoutPanel1.RowStyles[i].SizeType = SizeType.AutoSize;
-                }
-            }
-            logRow.ScrollToCaret();
-        }
 
         private void lOOTUserlistToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            BackupFile(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                $"LOOT\\games\\{GameName}\\userlist.yaml"), false);
+            BackupLOOTUserlist();
         }
 
         private void savedGameToolStripMenuItem_Click(object sender, EventArgs e)
