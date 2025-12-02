@@ -104,6 +104,7 @@
 * **7-Zip** - [7-Zip](https://www.7-zip.org)
 * **SevenZipExtractor** - [SevenZipExtractor](https://github.com/adoconnection/SevenZipExtractor)
 * **Narod's Steam Game Finder** - [Steam Game Finder](https://github.com/NarodGaming/steamgamefinder)
+* **Quest PDF** - [Quest PDF](https://www.questpdf.com/)
 * ZeeOgre for ideas, testing and encouragement.
 
 
