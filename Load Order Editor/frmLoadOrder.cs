@@ -22,9 +22,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Controls;
 using System.Windows.Forms;
-using System.Windows.Media.Animation;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 using File = System.IO.File;
@@ -52,7 +50,7 @@ namespace hstCMM
         private string LastProfile, tempstr;
 
         private bool Profiles = false, GridSorted = false, AutoUpdate = false, ActiveOnly = false, AutoSort = false, isModified = false,
-            LooseFiles, GameExists, LogDisplayOption = Properties.Settings.Default.LogDisplayOption, devMode = false;
+            LooseFiles, GameExists, devMode = false;
 
         private Tools.Configuration Groups = new();
 
@@ -90,6 +88,7 @@ namespace hstCMM
                 {
                     ChangeSettings(false); // Disable auto settings
                     sbar3("Auto Settings Disabled");
+                    activityLog.WriteLog("Auto Settings Disabled via command line");
                 }
 
                 if (arg.Equals("-reset", StringComparison.InvariantCultureIgnoreCase))
@@ -131,8 +130,6 @@ namespace hstCMM
                 MessageBox.Show(ex.Message, "Error opening file");
 #endif
             }
-            // Display Loose Files status
-            sbarCCC(LooseFiles ? "Loose files enabled" : "Loose files disabled");
 
             menuStrip1.Font = Properties.Settings.Default.FontSize; // Set custom font size
             this.Font = Properties.Settings.Default.FontSize;
@@ -435,7 +432,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             {
                 toolStripMenuAutoDelccc.Checked = true;
                 if (Delccc())
-                    toolStripStatus1.Text = ("CCC deleted");
+                    sbar("CCC deleted");
             }
 
             switch (GameVersion)
@@ -2940,10 +2937,6 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             toolStripStatusTime.Text = StatusMessage;
         }
 
-        private void sbarCCC(string sbarMessage)
-        {
-            toolStripStatus1.Text = sbarMessage;
-        }
 
         private void toolStripMenuLoot_Click_1(object sender, EventArgs e)
         {
@@ -3194,7 +3187,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 _ => "Unknown game version"
             };
 
-            sbar2($"{GameName} - {version}");
+            sbar2(version);
         }
 
         private bool ResetGameCustomINI(bool ConfirmOverwrite)  // true for confirmation
@@ -3396,6 +3389,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 RunLOOT(true);
 
             sbar($"Changes made: {changes}");
+            activityLog.WriteLog($"Update check. Changes made: {changes}");
         }
 
         private void btnUpdate_Click(object sender, EventArgs e)
@@ -3422,7 +3416,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 {
                     File.AppendAllLines(filePath, linesToAppend.Where(line => !existingLines.Contains(line)));
                     LooseFiles = true;
-                    sbarCCC("Loose Files Enabled");
+                    sbar("Loose Files Enabled");
                     activityLog.WriteLog("Loose files enabled in StarfieldCustom.ini");
                 }
             }
@@ -3434,7 +3428,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
                 File.WriteAllLines(filePath, updatedLines);
                 LooseFiles = false;
-                sbarCCC("Loose Files Disabled");
+                sbar("Loose Files Disabled");
                 activityLog.WriteLog("Loose files disabled in StarfieldCustom.ini");
             }
         }
@@ -3569,7 +3563,6 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
         private void LooseFilesMenuUpdate()
         {
             LooseFiles = looseFilesDisabledToolStripMenuItem.Checked = LooseFiles;
-            sbarCCC(LooseFiles ? "Loose files enabled" : "Loose files disabled");
             Properties.Settings.Default.LooseFiles = LooseFiles;
         }
 
@@ -3834,9 +3827,9 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 #endif
             }
             if (LooseFiles)
-                sbarCCC("Loose Files Enabled");
+                sbar("Loose Files Enabled");
             else
-                sbarCCC("Loose Files Disabled");
+                sbar("Loose Files Disabled");
             looseFilesDisabledToolStripMenuItem.Checked = LooseFiles;
         }
 
@@ -4986,6 +4979,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 return;
             activityLog.DeleteLog();
             activityLog.Dispose();
+            rtbLog.Clear();
             if (log)
                 EnableLog();
         }
@@ -6367,8 +6361,6 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 LogError($"{tempstr} not found");
         }
 
-
-
         private void lOOTUserlistToolStripMenuItem_Click(object sender, EventArgs e)
         {
             BackupLOOTUserlist();
@@ -6381,6 +6373,17 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 Tools.OpenFolder(savesPath);
             else
                 MessageBox.Show("Save game directory not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+        private void rtbLog_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+                contextMenuLogRow.Show(Cursor.Position);
+        }
+
+        private void toolStripClearLogRow_Click(object sender, EventArgs e)
+        {
+            rtbLog.Clear();
         }
     }
 }
