@@ -2823,8 +2823,6 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             bool profilesActive = Profiles;
             string lootPath = Properties.Settings.Default.LOOTPath;
 
-            activityLog.WriteLog($"Running LOOT: {LOOTMode}");
-
             if (isModified) SavePlugins();
 
             // Try detecting LOOT if installed in default location
@@ -2857,6 +2855,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 WorkingDirectory = Path.GetDirectoryName(lootPath) ?? string.Empty
             };
 
+            activityLog.WriteLog($"Starting LOOT with arguments: {cmdLine}");
             using (Process process = Process.Start(startInfo))
             {
                 process.WaitForExit();
