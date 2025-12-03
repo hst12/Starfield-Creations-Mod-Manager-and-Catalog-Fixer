@@ -69,6 +69,7 @@ namespace hstCMM.Load_Order_Editor
                 if (openFileDialog1.ShowDialog() == DialogResult.OK && !string.IsNullOrEmpty(openFileDialog1.FileName))
                 {
                     Properties.Settings.Default.LOOTPath = openFileDialog1.FileName;
+                    txtLOOT.Text = openFileDialog1.FileName;
                     SaveSettings();
                     MessageBox.Show($"LOOT path set to {openFileDialog1.FileName}", "Restart the app for changes to take effect");
                 }
@@ -88,6 +89,7 @@ namespace hstCMM.Load_Order_Editor
             if (MO2Path == DialogResult.OK && openFileDialog1.FileName != "")
             {
                 Properties.Settings.Default.MO2Path = openFileDialog1.FileName;
+                txtMO2.Text = openFileDialog1.FileName;
                 //mO2ToolStripMenuItem.Visible = true;
             }
         }
@@ -103,9 +105,12 @@ namespace hstCMM.Load_Order_Editor
                 if (VortexPath == DialogResult.OK && openFileDialog1.FileName != "")
                 {
                     Properties.Settings.Default.VortexPath = openFileDialog1.FileName;
+                    txtVortex.Text = openFileDialog1.FileName;
                     //vortexToolStripMenuItem.Visible = true;
                 }
             }
+            else
+                txtVortex.Text = Properties.Settings.Default.VortexPath;
         }
 
         private void btnxEdit_Click(object sender, EventArgs e)
@@ -117,6 +122,7 @@ namespace hstCMM.Load_Order_Editor
             if (xEditPath == DialogResult.OK && openFileDialog1.FileName != "")
             {
                 Properties.Settings.Default.xEditPath = openFileDialog1.FileName;
+                txtxEdit.Text = openFileDialog1.FileName;
                 //xEditToolStripMenuItem.Visible = true;
             }
         }
