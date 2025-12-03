@@ -28,10 +28,14 @@ namespace hstCMM.Load_Order_Editor
 
             // match files like 'modname - textures.ba2', 'modname - textures01.ba2', 'modname - textures02.ba2', etc.
             string[] textureFiles = Directory.GetFiles(directoryPath, Path.GetFileNameWithoutExtension(modName) + "* - textures*.ba2");
+            // match files like 'modname - main.ba2', 'modname - main01.ba2', 'modname - main02.ba2', etc.
+            string[] mainFiles = Directory.GetFiles(directoryPath, Path.GetFileNameWithoutExtension(modName) + "* - main*.ba2");
 
             btnShowArchives.Enabled = false;
 
             foreach (string file in textureFiles)
+                files.Add(file);
+            foreach (string file in mainFiles)
                 files.Add(file);
 
             if (File.Exists(ModFile + " - main.ba2"))

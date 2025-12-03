@@ -22,6 +22,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Forms;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
@@ -303,12 +304,14 @@ namespace hstCMM
         {
             if (!Properties.Settings.Default.LogWindow)
                 return;
-            rtbLog.Visible = true;
-            rtbLog.Dock = DockStyle.Fill;
+
             tableLayoutPanel1.RowStyles[1].SizeType = SizeType.Percent; // Set datagrid display height
             tableLayoutPanel1.RowStyles[1].Height = 80f;
             tableLayoutPanel1.RowStyles[2].SizeType = SizeType.Percent; // Set log display height
             tableLayoutPanel1.RowStyles[2].Height = 20f;
+            rtbLog.Visible = true;
+            rtbLog.Dock = DockStyle.Fill;
+            ResizeForm();
             rtbLog.ScrollToCaret();
         }
 
@@ -316,10 +319,11 @@ namespace hstCMM
         {
             rtbLog.Visible = false;
             rtbLog.Dock = DockStyle.None;
+            rtbLog.Height = 0;
             tableLayoutPanel1.RowStyles[1].SizeType = SizeType.Percent; // Set datagrid display height
             tableLayoutPanel1.RowStyles[1].Height = 100f;
             tableLayoutPanel1.RowStyles[2].SizeType = SizeType.AutoSize; // Set log display height
-            //tableLayoutPanel1.RowStyles[2].Height = 20f;
+            ResizeForm();
         }
 
         private void DetectApps()
@@ -986,7 +990,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             dataGridView1.EndEdit();
 
             if (Properties.Settings.Default.Resize)
-                ResizeFormToFitDataGridView(this);
+                ResizeForm();
 
             // -- Process mod stats if the game path is set --
             if (!string.IsNullOrEmpty(GamePath) && Properties.Settings.Default.ModStats)
@@ -2106,14 +2110,16 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     File.Copy(modFilePath, Path.Combine(GamePath, "Data", Path.GetFileName(modFilePath)), true);
                     sbar2($"Copied {Path.GetFileName(modFilePath)} to Data folder");
                     activityLog.WriteLog($"Copied {modFilePath} to {Path.Combine(GamePath, "Data", Path.GetFileName(modFilePath))}");
-                    //UpdatePlugins();
                 }
                 catch (Exception ex)
                 {
                     LogError(ex.Message);
                     MessageBox.Show(ex.Message);
+                    return false;
                 }
-                return false;
+                if (modFilePath.Contains(".esm"))
+                    UpdatePlugins();
+                return true;
             }
 
             activityLog.WriteLog($"Starting mod install: {modFilePath}");
@@ -2587,6 +2593,15 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                         activityLog.WriteLog($"Deleted: {file}");
                     }
 
+                    // match files like 'modname - main.ba2', 'modname - main01.ba2', 'modname - main02.ba2', etc.
+                    string[] mainFiles = Directory.GetFiles(directoryPath, modName + "* - main*.ba2");
+
+                    foreach (string file in mainFiles)
+                    {
+                        File.Delete(file);
+                        activityLog.WriteLog($"Deleted: {file}");
+                    }
+
                     SavePlugins();
                     sbar3($"Mod '{modName}' uninstalled.");
                 }
@@ -2936,7 +2951,6 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             toolStripStatusTime.Text = StatusMessage;
         }
 
-
         private void toolStripMenuLoot_Click_1(object sender, EventArgs e)
         {
             RunLOOT(false);
@@ -3079,7 +3093,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     if (!InstallMod(item))
                         break;
                     isModified = true;
-                    SavePlugins();
+                    //SavePlugins();
                 }
                 if (AutoSort)
                     RunLOOT(true);
@@ -3550,7 +3564,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             sbar4(showAll ? "All mods shown" : "Active mods only");
 
             if (resizeToolStripMenuItem.Checked)
-                ResizeFormToFitDataGridView(this);
+                ResizeForm();
             btnActiveOnly.Font = new System.Drawing.Font(btnActiveOnly.Font, ActiveOnly ? FontStyle.Bold : FontStyle.Regular);
         }
 
@@ -5590,56 +5604,60 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             frmCacheConfig.Show();
         }
 
-        private void ResizeFormToFitDataGridView(Form parentForm)
+        private void ResizeForm()
         {
-            int minHeight = 800, maxHeight, minWidth = 800, maxWidth;
-            maxHeight = Screen.PrimaryScreen.WorkingArea.Height - 250;
-            maxWidth = Screen.PrimaryScreen.WorkingArea.Width - 250;
+            // Force autosize calculation
+            dataGridView1.AutoResizeColumns();
+            dataGridView1.AutoResizeRows();
 
-            int totalRowHeight = dataGridView1.ColumnHeadersHeight + rtbLog.Height;
-            foreach (DataGridViewRow row in dataGridView1.Rows)
-            {
-                if (row.Visible)
-                    totalRowHeight += row.Height;
-            }
-
-            // Extra padding for spacing, borders, etc.
-            int padding = 250;
-            int desiredHeight = totalRowHeight + padding;
-            //int desiredWidth = totalRowWidth;
-
-            // Clamp to min/max limits
-            int clampedHeight = Math.Max(minHeight, Math.Min(desiredHeight, maxHeight));
-
-            parentForm.Height = clampedHeight;
-
-            int totalColumnWidth = 0;
-
-            // Sum up the widths of all visible columns
+            // Calculate total width of visible columns
+            int totalWidth = 0;
             foreach (DataGridViewColumn col in dataGridView1.Columns)
             {
                 if (col.Visible)
-                    totalColumnWidth += col.Width;
+                    totalWidth += col.Width;
             }
 
-            // Add padding for row headers, vertical scrollbar, and borders
-            int extraPadding = SystemInformation.VerticalScrollBarWidth
-                             + dataGridView1.RowHeadersWidth
-                             + (dataGridView1.BorderStyle == BorderStyle.None ? 0 : 2);
+            // Calculate total height of visible rows
+            int totalHeight = dataGridView1.ColumnHeadersHeight;
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                if (row.Visible)
+                    totalHeight += row.Height;
+            }
+            totalHeight += dataGridView1.Margin.All * 30;
 
-            // Calculate total client width needed
-            int requiredClientWidth = Math.Max(totalColumnWidth + extraPadding, flowLayoutPanel1.Width + extraPadding);
+            // Add padding for borders, scrollbars, margins
+            totalWidth += SystemInformation.VerticalScrollBarWidth + dataGridView1.RowHeadersWidth +
+                SystemInformation.BorderSize.Width * 2 + dataGridView1.Margin.All * 2;
 
-            // Adjust the form's client size
-            parentForm.Width = Math.Max(minWidth, Math.Min(requiredClientWidth, maxWidth));
-            this.CenterToScreen();
+            // Desired size
+            int desiredWidth = totalWidth + 50;
+            if (desiredWidth < flowLayoutPanel1.Width + 200)
+                desiredWidth = flowLayoutPanel1.Width + 200;
+            int desiredHeight = totalHeight + menuStrip1.Height + rtbLog.Height + flowLayoutPanel1.Height +
+                statusStrip1.Height + SystemInformation.CaptionHeight + SystemInformation.BorderSize.Height;
+
+            // Clamp to screen working area
+            Rectangle screenBounds = Screen.FromControl(this).WorkingArea;
+            int finalWidth = Math.Min(desiredWidth, screenBounds.Width);
+            int finalHeight = Math.Min(desiredHeight, screenBounds.Height);
+
+            // Apply size
+            this.Size = new System.Drawing.Size(finalWidth, finalHeight);
+
+            // Center form
+            int x = (screenBounds.Width - this.Width) / 2 + screenBounds.Left;
+            int y = (screenBounds.Height - this.Height) / 2 + screenBounds.Top;
+
+            this.Location = new Point(x, y);
         }
 
         private void resizeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             resizeToolStripMenuItem.Checked = Properties.Settings.Default.Resize = !resizeToolStripMenuItem.Checked;
             if (resizeToolStripMenuItem.Checked)
-                ResizeFormToFitDataGridView(this);
+                ResizeForm();
         }
 
         private void frmLoadOrder_Resize(object sender, EventArgs e)
@@ -5818,10 +5836,11 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             string[] matchedFiles = Directory.GetFiles(directoryPath, Path.GetFileName(pattern));
             files.AddRange(matchedFiles);
 
-#if DEBUG
-            foreach (var item in files)
-                Debug.WriteLine("Found: " + item);
-#endif
+            // Handle texture files like " - main*.ba2"
+            pattern = ModName + " - main*.ba2";
+            matchedFiles = Directory.GetFiles(directoryPath, Path.GetFileName(pattern));
+            files.AddRange(matchedFiles);
+
 
             string userInput = Interaction.InputBox("New Name:", "Rename Mod", ModName);
             if (string.IsNullOrWhiteSpace(userInput))
@@ -6223,7 +6242,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
         {
             SetupJumpList();
             if (Properties.Settings.Default.Resize)
-                ResizeFormToFitDataGridView(this);
+                ResizeForm();
         }
 
         private void generateExcludeFileToolStripMenuItem_Click(object sender, EventArgs e)
