@@ -4028,8 +4028,11 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                             files.Add(textureFile);
                     }
 
-                    if (File.Exists(ModFile + " - main.ba2"))
-                        files.Add(ModFile + " - main.ba2");
+                    foreach (var mainFile in Directory.EnumerateFiles(directoryPath, ModName + " - main*.ba2"))
+                    {
+                        if (File.Exists(mainFile))
+                            files.Add(mainFile);
+                    }
 
                     if (File.Exists(ModFile + " - voices_en.ba2"))
                         files.Add(ModFile + " - voices_en.ba2");
@@ -4124,8 +4127,11 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                             files.Add(textureFile);
                     }
 
-                    if (File.Exists(ModFile + " - main.ba2"))
-                        files.Add(ModFile + " - main.ba2");
+                    foreach (var mainFile in Directory.EnumerateFiles(directoryPath, ModName + " - main*.ba2"))
+                    {
+                        if (File.Exists(mainFile))
+                            files.Add(mainFile);
+                    }
 
                     if (File.Exists(ModFile + " - voices_en.ba2"))
                         files.Add(ModFile + " - voices_en.ba2");
@@ -4603,7 +4609,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             }
         }
 
-        private async void UpdateArchiveModsAsync()
+        private async Task UpdateArchiveModsAsync()
         {
             cancellationTokenSource = new CancellationTokenSource();
             try
@@ -4620,9 +4626,9 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             }
         }
 
-        private void updateArchivedModsToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void updateArchivedModsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            UpdateArchiveModsAsync();
+            await UpdateArchiveModsAsync();
         }
 
         private static int DeleteLooseFileFolders()
@@ -5840,7 +5846,6 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             pattern = ModName + " - main*.ba2";
             matchedFiles = Directory.GetFiles(directoryPath, Path.GetFileName(pattern));
             files.AddRange(matchedFiles);
-
 
             string userInput = Interaction.InputBox("New Name:", "Rename Mod", ModName);
             if (string.IsNullOrWhiteSpace(userInput))

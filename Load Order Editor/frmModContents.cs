@@ -38,9 +38,6 @@ namespace hstCMM.Load_Order_Editor
             foreach (string file in mainFiles)
                 files.Add(file);
 
-            if (File.Exists(ModFile + " - main.ba2"))
-                files.Add(ModFile + " - main.ba2");
-
             if (File.Exists(ModFile + " - voices_en.ba2"))
                 files.Add(ModFile + " - voices_en.ba2");
 
