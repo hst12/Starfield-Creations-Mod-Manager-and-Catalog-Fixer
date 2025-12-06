@@ -14,35 +14,17 @@ namespace hstCMM.Shared // Various functions used by the app
 {
     internal class Tools
     {
-        public static string CommonFolder { get; set; } = Path.Combine(Environment.CurrentDirectory, "Common"); // Used to read misc txt files used by the app
-        public static string DocumentationFolder { get; set; } = Path.Combine(Environment.CurrentDirectory, "Documentation");
-        public static string LocalAppDataPath { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "hstCMM");
-
-        public string GamePath { get; set; }
-
-        public static string GameName { get; set; } = GameLibrary.GetById(Properties.Settings.Default.Game).GameName;
-
-        public string GamePathMS { get; set; }
-        public List<string> BethFiles { get; set; }
-        public static string CatalogVersion { get; set; }
-        public static string GameAppData { get; set; }
-        public List<string> PluginList { get; set; }
-        public string GameApp { get; set; } = GameLibrary.GetById(Properties.Settings.Default.Game).AppData;
-
-        public static readonly List<string> Suffixes =
-[
-    " - main",
-    " - textures",
-    " - textures_xbox",
-    " - voices_en",
-    " - localization",
-    " - shaders",
-    " - voices_de",
-    " - voices_en",
-    " - voices_es",
-    " - voices_fr",
-    " - voices_ja"
-];
+        public static readonly List<string> LooseFolderDirsOnly =
+        [
+            "meshes",
+"interface",
+"textures",
+"geometries",
+"scripts",
+"materials",
+"sound" ,
+"naf"
+        ];
 
         public static readonly List<string> LooseFolders =
 [ "meshes",
@@ -65,17 +47,20 @@ namespace hstCMM.Shared // Various functions used by the app
 "naf"
 ];
 
-        public static readonly List<string> LooseFolderDirsOnly =
-        [
-            "meshes",
-"interface",
-"textures",
-"geometries",
-"scripts",
-"materials",
-"sound" ,
-"naf"
-        ];
+        public static readonly List<string> Suffixes =
+[
+    " - main",
+    " - textures",
+    " - textures_xbox",
+    " - voices_en",
+    " - localization",
+    " - shaders",
+    " - voices_de",
+    " - voices_en",
+    " - voices_es",
+    " - voices_fr",
+    " - voices_ja"
+];
 
         public Tools() // Constructor
         {
@@ -115,6 +100,19 @@ namespace hstCMM.Shared // Various functions used by the app
             }
         }
 
+        public static string CatalogVersion { get; set; }
+        public static string CommonFolder { get; set; } = Path.Combine(Environment.CurrentDirectory, "Common"); // Used to read misc txt files used by the app
+        public static string DocumentationFolder { get; set; } = Path.Combine(Environment.CurrentDirectory, "Documentation");
+        public static string GameAppData { get; set; }
+        public static string GameName { get; set; } = GameLibrary.GetById(Properties.Settings.Default.Game).GameName;
+        public static string LocalAppDataPath { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "hstCMM");
+
+        public List<string> BethFiles { get; set; }
+        public string GameApp { get; set; } = GameLibrary.GetById(Properties.Settings.Default.Game).AppData;
+        public string GamePath { get; set; }
+        public string GamePathMS { get; set; }
+        public List<string> PluginList { get; set; }
+
         public static List<string> BlockedMods()
         {
             try
@@ -129,68 +127,28 @@ namespace hstCMM.Shared // Various functions used by the app
             }
             catch (Exception ex)
             {
-#if DEBUG
-                MessageBox.Show(ex.Message, "BlockedMods file missing. Repair or re-install the app", MessageBoxButtons.OK, MessageBoxIcon.Stop);
-#endif
                 return null;
             }
         }
 
-        public static string MakeHeaderBlank() // Used to build ContentCatalog.txt header
+        public static bool CheckGame() // Check if Game appdata folder exists, true if it does
         {
-            string HeaderString = "";
-
-            try
+            if (!Directory.Exists(GameAppData))
             {
-                HeaderString = File.ReadAllText(Path.Combine(CommonFolder, "header.txt")); // Read the header from file
+                return false;
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Missing Header.txt file - unable to continue. Re-install or repair the tool");
-                Application.Exit();
-            }
-            return HeaderString;
+            else
+                return true;
         }
 
-        public static string MakeHeader() // Used to build ContentCatalog.txt header
+        public static DialogResult ConfirmAction(string ActionText, string ActionTitle = "",
+            MessageBoxButtons buttons = MessageBoxButtons.OKCancel, MessageBoxIcon icon = MessageBoxIcon.Stop,
+            bool overRide = false) // overRide - always show dialog
         {
-            string HeaderString = MakeHeaderBlank();
-            HeaderString = HeaderString[..^5] + ",";
-            return HeaderString;
-        }
+            if (frmLoadOrder.NoWarn && !overRide)
+                return DialogResult.OK;
 
-        public static void OpenUrl(string url) // Launch web browser from argument
-        {
-            try
-            {
-                Process.Start(new ProcessStartInfo { FileName = url, UseShellExecute = true });
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error opening URL", MessageBoxButtons.OK, MessageBoxIcon.Stop);
-            }
-        }
-
-        public string GetSteamGamePath(string gameName)
-        {
-            try
-            {
-                SteamGameLocator steamGameLocator = new SteamGameLocator();
-
-                Properties.Settings.Default.GamePath = GamePath =
-                steamGameLocator.getGameInfoByName(gameName).steamGameLocation.Replace(@"\\", @"\");
-
-                SaveSettings();
-                return GamePath;
-            }
-            catch (Exception ex)
-            {
-#if DEBUG
-                MessageBox.Show(ex.Message);
-#endif
-                //LogError(ex.Message);
-                return string.Empty;
-            }
+            return MessageBox.Show(ActionText, ActionTitle, buttons, icon);
         }
 
         public static DateTime ConvertTime(double TimeToConvert) // Convert catalog time format to human readable
@@ -205,88 +163,6 @@ namespace hstCMM.Shared // Various functions used by the app
                 start = new(1970, 1, 1, 0, 0, 0, 0); // Return 1970 if error converting
             }
             return start;
-        }
-
-        public static string GetCatalogPath()
-        {
-            return Path.Combine(GameAppData, "ContentCatalog.txt");
-        }
-
-        public class Group // LOOT
-        {
-            public string name { get; set; }
-            public List<string> after { get; set; }
-        }
-
-        public class Plugin // LOOT
-        {
-            public string name { get; set; }
-            public string display { get; set; }
-            public string group { get; set; }
-            public List<string> after { get; set; }
-            public List<string> inc { get; set; }
-            public List<Req> req { get; set; }
-            public List<Msg> msg { get; set; }
-            public List<Url> url { get; set; }
-        }
-
-        public class Req // LOOT
-        {
-            public string name { get; set; }
-            public string display { get; set; }
-        }
-
-        public class Msg // LOOT
-        {
-            public string type { get; set; }
-            public string content { get; set; }
-        }
-
-        public class Url // LOOT
-        {
-            public string link { get; set; }
-            public string name { get; set; }
-        }
-
-        public class Prelude// LOOT
-        {
-            public List<MessageAnchor> common { get; set; }
-        }
-
-        public class MessageAnchor// LOOT
-        {
-            public string type { get; set; }
-            public string content { get; set; }
-            public List<string> subs { get; set; }
-            public string condition { get; set; }
-        }
-
-        public class Globals// LOOT
-        {
-            public string type { get; set; }
-            public string content { get; set; }
-            public List<string> subs { get; set; }
-            public string condition { get; set; }
-        }
-
-        public class Configuration // LOOT
-        {
-            public Prelude prelude { get; set; }
-            public List<string> bash_tags { get; set; }
-            public List<Group> groups { get; set; }
-            public List<Plugin> plugins { get; set; }
-            public List<Plugin> common { get; set; }
-            public List<Globals> globals { get; set; }
-        }
-
-        public class Creation // ContentCatalog.txt format
-        {
-            public bool AchievementSafe { get; set; }
-            public string[] Files { get; set; }
-            public long FilesSize { get; set; }
-            public long Timestamp { get; set; }
-            public string Title { get; set; }
-            public string Version { get; set; }
         }
 
         public static bool FileCompare(string file1, string file2)
@@ -322,25 +198,65 @@ namespace hstCMM.Shared // Various functions used by the app
             }
             catch (Exception ex)
             {
-#if DEBUG
-                MessageBox.Show(ex.Message, "File Compare error");
-#endif
                 return false;
             }
         }
 
-        public static bool CheckGame() // Check if Game appdata folder exists, true if it does
+        public static string GetCatalogPath()
         {
-            if (!Directory.Exists(GameAppData))
+            return Path.Combine(GameAppData, "ContentCatalog.txt");
+        }
+
+        public static string MakeHeader() // Used to build ContentCatalog.txt header
+        {
+            string HeaderString = MakeHeaderBlank();
+            HeaderString = HeaderString[..^5] + ",";
+            return HeaderString;
+        }
+
+        public static string MakeHeaderBlank() // Used to build ContentCatalog.txt header
+        {
+            string HeaderString = "";
+
+            try
             {
-#if DEBUG
-                MessageBox.Show($"Unable to continue. Is {GameName} installed correctly?", $"{GameName} AppData directory not found",
-                    MessageBoxButtons.OK, MessageBoxIcon.Stop);
-#endif
-                return false;
+                HeaderString = File.ReadAllText(Path.Combine(CommonFolder, "header.txt")); // Read the header from file
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Missing Header.txt file - unable to continue. Re-install or repair the tool");
+                Application.Exit();
+            }
+            return HeaderString;
+        }
+
+        public static void OpenFile(string file) // Used to open misc text files
+        {
+            if (File.Exists(file))
+            {
+                Process.Start(new ProcessStartInfo(file) { UseShellExecute = true });
             }
             else
-                return true;
+            {
+                MessageBox.Show("File not found: " + file, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        public static void OpenFolder(string folder) // Used to open misc folders in Explorer
+        {
+            Process.Start(new ProcessStartInfo(folder) { UseShellExecute = true });
+        }
+
+        public static void OpenUrl(string url) // Launch web browser from argument
+        {
+            try
+            {
+                Process.Start(new ProcessStartInfo { FileName = url, UseShellExecute = true });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error opening URL", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+            }
         }
 
         public static void ShowAbout()
@@ -353,6 +269,226 @@ namespace hstCMM.Shared // Various functions used by the app
             AboutBox.Height = screenHeight / 2;
             AboutBox.StartPosition = FormStartPosition.CenterScreen;
             AboutBox.ShowAsync();
+        }
+
+        public static bool StartGame(int GameVersion) // Determine which version of the game to start
+        {
+            return GameVersion switch
+            {
+                0 => StartGameSteam(),
+                1 => StartGameMS(),
+                2 => StartGameCustom(),
+                3 => StartGameSFSE(),
+                _ => false // Default case for invalid GameVersion values
+            };
+        }
+
+        public static bool StartGameCustom() // Start game with custom exe
+        {
+            string cmdLine = Properties.Settings.Default.CustomEXE;
+            if (cmdLine is null)
+                return false;
+
+            try
+            {
+                var startInfo = new ProcessStartInfo
+                {
+                    FileName = cmdLine,
+                    WorkingDirectory = Properties.Settings.Default.GamePath,
+                    UseShellExecute = false //
+                };
+                Process.Start(startInfo);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "\n" + cmdLine, "Error");
+                return false;
+            }
+        }
+
+        public static bool StartGameMS() // Start game with MS Store version
+        {
+            //string cmdLine = @"shell:AppsFolder\BethesdaSoftworks.ProjectGold_3275kfvn8vcwc!Game";
+            string cmdLine = Path.Combine(Properties.Settings.Default.GamePathMS, $"{GameName}.exe");
+
+            try
+            {
+                var startInfo = new ProcessStartInfo
+                {
+                    FileName = cmdLine,
+                    WorkingDirectory = Properties.Settings.Default.GamePathMS,
+                    UseShellExecute = false //
+                };
+                Process.Start(startInfo);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "\n" + cmdLine, "Error");
+                return false;
+            }
+        }
+
+        public static bool StartGameSFSE() // Start game with SFSE loader
+        {
+            string cmdLine = Path.Combine(Properties.Settings.Default.GamePath, "sfse_loader.exe");
+            if (cmdLine is null)
+                return false;
+
+            try
+            {
+                var startInfo = new ProcessStartInfo
+                {
+                    FileName = cmdLine,
+                    WorkingDirectory = Properties.Settings.Default.GamePath,
+                    UseShellExecute = false //
+                };
+                Process.Start(startInfo);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "\n" + cmdLine, "Error");
+                return false;
+            }
+        }
+
+        public static bool StartGameSteam() // Start game with Steam version
+        {
+            const string userRoot = "HKEY_CURRENT_USER";
+            const string subkey = @"Software\Valve\Steam";
+            const string keyName = userRoot + "\\" + subkey;
+
+            try
+            {
+                string stringValue = (string)Registry.GetValue(keyName, "SteamExe", ""); // Get Steam path from Registry
+                SteamGameLocator steamGameLocator = new();
+                string gameID = steamGameLocator.getGameInfoByName(GameName).steamGameID;
+                var processInfo = new ProcessStartInfo(stringValue, $"-applaunch {gameID}");
+                var process = Process.Start(processInfo);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Unable to start game");
+                return false;
+            }
+        }
+
+        public string AppName()
+        {
+            Assembly assembly = Assembly.GetExecutingAssembly();
+
+            // Retrieve the AssemblyTitle attribute
+            AssemblyTitleAttribute titleAttribute = assembly
+                .GetCustomAttribute<AssemblyTitleAttribute>();
+
+            // Print the title (or fallback to assembly name if not set)
+            return titleAttribute != null ? titleAttribute.Title : assembly.GetName().Name;
+        }
+
+        public List<string> BGSArchives()
+        {
+            List<string> bgsArchives = new();
+            using (StreamReader sr = new StreamReader(Path.Combine(CommonFolder, Tools.GameLibrary.GetById(Properties.Settings.Default.Game).ExcludeFile + " Archives.txt")))
+            {
+                string line;
+                while ((line = sr.ReadLine()) != null)
+                {
+                    bgsArchives.Add(line.ToLower());
+                }
+            }
+            return bgsArchives;
+        }
+
+        public bool DetectVortex()
+        {
+            string keyName = @"HKEY_CLASSES_ROOT\nxm\shell\open\command";
+            string valueName = ""; // Default value
+
+            if (Properties.Settings.Default.VortexPath == "")
+            {
+                // Read the registry value
+                object value = Registry.GetValue(keyName, valueName, null);
+                if (value != null)
+                {
+                    int startIndex = value.ToString().IndexOf('"') + 1;
+                    int endIndex = value.ToString().IndexOf('"', startIndex);
+
+                    if (startIndex > 0 && endIndex > startIndex)
+                    {
+                        string extracted = value.ToString()[startIndex..endIndex];
+                        Properties.Settings.Default.VortexPath = extracted;
+                        SaveSettings();
+                        //vortexToolStripMenuItem.Visible = true;
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        public List<string> GetPluginList(int Game) // Get list of plugins from game Data folder
+        {
+            string dataPath = Path.Combine(frmLoadOrder.GamePath, "Data");
+            List<string> plugins = new();
+            string[] patterns;
+            try
+            {
+                if (Game == 0) // Starfield or possibly future BGS games without ESL support
+                    patterns = new[] { "*.esm", "*.esp" };
+                else
+                    patterns = new[] { "*.esm", "*.esl", "*.esp" };
+                foreach (var pattern in patterns)
+                {
+                    var modFiles = Directory.EnumerateFiles(dataPath, pattern, SearchOption.TopDirectoryOnly)
+                                    .Select(Path.GetFileName)
+                                    .Where(fileName => !BethFiles.Contains(fileName))
+                                    .ToList();
+                    foreach (var item in modFiles)
+                        plugins.Add(item);
+                }
+
+                return plugins;
+            }
+            catch (Exception ex)
+            {
+                return new List<string>();
+            }
+        }
+
+        public string GetSteamGamePath(string gameName)
+        {
+            try
+            {
+                SteamGameLocator steamGameLocator = new SteamGameLocator();
+
+                Properties.Settings.Default.GamePath = GamePath =
+                steamGameLocator.getGameInfoByName(gameName).steamGameLocation.Replace(@"\\", @"\");
+
+                SaveSettings();
+                return GamePath;
+            }
+            catch (Exception ex)
+            {
+                //LogError(ex.Message);
+                return string.Empty;
+            }
+        }
+
+        public void RestartApp()
+        {
+            ProcessStartInfo psi = new ProcessStartInfo
+            {
+                FileName = Application.ExecutablePath,
+                Arguments = "-dev",
+                UseShellExecute = true
+            };
+
+            Process.Start(psi);
+            Environment.Exit(0); // Ensure graceful shutdown
         }
 
         public string SetGamePath() // Prompt for game path
@@ -408,264 +544,9 @@ namespace hstCMM.Shared // Various functions used by the app
             }
         }
 
-        public static bool StartGameCustom() // Start game with custom exe
-        {
-            string cmdLine = Properties.Settings.Default.CustomEXE;
-            if (cmdLine is null)
-                return false;
-
-            try
-            {
-                var startInfo = new ProcessStartInfo
-                {
-                    FileName = cmdLine,
-                    WorkingDirectory = Properties.Settings.Default.GamePath,
-                    UseShellExecute = false //
-                };
-                Process.Start(startInfo);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message + "\n" + cmdLine, "Error");
-                return false;
-            }
-        }
-
-        public static bool StartGameSFSE() // Start game with SFSE loader
-        {
-            string cmdLine = Path.Combine(Properties.Settings.Default.GamePath, "sfse_loader.exe");
-            if (cmdLine is null)
-                return false;
-
-            try
-            {
-                var startInfo = new ProcessStartInfo
-                {
-                    FileName = cmdLine,
-                    WorkingDirectory = Properties.Settings.Default.GamePath,
-                    UseShellExecute = false //
-                };
-                Process.Start(startInfo);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message + "\n" + cmdLine, "Error");
-                return false;
-            }
-        }
-
-        public static bool StartGameMS() // Start game with MS Store version
-        {
-            //string cmdLine = @"shell:AppsFolder\BethesdaSoftworks.ProjectGold_3275kfvn8vcwc!Game";
-            string cmdLine = Path.Combine(Properties.Settings.Default.GamePathMS, $"{GameName}.exe");
-
-            try
-            {
-                var startInfo = new ProcessStartInfo
-                {
-                    FileName = cmdLine,
-                    WorkingDirectory = Properties.Settings.Default.GamePathMS,
-                    UseShellExecute = false //
-                };
-                Process.Start(startInfo);
-
-                return true;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message + "\n" + cmdLine, "Error");
-                return false;
-            }
-        }
-
-        public static bool StartGame(int GameVersion) // Determine which version of the game to start
-        {
-            return GameVersion switch
-            {
-                0 => StartGameSteam(),
-                1 => StartGameMS(),
-                2 => StartGameCustom(),
-                3 => StartGameSFSE(),
-                _ => false // Default case for invalid GameVersion values
-            };
-        }
-
-        public static bool StartGameSteam() // Start game with Steam version
-        {
-            const string userRoot = "HKEY_CURRENT_USER";
-            const string subkey = @"Software\Valve\Steam";
-            const string keyName = userRoot + "\\" + subkey;
-
-            try
-            {
-                string stringValue = (string)Registry.GetValue(keyName, "SteamExe", ""); // Get Steam path from Registry
-                SteamGameLocator steamGameLocator = new();
-                string gameID = steamGameLocator.getGameInfoByName(GameName).steamGameID;
-                var processInfo = new ProcessStartInfo(stringValue, $"-applaunch {gameID}");
-                var process = Process.Start(processInfo);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Unable to start game");
-                return false;
-            }
-        }
-
-        public static DialogResult ConfirmAction(string ActionText, string ActionTitle = "", MessageBoxButtons buttons = MessageBoxButtons.OKCancel,
-     MessageBoxIcon icon = MessageBoxIcon.Stop,
-     bool overRide = false) // overRide - always show dialog
-        {
-            if (frmLoadOrder.NoWarn && !overRide)
-                return DialogResult.OK;
-
-            return MessageBox.Show(ActionText, ActionTitle, buttons, icon);
-        }
-
-        public List<string> GetPluginList(int Game) // Get list of plugins from game Data folder
-        {
-            string dataPath = Path.Combine(frmLoadOrder.GamePath, "Data");
-            List<string> plugins = new();
-            string[] patterns;
-            try
-            {
-                if (Game == 0) // Starfield or possibly future BGS games without ESL support
-                    patterns = new[] { "*.esm", "*.esp" };
-                else
-                    patterns = new[] { "*.esm", "*.esl", "*.esp" };
-                foreach (var pattern in patterns)
-                {
-                    var modFiles = Directory.EnumerateFiles(dataPath, pattern, SearchOption.TopDirectoryOnly)
-                                    .Select(Path.GetFileName)
-                                    .Where(fileName => !BethFiles.Contains(fileName))
-                                    .ToList();
-                    foreach (var item in modFiles)
-                        plugins.Add(item);
-                }
-
-                return plugins;
-            }
-            catch (Exception ex)
-            {
-#if DEBUG
-                MessageBox.Show(ex.Message, "Error reading plugins", MessageBoxButtons.OK, MessageBoxIcon.Stop);
-#endif
-                return new List<string>();
-            }
-        }
-
-        public List<string> BGSArchives()
-        {
-            List<string> bgsArchives = new();
-            using (StreamReader sr = new StreamReader(Path.Combine(CommonFolder, Tools.GameLibrary.GetById(Properties.Settings.Default.Game).ExcludeFile + " Archives.txt")))
-            {
-                string line;
-                while ((line = sr.ReadLine()) != null)
-                {
-                    bgsArchives.Add(line.ToLower());
-                }
-            }
-            return bgsArchives;
-        }
-
-        public static void OpenFolder(string folder) // Used to open misc folders in Explorer
-        {
-            Process.Start(new ProcessStartInfo(folder) { UseShellExecute = true });
-        }
-
-        public static void OpenFile(string file) // Used to open misc text files
-        {
-            if (File.Exists(file))
-            {
-                Process.Start(new ProcessStartInfo(file) { UseShellExecute = true });
-            }
-            else
-            {
-                MessageBox.Show("File not found: " + file, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        public bool DetectVortex()
-        {
-            string keyName = @"HKEY_CLASSES_ROOT\nxm\shell\open\command";
-            string valueName = ""; // Default value
-
-            if (Properties.Settings.Default.VortexPath == "")
-            {
-                // Read the registry value
-                object value = Registry.GetValue(keyName, valueName, null);
-                if (value != null)
-                {
-                    int startIndex = value.ToString().IndexOf('"') + 1;
-                    int endIndex = value.ToString().IndexOf('"', startIndex);
-
-                    if (startIndex > 0 && endIndex > startIndex)
-                    {
-                        string extracted = value.ToString()[startIndex..endIndex];
-                        Properties.Settings.Default.VortexPath = extracted;
-                        SaveSettings();
-                        //vortexToolStripMenuItem.Visible = true;
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
-
         private void SaveSettings()
         {
             Properties.Settings.Default.Save();
-        }
-
-        public static class ModFiles
-        {
-            public static readonly string[] NewModFormat = { ".esm", ".esp" };
-            public static readonly string[] OldModFormat = { ".esm", ".esp", ".esl" };
-
-            public static bool IsValidModExtension(string extension, bool useNewFormat = true)
-            {
-                var formats = useNewFormat ? NewModFormat : OldModFormat;
-                return formats.Contains(extension.ToLower());
-            }
-        }
-
-        public static class ModArchives
-        {
-            public const string NewArchiveFormat = ".ba2";
-            public const string OldArchiveFormat = ".bsa";
-        }
-
-        public class GameInfo
-        {
-            public int Id { get; }
-            public string GameName { get; }
-            public string AppData { get; }
-            public string ExcludeFile { get; }
-            public string DocFolder { get; }
-            public string Executable { get; }
-            public string[] ModFormats { get; }
-            public string ArchiveFormat { get; }
-            public string CKId { get; }
-            public int WebSkipChars { get; }
-            public string CreationsSite { get; }
-
-            public GameInfo(int id, string name, string appdata, string excludefile, string docfolder, string executable,
-                string[] modFormats, string archiveFormat, string ckid, int webskipchars, string creationssite)
-            {
-                Id = id;
-                GameName = name; // Display name
-                AppData = appdata; // Game AppData folder name
-                ExcludeFile = excludefile; // Exclude file name
-                DocFolder = docfolder; // My Games folder
-                Executable = executable;
-                ModFormats = modFormats;
-                ArchiveFormat = archiveFormat;
-                CKId = ckid; // Creation Kit Steam ID
-                WebSkipChars = webskipchars; // Number of chars to skip in Creations URL
-                CreationsSite = creationssite; // Creations site name
-            }
         }
 
         public static class GameLibrary
@@ -684,27 +565,141 @@ namespace hstCMM.Shared // Various functions used by the app
                     ModArchives.NewArchiveFormat,"Unknown", 3,"Fallout5")
             };
 
+            public static GameInfo GetByExecutable(string exeName) =>
+                            Games.FirstOrDefault(g => g.Executable.Equals(exeName, StringComparison.OrdinalIgnoreCase));
+
             // Lookup helpers
             public static GameInfo GetById(int id) =>
                 Games.FirstOrDefault(g => g.Id == id);
 
             public static GameInfo GetByName(string name) =>
                 Games.FirstOrDefault(g => g.GameName.Equals(name, StringComparison.OrdinalIgnoreCase));
-
-            public static GameInfo GetByExecutable(string exeName) =>
-                Games.FirstOrDefault(g => g.Executable.Equals(exeName, StringComparison.OrdinalIgnoreCase));
         }
 
-        public string AppName()
+        public static class ModArchives
         {
-            Assembly assembly = Assembly.GetExecutingAssembly();
+            public const string NewArchiveFormat = ".ba2";
+            public const string OldArchiveFormat = ".bsa";
+        }
 
-            // Retrieve the AssemblyTitle attribute
-            AssemblyTitleAttribute titleAttribute = assembly
-                .GetCustomAttribute<AssemblyTitleAttribute>();
+        public static class ModFiles
+        {
+            public static readonly string[] NewModFormat = { ".esm", ".esp" };
+            public static readonly string[] OldModFormat = { ".esm", ".esp", ".esl" };
 
-            // Print the title (or fallback to assembly name if not set)
-            return titleAttribute != null ? titleAttribute.Title : assembly.GetName().Name;
+            public static bool IsValidModExtension(string extension, bool useNewFormat = true)
+            {
+                var formats = useNewFormat ? NewModFormat : OldModFormat;
+                return formats.Contains(extension.ToLower());
+            }
+        }
+
+        public class Configuration // LOOT
+        {
+            public List<string> bash_tags { get; set; }
+            public List<Plugin> common { get; set; }
+            public List<Globals> globals { get; set; }
+            public List<Group> groups { get; set; }
+            public List<Plugin> plugins { get; set; }
+            public Prelude prelude { get; set; }
+        }
+
+        public class Creation // ContentCatalog.txt format
+        {
+            public bool AchievementSafe { get; set; }
+            public string[] Files { get; set; }
+            public long FilesSize { get; set; }
+            public long Timestamp { get; set; }
+            public string Title { get; set; }
+            public string Version { get; set; }
+        }
+
+        public class GameInfo
+        {
+            public GameInfo(int id, string name, string appdata, string excludefile, string docfolder, string executable,
+                string[] modFormats, string archiveFormat, string ckid, int webskipchars, string creationssite)
+            {
+                Id = id;
+                GameName = name; // Display name
+                AppData = appdata; // Game AppData folder name
+                ExcludeFile = excludefile; // Exclude file name
+                DocFolder = docfolder; // My Games folder
+                Executable = executable;
+                ModFormats = modFormats;
+                ArchiveFormat = archiveFormat;
+                CKId = ckid; // Creation Kit Steam ID
+                WebSkipChars = webskipchars; // Number of chars to skip in Creations URL
+                CreationsSite = creationssite; // Creations site name
+            }
+
+            public string AppData { get; }
+            public string ArchiveFormat { get; }
+            public string CKId { get; }
+            public string CreationsSite { get; }
+            public string DocFolder { get; }
+            public string ExcludeFile { get; }
+            public string Executable { get; }
+            public string GameName { get; }
+            public int Id { get; }
+            public string[] ModFormats { get; }
+            public int WebSkipChars { get; }
+        }
+
+        public class Globals// LOOT
+        {
+            public string condition { get; set; }
+            public string content { get; set; }
+            public List<string> subs { get; set; }
+            public string type { get; set; }
+        }
+
+        public class Group // LOOT
+        {
+            public List<string> after { get; set; }
+            public string name { get; set; }
+        }
+
+        public class MessageAnchor// LOOT
+        {
+            public string condition { get; set; }
+            public string content { get; set; }
+            public List<string> subs { get; set; }
+            public string type { get; set; }
+        }
+
+        public class Msg // LOOT
+        {
+            public string content { get; set; }
+            public string type { get; set; }
+        }
+
+        public class Plugin // LOOT
+        {
+            public List<string> after { get; set; }
+            public string display { get; set; }
+            public string group { get; set; }
+            public List<string> inc { get; set; }
+            public List<Msg> msg { get; set; }
+            public string name { get; set; }
+            public List<Req> req { get; set; }
+            public List<Url> url { get; set; }
+        }
+
+        public class Prelude// LOOT
+        {
+            public List<MessageAnchor> common { get; set; }
+        }
+
+        public class Req // LOOT
+        {
+            public string display { get; set; }
+            public string name { get; set; }
+        }
+
+        public class Url // LOOT
+        {
+            public string link { get; set; }
+            public string name { get; set; }
         }
     }
 }
