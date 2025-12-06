@@ -1,4 +1,4 @@
-Starfield Tools - Load Order Editor
+Creations Mod Manager - Load Order Editor
 Important Notes
 - May conflict with mod managers like Vortex or MO2. Running Vortex after using this tool can disrupt your load order.
 - Works with .esm and .ba2 files but has limited support for loose file mods.
@@ -40,7 +40,7 @@ Mod Blocking
 - Prevent Creations mods from being automatically downloaded.
 - Enable the Blocked column under View -> Columns -> Blocked.
 - Right-click a mod to block/unblock it.
-- Blocked mods are saved in %localappdata%\Starfield Tools\BlockedMods.txt.
+- Blocked mods are saved in %localappdata%\Creations Mod Manager\BlockedMods.txt.
 Managing Mods
 - Adjust load order, enable/disable mods outside of the game.
 - Subscribe/unsubscribe/bookmark mods via the Creations website.

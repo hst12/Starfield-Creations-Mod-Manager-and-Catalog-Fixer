@@ -20,7 +20,7 @@
     <SupportUrl>https://github.com/hst12/Starfield-Tools---ContentCatalog.txt-fixer</SupportUrl>
     <ProductName>Starfield Content Catalog Fixer</ProductName>
     <PublisherName>hst</PublisherName>
-    <SuiteName>Starfield Tools</SuiteName>
+    <SuiteName>Creations Mod Manager</SuiteName>
     <ApplicationRevision>7</ApplicationRevision>
     <ApplicationVersion>1.7.0.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
@@ -41,7 +41,7 @@
     <ManifestCertificateThumbprint>B71FBCC84C974CCAAAF233B502498E3B3F8C269C</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>Starfield Tools_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>Creations Mod Manager_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>

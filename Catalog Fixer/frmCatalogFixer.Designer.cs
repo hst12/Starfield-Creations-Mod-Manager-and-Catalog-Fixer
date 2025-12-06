@@ -450,7 +450,7 @@
             Margin = new System.Windows.Forms.Padding(4);
             Name = "frmStarfieldTools";
             StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            Text = "Starfield Tools";
+            Text = "Creations Mod Manager";
             FormClosing += frmStarfieldTools_FormClosing;
             Shown += frmStarfieldTools_Shown;
             statusStrip1.ResumeLayout(false);

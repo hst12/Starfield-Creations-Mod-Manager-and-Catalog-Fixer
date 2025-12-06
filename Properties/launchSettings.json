@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "Starfield Tools": {
+    "Creations Mod Manager": {
       "commandName": "Project",
       "commandLineArgs": "-dev",
       "nativeDebugging": false

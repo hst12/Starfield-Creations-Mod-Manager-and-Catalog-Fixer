@@ -1872,19 +1872,27 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 }
             }
 
+            frmGenericTextList fgt;
+            List<string> missingMods = new();
             // Removal using batch operations
             if (rowsToRemove.Count > 0)
             {
                 if (log)
                 {
+
                     foreach (var row in rowsToRemove)
                     {
                         activityLog.WriteLog($"Found missing mods {row.Cells[pluginNameIndex].Value} from Plugins.txt");
+                        missingMods.Add(row.Cells[pluginNameIndex].Value.ToString());
                     }
+                    fgt = new frmGenericTextList("Missing Mods", missingMods);
+                    fgt.Show();
                 }
+
                 if (Tools.ConfirmAction("Choose Yes to proceed and remove the missing mods from Plugins.txt or No cancel",
-                "Missing mods found", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No)
+                    "Missing mods found", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No)
                 {
+                    
                     if (Tools.ConfirmAction("Copy mods from backup folder?", "Attempt to Restore Missing Mods",
                         MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                     {
@@ -1923,6 +1931,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     dataGridView1.ResumeLayout();
                     return (0);
                 }
+                
                 // Sort indices descending for safe removal
                 rowsToRemove.Sort((r1, r2) => r2.Index.CompareTo(r1.Index));
 
@@ -3969,7 +3978,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 {
                     foreach (string file in files)
                     {
-                        ZipArchiveEntry entry = archive.CreateEntryFromFile(file, Path.GetFileName(file));
+                        ZipArchiveEntry entry = archive.CreateEntryFromFile(file, Path.GetFileName(file), CompressionLevel.Fastest);
                     }
                 }
             }

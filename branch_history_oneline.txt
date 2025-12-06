@@ -62,7 +62,7 @@ e5f5ee7 SyncPlugins no longer adds .esp files
 14c50c8 Removed an unused `using System.Diagnostics;` directive from `frmModContents.cs`. Fixed minor formatting issues, i
 c3495bf WIP: Generalize app for multi-game support
 bc53549 Added `displayAllSettingsToolStripMenuItem` for accessing all application settings. Created `frmDisplaySettings` form to display settings in a rich text box.
-39ad3e4 Simplified 'Blocked' cell initialization in frmLoadOrder.cs using the null-coalescing assignment operator. Updated version in Starfield Tools.csproj from 1.15.1 to 1.15.7 and added PackageProjectUrl. Updated Narod.SteamGameFinder to version 2.1.0 and QuestPDF to version 2025.7.1. Changed project GUID for "Starfield Tools Setup" in Starfield Tools.sln and updated solution configuration accordingly.
+39ad3e4 Simplified 'Blocked' cell initialization in frmLoadOrder.cs using the null-coalescing assignment operator. Updated version in Creations Mod Manager.csproj from 1.15.1 to 1.15.7 and added PackageProjectUrl. Updated Narod.SteamGameFinder to version 2.1.0 and QuestPDF to version 2025.7.1. Changed project GUID for "Creations Mod Manager Setup" in Creations Mod Manager.sln and updated solution configuration accordingly.
 a3b34dc Added option to backup or restore app settings
 ea2a658 Added option to allow launching xEdit
 0f04d37 Updated shortucts.txt

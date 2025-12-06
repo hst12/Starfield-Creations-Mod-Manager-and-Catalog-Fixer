@@ -58,7 +58,7 @@
 * Prevent Creations mods from being automatically downloaded.
 * Enable the **Blocked** column under **View -> Columns -> Blocked**.
 * Right-click a mod to block/unblock it.
-* Blocked mods are saved in `%localappdata%\\Starfield Tools\\BlockedMods.txt`.
+* Blocked mods are saved in `%localappdata%\\Creations Mod Manager\\BlockedMods.txt`.
 
 ### Managing Mods
 

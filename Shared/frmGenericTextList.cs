@@ -19,7 +19,7 @@ namespace hstCMM.Common
             this.Close();
         }
 
-        private void btnCancel_Click(object sender, System.EventArgs e)
+        private void btnClose_Click(object sender, System.EventArgs e)
         {
             frmLoadOrder.returnStatus = 0; // No choice made
             this.Close();

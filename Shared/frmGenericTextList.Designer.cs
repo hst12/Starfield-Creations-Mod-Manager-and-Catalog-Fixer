@@ -31,7 +31,7 @@
             richTextBox1 = new System.Windows.Forms.RichTextBox();
             btnOk = new System.Windows.Forms.Button();
             flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            btnCancel = new System.Windows.Forms.Button();
+            btnClose = new System.Windows.Forms.Button();
             tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             flowLayoutPanel1.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
@@ -60,22 +60,22 @@
             // 
             flowLayoutPanel1.AutoSize = true;
             flowLayoutPanel1.Controls.Add(btnOk);
-            flowLayoutPanel1.Controls.Add(btnCancel);
+            flowLayoutPanel1.Controls.Add(btnClose);
             flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             flowLayoutPanel1.Location = new System.Drawing.Point(3, 708);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
             flowLayoutPanel1.Size = new System.Drawing.Size(1059, 52);
             flowLayoutPanel1.TabIndex = 2;
             // 
-            // btnCancel
+            // btnClose
             // 
-            btnCancel.Location = new System.Drawing.Point(159, 3);
-            btnCancel.Name = "btnCancel";
-            btnCancel.Size = new System.Drawing.Size(150, 46);
-            btnCancel.TabIndex = 2;
-            btnCancel.Text = "Cancel";
-            btnCancel.UseVisualStyleBackColor = true;
-            btnCancel.Click += btnCancel_Click;
+            btnClose.Location = new System.Drawing.Point(159, 3);
+            btnClose.Name = "btnClose";
+            btnClose.Size = new System.Drawing.Size(150, 46);
+            btnClose.TabIndex = 2;
+            btnClose.Text = "Close";
+            btnClose.UseVisualStyleBackColor = true;
+            btnClose.Click += btnClose_Click;
             // 
             // tableLayoutPanel1
             // 
@@ -113,6 +113,6 @@
         private System.Windows.Forms.Button btnOk;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.Button btnClose;
     }
 }
