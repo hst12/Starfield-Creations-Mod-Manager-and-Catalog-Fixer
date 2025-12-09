@@ -1411,7 +1411,7 @@ namespace hstCMM
 
         private void deleteContentCatalogtxtToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (Tools.ConfirmAction("Are you sure you want to delete ContentCatalog.txt?", 
+            if (Tools.ConfirmAction("Are you sure you want to delete ContentCatalog.txt?",
                 "This will delete ContentCatalog.txt", MessageBoxButtons.YesNo) == DialogResult.No)
                 return;
             File.Delete(Path.Combine(Tools.GameAppData, "ContentCatalog.txt"));
@@ -1441,7 +1441,7 @@ namespace hstCMM
         {
             try
             {
-                var GameCustomINIPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), 
+                var GameCustomINIPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                     "My Games", GameName, $"{GameName}Custom.ini");
                 if (File.Exists(GameCustomINIPath))
                 {
@@ -1576,7 +1576,7 @@ namespace hstCMM
             if (!string.IsNullOrEmpty(downloadsDirectory))
                 Tools.OpenFolder(downloadsDirectory);
             else
-                MessageBox.Show("It will be set after a mod has been installed.", "Downloads directory not set.", 
+                MessageBox.Show("It will be set after a mod has been installed.", "Downloads directory not set.",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
@@ -1608,13 +1608,13 @@ namespace hstCMM
 
         private void editStarfieldCustominiToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Tools.OpenFile(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), 
+            Tools.OpenFile(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                 "My Games", GameName, $"{GameName}Custom.ini"));
         }
 
         private void enableAchievementSafeOnlyToolStripMenuItem_Click(object sender, EventArgs e) // Experimental. Should probably remove
         {
-            if (Tools.ConfirmAction("Do you want to continue", 
+            if (Tools.ConfirmAction("Do you want to continue",
                 "Warning - this will alter your current load order to achievement friendly mods only",
                 MessageBoxButtons.YesNo) == DialogResult.No)
                 return;
@@ -1820,7 +1820,7 @@ namespace hstCMM
             gameSelectForm.ShowDialog();
             if (returnStatus == 0)
             {
-                MessageBox.Show("App will restart. Profiles and Catalog Auto-Restore Disabled", "Restart Required", 
+                MessageBox.Show("App will restart. Profiles and Catalog Auto-Restore Disabled", "Restart Required",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
                 if (GameVersion != MS)
                 {
@@ -2433,7 +2433,7 @@ namespace hstCMM
 
                     if (Directory.Exists(Path.Combine(extractPath, "fomod")))
                     {
-                        if (Tools.ConfirmAction("Attempt installation anyway?", "Fomod detected - mod will probably not install correctly", 
+                        if (Tools.ConfirmAction("Attempt installation anyway?", "Fomod detected - mod will probably not install correctly",
                             MessageBoxButtons.YesNo,
                             MessageBoxIcon.Question) != DialogResult.Yes)
                         {
@@ -2558,7 +2558,7 @@ namespace hstCMM
                 LooseFilesOnOff(true);
                 sbar3($"Directories installed (loose files): {filesInstalled}");
                 activityLog.WriteLog($"Directories installed (loose files): {filesInstalled}");
-                if (Tools.ConfirmAction("Do you want to convert them", "Loose Files found", MessageBoxButtons.YesNo, 
+                if (Tools.ConfirmAction("Do you want to convert them", "Loose Files found", MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     if (esmFile != "")
@@ -3778,7 +3778,7 @@ namespace hstCMM
             Rectangle screenBounds = Screen.FromControl(this).WorkingArea;
             int finalWidth = Math.Min(desiredWidth, screenBounds.Width);
             int finalHeight = Math.Min(desiredHeight, screenBounds.Height);
-            finalHeight=Math.Max(finalHeight, 600); // Minimum height
+            finalHeight = Math.Max(finalHeight, 600); // Minimum height
 
             // Apply size
             this.Size = new System.Drawing.Size(finalWidth, finalHeight);
@@ -4050,26 +4050,30 @@ namespace hstCMM
                 WorkingDirectory = Path.GetDirectoryName(lootPath) ?? string.Empty
             };
 
-            activityLog.WriteLog($"Starting LOOT with arguments: {cmdLine}");
-            using (Process process = Process.Start(startInfo))
+
+            if (File.Exists(lootPath))
             {
-                process.WaitForExit();
-                ReadLOOTGroups();
+                activityLog.WriteLog($"Starting LOOT with arguments: {cmdLine}");
+                using (Process process = Process.Start(startInfo))
+                {
+                    process.WaitForExit();
+                    ReadLOOTGroups();
+                }
+
+                if (Properties.Settings.Default.AutoDelccc)
+                    Delccc();
+                InitDataGrid();
+
+                // Remove base game files if LOOT added them
+                tools.BethFiles.ForEach(bethFile =>
+                {
+                    var rowToRemove = dataGridView1.Rows
+                        .Cast<DataGridViewRow>()
+                        .FirstOrDefault(row => row.Cells["PluginName"].Value as string == bethFile);
+
+                    if (rowToRemove != null) dataGridView1.Rows.Remove(rowToRemove);
+                });
             }
-
-            if (Properties.Settings.Default.AutoDelccc)
-                Delccc();
-            InitDataGrid();
-
-            // Remove base game files if LOOT added them
-            tools.BethFiles.ForEach(bethFile =>
-            {
-                var rowToRemove = dataGridView1.Rows
-                    .Cast<DataGridViewRow>()
-                    .FirstOrDefault(row => row.Cells["PluginName"].Value as string == bethFile);
-
-                if (rowToRemove != null) dataGridView1.Rows.Remove(rowToRemove);
-            });
 
             // Re-enable profiles if previously active
             Profiles = profilesActive;

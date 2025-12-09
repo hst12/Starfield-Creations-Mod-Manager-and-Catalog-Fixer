@@ -48,6 +48,11 @@
             label3 = new System.Windows.Forms.Label();
             lblCK = new System.Windows.Forms.Label();
             lblSpacer = new System.Windows.Forms.Label();
+            btnClearGame = new System.Windows.Forms.Button();
+            btnClearLOOT = new System.Windows.Forms.Button();
+            btnClearMO2 = new System.Windows.Forms.Button();
+            btnClearVortex = new System.Windows.Forms.Button();
+            btnClearxEdit = new System.Windows.Forms.Button();
             fontDialog1 = new System.Windows.Forms.FontDialog();
             openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             tableLayoutPanel1.SuspendLayout();
@@ -56,7 +61,7 @@
             // btnLOOT
             // 
             btnLOOT.AutoSize = true;
-            btnLOOT.Location = new System.Drawing.Point(3, 83);
+            btnLOOT.Location = new System.Drawing.Point(3, 87);
             btnLOOT.Name = "btnLOOT";
             btnLOOT.Size = new System.Drawing.Size(209, 42);
             btnLOOT.TabIndex = 2;
@@ -67,7 +72,7 @@
             // btnMO2
             // 
             btnMO2.AutoSize = true;
-            btnMO2.Location = new System.Drawing.Point(3, 131);
+            btnMO2.Location = new System.Drawing.Point(3, 139);
             btnMO2.Name = "btnMO2";
             btnMO2.Size = new System.Drawing.Size(209, 42);
             btnMO2.TabIndex = 4;
@@ -78,7 +83,7 @@
             // btnVortex
             // 
             btnVortex.AutoSize = true;
-            btnVortex.Location = new System.Drawing.Point(3, 179);
+            btnVortex.Location = new System.Drawing.Point(3, 191);
             btnVortex.Name = "btnVortex";
             btnVortex.Size = new System.Drawing.Size(209, 42);
             btnVortex.TabIndex = 6;
@@ -89,7 +94,7 @@
             // btnxEdit
             // 
             btnxEdit.AutoSize = true;
-            btnxEdit.Location = new System.Drawing.Point(3, 227);
+            btnxEdit.Location = new System.Drawing.Point(3, 243);
             btnxEdit.Name = "btnxEdit";
             btnxEdit.Size = new System.Drawing.Size(209, 42);
             btnxEdit.TabIndex = 8;
@@ -99,8 +104,9 @@
             // 
             // tableLayoutPanel1
             // 
-            tableLayoutPanel1.ColumnCount = 2;
+            tableLayoutPanel1.ColumnCount = 3;
             tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             tableLayoutPanel1.Controls.Add(btnFont, 0, 7);
             tableLayoutPanel1.Controls.Add(btnGame, 0, 1);
@@ -121,6 +127,11 @@
             tableLayoutPanel1.Controls.Add(label3, 0, 8);
             tableLayoutPanel1.Controls.Add(lblCK, 1, 8);
             tableLayoutPanel1.Controls.Add(lblSpacer, 0, 9);
+            tableLayoutPanel1.Controls.Add(btnClearGame, 2, 1);
+            tableLayoutPanel1.Controls.Add(btnClearLOOT, 2, 2);
+            tableLayoutPanel1.Controls.Add(btnClearMO2, 2, 3);
+            tableLayoutPanel1.Controls.Add(btnClearVortex, 2, 4);
+            tableLayoutPanel1.Controls.Add(btnClearxEdit, 2, 5);
             tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -142,7 +153,7 @@
             // btnFont
             // 
             btnFont.AutoSize = true;
-            btnFont.Location = new System.Drawing.Point(3, 307);
+            btnFont.Location = new System.Drawing.Point(3, 327);
             btnFont.Name = "btnFont";
             btnFont.Size = new System.Drawing.Size(209, 42);
             btnFont.TabIndex = 10;
@@ -168,7 +179,7 @@
             txtGame.Location = new System.Drawing.Point(218, 35);
             txtGame.Name = "txtGame";
             txtGame.ReadOnly = true;
-            txtGame.Size = new System.Drawing.Size(841, 32);
+            txtGame.Size = new System.Drawing.Size(685, 32);
             txtGame.TabIndex = 1;
             txtGame.TabStop = false;
             // 
@@ -176,10 +187,10 @@
             // 
             txtLOOT.BorderStyle = System.Windows.Forms.BorderStyle.None;
             txtLOOT.Dock = System.Windows.Forms.DockStyle.Fill;
-            txtLOOT.Location = new System.Drawing.Point(218, 83);
+            txtLOOT.Location = new System.Drawing.Point(218, 87);
             txtLOOT.Name = "txtLOOT";
             txtLOOT.ReadOnly = true;
-            txtLOOT.Size = new System.Drawing.Size(841, 32);
+            txtLOOT.Size = new System.Drawing.Size(685, 32);
             txtLOOT.TabIndex = 3;
             txtLOOT.TabStop = false;
             // 
@@ -187,10 +198,10 @@
             // 
             txtMO2.BorderStyle = System.Windows.Forms.BorderStyle.None;
             txtMO2.Dock = System.Windows.Forms.DockStyle.Fill;
-            txtMO2.Location = new System.Drawing.Point(218, 131);
+            txtMO2.Location = new System.Drawing.Point(218, 139);
             txtMO2.Name = "txtMO2";
             txtMO2.ReadOnly = true;
-            txtMO2.Size = new System.Drawing.Size(841, 32);
+            txtMO2.Size = new System.Drawing.Size(685, 32);
             txtMO2.TabIndex = 5;
             txtMO2.TabStop = false;
             // 
@@ -198,10 +209,10 @@
             // 
             txtVortex.BorderStyle = System.Windows.Forms.BorderStyle.None;
             txtVortex.Dock = System.Windows.Forms.DockStyle.Fill;
-            txtVortex.Location = new System.Drawing.Point(218, 179);
+            txtVortex.Location = new System.Drawing.Point(218, 191);
             txtVortex.Name = "txtVortex";
             txtVortex.ReadOnly = true;
-            txtVortex.Size = new System.Drawing.Size(841, 32);
+            txtVortex.Size = new System.Drawing.Size(685, 32);
             txtVortex.TabIndex = 7;
             txtVortex.TabStop = false;
             // 
@@ -209,10 +220,10 @@
             // 
             txtxEdit.BorderStyle = System.Windows.Forms.BorderStyle.None;
             txtxEdit.Dock = System.Windows.Forms.DockStyle.Fill;
-            txtxEdit.Location = new System.Drawing.Point(218, 227);
+            txtxEdit.Location = new System.Drawing.Point(218, 243);
             txtxEdit.Name = "txtxEdit";
             txtxEdit.ReadOnly = true;
-            txtxEdit.Size = new System.Drawing.Size(841, 32);
+            txtxEdit.Size = new System.Drawing.Size(685, 32);
             txtxEdit.TabIndex = 9;
             txtxEdit.TabStop = false;
             // 
@@ -233,7 +244,7 @@
             label2.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             label2.AutoSize = true;
             label2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            label2.Location = new System.Drawing.Point(3, 272);
+            label2.Location = new System.Drawing.Point(3, 292);
             label2.Name = "label2";
             label2.Size = new System.Drawing.Size(209, 32);
             label2.TabIndex = 12;
@@ -243,7 +254,7 @@
             // btnDetect
             // 
             btnDetect.AutoSize = true;
-            btnDetect.Location = new System.Drawing.Point(218, 307);
+            btnDetect.Location = new System.Drawing.Point(218, 327);
             btnDetect.Name = "btnDetect";
             btnDetect.Size = new System.Drawing.Size(363, 42);
             btnDetect.TabIndex = 11;
@@ -253,7 +264,7 @@
             // 
             // btnOk
             // 
-            btnOk.Location = new System.Drawing.Point(3, 419);
+            btnOk.Location = new System.Drawing.Point(3, 439);
             btnOk.Name = "btnOk";
             btnOk.Size = new System.Drawing.Size(209, 46);
             btnOk.TabIndex = 12;
@@ -263,7 +274,7 @@
             // 
             // btnCancel
             // 
-            btnCancel.Location = new System.Drawing.Point(218, 419);
+            btnCancel.Location = new System.Drawing.Point(218, 439);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new System.Drawing.Size(209, 46);
             btnCancel.TabIndex = 13;
@@ -275,7 +286,7 @@
             // 
             label3.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             label3.AutoSize = true;
-            label3.Location = new System.Drawing.Point(3, 352);
+            label3.Location = new System.Drawing.Point(3, 372);
             label3.Name = "label3";
             label3.Size = new System.Drawing.Size(209, 32);
             label3.TabIndex = 14;
@@ -286,7 +297,7 @@
             // 
             lblCK.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             lblCK.AutoSize = true;
-            lblCK.Location = new System.Drawing.Point(218, 352);
+            lblCK.Location = new System.Drawing.Point(218, 372);
             lblCK.Name = "lblCK";
             lblCK.Size = new System.Drawing.Size(126, 32);
             lblCK.TabIndex = 15;
@@ -296,10 +307,60 @@
             // lblSpacer
             // 
             lblSpacer.AutoSize = true;
-            lblSpacer.Location = new System.Drawing.Point(3, 384);
+            lblSpacer.Location = new System.Drawing.Point(3, 404);
             lblSpacer.Name = "lblSpacer";
             lblSpacer.Size = new System.Drawing.Size(0, 32);
             lblSpacer.TabIndex = 16;
+            // 
+            // btnClearGame
+            // 
+            btnClearGame.Location = new System.Drawing.Point(909, 35);
+            btnClearGame.Name = "btnClearGame";
+            btnClearGame.Size = new System.Drawing.Size(150, 46);
+            btnClearGame.TabIndex = 17;
+            btnClearGame.Text = "Clear";
+            btnClearGame.UseVisualStyleBackColor = true;
+            btnClearGame.Click += btnClearGame_Click;
+            // 
+            // btnClearLOOT
+            // 
+            btnClearLOOT.Location = new System.Drawing.Point(909, 87);
+            btnClearLOOT.Name = "btnClearLOOT";
+            btnClearLOOT.Size = new System.Drawing.Size(150, 46);
+            btnClearLOOT.TabIndex = 18;
+            btnClearLOOT.Text = "Clear";
+            btnClearLOOT.UseVisualStyleBackColor = true;
+            btnClearLOOT.Click += btnClearLOOT_Click;
+            // 
+            // btnClearMO2
+            // 
+            btnClearMO2.Location = new System.Drawing.Point(909, 139);
+            btnClearMO2.Name = "btnClearMO2";
+            btnClearMO2.Size = new System.Drawing.Size(150, 46);
+            btnClearMO2.TabIndex = 19;
+            btnClearMO2.Text = "Clear";
+            btnClearMO2.UseVisualStyleBackColor = true;
+            btnClearMO2.Click += btnClearMO2_Click;
+            // 
+            // btnClearVortex
+            // 
+            btnClearVortex.Location = new System.Drawing.Point(909, 191);
+            btnClearVortex.Name = "btnClearVortex";
+            btnClearVortex.Size = new System.Drawing.Size(150, 46);
+            btnClearVortex.TabIndex = 20;
+            btnClearVortex.Text = "Clear";
+            btnClearVortex.UseVisualStyleBackColor = true;
+            btnClearVortex.Click += btnClearVortex_Click;
+            // 
+            // btnClearxEdit
+            // 
+            btnClearxEdit.Location = new System.Drawing.Point(909, 243);
+            btnClearxEdit.Name = "btnClearxEdit";
+            btnClearxEdit.Size = new System.Drawing.Size(150, 46);
+            btnClearxEdit.TabIndex = 21;
+            btnClearxEdit.Text = "Clear";
+            btnClearxEdit.UseVisualStyleBackColor = true;
+            btnClearxEdit.Click += btnClearxEdit_Click;
             // 
             // openFileDialog1
             // 
@@ -343,5 +404,10 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label lblCK;
         private System.Windows.Forms.Label lblSpacer;
+        private System.Windows.Forms.Button btnClearGame;
+        private System.Windows.Forms.Button btnClearLOOT;
+        private System.Windows.Forms.Button btnClearMO2;
+        private System.Windows.Forms.Button btnClearVortex;
+        private System.Windows.Forms.Button btnClearxEdit;
     }
 }

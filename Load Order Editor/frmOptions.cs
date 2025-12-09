@@ -136,5 +136,38 @@ namespace hstCMM.Load_Order_Editor
             else
                 MessageBox.Show("Error detecting game path", "Game Path Not Found", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
         }
+
+        private void btnClearGame_Click(object sender, EventArgs e)
+        {
+            txtGame.Text = "";
+            if (Properties.Settings.Default.GameVersion != frmLoadOrder.MS)
+                Properties.Settings.Default.GamePath = "";
+            else
+                Properties.Settings.Default.GamePathMS = "";
+        }
+
+        private void btnClearLOOT_Click(object sender, EventArgs e)
+        {
+            txtLOOT.Text = "";
+            Properties.Settings.Default.LOOTPath = "";
+        }
+
+        private void btnClearMO2_Click(object sender, EventArgs e)
+        {
+            txtMO2.Text = "";
+            Properties.Settings.Default.MO2Path = "";
+        }
+
+        private void btnClearVortex_Click(object sender, EventArgs e)
+        {
+            txtVortex.Text = "";
+            Properties.Settings.Default.VortexPath = "";
+        }
+
+        private void btnClearxEdit_Click(object sender, EventArgs e)
+        {
+            txtxEdit.Text = "";
+            Properties.Settings.Default.xEditPath = "";
+        }
     }
 }
