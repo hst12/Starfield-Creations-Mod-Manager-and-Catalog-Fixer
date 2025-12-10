@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
 using System.IO.Compression;
@@ -2077,6 +2078,7 @@ namespace hstCMM
         {
             int enabledCount = 0, IndexCount = 1, i, versionDelimiter, dotIndex,
                 webskipchars = Tools.GameLibrary.GetById(Properties.Settings.Default.Game).WebSkipChars;
+
             string loText = Path.Combine(Tools.GameAppData, "Plugins.txt"),
                    LOOTPath = Properties.Settings.Default.LOOTPath, pluginName, rawVersion;
 
@@ -2096,8 +2098,19 @@ namespace hstCMM
             bool isFilesVisible = dataGridView1.Columns["Files"]?.Visible ?? false;
             bool isFileSizeVisible = dataGridView1.Columns["FileSize"]?.Visible ?? false;
             bool isIndexVisible = dataGridView1.Columns["Index"]?.Visible ?? false;
+            bool rowHighlight = Properties.Settings.Default.RowHighlight;
             bool modEnabled;
             string json = "";
+            System.Drawing.Color rowColour = System.Drawing.Color.Empty;
+
+            var colorMode = Properties.Settings.Default.DarkMode switch
+            {
+                0 => SystemColorMode.Classic,
+                1 => SystemColorMode.Dark,
+                2 => SystemColorMode.System,
+                _ => SystemColorMode.Classic // Default fallback
+            };
+
             if (File.Exists(Tools.GetCatalogPath()))
                 json = File.ReadAllText(Tools.GetCatalogPath()); // Read Catalog
             var bethFilesSet = new HashSet<string>(tools.BethFiles); // Read files to exclude
@@ -2306,7 +2319,20 @@ namespace hstCMM
                         row.Cells[kvp.Key].Value = kvp.Value.value;
                 }
 
+
                 rowBuffer.Add(row);
+
+                if (colorMode == SystemColorMode.Dark ||
+                    (colorMode == SystemColorMode.System && System.Windows.Forms.Application.SystemColorMode == SystemColorMode.Dark))
+                    rowColour = System.Drawing.Color.SlateGray;
+                else
+                    rowColour = System.Drawing.Color.AntiqueWhite;
+                if (row.Cells[1].Value is bool enabled && !enabled && rowHighlight) // Highlight rows
+                    row.DefaultCellStyle.BackColor = rowColour;
+                /*else
+                    row.DefaultCellStyle.BackColor = System.Drawing.Color.White;*/
+
+
             } // End of main loop
 
             dataGridView1.Rows.AddRange(rowBuffer.ToArray());
@@ -3816,8 +3842,7 @@ namespace hstCMM
                 if (dict is null) throw new InvalidOperationException("Invalid JSON or empty file.");
                 ApplySettings(dict);
                 Properties.Settings.Default.Save();
-                MessageBox.Show("Please restart the application to apply all settings.", "Restart Required", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                Application.Exit();
+                tools.RestartApp();
             }
             catch (Exception ex)
             {
@@ -4336,7 +4361,15 @@ namespace hstCMM
                 2 => SystemColorMode.System,
                 _ => SystemColorMode.Classic // Default fallback
             };
-            Application.SetColorMode(colorMode);
+
+            try
+            {
+                Application.SetColorMode(colorMode);
+            }
+            catch (Exception ex)
+            {
+                LogError("SetTheme error: " + ex.Message);
+            }
 
             // Update menu item selection
             var menuItems = new Dictionary<int, ToolStripMenuItem>
@@ -4526,6 +4559,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             enableSplashScreenToolStripMenuItem.Checked = Properties.Settings.Default.LoadScreenEnabled;
             logWindowToolStripMenuItem.Checked = Properties.Settings.Default.LogWindow;
             saveOnExitToolStripMenuItem.Checked = Properties.Settings.Default.SaveLog;
+            rowHighlightToolStripMenuItem.Checked = Properties.Settings.Default.RowHighlight;
         }
 
         private void sFSEPluginsToolStripMenuItem_Click(object sender, EventArgs e) // Open SFSE Plugins Directory
@@ -4855,10 +4889,10 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             }
 
             // Pre-allocate with estimated capacity and use fastest comparer
-            var onDisk = new HashSet<string>(pluginFiles.Count, StringComparer.Ordinal);
-            var bethFilesSet = new HashSet<string>(tools.BethFiles.Count(), StringComparer.Ordinal);
-            var inGrid = new HashSet<string>(dataGridView1.Rows.Count, StringComparer.Ordinal);
-            var seenInGrid = new HashSet<string>(dataGridView1.Rows.Count, StringComparer.Ordinal);
+            var onDisk = new HashSet<string>(pluginFiles.Count, StringComparer.OrdinalIgnoreCase);
+            var bethFilesSet = new HashSet<string>(tools.BethFiles.Count(), StringComparer.OrdinalIgnoreCase);
+            var inGrid = new HashSet<string>(dataGridView1.Rows.Count, StringComparer.OrdinalIgnoreCase);
+            var seenInGrid = new HashSet<string>(dataGridView1.Rows.Count, StringComparer.OrdinalIgnoreCase);
 
             // Populate sets with bulk operations
             foreach (var file in pluginFiles) onDisk.Add(file);
@@ -6345,6 +6379,12 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             public bool EnableNotifications { get; set; }
             public int RefreshInterval { get; set; }
             public string Username { get; set; }
+        }
+
+        private void rowHighlightToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.RowHighlight = rowHighlightToolStripMenuItem.Checked = !rowHighlightToolStripMenuItem.Checked;
+            RefreshDataGrid();
         }
     }
 }
