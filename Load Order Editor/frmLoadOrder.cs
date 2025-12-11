@@ -14,11 +14,11 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.Json;
 using System.Threading;
@@ -45,10 +45,12 @@ namespace hstCMM
         private Tools.Configuration Groups = new();
         private string LastProfile, tempstr;
         private List<string> pluginList;
+
         private bool Profiles = false, GridSorted = false, AutoUpdate = false, ActiveOnly = false, AutoSort = false, isModified = false,
             LooseFiles, GameExists, devMode = false;
 
         private int rowIndexFromMouseDown, rowIndexOfItemUnderMouseToDrop, GameVersion = Steam;
+
         public frmLoadOrder(string parameter)
         {
             InitializeComponent();
@@ -81,6 +83,14 @@ namespace hstCMM
 
                 if (arg.Equals("-reset", StringComparison.InvariantCultureIgnoreCase))
                     ResetPreferences();
+
+                if (arg.Equals("-norestore", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    Properties.Settings.Default.AutoRestore = false;
+                    SaveSettings();
+                    sbar3("Auto Restore Disabled");
+                    activityLog.WriteLog("Auto Restore Disabled via command line");
+                }
             }
 
             SetupGame();
@@ -276,6 +286,14 @@ namespace hstCMM
                 Title = "Disable Settings"
             };
 
+            JumpListLink disableCatalogRestore = new JumpListLink(Application.ExecutablePath, "Disable Catalog Restore")
+            {
+                Arguments = "-norestore",
+                IconReference = new IconReference(Application.ExecutablePath, 0),
+                WorkingDirectory = Path.GetDirectoryName(Application.ExecutablePath),
+                Title = "Disable Catalog Restore"
+            };
+
             /*JumpListLink DemoTask = new JumpListLink(Application.ExecutablePath, "Demo Profile")
             {
                 Arguments = "-profile Demo.txt",
@@ -284,7 +302,7 @@ namespace hstCMM
                 Title = "Demo Profile"
             };*/
 
-            jumpList.AddUserTasks(runGameTask, devModeTask, disableSettings);
+            jumpList.AddUserTasks(runGameTask, devModeTask, disableSettings, disableCatalogRestore);
             jumpList.Refresh();
         }
 
@@ -307,9 +325,7 @@ namespace hstCMM
             {
                 Directory.Delete(appPreferencesPath, true); // true to delete subdirectories and files
                 activityLog.WriteLog("User preferences reset successfully.");
-                MessageBox.Show("Please Restart the app", "User preferences reset successfully.");
-
-                Environment.Exit(0); // Close the application
+                tools.RestartApp("User preferences reset successfully.");
             }
             else
             {
@@ -968,19 +984,21 @@ namespace hstCMM
 
         private void ChangeSettings(bool NewSetting)
         {
-            Properties.Settings.Default.ProfileOn = NewSetting;
+            var props = Properties.Settings.Default;
+            props.ProfileOn = NewSetting;
             Profiles = NewSetting;
             chkProfile.Checked = NewSetting;
-            Properties.Settings.Default.AutoSort = NewSetting;
+            props.AutoSort = NewSetting;
             AutoSort = NewSetting;
-            AutoUpdate = Properties.Settings.Default.AutoUpdate;
-            Properties.Settings.Default.AutoUpdate = NewSetting;
-            Properties.Settings.Default.AutoReset = NewSetting;
-            Properties.Settings.Default.AutoDelccc = NewSetting;
-            Properties.Settings.Default.CompareProfiles = NewSetting;
-            Properties.Settings.Default.ActivateNew = NewSetting;
-            Properties.Settings.Default.LOOTEnabled = NewSetting;
-            Properties.Settings.Default.ModStats = NewSetting;
+            AutoUpdate = props.AutoUpdate;
+            props.AutoUpdate = NewSetting;
+            props.AutoReset = NewSetting;
+            props.AutoDelccc = NewSetting;
+            props.CompareProfiles = NewSetting;
+            props.ActivateNew = NewSetting;
+            props.LOOTEnabled = NewSetting;
+            props.ModStats = NewSetting;
+            props.RowHighlight = NewSetting;
 
             SaveSettings();
             SetUpMenus();
@@ -1562,8 +1580,29 @@ namespace hstCMM
 
         private void displayAllSettingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            frmDisplaySettings frmDisplaySettings = new();
-            frmDisplaySettings.Show();
+            List<string> settingsList = new();
+
+            settingsList.Add("Application Settings:");
+
+            var settings = Properties.Settings.Default;
+            var props = settings.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public);
+
+            foreach (var prop in props)
+            {
+                Debug.WriteLine($"Property: {prop.Name}, Type: {prop.PropertyType}");
+                try
+                {
+                    var value = prop.GetValue(settings, null);
+                    settingsList.Add($"{prop.Name}: {value}");
+                }
+                catch
+                {
+                    settingsList.Add($"{prop.Name}: <error reading value>");
+                }
+            }
+
+            frmGenericTextList das = new("Application Settings", settingsList);
+            das.Show();
         }
 
         private void documentationToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1837,7 +1876,7 @@ namespace hstCMM
                 Properties.Settings.Default.AutoRestore = false;
                 SaveSettings();
 
-                tools.RestartApp();
+                tools.RestartApp("Switching Game");
             }
             else
             {
@@ -2319,7 +2358,6 @@ namespace hstCMM
                         row.Cells[kvp.Key].Value = kvp.Value.value;
                 }
 
-
                 rowBuffer.Add(row);
 
                 if (colorMode == SystemColorMode.Dark ||
@@ -2331,8 +2369,6 @@ namespace hstCMM
                     row.DefaultCellStyle.BackColor = rowColour;
                 /*else
                     row.DefaultCellStyle.BackColor = System.Drawing.Color.White;*/
-
-
             } // End of main loop
 
             dataGridView1.Rows.AddRange(rowBuffer.ToArray());
@@ -3684,7 +3720,7 @@ namespace hstCMM
                 if (Delccc()) // Delete ccc
                     ChangeCount++;
 
-                if (ResetGameCustomINI(false)) // Apply recommended settings
+                if (ResetGameCustomINI(false) == 1) // Apply recommended settings
                     ChangeCount++;
 
                 sbar3(ChangeCount.ToString() + " Change(s) made to ini files");
@@ -3705,18 +3741,19 @@ namespace hstCMM
             actionCount += DeleteLooseFileFolders();
             actionCount += ResetDefaults();
             actionCount += CheckArchives();
+
             sbar3(actionCount.ToString() + " Change(s) made");
             activityLog.WriteLog("Reset everything: " + actionCount.ToString() + " Change(s) made");
         }
 
-        private bool ResetGameCustomINI(bool ConfirmOverwrite)  // true for confirmation
+        private int ResetGameCustomINI(bool ConfirmOverwrite)  // true for confirmation
         {
             if (ConfirmOverwrite)
             {
                 DialogResult DialogResult = MessageBox.Show($"This will overwrite your {GameName}Custom.ini to a recommended version", "Are you sure?",
                     MessageBoxButtons.OKCancel, MessageBoxIcon.Stop);
                 if (DialogResult != DialogResult.OK)
-                    return false;
+                    return 0;
             }
 
             try
@@ -3729,17 +3766,20 @@ namespace hstCMM
                         Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                         "My Games", GameName, $"{GameName}Custom.ini"), true);
                     sbar3($"{GameName}Custom.ini restored");
-                    activityLog.WriteLog($"{GameName}Custom.ini restored");
-                    return true;
+                    activityLog.WriteLog($"{GameName} Custom.ini restored");
+                    return 1;
                 }
                 else
-                    return false;
+                {
+                    activityLog.WriteLog($"{GameName} Custom.ini matches recommended settings");
+                    return 0;
+                }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, $"Error restoring {GameName}Custom.ini");
                 LogError("Unable to reset INI " + ex.Message);
-                return false;
+                return 0;
             }
         }
 
@@ -3842,7 +3882,7 @@ namespace hstCMM
                 if (dict is null) throw new InvalidOperationException("Invalid JSON or empty file.");
                 ApplySettings(dict);
                 Properties.Settings.Default.Save();
-                tools.RestartApp();
+                tools.RestartApp("App settings restored");
             }
             catch (Exception ex)
             {
@@ -4074,7 +4114,6 @@ namespace hstCMM
                 Arguments = cmdLine,
                 WorkingDirectory = Path.GetDirectoryName(lootPath) ?? string.Empty
             };
-
 
             if (File.Exists(lootPath))
             {
@@ -4396,8 +4435,9 @@ namespace hstCMM
 
         private void SetThemeMessage()
         {
-            MessageBox.Show("Restart for all changes to be applied", "App restart recommended", MessageBoxButtons.OK,
-                MessageBoxIcon.Information);
+            if (Tools.ConfirmAction("Restart for all changes to be applied", "App restart recommended", MessageBoxButtons.YesNo,
+                MessageBoxIcon.Information) == DialogResult.Yes)
+                tools.RestartApp("Theme change");
         }
 
         private void SetupColumns()
@@ -6252,6 +6292,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             }
 
             public System.Windows.Forms.RichTextBox LogRichTextBox { get; set; } // assign externally
+
             public void DeleteLog()
             {
                 /*try

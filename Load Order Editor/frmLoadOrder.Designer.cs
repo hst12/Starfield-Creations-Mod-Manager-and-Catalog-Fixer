@@ -1246,35 +1246,35 @@
             // toolStripMenuRestore
             // 
             toolStripMenuRestore.Name = "toolStripMenuRestore";
-            toolStripMenuRestore.Size = new System.Drawing.Size(359, 44);
+            toolStripMenuRestore.Size = new System.Drawing.Size(346, 44);
             toolStripMenuRestore.Text = "Plugins.txt";
             toolStripMenuRestore.Click += toolStripMenuRestore_Click;
             // 
             // restoreProfilesToolStripMenuItem
             // 
             restoreProfilesToolStripMenuItem.Name = "restoreProfilesToolStripMenuItem";
-            restoreProfilesToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+            restoreProfilesToolStripMenuItem.Size = new System.Drawing.Size(346, 44);
             restoreProfilesToolStripMenuItem.Text = "Profiles";
             restoreProfilesToolStripMenuItem.Click += restoreProfilesToolStripMenuItem_Click;
             // 
             // mnuRestoreBlockedMods
             // 
             mnuRestoreBlockedMods.Name = "mnuRestoreBlockedMods";
-            mnuRestoreBlockedMods.Size = new System.Drawing.Size(359, 44);
+            mnuRestoreBlockedMods.Size = new System.Drawing.Size(346, 44);
             mnuRestoreBlockedMods.Text = "BlockedMods.txt";
             mnuRestoreBlockedMods.Click += mnuRestoreBlockedMods_Click;
             // 
             // restoreContentCatalogtxtToolStripMenuItem
             // 
             restoreContentCatalogtxtToolStripMenuItem.Name = "restoreContentCatalogtxtToolStripMenuItem";
-            restoreContentCatalogtxtToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+            restoreContentCatalogtxtToolStripMenuItem.Size = new System.Drawing.Size(346, 44);
             restoreContentCatalogtxtToolStripMenuItem.Text = "ContentCatalog.txt";
             restoreContentCatalogtxtToolStripMenuItem.Click += restoreContentCatalogtxtToolStripMenuItem_Click;
             // 
             // appSettingsToolStripMenuItem1
             // 
             appSettingsToolStripMenuItem1.Name = "appSettingsToolStripMenuItem1";
-            appSettingsToolStripMenuItem1.Size = new System.Drawing.Size(359, 44);
+            appSettingsToolStripMenuItem1.Size = new System.Drawing.Size(346, 44);
             appSettingsToolStripMenuItem1.Text = "App Settings";
             appSettingsToolStripMenuItem1.Click += appSettingsToolStripMenuItem1_Click;
             // 

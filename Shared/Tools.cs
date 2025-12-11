@@ -478,15 +478,16 @@ namespace hstCMM.Shared // Various functions used by the app
             }
         }
 
-        public void RestartApp()
+        public void RestartApp(string mesg)
         {
+            SaveSettings();
             ProcessStartInfo psi = new ProcessStartInfo
             {
                 FileName = Application.ExecutablePath,
                 Arguments = "-dev",
                 UseShellExecute = true
             };
-            MessageBox.Show("Click OK to restart the app.", "Restart Required", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(mesg, "App will restart", MessageBoxButtons.OK, MessageBoxIcon.Information);
             Process.Start(psi);
             Environment.Exit(0); // Ensure graceful shutdown
         }
