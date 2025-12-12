@@ -425,21 +425,13 @@ namespace hstCMM
             statusStrip1.Refresh();
 
             bool showAll = !ActiveOnly;
-
             dataGridView1.SuspendLayout();
-            /*int counter = dataGridView1.Rows.Count;*/
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
                 isEnabled = row.Cells["ModEnabled"].Value as bool? ?? false;
                 row.Visible = showAll || isEnabled;
-                /*if (!isEnabled && !ActiveOnly)
-                    row.DefaultCellStyle.BackColor = System.Drawing.Color.LightCyan;
-                else
-                    row.DefaultCellStyle.BackColor = System.Drawing.Color.White;
-                counter--;
-                sbar($"Filtering {counter}");
-                statusStrip1.Refresh();*/
             }
+
             dataGridView1.ResumeLayout();
             sbar4(showAll ? "All mods shown" : "Active mods only");
 
@@ -954,6 +946,7 @@ namespace hstCMM
         private void btnRefresh_Click(object sender, EventArgs e)
         {
             RefreshDataGrid();
+            btnGroups.Font = new System.Drawing.Font(btnGroups.Font, FontStyle.Regular);
         }
 
         private void btnRun_Click(object sender, EventArgs e)
@@ -1127,7 +1120,7 @@ namespace hstCMM
             // Report results
             if (unused.Count > 0)
             {
-                frmGenericTextList unusedForm = new frmGenericTextList("Unused Plugins in userlist.yaml", unused);
+                frmGenericTextList unusedForm = new frmGenericTextList(windowTitle: "Unused Plugins in userlist.yaml", textLines: unused);
                 unusedForm.Show();
             }
             else
@@ -2491,7 +2484,17 @@ namespace hstCMM
                     sbar2($"Extracting: {modFilePath}");
                     statusStrip1.Refresh();
                     activityLog.WriteLog($"Extracting: {modFilePath}");
-                    archiveFile.Extract(extractPath);
+                    try
+                    {
+                        archiveFile.Extract(extractPath, password: txtSearchBox.Text);
+                    }
+                    catch (Exception ex)
+                    {
+                        LogError("Extraction failed: " + ex.Message);
+                        MessageBox.Show("Extraction failed: " + ex.Message);
+                        loadScreen.Close();
+                        return false;
+                    }
 
                     if (Directory.Exists(Path.Combine(extractPath, "fomod")))
                     {
@@ -3648,7 +3651,7 @@ namespace hstCMM
             string ModFile = Path.Combine(directoryPath, ModName);
 
             // Collect existing mod-related files
-            string[] fixedExtensions = { ".esp", ".esm", " - main.ba2", " - voices_en.ba2" };
+            string[] fixedExtensions = { ".esp", ".esm", " - voices_en.ba2" };
             foreach (var ext in fixedExtensions)
             {
                 string fullPath = ModFile + ext;
@@ -3686,7 +3689,7 @@ namespace hstCMM
                 catch (Exception ex)
                 {
                     LogError(ex.Message);
-                    MessageBox.Show($"Failed to rename {Path.GetFileName(oldPath)}:\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Failed to rename {oldPath} to {newPath}:\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
 
@@ -3737,8 +3740,8 @@ namespace hstCMM
                 MessageBoxIcon.Exclamation, true) == DialogResult.No)
                 return;
             activityLog.WriteLog("Starting reset everything.");
-            actionCount = RestoreStarfieldINI();
-            actionCount += DeleteLooseFileFolders();
+            //actionCount = RestoreStarfieldINI();
+            actionCount = DeleteLooseFileFolders();
             actionCount += ResetDefaults();
             actionCount += CheckArchives();
 
@@ -3771,7 +3774,6 @@ namespace hstCMM
                 }
                 else
                 {
-                    activityLog.WriteLog($"{GameName} Custom.ini matches recommended settings");
                     return 0;
                 }
             }
@@ -4100,6 +4102,7 @@ namespace hstCMM
                 return;
             }
 
+            ResetGroupsButton();
             lootPath = Properties.Settings.Default.LOOTPath;
             string cmdLine = (GameVersion != MS) ? $"--game=\"{GameFolder}\"" : $"--game=\"{GameFolder} (MS Store)\"";
             if (LOOTMode) cmdLine += " --auto-sort";
@@ -5917,7 +5920,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     // Build the base file path.
                     string modBasePath = Path.Combine(dataDirectory, modName);
 
-                    string[] patterns = { ".esp", ".esl" }; // Delete .esp and .esl files
+                    /*string[] patterns = { ".esp",".esl" }; // Delete .esp and .esl files
                     foreach (var pattern in patterns)
                     {
                         string modFile = modBasePath + pattern;
@@ -5929,8 +5932,19 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                             sbar3($"{modFile} uninstalled");
                             continue;
                         }
+                    }*/
+                    if (pluginName.EndsWith(".esp"))
+                    {
+                        string modFile = modBasePath + Path.GetExtension(pluginName);
+                        if (File.Exists(modFile))
+                        {
+                            File.Delete(modFile);
+                            activityLog.WriteLog($"Deleted: {modFile}");
+                            SavePlugins();
+                            sbar3($"{modFile} uninstalled");
+                            return;
+                        }
                     }
-
                     // Define the file extensions for the mod files to delete.
                     var extensions = new string[]
                     {
@@ -6426,6 +6440,43 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
         {
             Properties.Settings.Default.RowHighlight = rowHighlightToolStripMenuItem.Checked = !rowHighlightToolStripMenuItem.Checked;
             RefreshDataGrid();
+        }
+
+        private void ResetGroupsButton()
+        {
+            btnGroups.Font = new System.Drawing.Font(btnGroups.Font, FontStyle.Regular);
+        }
+        private void btnGroups_Click(object sender, EventArgs e)
+        {
+            string groupName = "";
+            List<string> groupList = new(), groupFilter = new();
+            foreach (var itemn in Groups.groups)
+                groupList.Add(itemn.name);
+            groupList.Sort();
+            using frmFilterGroups filterGroups = new(groupList);
+            {
+                if (filterGroups.ShowDialog() == DialogResult.OK)
+                {
+                    groupFilter = filterGroups.GetSelectedGroups();
+                    foreach (DataGridViewRow row in dataGridView1.Rows)
+                    {
+                        groupName = row.Cells["Group"].Value as string ?? "";
+                        if (groupFilter.Contains(groupName))
+                            row.Visible = true;
+                        else
+                            row.Visible = false;
+                    }
+                    if (groupFilter.Count > 0)
+                        btnGroups.Font = new System.Drawing.Font(btnGroups.Font, FontStyle.Bold);
+                    else
+                        btnGroups.Font = new System.Drawing.Font(btnGroups.Font, FontStyle.Regular);
+                }
+            }
+            if (groupList.Count == groupFilter.Count)
+                ResetGroupsButton();
+            else
+                sbar("Group filter applied. Refresh to clear");
+
         }
     }
 }
