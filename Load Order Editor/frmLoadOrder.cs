@@ -3636,10 +3636,7 @@ namespace hstCMM
         {
             List<string> files = new();
             if (!CheckGamePath()) // Abort if game path not set
-            {
-                MessageBox.Show("Game path not set");
                 return;
-            }
 
             if (Tools.ConfirmAction("This may affect other mods.", "Rename mod - Use with caution", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) != DialogResult.OK)
                 return;
@@ -6477,6 +6474,68 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             else
                 sbar("Group filter applied. Refresh to clear");
 
+        }
+
+        private void toolStripMenuDuplicateRename_Click(object sender, EventArgs e)
+        {
+            if (!CheckGamePath()) // Abort if game path not set
+                return;
+
+            List<string> files = new();
+            if (!CheckGamePath()) // Abort if game path not set
+                return;
+
+            string directoryPath = Path.Combine(GamePath, "Data");
+            var row = dataGridView1.CurrentRow;
+            string ModName = row.Cells["PluginName"].Value.ToString();
+            ModName = ModName[..ModName.LastIndexOf('.')]; // Strip extension
+            string ModFile = Path.Combine(directoryPath, ModName);
+
+            // Collect existing mod-related files
+            string[] fixedExtensions = { ".esp", ".esm", " - voices_en.ba2" };
+            foreach (var ext in fixedExtensions)
+            {
+                string fullPath = ModFile + ext;
+                if (File.Exists(fullPath))
+                    files.Add(fullPath);
+            }
+
+            // Handle texture files like " - textures*.ba2"
+            string pattern = ModName + " - textures*.ba2";
+
+            string[] matchedFiles = Directory.GetFiles(directoryPath, Path.GetFileName(pattern));
+            files.AddRange(matchedFiles);
+
+            // Handle texture files like " - main*.ba2"
+            pattern = ModName + " - main*.ba2";
+            matchedFiles = Directory.GetFiles(directoryPath, Path.GetFileName(pattern));
+            files.AddRange(matchedFiles);
+
+            string userInput = Interaction.InputBox("New Name:", "Duplicate Mod", ModName+" (2)");
+            if (string.IsNullOrWhiteSpace(userInput) || userInput==ModName)
+                return;
+            userInput = Path.GetFileNameWithoutExtension(userInput); // Remove any extension from user input
+
+            // Copy each file
+            foreach (var oldPath in files)
+            {
+                string extensionPart = oldPath.Substring(ModFile.Length); // Get suffix like ".esp" or " - textures01.ba2"
+                string newPath = Path.Combine(directoryPath, userInput + extensionPart);
+
+                try
+                {
+                    File.Copy(oldPath, newPath);
+                    activityLog.WriteLog($"Copied: {Path.GetFileName(oldPath)} to {Path.GetFileName(newPath)}");
+                }
+                catch (Exception ex)
+                {
+                    LogError(ex.Message);
+                    MessageBox.Show($"Failed to copy {oldPath} to {newPath}:\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+
+            SyncPlugins();
+            sbar($"Mod {ModName} copied to: {userInput}");
         }
     }
 }
