@@ -58,19 +58,7 @@ namespace hstCMM
             this.KeyPreview = true; // Ensure the form captures key presses
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(KeyEvent); // Handle <enter> for search
 
-            // Logging
-            activityLog = new ActivityLog();
-            activityLog.LogRichTextBox = rtbLog; // reference the RichTextBox in TableLayoutPanel
-            if (Properties.Settings.Default.Log)
-            {
-                tempstr = Properties.Settings.Default.LogFileDirectory;
-                if (tempstr == "")
-                    tempstr = Tools.LocalAppDataPath;
-                log = true;
-                activityLog.LoadLog(Path.Combine(tempstr, "Activity Log.txt"));
-                btnLog.Font = new System.Drawing.Font(btnLog.Font, log ? FontStyle.Bold : FontStyle.Regular);
-                SetupLogRow();
-            }
+            InitLogging(); // Logging
 
             foreach (var arg in Environment.GetCommandLineArgs()) // Handle some command line arguments
             {
@@ -104,33 +92,8 @@ namespace hstCMM
                     catalogFixer.Show(); // Show catalog fixer if catalog broken
             }
 
-            // Check if loose files are enabled
-            string LooseFilesDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName),
-                filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
-            try
-            {
-                if (File.Exists(filePath))
-                {
-                    var StarfieldCustomINI = File.ReadAllLines(filePath);
-                    foreach (var lines in StarfieldCustomINI)
-                        if (lines.Contains("bInvalidateOlderFiles"))
-                        {
-                            Properties.Settings.Default.LooseFiles = true;
-                            LooseFiles = true;
-                            break;
-                        }
-                }
-            }
-            catch (Exception ex)
-            {
-                LogError(ex.Message);
-            }
-
-            menuStrip1.Font = Properties.Settings.Default.FontSize; // Set custom font size
-            this.Font = Properties.Settings.Default.FontSize;
-
+            LooseFilesCheck(); // Check if loose files are enabled
             DetectApps(); // Detect other apps
-
             SetTheme(); // Light/Dark mode
 
             // Create BlockedMods.txt if necessary
@@ -177,7 +140,7 @@ namespace hstCMM
             }
             LastProfile ??= Properties.Settings.Default.LastProfile;
 
-            foreach (var arg in Environment.GetCommandLineArgs()) // Handle command line arguments
+            foreach (var arg in Environment.GetCommandLineArgs()) // Handle other command line arguments
             {
                 if (arg.StartsWith("-profile", StringComparison.InvariantCultureIgnoreCase))
                 {
@@ -251,6 +214,46 @@ namespace hstCMM
             }
 
             this.Text = tools.AppName() + " - " + GameName + " "; // Show selected game in title bar
+        }
+
+        private void LooseFilesCheck()
+        {
+            string LooseFilesDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName),
+    filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
+            try
+            {
+                if (File.Exists(filePath))
+                {
+                    var StarfieldCustomINI = File.ReadAllLines(filePath);
+                    foreach (var lines in StarfieldCustomINI)
+                        if (lines.Contains("bInvalidateOlderFiles"))
+                        {
+                            Properties.Settings.Default.LooseFiles = true;
+                            LooseFiles = true;
+                            break;
+                        }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(ex.Message);
+            }
+        }
+
+        private void InitLogging()
+        {
+            activityLog = new ActivityLog();
+            activityLog.LogRichTextBox = rtbLog; // reference the RichTextBox in TableLayoutPanel
+            if (Properties.Settings.Default.Log)
+            {
+                tempstr = Properties.Settings.Default.LogFileDirectory;
+                if (tempstr == "")
+                    tempstr = Tools.LocalAppDataPath;
+                log = true;
+                activityLog.LoadLog(Path.Combine(tempstr, "Activity Log.txt"));
+                btnLog.Font = new System.Drawing.Font(btnLog.Font, log ? FontStyle.Bold : FontStyle.Regular);
+                SetupLogRow();
+            }
         }
 
         public static void SetupJumpList()
@@ -1249,7 +1252,7 @@ namespace hstCMM
         {
             int ModCounter = 0;
 
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            if (e.Data.GetDataPresent(DataFormats.FileDrop)) // Install mod files on drag drop
             {
                 string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
                 foreach (var item in files)
@@ -2318,15 +2321,15 @@ namespace hstCMM
 
                 enabledCount += modEnabled ? 1 : 0;
 
-                // Special handling for Bethesda Game Studios mods.
+                /* Disabled for now.Interferes with group filter
+                // Special handling for Bethesda Game Studio mods.
                 if (pluginName.StartsWith("sfbgs", StringComparison.OrdinalIgnoreCase))
                 {
                     string currentGroupX = row.Cells[4].Value?.ToString() ?? "Bethesda Game Studios Creations"; //Group = column 4
                     row.Cells[4].Value = $"{currentGroupX} (Bethesda)";
-                }
+                }*/
 
                 // Update required cells.
-
                 row.Cells[1].Value = modEnabled; // Enabled = column 1
                 row.Cells[2].Value = pluginName; // PluginName = column 2
                 row.Cells[10].Value = modID; // CreationsID = column 10
@@ -4569,13 +4572,12 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
         private void SetUpMenus()
         {
-            var settings = Properties.Settings.Default;
+            menuStrip1.Font = Properties.Settings.Default.FontSize; // Set custom font size
+            this.Font = Properties.Settings.Default.FontSize;
 
+            var settings = Properties.Settings.Default;
             // Assign values
             toggleToolStripMenuItem.Checked = settings.Log;
-            /*if (activityLog is null && settings.Log)
-                EnableLog();*/
-
             toolStripMenuProfilesOn.Checked = settings.ProfileOn;
             compareProfilesToolStripMenuItem.Checked = settings.CompareProfiles;
             looseFilesDisabledToolStripMenuItem.Checked = LooseFiles || settings.LooseFiles;
@@ -6443,6 +6445,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
         {
             btnGroups.Font = new System.Drawing.Font(btnGroups.Font, FontStyle.Regular);
         }
+
         private void btnGroups_Click(object sender, EventArgs e)
         {
             string groupName = "";
@@ -6466,14 +6469,13 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     if (groupFilter.Count > 0)
                         btnGroups.Font = new System.Drawing.Font(btnGroups.Font, FontStyle.Bold);
                     else
-                        btnGroups.Font = new System.Drawing.Font(btnGroups.Font, FontStyle.Regular);
+                        ResetGroupsButton();
                 }
             }
             if (groupList.Count == groupFilter.Count)
                 ResetGroupsButton();
             else
                 sbar("Group filter applied. Refresh to clear");
-
         }
 
         private void toolStripMenuDuplicateRename_Click(object sender, EventArgs e)
@@ -6511,8 +6513,8 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             matchedFiles = Directory.GetFiles(directoryPath, Path.GetFileName(pattern));
             files.AddRange(matchedFiles);
 
-            string userInput = Interaction.InputBox("New Name:", "Duplicate Mod", ModName+" (2)");
-            if (string.IsNullOrWhiteSpace(userInput) || userInput==ModName)
+            string userInput = Interaction.InputBox("New Name:", "Duplicate Mod", ModName + " (2)");
+            if (string.IsNullOrWhiteSpace(userInput) || userInput == ModName)
                 return;
             userInput = Path.GetFileNameWithoutExtension(userInput); // Remove any extension from user input
 

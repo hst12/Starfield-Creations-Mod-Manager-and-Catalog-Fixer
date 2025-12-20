@@ -15,7 +15,7 @@ namespace hstCMM.Load_Order_Editor
             InitializeComponent();
             foreach (string group in groupList)
             {
-                clbGroups.Items.Add(group, true);
+                clbGroups.Items.Add(group, false);
             }
         }
 
