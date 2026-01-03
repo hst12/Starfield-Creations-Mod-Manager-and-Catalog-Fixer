@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmLoadOrder));
             dataGridView1 = new System.Windows.Forms.DataGridView();
             Index = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -66,6 +66,7 @@
             toolStripMenuViewWebSite = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator31 = new System.Windows.Forms.ToolStripSeparator();
             renameModToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripMenuDuplicateRename = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator18 = new System.Windows.Forms.ToolStripSeparator();
             archiveModToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             updateArchivedModsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -337,7 +338,6 @@
             progressBar1 = new System.Windows.Forms.ProgressBar();
             contextMenuLogRow = new System.Windows.Forms.ContextMenuStrip(components);
             toolStripClearLogRow = new System.Windows.Forms.ToolStripMenuItem();
-            toolStripMenuDuplicateRename = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             contextMenuDatagrid.SuspendLayout();
             statusStrip1.SuspendLayout();
@@ -430,8 +430,8 @@
             // Version
             // 
             Version.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dataGridViewCellStyle2.NullValue = null;
-            Version.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.NullValue = null;
+            Version.DefaultCellStyle = dataGridViewCellStyle1;
             Version.HeaderText = "Date";
             Version.MinimumWidth = 10;
             Version.Name = "Version";
@@ -518,7 +518,7 @@
             contextMenuDatagrid.ImageScalingSize = new System.Drawing.Size(32, 32);
             contextMenuDatagrid.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuEnableDisable, toolStripMenuAddToProfile, blockUnblockToolStripMenuItem, toolStripSeparator10, toolStripMenuUp, toolStripMenuDown, toolStripMenuTop, toolStripMenuBottom, toolStripSeparator4, toolStripMenAddRemoveContext, toolStripMenuDelContext, toolStripSeparator32, toolStripMenuInstallMod, toolStripMenuUninstallContext, toolStripSeparator36, modContentsToolStripMenuItem, toolStripMenuViewWebSite, toolStripSeparator31, renameModToolStripMenuItem, toolStripMenuDuplicateRename, toolStripSeparator18, archiveModToolStripMenuItem, updateArchivedModsToolStripMenuItem, toolStripSeparator11, toolStripMenuLootAutoSort, toolStripSeparator12, toolStripMenuRefresh });
             contextMenuDatagrid.Name = "contextMenuDatagrid";
-            contextMenuDatagrid.Size = new System.Drawing.Size(625, 856);
+            contextMenuDatagrid.Size = new System.Drawing.Size(625, 812);
             // 
             // toolStripMenuEnableDisable
             // 
@@ -644,6 +644,13 @@
             renameModToolStripMenuItem.Size = new System.Drawing.Size(624, 40);
             renameModToolStripMenuItem.Text = "Rename Mod";
             renameModToolStripMenuItem.Click += renameModToolStripMenuItem_Click;
+            // 
+            // toolStripMenuDuplicateRename
+            // 
+            toolStripMenuDuplicateRename.Name = "toolStripMenuDuplicateRename";
+            toolStripMenuDuplicateRename.Size = new System.Drawing.Size(624, 40);
+            toolStripMenuDuplicateRename.Text = "Duplicate and Rename Mod";
+            toolStripMenuDuplicateRename.Click += toolStripMenuDuplicateRename_Click;
             // 
             // toolStripSeparator18
             // 
@@ -1188,55 +1195,55 @@
             // toolStripMenuBackup
             // 
             toolStripMenuBackup.Name = "toolStripMenuBackup";
-            toolStripMenuBackup.Size = new System.Drawing.Size(346, 44);
+            toolStripMenuBackup.Size = new System.Drawing.Size(359, 44);
             toolStripMenuBackup.Text = "Plugins.txt";
             toolStripMenuBackup.Click += toolStripMenuBackup_Click;
             // 
             // mnuBackupBlockedMods
             // 
             mnuBackupBlockedMods.Name = "mnuBackupBlockedMods";
-            mnuBackupBlockedMods.Size = new System.Drawing.Size(346, 44);
+            mnuBackupBlockedMods.Size = new System.Drawing.Size(359, 44);
             mnuBackupBlockedMods.Text = "BlockedMods.txt";
             mnuBackupBlockedMods.Click += mnuBackupBlockedMods_Click;
             // 
             // backupContentCatalogtxtToolStripMenuItem
             // 
             backupContentCatalogtxtToolStripMenuItem.Name = "backupContentCatalogtxtToolStripMenuItem";
-            backupContentCatalogtxtToolStripMenuItem.Size = new System.Drawing.Size(346, 44);
+            backupContentCatalogtxtToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
             backupContentCatalogtxtToolStripMenuItem.Text = "ContentCatalog.txt";
             backupContentCatalogtxtToolStripMenuItem.Click += backupContentCatalogtxtToolStripMenuItem_Click;
             // 
             // backupProfilesToolStripMenuItem
             // 
             backupProfilesToolStripMenuItem.Name = "backupProfilesToolStripMenuItem";
-            backupProfilesToolStripMenuItem.Size = new System.Drawing.Size(346, 44);
+            backupProfilesToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
             backupProfilesToolStripMenuItem.Text = "Profiles";
             backupProfilesToolStripMenuItem.Click += backupProfilesToolStripMenuItem_Click;
             // 
             // appSettingsToolStripMenuItem
             // 
             appSettingsToolStripMenuItem.Name = "appSettingsToolStripMenuItem";
-            appSettingsToolStripMenuItem.Size = new System.Drawing.Size(346, 44);
+            appSettingsToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
             appSettingsToolStripMenuItem.Text = "App Settings";
             appSettingsToolStripMenuItem.Click += appSettingsToolStripMenuItem_Click;
             // 
             // lOOTUserlistToolStripMenuItem
             // 
             lOOTUserlistToolStripMenuItem.Name = "lOOTUserlistToolStripMenuItem";
-            lOOTUserlistToolStripMenuItem.Size = new System.Drawing.Size(346, 44);
+            lOOTUserlistToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
             lOOTUserlistToolStripMenuItem.Text = "LOOT Userlist";
             lOOTUserlistToolStripMenuItem.Click += lOOTUserlistToolStripMenuItem_Click;
             // 
             // toolStripSeparator48
             // 
             toolStripSeparator48.Name = "toolStripSeparator48";
-            toolStripSeparator48.Size = new System.Drawing.Size(343, 6);
+            toolStripSeparator48.Size = new System.Drawing.Size(356, 6);
             // 
             // allTheThingsToolStripMenuItem
             // 
             allTheThingsToolStripMenuItem.Name = "allTheThingsToolStripMenuItem";
-            allTheThingsToolStripMenuItem.Size = new System.Drawing.Size(346, 44);
-            allTheThingsToolStripMenuItem.Text = "All the Things";
+            allTheThingsToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+            allTheThingsToolStripMenuItem.Text = "Everything";
             allTheThingsToolStripMenuItem.Click += allTheThingsToolStripMenuItem_Click;
             // 
             // restoreToolStripMenuItem
@@ -2618,13 +2625,6 @@
             toolStripClearLogRow.Size = new System.Drawing.Size(142, 38);
             toolStripClearLogRow.Text = "Clear";
             toolStripClearLogRow.Click += toolStripClearLogRow_Click;
-            // 
-            // toolStripMenuDuplicateRename
-            // 
-            toolStripMenuDuplicateRename.Name = "toolStripMenuDuplicateRename";
-            toolStripMenuDuplicateRename.Size = new System.Drawing.Size(624, 40);
-            toolStripMenuDuplicateRename.Text = "Duplicate and Rename Mod";
-            toolStripMenuDuplicateRename.Click += toolStripMenuDuplicateRename_Click;
             // 
             // frmLoadOrder
             // 

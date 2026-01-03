@@ -14,9 +14,10 @@ namespace hstCMM
             InitializeComponent();
 
             string Readme = File.ReadAllText(Path.Combine(Tools.DocumentationFolder, "Readme.txt"));
-            string AboutText = tools.AppName() + " " + System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription +
-                "\nVersion:" + File.ReadAllText(Path.Combine(Tools.CommonFolder, "App Version.txt")) + "\n\n" + Readme;
-            richTextBox1.Text = AboutText;
+            /*string AboutText = tools.AppName() (+ " " + System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription +
+                " - Version:" + File.ReadAllText(Path.Combine(Tools.CommonFolder, "App Version.txt")) + "\n\n" + Readme;*/
+            this.Text = tools.AppName()+ " - Version:" + File.ReadAllText(Path.Combine(Tools.CommonFolder, "App Version.txt"));
+            richTextBox1.Text = Readme;
         }
     }
 }
