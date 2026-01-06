@@ -4318,6 +4318,8 @@ namespace hstCMM
             // Exit if the search box is empty.
             if (string.IsNullOrEmpty(txtSearchBox.Text))
                 return;
+            if (ActiveOnly)
+                ActiveOnlyToggle();
 
             // Lowercase the search query for case-insensitive matching.
             string searchQuery = txtSearchBox.Text.ToLowerInvariant();
