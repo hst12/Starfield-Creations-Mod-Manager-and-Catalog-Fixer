@@ -90,11 +90,6 @@
             toolStripSeparator = new System.Windows.Forms.ToolStripSeparator();
             updateAllProfilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator43 = new System.Windows.Forms.ToolStripSeparator();
-            exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            toolStripMenuExportActive = new System.Windows.Forms.ToolStripMenuItem();
-            toolStripMenuExportCSV = new System.Windows.Forms.ToolStripMenuItem();
-            mnuExportPDF = new System.Windows.Forms.ToolStripMenuItem();
-            toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             exploreToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             downloadsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuExploreAppData = new System.Windows.Forms.ToolStripMenuItem();
@@ -107,7 +102,7 @@
             appAppDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuExploreCommon = new System.Windows.Forms.ToolStripMenuItem();
             scriptLogsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             toolStripMenuEditFiles = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuEditPlugins = new System.Windows.Forms.ToolStripMenuItem();
             editStarfieldCustominiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -117,6 +112,11 @@
             editLOOTUserlistyamlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator41 = new System.Windows.Forms.ToolStripSeparator();
             uIToEditStarfieldCustominiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripMenuExportActive = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripMenuExportCSV = new System.Windows.Forms.ToolStripMenuItem();
+            mnuExportPDF = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator17 = new System.Windows.Forms.ToolStripSeparator();
             convertLooseFilesModToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator19 = new System.Windows.Forms.ToolStripSeparator();
@@ -774,7 +774,7 @@
             // 
             // fileToolStripMenuItem
             // 
-            fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { newToolStripMenuItem, openToolStripMenuItem, saveToolStripMenuItem, saveAsToolStripMenuItem, toolStripSeparator, updateAllProfilesToolStripMenuItem, toolStripSeparator43, exportToolStripMenuItem, toolStripSeparator2, exploreToolStripMenuItem, toolStripSeparator3, toolStripMenuEditFiles, toolStripSeparator17, convertLooseFilesModToolStripMenuItem, toolStripSeparator19, resetDeleteFilesToolStripMenuItem, toolStripSeparator46, backupToolStripMenuItem, restoreToolStripMenuItem, toolStripSeparator1, exitToolStripMenuItem });
+            fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { newToolStripMenuItem, openToolStripMenuItem, saveToolStripMenuItem, saveAsToolStripMenuItem, toolStripSeparator, updateAllProfilesToolStripMenuItem, toolStripSeparator43, exploreToolStripMenuItem, toolStripSeparator2, toolStripMenuEditFiles, toolStripSeparator3, exportToolStripMenuItem, toolStripSeparator17, convertLooseFilesModToolStripMenuItem, toolStripSeparator19, resetDeleteFilesToolStripMenuItem, toolStripSeparator46, backupToolStripMenuItem, restoreToolStripMenuItem, toolStripSeparator1, exitToolStripMenuItem });
             fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             fileToolStripMenuItem.Size = new System.Drawing.Size(71, 38);
             fileToolStripMenuItem.Text = "&File";
@@ -833,39 +833,6 @@
             // 
             toolStripSeparator43.Name = "toolStripSeparator43";
             toolStripSeparator43.Size = new System.Drawing.Size(501, 6);
-            // 
-            // exportToolStripMenuItem
-            // 
-            exportToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuExportActive, toolStripMenuExportCSV, mnuExportPDF });
-            exportToolStripMenuItem.Name = "exportToolStripMenuItem";
-            exportToolStripMenuItem.Size = new System.Drawing.Size(504, 44);
-            exportToolStripMenuItem.Text = "Export";
-            // 
-            // toolStripMenuExportActive
-            // 
-            toolStripMenuExportActive.Name = "toolStripMenuExportActive";
-            toolStripMenuExportActive.Size = new System.Drawing.Size(404, 44);
-            toolStripMenuExportActive.Text = "Export Mods to Text File";
-            toolStripMenuExportActive.Click += toolStripMenuExportMods_Click;
-            // 
-            // toolStripMenuExportCSV
-            // 
-            toolStripMenuExportCSV.Name = "toolStripMenuExportCSV";
-            toolStripMenuExportCSV.Size = new System.Drawing.Size(404, 44);
-            toolStripMenuExportCSV.Text = "Export Mods to CSV";
-            toolStripMenuExportCSV.Click += toolStripMenuExportCSV_Click;
-            // 
-            // mnuExportPDF
-            // 
-            mnuExportPDF.Name = "mnuExportPDF";
-            mnuExportPDF.Size = new System.Drawing.Size(404, 44);
-            mnuExportPDF.Text = "Export Mods to PDF";
-            mnuExportPDF.Click += mnuExportPDF_Click;
-            // 
-            // toolStripSeparator2
-            // 
-            toolStripSeparator2.Name = "toolStripSeparator2";
-            toolStripSeparator2.Size = new System.Drawing.Size(501, 6);
             // 
             // exploreToolStripMenuItem
             // 
@@ -951,10 +918,10 @@
             scriptLogsToolStripMenuItem.Text = "Script Logs";
             scriptLogsToolStripMenuItem.Click += scriptLogsToolStripMenuItem_Click;
             // 
-            // toolStripSeparator3
+            // toolStripSeparator2
             // 
-            toolStripSeparator3.Name = "toolStripSeparator3";
-            toolStripSeparator3.Size = new System.Drawing.Size(501, 6);
+            toolStripSeparator2.Name = "toolStripSeparator2";
+            toolStripSeparator2.Size = new System.Drawing.Size(501, 6);
             // 
             // toolStripMenuEditFiles
             // 
@@ -1016,6 +983,39 @@
             uIToEditStarfieldCustominiToolStripMenuItem.Size = new System.Drawing.Size(628, 44);
             uIToEditStarfieldCustominiToolStripMenuItem.Text = "StarfieldCustom.ini Editor";
             uIToEditStarfieldCustominiToolStripMenuItem.Click += uIToEditStarfieldCustominiToolStripMenuItem_Click;
+            // 
+            // toolStripSeparator3
+            // 
+            toolStripSeparator3.Name = "toolStripSeparator3";
+            toolStripSeparator3.Size = new System.Drawing.Size(501, 6);
+            // 
+            // exportToolStripMenuItem
+            // 
+            exportToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuExportActive, toolStripMenuExportCSV, mnuExportPDF });
+            exportToolStripMenuItem.Name = "exportToolStripMenuItem";
+            exportToolStripMenuItem.Size = new System.Drawing.Size(504, 44);
+            exportToolStripMenuItem.Text = "Export";
+            // 
+            // toolStripMenuExportActive
+            // 
+            toolStripMenuExportActive.Name = "toolStripMenuExportActive";
+            toolStripMenuExportActive.Size = new System.Drawing.Size(404, 44);
+            toolStripMenuExportActive.Text = "Export Mods to Text File";
+            toolStripMenuExportActive.Click += toolStripMenuExportMods_Click;
+            // 
+            // toolStripMenuExportCSV
+            // 
+            toolStripMenuExportCSV.Name = "toolStripMenuExportCSV";
+            toolStripMenuExportCSV.Size = new System.Drawing.Size(404, 44);
+            toolStripMenuExportCSV.Text = "Export Mods to CSV";
+            toolStripMenuExportCSV.Click += toolStripMenuExportCSV_Click;
+            // 
+            // mnuExportPDF
+            // 
+            mnuExportPDF.Name = "mnuExportPDF";
+            mnuExportPDF.Size = new System.Drawing.Size(404, 44);
+            mnuExportPDF.Text = "Export Mods to PDF";
+            mnuExportPDF.Click += mnuExportPDF_Click;
             // 
             // toolStripSeparator17
             // 
