@@ -4318,8 +4318,6 @@ namespace hstCMM
             // Exit if the search box is empty.
             if (string.IsNullOrEmpty(txtSearchBox.Text))
                 return;
-            if (ActiveOnly)
-                ActiveOnlyToggle();
 
             // Lowercase the search query for case-insensitive matching.
             string searchQuery = txtSearchBox.Text.ToLowerInvariant();
@@ -4327,6 +4325,9 @@ namespace hstCMM
             // Return early if no current cell is selected.
             if (dataGridView1.CurrentCell is null)
                 return;
+
+            if (ActiveOnly)
+                ActiveOnlyToggle(); // Disable filter
 
             int currentIndex = dataGridView1.CurrentCell.RowIndex;
             int totalRows = dataGridView1.RowCount;
@@ -4345,13 +4346,8 @@ namespace hstCMM
                     // Report the result.
                     string foundText = cellValue?.ToString() ?? "";
                     sbar2($"Found {txtSearchBox.Text} in {foundText}");
-
-                    // Set current cell if the cell is visible; otherwise, notify the mod is inactive.
-                    if (dataGridView1.Rows[rowIndex].Cells["PluginName"].Visible)
-                        dataGridView1.CurrentCell = dataGridView1.Rows[rowIndex].Cells["PluginName"];
-                    else
-                        sbar2("Mod found but is inactive");
-
+                    // Set current cell
+                    dataGridView1.CurrentCell = dataGridView1.Rows[rowIndex].Cells["PluginName"];
                     return;
                 }
             }
