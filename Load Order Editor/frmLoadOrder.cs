@@ -5001,13 +5001,13 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 }
 
                 DialogResult missingMod = Tools.ConfirmAction("Choose Yes to proceed and remove the missing mods from Plugins.txt or No cancel",
-                    "Missing mods found", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
-                if (missingMod== DialogResult.Cancel)
+                    "Missing mods found", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                /*if (missingMod== DialogResult.Cancel)
                 {
                     sbar3("Update cancelled");
                     dataGridView1.ResumeLayout();
                     return (0);
-                }
+                }*/
                 if ( missingMod== DialogResult.No)
                 {
                     if (Tools.ConfirmAction("Copy mods from backup folder?", "Attempt to Restore Missing Mods",
@@ -6051,7 +6051,6 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 string path = Path.Combine(folder, name);
                 SwitchProfile(path);
                 RefreshDataGrid();
-
                 totalChanges += SyncPlugins();
 
                 if (AutoSort)

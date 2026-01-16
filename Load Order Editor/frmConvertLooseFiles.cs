@@ -37,6 +37,7 @@ namespace hstCMM.Load_Order_Editor
         private void ProcessArchives()
         {
             string cmdLine;
+            DialogResult dlg;
 
             if (string.IsNullOrEmpty(esm))
                 if (txtEsm.Text != string.Empty)
@@ -64,33 +65,55 @@ namespace hstCMM.Load_Order_Editor
                 Path.GetFileNameWithoutExtension(esm)) + " - textures.ba2" + @""""
                 + " -format=DDS -excludefile=" + "\"" + Path.Combine(Tools.CommonFolder, "exclude.txt" + "\"");
 
-            if (!File.Exists(Path.Combine(frmLoadOrder.GamePath, "Data", Path.GetFileNameWithoutExtension(esm) + " - textures.ba2")))
+            if (File.Exists(Path.Combine(frmLoadOrder.GamePath, "Data", Path.GetFileNameWithoutExtension(esm) + " - textures.ba2")))
             {
-                if (log)
+                if (Tools.ConfirmAction("Overwrite Archive", "Texture archive already exists. Do you want to overwrite it?",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
                     activityLog.WriteLog($"Creating texture archive\n{archive2Path} {cmdLine}");
-                MakeArchive(archive2Path, cmdLine, workingDirectory);
-                frmLoadOrder.returnStatus++;
+                    MakeArchive(archive2Path, cmdLine, workingDirectory);
+                    frmLoadOrder.returnStatus++;
+                }
+                else
+                {
+                    if (log)
+                        activityLog.WriteLog("Skipping texture archive creation.");
+                }
             }
             else
             {
-                MessageBox.Show("Skipping texture archive creation.", "Textures archive already exists.", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                activityLog.WriteLog($"Creating texture archive\n{archive2Path} {cmdLine}");
+                MakeArchive(archive2Path, cmdLine, workingDirectory);
+                frmLoadOrder.returnStatus++;
             }
 
             // Create main archive
             cmdLine = @"interface,geometries,materials,meshes,scripts -create="""
-                    + Path.Combine(frmLoadOrder.GamePath, "Data", Path.GetFileNameWithoutExtension(esm) + " - main.ba2") + @""""
-                    + " -format=General";
+                        + Path.Combine(frmLoadOrder.GamePath, "Data", Path.GetFileNameWithoutExtension(esm) + " - main.ba2") + @""""
+                        + " -format=General";
 
-            if (!File.Exists(Path.Combine(frmLoadOrder.GamePath, "Data", Path.GetFileNameWithoutExtension(esm) + " - main.ba2")))
+            if (File.Exists(Path.Combine(frmLoadOrder.GamePath, "Data", Path.GetFileNameWithoutExtension(esm) + " - main.ba2")))
+            {
+                if (Tools.ConfirmAction("Overwrite Archive", "Main archive already exists. Do you want to overwrite it?",
+                     MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    if (log)
+                        activityLog.WriteLog($"Creating main archive\n{archive2Path} {cmdLine}");
+                    MakeArchive(archive2Path, cmdLine, workingDirectory);
+                    frmLoadOrder.returnStatus++;
+                }
+                else
+                {
+                    if (log)
+                        activityLog.WriteLog("Skipping main archive creation.");
+                }
+            }
+            else
             {
                 if (log)
                     activityLog.WriteLog($"Creating main archive\n{archive2Path} {cmdLine}");
                 MakeArchive(archive2Path, cmdLine, workingDirectory);
                 frmLoadOrder.returnStatus++;
-            }
-            else
-            {
-                MessageBox.Show("Skipping main archive creation.", "Main archive already exists.", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
 
             // Create sound archive
@@ -100,16 +123,27 @@ namespace hstCMM.Load_Order_Editor
                         + Path.Combine(frmLoadOrder.GamePath, "Data", Path.GetFileNameWithoutExtension(esm) + " - main.ba2") + @""""
                         + " -format=General -compression=None";
 
-                if (!File.Exists(Path.Combine(frmLoadOrder.GamePath, "Data", Path.GetFileNameWithoutExtension(esm) + " - main.ba2")))
+                if (File.Exists(Path.Combine(frmLoadOrder.GamePath, "Data", Path.GetFileNameWithoutExtension(esm) + " - main.ba2")))
+                {
+                    if (Tools.ConfirmAction("Sound archive exists", "Overwrite sound archive", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    {
+                        if (log)
+                            activityLog.WriteLog($"Creating sound archive\n{archive2Path} {cmdLine}");
+                        MakeArchive(archive2Path, cmdLine, workingDirectory);
+                        frmLoadOrder.returnStatus++;
+                    }
+                    else
+                    {
+                        if (log)
+                            activityLog.WriteLog("Skipping sound archive creation.");
+                    }
+                }
+                else
                 {
                     if (log)
                         activityLog.WriteLog($"Creating sound archive\n{archive2Path} {cmdLine}");
                     MakeArchive(archive2Path, cmdLine, workingDirectory);
                     frmLoadOrder.returnStatus++;
-                }
-                else
-                {
-                    MessageBox.Show("Skipping sound archive creation.", "Sound archive already exists.", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
             }
         }
