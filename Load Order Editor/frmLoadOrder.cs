@@ -4076,7 +4076,12 @@ namespace hstCMM
                 SS.Close();
             }
             else
-                timer1.Start();
+            {
+                if (Properties.Settings.Default.LoadScreenEnabled)
+                    timer1.Start();
+                else
+                    this.Close();
+            }
         }
 
         private void RunLOOT(bool LOOTMode) // True for autosort
