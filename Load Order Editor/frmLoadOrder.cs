@@ -261,52 +261,59 @@ namespace hstCMM
             if (!TaskbarManager.IsPlatformSupported)
                 return;
 
-            JumpList jumpList = JumpList.CreateJumpList();
-            jumpList.KnownCategoryToDisplay = JumpListKnownCategoryType.Recent;
-
-            // Add custom tasks with command-line argument
-            JumpListLink runGameTask = new JumpListLink(Application.ExecutablePath, "Run Game")
+            try
             {
-                Arguments = "-run",
-                IconReference = new IconReference(Application.ExecutablePath, 0),
-                WorkingDirectory = Path.GetDirectoryName(Application.ExecutablePath),
-                Title = "Run Game"
-            };
+                JumpList jumpList = JumpList.CreateJumpList();
+                jumpList.KnownCategoryToDisplay = JumpListKnownCategoryType.Recent;
 
-            JumpListLink devModeTask = new JumpListLink(Application.ExecutablePath, "Dev Mode")
+                // Add custom tasks with command-line argument
+                JumpListLink runGameTask = new JumpListLink(Application.ExecutablePath, "Run Game")
+                {
+                    Arguments = "-run",
+                    IconReference = new IconReference(Application.ExecutablePath, 0),
+                    WorkingDirectory = Path.GetDirectoryName(Application.ExecutablePath),
+                    Title = "Run Game"
+                };
+
+                JumpListLink devModeTask = new JumpListLink(Application.ExecutablePath, "Dev Mode")
+                {
+                    Arguments = "-dev",
+                    IconReference = new IconReference(Application.ExecutablePath, 0),
+                    WorkingDirectory = Path.GetDirectoryName(Application.ExecutablePath),
+                    Title = "Dev Mode"
+                };
+
+                JumpListLink disableSettings = new JumpListLink(Application.ExecutablePath, "Disable Settings")
+                {
+                    Arguments = "-noauto",
+                    IconReference = new IconReference(Application.ExecutablePath, 0),
+                    WorkingDirectory = Path.GetDirectoryName(Application.ExecutablePath),
+                    Title = "Disable Settings"
+                };
+
+                JumpListLink disableCatalogRestore = new JumpListLink(Application.ExecutablePath, "Disable Catalog Restore")
+                {
+                    Arguments = "-norestore",
+                    IconReference = new IconReference(Application.ExecutablePath, 0),
+                    WorkingDirectory = Path.GetDirectoryName(Application.ExecutablePath),
+                    Title = "Disable Catalog Restore"
+                };
+
+                /*JumpListLink DemoTask = new JumpListLink(Application.ExecutablePath, "Demo Profile")
+                {
+                    Arguments = "-profile Demo.txt",
+                    IconReference = new IconReference(Application.ExecutablePath, 0),
+                    WorkingDirectory = Path.GetDirectoryName(Application.ExecutablePath),
+                    Title = "Demo Profile"
+                };*/
+
+                jumpList.AddUserTasks(runGameTask, devModeTask, disableSettings, disableCatalogRestore);
+                jumpList.Refresh();
+            }
+            catch (Exception ex)
             {
-                Arguments = "-dev",
-                IconReference = new IconReference(Application.ExecutablePath, 0),
-                WorkingDirectory = Path.GetDirectoryName(Application.ExecutablePath),
-                Title = "Dev Mode"
-            };
-
-            JumpListLink disableSettings = new JumpListLink(Application.ExecutablePath, "Disable Settings")
-            {
-                Arguments = "-noauto",
-                IconReference = new IconReference(Application.ExecutablePath, 0),
-                WorkingDirectory = Path.GetDirectoryName(Application.ExecutablePath),
-                Title = "Disable Settings"
-            };
-
-            JumpListLink disableCatalogRestore = new JumpListLink(Application.ExecutablePath, "Disable Catalog Restore")
-            {
-                Arguments = "-norestore",
-                IconReference = new IconReference(Application.ExecutablePath, 0),
-                WorkingDirectory = Path.GetDirectoryName(Application.ExecutablePath),
-                Title = "Disable Catalog Restore"
-            };
-
-            /*JumpListLink DemoTask = new JumpListLink(Application.ExecutablePath, "Demo Profile")
-            {
-                Arguments = "-profile Demo.txt",
-                IconReference = new IconReference(Application.ExecutablePath, 0),
-                WorkingDirectory = Path.GetDirectoryName(Application.ExecutablePath),
-                Title = "Demo Profile"
-            };*/
-
-            jumpList.AddUserTasks(runGameTask, devModeTask, disableSettings, disableCatalogRestore);
-            jumpList.Refresh();
+                activityLog.WriteLog("Jump List setup failed: " + ex.Message);
+            }
         }
 
         public void LogError(string message)
@@ -1490,7 +1497,10 @@ namespace hstCMM
                 creationKitToolStripMenuItem.Visible = false;*/
 
             if (!File.Exists(Path.Combine(GamePath, "sfse_loader.exe")))
+            {
                 gameVersionSFSEToolStripMenuItem.Visible = false;
+                sFSEPluginsEnableDisableToolStripMenuItem.Visible = false;
+            }
             GameVersionDisplay();
 
             if (Properties.Settings.Default.MO2Path == "")
@@ -4967,7 +4977,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 var pluginName = cellValue as string;
                 if (string.IsNullOrEmpty(pluginName)) continue;
 
-                // Duplicate check with immediate action
+                // Duplicate check
                 if (!seenInGrid.Add(pluginName))
                 {
                     rowsToRemove.Add(row);
@@ -5013,7 +5023,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     dataGridView1.ResumeLayout();
                     return (0);
                 }*/
-                if ( missingMod== DialogResult.No)
+                if (missingMod == DialogResult.No)
                 {
                     if (Tools.ConfirmAction("Copy mods from backup folder?", "Attempt to Restore Missing Mods",
                         MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
@@ -6547,6 +6557,17 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
             SyncPlugins();
             sbar($"Mod {ModName} copied to: {userInput}");
+        }
+
+        private void testToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void sFSEPluginsEnableDisableToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmSFSEPlugins fsp = new();
+            fsp.ShowDialog();
         }
     }
 }

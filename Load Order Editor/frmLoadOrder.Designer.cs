@@ -287,6 +287,7 @@
             toolStripSeparator29 = new System.Windows.Forms.ToolStripSeparator();
             looseFilesDisabledToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator28 = new System.Windows.Forms.ToolStripSeparator();
+            sFSEPluginsEnableDisableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuLinks = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuCreations = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuNexus = new System.Windows.Forms.ToolStripMenuItem();
@@ -1961,7 +1962,7 @@
             // 
             // toolStripMenuMods
             // 
-            toolStripMenuMods.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuEnableAll, toolStripMenuDisableAll, enableAchievementSafeOnlyToolStripMenuItem, toolStripSeparator6, toolStripMenuDelete, toolStripSeparator8, toolStripMenuAutoClean, toolStripMenuScanMods, toolStripMenuCleanup, removeDuplicatesToolStripMenuItem, toolStripSeparator7, toolStripMenuInstall, toolStripMenuUninstall, toolStripSeparator9, toolStripMenuLoot, toolStripMenuLootSort, toolStripSeparator15, vortexToolStripMenuItem, mO2ToolStripMenuItem, creationKitToolStripMenuItem, xEditToolStripMenuItem, starUIConfiguratorToolStripMenuItem, toolStripSeparator26, openAllActiveModWebPagesToolStripMenuItem, toolStripSeparator29, looseFilesDisabledToolStripMenuItem, toolStripSeparator28 });
+            toolStripMenuMods.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuEnableAll, toolStripMenuDisableAll, enableAchievementSafeOnlyToolStripMenuItem, toolStripSeparator6, toolStripMenuDelete, toolStripSeparator8, toolStripMenuAutoClean, toolStripMenuScanMods, toolStripMenuCleanup, removeDuplicatesToolStripMenuItem, toolStripSeparator7, toolStripMenuInstall, toolStripMenuUninstall, toolStripSeparator9, toolStripMenuLoot, toolStripMenuLootSort, toolStripSeparator15, vortexToolStripMenuItem, mO2ToolStripMenuItem, creationKitToolStripMenuItem, xEditToolStripMenuItem, starUIConfiguratorToolStripMenuItem, toolStripSeparator26, openAllActiveModWebPagesToolStripMenuItem, toolStripSeparator29, looseFilesDisabledToolStripMenuItem, toolStripSeparator28, sFSEPluginsEnableDisableToolStripMenuItem });
             toolStripMenuMods.Name = "toolStripMenuMods";
             toolStripMenuMods.Size = new System.Drawing.Size(94, 38);
             toolStripMenuMods.Text = "Mods";
@@ -2146,6 +2147,13 @@
             toolStripSeparator28.Name = "toolStripSeparator28";
             toolStripSeparator28.Size = new System.Drawing.Size(495, 6);
             // 
+            // sFSEPluginsEnableDisableToolStripMenuItem
+            // 
+            sFSEPluginsEnableDisableToolStripMenuItem.Name = "sFSEPluginsEnableDisableToolStripMenuItem";
+            sFSEPluginsEnableDisableToolStripMenuItem.Size = new System.Drawing.Size(498, 44);
+            sFSEPluginsEnableDisableToolStripMenuItem.Text = "SFSE Plugins Enable/Disable";
+            sFSEPluginsEnableDisableToolStripMenuItem.Click += sFSEPluginsEnableDisableToolStripMenuItem_Click;
+            // 
             // toolStripMenuLinks
             // 
             toolStripMenuLinks.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuCreations, toolStripMenuNexus, nexusUpdatedModsToolStripMenuItem, nexusTrackingToolStripMenuItem, toolStripMenuBGSStarfield, toolStripMenuBGSX, steamDBToolStripMenuItem, toolStripSeparator45, webPageToolStripMenuItem, toolStripMenuGitHub });
@@ -2302,6 +2310,7 @@
             testToolStripMenuItem1.Name = "testToolStripMenuItem1";
             testToolStripMenuItem1.Size = new System.Drawing.Size(422, 44);
             testToolStripMenuItem1.Text = "Test";
+            testToolStripMenuItem1.Click += testToolStripMenuItem1_Click;
             // 
             // flowLayoutPanel1
             // 
@@ -2979,5 +2988,6 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuExportActive;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuExportCSV;
         private System.Windows.Forms.ToolStripMenuItem mnuExportPDF;
+        private System.Windows.Forms.ToolStripMenuItem sFSEPluginsEnableDisableToolStripMenuItem;
     }
 }
