@@ -84,7 +84,7 @@
             btnSelectAll.Location = new System.Drawing.Point(3, 3);
             btnSelectAll.Name = "btnSelectAll";
             btnSelectAll.Size = new System.Drawing.Size(150, 46);
-            btnSelectAll.TabIndex = 0;
+            btnSelectAll.TabIndex = 1;
             btnSelectAll.Text = "Select All";
             btnSelectAll.UseVisualStyleBackColor = true;
             btnSelectAll.Click += btnSelectAll_Click;
@@ -95,7 +95,7 @@
             btnSelectNone.Location = new System.Drawing.Point(159, 3);
             btnSelectNone.Name = "btnSelectNone";
             btnSelectNone.Size = new System.Drawing.Size(154, 46);
-            btnSelectNone.TabIndex = 1;
+            btnSelectNone.TabIndex = 2;
             btnSelectNone.Text = "Select None";
             btnSelectNone.UseVisualStyleBackColor = true;
             btnSelectNone.Click += btnSelectNone_Click;
@@ -106,7 +106,7 @@
             btnOpenFolder.Location = new System.Drawing.Point(319, 3);
             btnOpenFolder.Name = "btnOpenFolder";
             btnOpenFolder.Size = new System.Drawing.Size(165, 46);
-            btnOpenFolder.TabIndex = 6;
+            btnOpenFolder.TabIndex = 3;
             btnOpenFolder.Text = "Plugin Folder";
             btnOpenFolder.UseVisualStyleBackColor = true;
             btnOpenFolder.Click += btnOpenFolder_Click;
