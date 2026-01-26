@@ -16,6 +16,7 @@ namespace hstCMM
         {
             InitializeComponent();
             string LoadScreen = "";
+            string[] files;
             if (!Properties.Settings.Default.RandomLoadScreen)
                 LoadScreen = Settings.Default.LoadScreenFilename;
             else
@@ -23,17 +24,27 @@ namespace hstCMM
                 LoadScreen = Path.Combine(tools.GameDocuments, "Data", "Textures", "Photos");
 
                 // Get all files in the directory, excluding those ending with -thumbnail.png
-                string[] files = Directory
-                    .GetFiles(LoadScreen)
-                    .Where(f => !f.EndsWith("-thumbnail.png", StringComparison.OrdinalIgnoreCase))
-                    .ToArray();
+                try
+                {
+                    files = Directory
+                       .GetFiles(LoadScreen)
+                       .Where(f => !f.EndsWith("-thumbnail.png", StringComparison.OrdinalIgnoreCase))
+                       .ToArray();
+                }
+                catch
+                {
+                    files = Array.Empty<string>();
+                }
 
                 if (files.Length == 0)
                     LoadScreen = Settings.Default.LoadScreenFilename;
+                else
+                {
 
-                Random random = new Random();
-                int index = random.Next(files.Length);
-                LoadScreen = files[index]; // Randomly pick a load screen from Photos directory
+                    Random random = new Random();
+                    int index = random.Next(files.Length);
+                    LoadScreen = files[index]; // Randomly pick a load screen from Photos directory
+                }
             }
 
             Rectangle screen = Screen.PrimaryScreen.Bounds;
