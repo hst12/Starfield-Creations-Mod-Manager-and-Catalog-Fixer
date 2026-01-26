@@ -229,6 +229,8 @@
             enableSplashScreenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuLoadScreenPreview = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuLoadingScreen = new System.Windows.Forms.ToolStripMenuItem();
+            randomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripSeparator57 = new System.Windows.Forms.ToolStripSeparator();
             resetLoadScreenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator13 = new System.Windows.Forms.ToolStripSeparator();
             workaroundsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -1737,7 +1739,7 @@
             // 
             // loadScreenToolStripMenuItem
             // 
-            loadScreenToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { enableSplashScreenToolStripMenuItem, toolStripMenuLoadScreenPreview, toolStripMenuLoadingScreen, resetLoadScreenToolStripMenuItem });
+            loadScreenToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { enableSplashScreenToolStripMenuItem, toolStripMenuLoadScreenPreview, toolStripMenuLoadingScreen, randomToolStripMenuItem, toolStripSeparator57, resetLoadScreenToolStripMenuItem });
             loadScreenToolStripMenuItem.Name = "loadScreenToolStripMenuItem";
             loadScreenToolStripMenuItem.Size = new System.Drawing.Size(407, 44);
             loadScreenToolStripMenuItem.Text = "Load Screen";
@@ -1745,28 +1747,40 @@
             // enableSplashScreenToolStripMenuItem
             // 
             enableSplashScreenToolStripMenuItem.Name = "enableSplashScreenToolStripMenuItem";
-            enableSplashScreenToolStripMenuItem.Size = new System.Drawing.Size(232, 44);
+            enableSplashScreenToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
             enableSplashScreenToolStripMenuItem.Text = "Enabled";
             enableSplashScreenToolStripMenuItem.Click += enableSplashScreenToolStripMenuItem_Click;
             // 
             // toolStripMenuLoadScreenPreview
             // 
             toolStripMenuLoadScreenPreview.Name = "toolStripMenuLoadScreenPreview";
-            toolStripMenuLoadScreenPreview.Size = new System.Drawing.Size(232, 44);
+            toolStripMenuLoadScreenPreview.Size = new System.Drawing.Size(359, 44);
             toolStripMenuLoadScreenPreview.Text = "Preview";
             toolStripMenuLoadScreenPreview.Click += toolStripMenuLoadScreenPreview_Click;
             // 
             // toolStripMenuLoadingScreen
             // 
             toolStripMenuLoadingScreen.Name = "toolStripMenuLoadingScreen";
-            toolStripMenuLoadingScreen.Size = new System.Drawing.Size(232, 44);
+            toolStripMenuLoadingScreen.Size = new System.Drawing.Size(359, 44);
             toolStripMenuLoadingScreen.Text = "Set";
             toolStripMenuLoadingScreen.Click += toolStripMenuLoadingScreen_Click;
+            // 
+            // randomToolStripMenuItem
+            // 
+            randomToolStripMenuItem.Name = "randomToolStripMenuItem";
+            randomToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+            randomToolStripMenuItem.Text = "Random";
+            randomToolStripMenuItem.Click += randomToolStripMenuItem_Click;
+            // 
+            // toolStripSeparator57
+            // 
+            toolStripSeparator57.Name = "toolStripSeparator57";
+            toolStripSeparator57.Size = new System.Drawing.Size(356, 6);
             // 
             // resetLoadScreenToolStripMenuItem
             // 
             resetLoadScreenToolStripMenuItem.Name = "resetLoadScreenToolStripMenuItem";
-            resetLoadScreenToolStripMenuItem.Size = new System.Drawing.Size(232, 44);
+            resetLoadScreenToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
             resetLoadScreenToolStripMenuItem.Text = "Reset";
             resetLoadScreenToolStripMenuItem.Click += resetLoadScreenToolStripMenuItem_Click;
             // 
@@ -2989,5 +3003,7 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuExportCSV;
         private System.Windows.Forms.ToolStripMenuItem mnuExportPDF;
         private System.Windows.Forms.ToolStripMenuItem sFSEPluginsEnableDisableToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem randomToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator57;
     }
 }

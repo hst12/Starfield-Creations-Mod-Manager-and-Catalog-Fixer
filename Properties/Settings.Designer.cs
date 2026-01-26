@@ -801,5 +801,17 @@ namespace hstCMM.Properties {
                 this["RowHighlight"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool RandomLoadScreen {
+            get {
+                return ((bool)(this["RandomLoadScreen"]));
+            }
+            set {
+                this["RandomLoadScreen"] = value;
+            }
+        }
     }
 }

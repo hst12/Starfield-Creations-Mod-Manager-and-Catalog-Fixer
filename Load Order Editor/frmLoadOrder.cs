@@ -4615,6 +4615,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             logWindowToolStripMenuItem.Checked = Properties.Settings.Default.LogWindow;
             saveOnExitToolStripMenuItem.Checked = Properties.Settings.Default.SaveLog;
             rowHighlightToolStripMenuItem.Checked = Properties.Settings.Default.RowHighlight;
+            randomToolStripMenuItem.Checked = Properties.Settings.Default.RandomLoadScreen;
         }
 
         private void sFSEPluginsToolStripMenuItem_Click(object sender, EventArgs e) // Open SFSE Plugins Directory
@@ -5436,16 +5437,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
         private void toolStripMenuExploreGameDocs_Click(object sender, EventArgs e)
         {
-            try
-            {
-                Tools.OpenFolder(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                    Path.Combine("My Games", Tools.GameLibrary.GetById(Properties.Settings.Default.Game).DocFolder)));
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Run the game to correct this", $"Error opening {GameName} game documents folder");
-                LogError("Error opening game documents folder " + ex.Message);
-            }
+            Tools.OpenFolder(tools.GameDocuments);
         }
 
         private void toolStripMenuExportCSV_Click(object sender, EventArgs e) // Export DataGridView to CSV file
@@ -6568,6 +6560,11 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
         {
             frmSFSEPlugins fsp = new();
             fsp.ShowDialog();
+        }
+
+        private void randomToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.RandomLoadScreen= randomToolStripMenuItem.Checked = !randomToolStripMenuItem.Checked;
         }
     }
 }

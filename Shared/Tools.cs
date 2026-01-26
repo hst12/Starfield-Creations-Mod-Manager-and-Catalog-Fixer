@@ -66,6 +66,17 @@ namespace hstCMM.Shared // Various functions used by the app
         {
             try
             {
+                GameDocuments = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games",
+                    GameLibrary.GetById(Properties.Settings.Default.Game).DocFolder);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, $"{GameName} Documents folder missing. Repair the game", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                Environment.Exit(1);
+            }
+
+            try
+            {
                 BethFiles = new(File.ReadAllLines(Path.Combine(CommonFolder,
                     GameLibrary.GetById(Properties.Settings.Default.Game).ExcludeFile + " Exclude.txt"))); // Exclude these files from Plugin list
             }
@@ -112,6 +123,7 @@ namespace hstCMM.Shared // Various functions used by the app
         public string GamePath { get; set; }
         public string GamePathMS { get; set; }
         public List<string> PluginList { get; set; }
+        public string GameDocuments { get; }
 
         public static List<string> BlockedMods()
         {

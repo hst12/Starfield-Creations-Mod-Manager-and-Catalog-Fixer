@@ -1,16 +1,41 @@
 ﻿using hstCMM.Properties;
+using hstCMM.Shared;
 using System;
 using System.Drawing;
+using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace hstCMM
 {
     public partial class frmSplashScreen : Form
     {
+        private readonly Tools tools = new();
+
         public frmSplashScreen()
         {
             InitializeComponent();
-            string LoadScreen = Settings.Default.LoadScreenFilename;
+            string LoadScreen = "";
+            if (!Properties.Settings.Default.RandomLoadScreen)
+                LoadScreen = Settings.Default.LoadScreenFilename;
+            else
+            {
+                LoadScreen = Path.Combine(tools.GameDocuments, "Data", "Textures", "Photos");
+
+                // Get all files in the directory, excluding those ending with -thumbnail.png
+                string[] files = Directory
+                    .GetFiles(LoadScreen)
+                    .Where(f => !f.EndsWith("-thumbnail.png", StringComparison.OrdinalIgnoreCase))
+                    .ToArray();
+
+                if (files.Length == 0)
+                    LoadScreen = Settings.Default.LoadScreenFilename;
+
+                Random random = new Random();
+                int index = random.Next(files.Length);
+                LoadScreen = files[index]; // Randomly pick a load screen from Photos directory
+            }
+
             Rectangle screen = Screen.PrimaryScreen.Bounds;
             float screenWidth;
             float screenHeight;
