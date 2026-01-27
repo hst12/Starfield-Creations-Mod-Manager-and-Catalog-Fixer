@@ -106,14 +106,14 @@ namespace hstCMM
                 // Set the form's client size to the calculated dimensions
                 this.ClientSize = new Size(newWidth, newHeight);
 
-                // Optional: Center the form on the screen
             }
             else
             {
-                MessageBox.Show("No background image found!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("No background image found", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             this.StartPosition = FormStartPosition.CenterScreen;
+            this.Focus();
         }
     }
 }

@@ -173,6 +173,7 @@ namespace hstCMM
                 if (arg.Equals("-run", StringComparison.InvariantCultureIgnoreCase))
                 {
                     RunGame();
+                    this.WindowState = FormWindowState.Minimized;
                     Application.Exit();
                 }
             }
@@ -2124,6 +2125,8 @@ namespace hstCMM
             int enabledCount = 0, IndexCount = 1, i, versionDelimiter, dotIndex,
                 webskipchars = Tools.GameLibrary.GetById(Properties.Settings.Default.Game).WebSkipChars;
 
+            long totalFileSize = 0;
+
             string loText = Path.Combine(Tools.GameAppData, "Plugins.txt"),
                    LOOTPath = Properties.Settings.Default.LOOTPath, pluginName, rawVersion;
 
@@ -2295,6 +2298,7 @@ namespace hstCMM
                     modTimeStamp = Tools.ConvertTime(TimeStamp[idx]).ToString();
                     modID = CreationsID[idx];
                     modFileSize = FileSize[idx] / 1024;
+                    totalFileSize += modFileSize;
                     url = $"https://creations.bethesda.net/en/{Tools.GameLibrary.GetById(Properties.Settings.Default.Game).
                         CreationsSite}/details/{(modID.Length > 3 ? modID[webskipchars..] : modID)}/" +
                         CreationsTitle[idx].Replace(" ", "_").Replace("[", "_").Replace("]", "_");
@@ -2409,7 +2413,7 @@ namespace hstCMM
 
             // -- Process mod stats if the game path is set --
             if (!string.IsNullOrEmpty(GamePath) && Properties.Settings.Default.ModStats)
-                sbar(ShowModStats(CreationsPlugin, enabledCount));
+                sbar(ShowModStats(CreationsPlugin, enabledCount, totalFileSize));
             else
                 sbar("");
         }
@@ -4671,7 +4675,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 sbar3("Activity Log not found.");
         }
 
-        private string ShowModStats(List<string> CreationsPlugin, int enabledCount)
+        private string ShowModStats(List<string> CreationsPlugin, int enabledCount, long totalFileSize)
         {
             string loText = Path.Combine(Tools.GameAppData, "Plugins.txt"), StatText = "",
                 GameFolder = Tools.GameLibrary.GetById(Properties.Settings.Default.Game).AppData; ;
@@ -4746,6 +4750,8 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 statusBuilder.Append($"Creations {CreationsPlugin.Count}, Other {Math.Abs(dataGridView1.RowCount - CreationsPlugin.Count)}, ");
                 statusBuilder.Append($"Enabled: {enabledCount}, esm: {esmCount}, Archives: {ba2Count}, ");
                 statusBuilder.Append($"Enabled - Main: {mainCount}, Textures: {textureCount}");
+                if (dataGridView1.Columns["FileSize"].Visible)
+                    statusBuilder.Append($", Total Size: {totalFileSize:N0}");
 
                 if (espCount > 0)
                     statusBuilder.Append($", esp files: {espCount}");
@@ -6564,7 +6570,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
         private void randomToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Properties.Settings.Default.RandomLoadScreen= randomToolStripMenuItem.Checked = !randomToolStripMenuItem.Checked;
+            Properties.Settings.Default.RandomLoadScreen = randomToolStripMenuItem.Checked = !randomToolStripMenuItem.Checked;
         }
     }
 }
