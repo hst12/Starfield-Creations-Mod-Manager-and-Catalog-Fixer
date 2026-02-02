@@ -1991,7 +1991,8 @@ namespace hstCMM
                 InitialDirectory = Tools.CommonFolder,
                 Filter = "Txt File|*.txt",
                 Title = "Create Game Archives.txt",
-                FileName = GameFolder + " Archives.txt"
+                //FileName = GameFolder + " Archives.txt";
+                FileName = Tools.GameLibrary.GetById(Properties.Settings.Default.Game).ExcludeFile + " Archives.txt"
             };
 
             if (saveDialog.ShowDialog() != DialogResult.OK || string.IsNullOrEmpty(saveDialog.FileName))
@@ -4684,7 +4685,8 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             {
                 // Cache file paths and load BGS archives
                 var dataDirectory = Path.Combine(GamePath, "Data");
-                var bgsArchives = File.ReadLines(Path.Combine(Tools.CommonFolder, GameFolder + " Archives.txt"))
+                var bgsArchives = File.ReadLines(Path.Combine(Tools.CommonFolder,
+                    Tools.GameLibrary.GetById(Properties.Settings.Default.Game).ExcludeFile + " Archives.txt"))
                     .Where(line => line.Length > 4)
                     .Select(line => line[..^4].ToLowerInvariant())
                     .ToHashSet(StringComparer.OrdinalIgnoreCase);
@@ -6559,7 +6561,6 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
         private void testToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-
         }
 
         private void sFSEPluginsEnableDisableToolStripMenuItem_Click(object sender, EventArgs e)

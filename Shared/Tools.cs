@@ -506,15 +506,16 @@ namespace hstCMM.Shared // Various functions used by the app
 
         public string SetGamePath() // Prompt for game path
         {
+            string gameEXE = Tools.GameLibrary.GetById(Properties.Settings.Default.Game).Executable;
             using System.Windows.Forms.OpenFileDialog openFileDialog = new();
             if (!string.IsNullOrEmpty(Properties.Settings.Default.GamePath))
                 openFileDialog.InitialDirectory = Properties.Settings.Default.GamePath;
             else
                 openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
 
-            openFileDialog.Title = $"Set the path to the {GameName} executable - {GameName}.exe";
-            openFileDialog.FileName = $"{GameName}.exe";
-            openFileDialog.Filter = $"{GameName}.exe|{GameName}.exe";
+            openFileDialog.Title = $"Set the path to the {GameName} executable - {gameEXE}";
+            openFileDialog.FileName = gameEXE;
+            openFileDialog.Filter = $"{gameEXE}|{gameEXE}";
 
             if (openFileDialog.ShowDialog() != DialogResult.OK)
             {
@@ -566,12 +567,39 @@ namespace hstCMM.Shared // Various functions used by the app
         {
             public static readonly List<GameInfo> Games = new()
             {
-                new GameInfo(0, "Starfield", "Starfield","Starfield","Starfield","Starfield.exe", ModFiles.NewModFormat,
-                    ModArchives.NewArchiveFormat,"2722710",3,"Starfield"),
-                new GameInfo(1, "The Elder Scrolls V: Skyrim Special Edition", "Skyrim Special Edition","Skyrim SE",
-                    "Skyrim Special Edition","SkyrimSe.exe", ModFiles.OldModFormat, ModArchives.OldArchiveFormat,"1946180",5,"Skyrim"),
-                new GameInfo(2, "Fallout 4", "Fallout4","Fallout 4","Fallout 4","Fallout4.exe", ModFiles.OldModFormat,
-                    ModArchives.OldArchiveFormat,"1946160",5,"Fallout4"),
+                /* GameInfo(int id, string name,
+                string appdata,
+                string excludefile,
+                string docfolder,
+                string executable,
+                string[] modFormats,
+                string archiveFormat,
+                string ckid, int webskipchars, string creationssite)*/
+
+                new GameInfo(0, "Starfield",
+                    "Starfield",
+                    "Starfield",
+                    "Starfield",
+                    "Starfield.exe",
+                    ModFiles.NewModFormat,
+                    ModArchives.NewArchiveFormat,
+                    "2722710",3,"Starfield"),
+                new GameInfo(1, "The Elder Scrolls V: Skyrim Special Edition",
+                    "Skyrim Special Edition",
+                    "Skyrim SE",
+                    "Skyrim Special Edition",
+                    "SkyrimSe.exe",
+                    ModFiles.OldModFormat,
+                    ModArchives.OldArchiveFormat
+                    ,"1946180",5,"Skyrim"),
+                new GameInfo(2, "Fallout 4",
+                    "Fallout4",
+                    "Fallout 4",
+                    "Fallout 4",
+                    "Fallout4.exe",
+                    ModFiles.OldModFormat,
+                    ModArchives.OldArchiveFormat,
+                    "1946160",5,"Fallout4"),
                 new GameInfo(3, "Elder Scrolls 6", "ES6","ES6","ES6","ES6.exe", ModFiles.NewModFormat,
                     ModArchives.NewArchiveFormat,"Unknown",3,"ES6"),
                 new GameInfo(4, "Fallout 5", "Fallout5","Fallout 5","Fallout 5","Fallout5.exe", ModFiles.NewModFormat,
