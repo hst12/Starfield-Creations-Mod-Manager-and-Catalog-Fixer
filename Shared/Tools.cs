@@ -256,7 +256,14 @@ namespace hstCMM.Shared // Various functions used by the app
 
         public static void OpenFolder(string folder) // Used to open misc folders in Explorer
         {
-            Process.Start(new ProcessStartInfo(folder) { UseShellExecute = true });
+            try
+            {
+                Process.Start(new ProcessStartInfo(folder) { UseShellExecute = true });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, $"Error opening folder {folder}", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+            }
         }
 
         public static void OpenUrl(string url) // Launch web browser from argument
