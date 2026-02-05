@@ -40,10 +40,39 @@ namespace hstCMM
                     LoadScreen = Settings.Default.LoadScreenFilename;
                 else
                 {
-
                     Random random = new Random();
                     int index = random.Next(files.Length);
                     LoadScreen = files[index]; // Randomly pick a load screen from Photos directory
+                }
+            }
+
+            if (Properties.Settings.Default.LoadScreenSequence) // Rotate through load screens in order
+            {
+                LoadScreen = Path.Combine(tools.GameDocuments, "Data", "Textures", "Photos");
+
+                // Get all files in the directory, excluding those ending with -thumbnail.png
+                try
+                {
+                    files = Directory
+                       .GetFiles(LoadScreen)
+                       .Where(f => !f.EndsWith("-thumbnail.png", StringComparison.OrdinalIgnoreCase))
+                       .ToArray();
+                }
+                catch
+                {
+                    files = Array.Empty<string>();
+                }
+
+                if (files.Length == 0)
+                    LoadScreen = Settings.Default.LoadScreenFilename;
+                else
+                {
+                    int index = Properties.Settings.Default.LoadScreenIndex;
+                    LoadScreen = files[index]; // Randomly pick a load screen from Photos directory
+                    if (index < files.Length - 1)
+                        Properties.Settings.Default.LoadScreenIndex++; // Select the next load screen for the next time
+                    else
+                        Properties.Settings.Default.LoadScreenIndex = 0; // Start over at the beginning of the list 
                 }
             }
 
@@ -105,7 +134,6 @@ namespace hstCMM
 
                 // Set the form's client size to the calculated dimensions
                 this.ClientSize = new Size(newWidth, newHeight);
-
             }
             else
             {

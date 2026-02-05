@@ -3803,6 +3803,7 @@ namespace hstCMM
         private void resetLoadScreenToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Properties.Settings.Default.LoadScreenFilename = "";
+            Properties.Settings.Default.RandomLoadScreen = randomToolStripMenuItem.Checked = false;
             SaveSettings();
         }
 
@@ -4621,6 +4622,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             saveOnExitToolStripMenuItem.Checked = Properties.Settings.Default.SaveLog;
             rowHighlightToolStripMenuItem.Checked = Properties.Settings.Default.RowHighlight;
             randomToolStripMenuItem.Checked = Properties.Settings.Default.RandomLoadScreen;
+            sequenceToolStripMenuItem.Checked = Properties.Settings.Default.LoadScreenSequence;
         }
 
         private void sFSEPluginsToolStripMenuItem_Click(object sender, EventArgs e) // Open SFSE Plugins Directory
@@ -6572,6 +6574,11 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
         private void randomToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Properties.Settings.Default.RandomLoadScreen = randomToolStripMenuItem.Checked = !randomToolStripMenuItem.Checked;
+        }
+
+        private void sequenceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.LoadScreenSequence= sequenceToolStripMenuItem.Checked = !sequenceToolStripMenuItem.Checked;
         }
     }
 }

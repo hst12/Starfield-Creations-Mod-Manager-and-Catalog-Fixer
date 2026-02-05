@@ -813,5 +813,29 @@ namespace hstCMM.Properties {
                 this["RandomLoadScreen"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int LoadScreenIndex {
+            get {
+                return ((int)(this["LoadScreenIndex"]));
+            }
+            set {
+                this["LoadScreenIndex"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool LoadScreenSequence {
+            get {
+                return ((bool)(this["LoadScreenSequence"]));
+            }
+            set {
+                this["LoadScreenSequence"] = value;
+            }
+        }
     }
 }
