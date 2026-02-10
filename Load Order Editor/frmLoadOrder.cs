@@ -2272,24 +2272,15 @@ namespace hstCMM
                             {
                                 string timePart = rawVersion[..versionDelimiter];
                                 if (double.TryParse(timePart, out double seconds))
-                                {
                                     modVersion = start.AddSeconds(seconds).Date.ToString("yyyy-MM-dd");
-                                }
-                                else
-                                {
-                                    // Handle failed parsing
+                                else // Handle failed parsing
                                     modVersion = "Invalid version format";
-                                }
                             }
-                            else
-                            {
-                                // Handle unexpected delimiter position
+                            else // Handle unexpected delimiter position
                                 modVersion = "Delimiter out of bounds";
-                            }
                         }
-                        catch (Exception ex)
+                        catch (Exception ex) // Log or handle unexpected exceptions
                         {
-                            // Log or handle unexpected exceptions
                             modVersion = $"Error: {ex.Message}";
                             LogError(ex.Message);
                         }
@@ -2299,7 +2290,8 @@ namespace hstCMM
                     modTimeStamp = Tools.ConvertTime(TimeStamp[idx]).ToString();
                     modID = CreationsID[idx];
                     modFileSize = FileSize[idx] / 1024;
-                    totalFileSize += modFileSize;
+                    if (modEnabled)
+                        totalFileSize += modFileSize;
                     url = $"https://creations.bethesda.net/en/{Tools.GameLibrary.GetById(Properties.Settings.Default.Game).
                         CreationsSite}/details/{(modID.Length > 3 ? modID[webskipchars..] : modID)}/" +
                         CreationsTitle[idx].Replace(" ", "_").Replace("[", "_").Replace("]", "_");
@@ -4755,7 +4747,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 statusBuilder.Append($"Enabled: {enabledCount}, esm: {esmCount}, Archives: {ba2Count}, ");
                 statusBuilder.Append($"Enabled - Main: {mainCount}, Textures: {textureCount}");
                 if (dataGridView1.Columns["FileSize"].Visible)
-                    statusBuilder.Append($", Total Size: {totalFileSize/ 1048576:N1} GB"); // 1048576=1024 * 1024 for conversion to GB
+                    statusBuilder.Append($", Total Size: {totalFileSize / 1048576:N1} GB"); // 1048576=1024 * 1024 for conversion to GB
 
                 if (espCount > 0)
                     statusBuilder.Append($", esp files: {espCount}");
