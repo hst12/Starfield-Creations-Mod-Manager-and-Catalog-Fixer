@@ -182,7 +182,7 @@
     <PackageReference Include="Microsoft-WindowsAPICodePack-Shell" Version="1.1.5" />
     <PackageReference Include="Narod.SteamGameFinder" Version="2.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
-    <PackageReference Include="QuestPDF" Version="2025.7.4" />
+    <PackageReference Include="QuestPDF" Version="2025.12.4" />
     <PackageReference Include="SevenZipExtractor" Version="1.0.19" />
     <PackageReference Include="YamlDotNet" Version="16.3.0" />
   </ItemGroup>

@@ -4755,7 +4755,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 statusBuilder.Append($"Enabled: {enabledCount}, esm: {esmCount}, Archives: {ba2Count}, ");
                 statusBuilder.Append($"Enabled - Main: {mainCount}, Textures: {textureCount}");
                 if (dataGridView1.Columns["FileSize"].Visible)
-                    statusBuilder.Append($", Total Size: {totalFileSize:N0}");
+                    statusBuilder.Append($", Total Size: {totalFileSize/ 1048576:N1} GB"); // 1048576=1024 * 1024 for conversion to GB
 
                 if (espCount > 0)
                     statusBuilder.Append($", esp files: {espCount}");
@@ -6563,6 +6563,15 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
         private void testToolStripMenuItem1_Click(object sender, EventArgs e)
         {
+            List<string> pluginSizes = Directory.GetFiles(Path.Combine(GamePath, "Data"))
+                .Where(f => f.EndsWith(".esm", StringComparison.OrdinalIgnoreCase))
+                .Select(f => new FileInfo(f))
+                .Where(fi => fi.Length == 77)
+                .Select(fi => $"{fi.Name} - {fi.Length} bytes")
+                .ToList();
+
+            frmGenericTextList displayList = new("Plugin Sizes", pluginSizes);
+            displayList.Show();
         }
 
         private void sFSEPluginsEnableDisableToolStripMenuItem_Click(object sender, EventArgs e)
@@ -6578,7 +6587,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
         private void sequenceToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Properties.Settings.Default.LoadScreenSequence= sequenceToolStripMenuItem.Checked = !sequenceToolStripMenuItem.Checked;
+            Properties.Settings.Default.LoadScreenSequence = sequenceToolStripMenuItem.Checked = !sequenceToolStripMenuItem.Checked;
         }
     }
 }

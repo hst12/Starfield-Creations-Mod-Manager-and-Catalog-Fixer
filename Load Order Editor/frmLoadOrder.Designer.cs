@@ -1748,47 +1748,47 @@
             // enableSplashScreenToolStripMenuItem
             // 
             enableSplashScreenToolStripMenuItem.Name = "enableSplashScreenToolStripMenuItem";
-            enableSplashScreenToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+            enableSplashScreenToolStripMenuItem.Size = new System.Drawing.Size(252, 44);
             enableSplashScreenToolStripMenuItem.Text = "Enabled";
             enableSplashScreenToolStripMenuItem.Click += enableSplashScreenToolStripMenuItem_Click;
             // 
             // toolStripMenuLoadScreenPreview
             // 
             toolStripMenuLoadScreenPreview.Name = "toolStripMenuLoadScreenPreview";
-            toolStripMenuLoadScreenPreview.Size = new System.Drawing.Size(359, 44);
+            toolStripMenuLoadScreenPreview.Size = new System.Drawing.Size(252, 44);
             toolStripMenuLoadScreenPreview.Text = "Preview";
             toolStripMenuLoadScreenPreview.Click += toolStripMenuLoadScreenPreview_Click;
             // 
             // toolStripMenuLoadingScreen
             // 
             toolStripMenuLoadingScreen.Name = "toolStripMenuLoadingScreen";
-            toolStripMenuLoadingScreen.Size = new System.Drawing.Size(359, 44);
+            toolStripMenuLoadingScreen.Size = new System.Drawing.Size(252, 44);
             toolStripMenuLoadingScreen.Text = "Set";
             toolStripMenuLoadingScreen.Click += toolStripMenuLoadingScreen_Click;
             // 
             // sequenceToolStripMenuItem
             // 
             sequenceToolStripMenuItem.Name = "sequenceToolStripMenuItem";
-            sequenceToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+            sequenceToolStripMenuItem.Size = new System.Drawing.Size(252, 44);
             sequenceToolStripMenuItem.Text = "Sequence";
             sequenceToolStripMenuItem.Click += sequenceToolStripMenuItem_Click;
             // 
             // randomToolStripMenuItem
             // 
             randomToolStripMenuItem.Name = "randomToolStripMenuItem";
-            randomToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+            randomToolStripMenuItem.Size = new System.Drawing.Size(252, 44);
             randomToolStripMenuItem.Text = "Random";
             randomToolStripMenuItem.Click += randomToolStripMenuItem_Click;
             // 
             // toolStripSeparator57
             // 
             toolStripSeparator57.Name = "toolStripSeparator57";
-            toolStripSeparator57.Size = new System.Drawing.Size(356, 6);
+            toolStripSeparator57.Size = new System.Drawing.Size(249, 6);
             // 
             // resetLoadScreenToolStripMenuItem
             // 
             resetLoadScreenToolStripMenuItem.Name = "resetLoadScreenToolStripMenuItem";
-            resetLoadScreenToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+            resetLoadScreenToolStripMenuItem.Size = new System.Drawing.Size(252, 44);
             resetLoadScreenToolStripMenuItem.Text = "Reset";
             resetLoadScreenToolStripMenuItem.Click += resetLoadScreenToolStripMenuItem_Click;
             // 
