@@ -6581,5 +6581,19 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
         {
             Properties.Settings.Default.LoadScreenSequence = sequenceToolStripMenuItem.Checked = !sequenceToolStripMenuItem.Checked;
         }
+
+        private void blockedOnlyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            bool isBlocked;
+
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                isBlocked = row.Cells["Blocked"].Value as bool? ?? false;
+                row.Visible = isBlocked;
+            }
+
+            if (resizeToolStripMenuItem.Checked)
+                ResizeForm();
+        }
     }
 }
