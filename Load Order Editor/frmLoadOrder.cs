@@ -1392,7 +1392,7 @@ namespace hstCMM
             GridSorted = true;
         }
 
-        private bool Delccc()
+        private bool Delccc(bool noErrorLog=false) // true to log delete failed 
         {
             try
             {
@@ -1407,6 +1407,8 @@ namespace hstCMM
                 else
                 {
                     sbar3($"{GameName}.ccc not found");
+                    if (noErrorLog)
+                        activityLog.WriteLog($"{GameName}.ccc not found");
                     return false;
                 }
             }
@@ -5377,7 +5379,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
         private void toolStripMenuDeleteCCC_Click(object sender, EventArgs e)
         {
-            Delccc();
+            Delccc(true);
         }
 
         private void toolStripMenuDeleteLine_Click(object sender, EventArgs e)
@@ -5626,7 +5628,14 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             if (LoadScreen == DialogResult.OK)
             {
                 if (openFileDialog1.FileName != "")
+                {
                     Properties.Settings.Default.LoadScreenFilename = openFileDialog1.FileName;
+                    Properties.Settings.Default.RandomLoadScreen = false;
+                    randomToolStripMenuItem.Checked = false;
+                    Properties.Settings.Default.LoadScreenSequence = false;
+                    sequenceToolStripMenuItem.Checked = false;
+
+                }
             }
         }
 
@@ -6420,13 +6429,13 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     // Update log row if enabled
                     if (Properties.Settings.Default.LogWindow && LogRichTextBox is not null)
                     {
-                        LogRichTextBox.AppendText($"{DateTime.Now}: {message}\n");
+                        LogRichTextBox.AppendText($"{DateTime.Now.ToString("dd MMM yyyy h:mm:ss tt")}: {message}\n");
                         LogRichTextBox.ScrollToCaret();
                     }
 
                     // Prepend new entry at the top (requires reordering)
                     string existing = ReadLog();
-                    string newEntry = $"{DateTime.Now}: {message}\n{existing}";
+                    string newEntry = $"{DateTime.Now.ToString("dd MMM yyyy h:mm:ss tt")}: {message}\n{existing}";
 
                     // Reset memory stream and rewrite
                     memoryStream.SetLength(0);
@@ -6575,11 +6584,15 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
         private void randomToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Properties.Settings.Default.RandomLoadScreen = randomToolStripMenuItem.Checked = !randomToolStripMenuItem.Checked;
+            Properties.Settings.Default.LoadScreenSequence = false;
+            sequenceToolStripMenuItem.Checked = false;
         }
 
         private void sequenceToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Properties.Settings.Default.LoadScreenSequence = sequenceToolStripMenuItem.Checked = !sequenceToolStripMenuItem.Checked;
+            Properties.Settings.Default.RandomLoadScreen = false;
+            randomToolStripMenuItem.Checked = false;
         }
 
         private void blockedOnlyToolStripMenuItem_Click(object sender, EventArgs e)
