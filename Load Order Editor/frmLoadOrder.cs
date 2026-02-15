@@ -1392,7 +1392,7 @@ namespace hstCMM
             GridSorted = true;
         }
 
-        private bool Delccc(bool noErrorLog=false) // true to log delete failed 
+        private bool Delccc(bool noErrorLog = false) // true to log delete failed 
         {
             try
             {
@@ -3630,8 +3630,10 @@ namespace hstCMM
             foreach (var file in files)
             {
                 if (File.Exists(file))
+                {
                     activityLog.WriteLog("Deleting " + tempstr);
-                File.Delete(file);
+                    File.Delete(file);
+                }
             }
 
             tempstr = Path.Combine(GamePath, "sfse_loader.exe");
@@ -5053,7 +5055,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                                         try
                                         {
                                             File.Copy(file, Path.Combine(dataDir, Path.GetFileName(file)), true);
-                                            activityLog.WriteLog("Copying " + file + "to " + Path.Combine(dataDir, Path.GetFileName(file)));
+                                            activityLog.WriteLog("Copying " + file + " to " + Path.Combine(dataDir, Path.GetFileName(file)));
                                         }
                                         catch (Exception ex)
                                         {
