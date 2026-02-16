@@ -2128,7 +2128,7 @@ namespace hstCMM
             int enabledCount = 0, IndexCount = 1, i, versionDelimiter, dotIndex,
                 webskipchars = Tools.GameLibrary.GetById(Properties.Settings.Default.Game).WebSkipChars;
 
-            long totalFileSize = 0;
+            double totalFileSize = 0;
 
             string loText = Path.Combine(Tools.GameAppData, "Plugins.txt"),
                    LOOTPath = Properties.Settings.Default.LOOTPath, pluginName, rawVersion;
@@ -3279,6 +3279,7 @@ namespace hstCMM
             if (returnStatus == 0)
             {
                 sbar("Move Inactive Mods cancelled.");
+                activityLog.WriteLog("Move Inactive Mods cancelled by user.");
                 return;
             }
             if (Tools.ConfirmAction("Move Inactive Mods\nExisting files will not be moved", $"Move {modsToMove.Count} inactive mods to a separate folder?",
@@ -4674,7 +4675,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 sbar3("Activity Log not found.");
         }
 
-        private string ShowModStats(List<string> CreationsPlugin, int enabledCount, long totalFileSize)
+        private string ShowModStats(List<string> CreationsPlugin, int enabledCount, double totalFileSize)
         {
             string loText = Path.Combine(Tools.GameAppData, "Plugins.txt"), StatText = "",
                 GameFolder = Tools.GameLibrary.GetById(Properties.Settings.Default.Game).AppData; ;
@@ -4751,7 +4752,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 statusBuilder.Append($"Enabled: {enabledCount}, esm: {esmCount}, Archives: {ba2Count}, ");
                 statusBuilder.Append($"Enabled - Main: {mainCount}, Textures: {textureCount}");
                 if (dataGridView1.Columns["FileSize"].Visible)
-                    statusBuilder.Append($", Total Size: {totalFileSize / 1048576:N1} GB"); // 1048576=1024 * 1024 for conversion to GB
+                    statusBuilder.Append($", Total Size: {totalFileSize / 1048576:N2} GB"); // 1048576=1024 * 1024 for conversion to GB
 
                 if (espCount > 0)
                     statusBuilder.Append($", esp files: {espCount}");
