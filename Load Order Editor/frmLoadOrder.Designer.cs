@@ -322,6 +322,7 @@
             btnBottom = new System.Windows.Forms.Button();
             label1 = new System.Windows.Forms.Label();
             txtSearchBox = new System.Windows.Forms.TextBox();
+            btnFindNext = new System.Windows.Forms.Button();
             chkProfile = new System.Windows.Forms.CheckBox();
             cmbProfile = new System.Windows.Forms.ComboBox();
             btnSave = new System.Windows.Forms.Button();
@@ -344,7 +345,6 @@
             progressBar1 = new System.Windows.Forms.ProgressBar();
             contextMenuLogRow = new System.Windows.Forms.ContextMenuStrip(components);
             toolStripClearLogRow = new System.Windows.Forms.ToolStripMenuItem();
-            btnFindNext = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             contextMenuDatagrid.SuspendLayout();
             statusStrip1.SuspendLayout();
@@ -372,7 +372,7 @@
             dataGridView1.RowTemplate.Height = 33;
             dataGridView1.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            dataGridView1.Size = new System.Drawing.Size(1931, 888);
+            dataGridView1.Size = new System.Drawing.Size(1983, 888);
             dataGridView1.TabIndex = 0;
             dataGridView1.TabStop = false;
             dataGridView1.CellDoubleClick += dataGridView1_CellDoubleClick;
@@ -711,7 +711,7 @@
             statusStrip1.Location = new System.Drawing.Point(0, 991);
             statusStrip1.Name = "statusStrip1";
             statusStrip1.Padding = new System.Windows.Forms.Padding(0, 0, 8, 0);
-            statusStrip1.Size = new System.Drawing.Size(1811, 22);
+            statusStrip1.Size = new System.Drawing.Size(1987, 22);
             statusStrip1.TabIndex = 5;
             statusStrip1.Text = "Starting up";
             // 
@@ -764,7 +764,7 @@
             tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            tableLayoutPanel1.Size = new System.Drawing.Size(1811, 991);
+            tableLayoutPanel1.Size = new System.Drawing.Size(1987, 991);
             tableLayoutPanel1.TabIndex = 7;
             // 
             // menuStrip1
@@ -774,7 +774,7 @@
             menuStrip1.Location = new System.Drawing.Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Padding = new System.Windows.Forms.Padding(3, 1, 0, 1);
-            menuStrip1.Size = new System.Drawing.Size(1935, 38);
+            menuStrip1.Size = new System.Drawing.Size(1987, 38);
             menuStrip1.TabIndex = 7;
             menuStrip1.Text = "menuStrip1";
             // 
@@ -2451,6 +2451,18 @@
             txtSearchBox.TabIndex = 4;
             txtSearchBox.KeyDown += txtSearchBox_KeyDown;
             // 
+            // btnFindNext
+            // 
+            btnFindNext.AutoSize = true;
+            btnFindNext.Location = new System.Drawing.Point(371, 3);
+            btnFindNext.Name = "btnFindNext";
+            btnFindNext.Size = new System.Drawing.Size(127, 42);
+            btnFindNext.TabIndex = 5;
+            btnFindNext.Text = "Find Next";
+            toolTip1.SetToolTip(btnFindNext, "Find next match in search");
+            btnFindNext.UseVisualStyleBackColor = true;
+            btnFindNext.Click += btnFindNext_Click;
+            // 
             // chkProfile
             // 
             chkProfile.AutoSize = true;
@@ -2458,7 +2470,7 @@
             chkProfile.Margin = new System.Windows.Forms.Padding(2);
             chkProfile.Name = "chkProfile";
             chkProfile.Size = new System.Drawing.Size(114, 36);
-            chkProfile.TabIndex = 5;
+            chkProfile.TabIndex = 6;
             chkProfile.Text = "Profile";
             toolTip1.SetToolTip(chkProfile, "Enable/Disable Profiles");
             chkProfile.UseVisualStyleBackColor = true;
@@ -2473,7 +2485,7 @@
             cmbProfile.Margin = new System.Windows.Forms.Padding(2);
             cmbProfile.Name = "cmbProfile";
             cmbProfile.Size = new System.Drawing.Size(300, 40);
-            cmbProfile.TabIndex = 5;
+            cmbProfile.TabIndex = 7;
             toolTip1.SetToolTip(cmbProfile, "Profile select");
             cmbProfile.SelectedIndexChanged += cmbProfile_SelectedIndexChanged;
             // 
@@ -2485,7 +2497,7 @@
             btnSave.Margin = new System.Windows.Forms.Padding(2);
             btnSave.Name = "btnSave";
             btnSave.Size = new System.Drawing.Size(74, 42);
-            btnSave.TabIndex = 6;
+            btnSave.TabIndex = 8;
             btnSave.Text = "Save";
             toolTip1.SetToolTip(btnSave, "Save Plugins.txt (Ctrl-S)");
             btnSave.UseVisualStyleBackColor = true;
@@ -2499,7 +2511,7 @@
             btnActiveOnly.Margin = new System.Windows.Forms.Padding(2);
             btnActiveOnly.Name = "btnActiveOnly";
             btnActiveOnly.Size = new System.Drawing.Size(77, 42);
-            btnActiveOnly.TabIndex = 7;
+            btnActiveOnly.TabIndex = 9;
             btnActiveOnly.Text = "Filter";
             toolTip1.SetToolTip(btnActiveOnly, "Show all or show active mods only");
             btnActiveOnly.UseVisualStyleBackColor = true;
@@ -2511,7 +2523,7 @@
             btnGroups.Location = new System.Drawing.Point(1085, 3);
             btnGroups.Name = "btnGroups";
             btnGroups.Size = new System.Drawing.Size(100, 42);
-            btnGroups.TabIndex = 8;
+            btnGroups.TabIndex = 10;
             btnGroups.Text = "Groups";
             toolTip1.SetToolTip(btnGroups, "Group Filter - Refresh to Clear");
             btnGroups.UseVisualStyleBackColor = true;
@@ -2525,7 +2537,7 @@
             btnLog.Margin = new System.Windows.Forms.Padding(2);
             btnLog.Name = "btnLog";
             btnLog.Size = new System.Drawing.Size(63, 42);
-            btnLog.TabIndex = 9;
+            btnLog.TabIndex = 11;
             btnLog.Text = "Log";
             toolTip1.SetToolTip(btnLog, "View Log File");
             btnLog.UseVisualStyleBackColor = true;
@@ -2539,7 +2551,7 @@
             btnRefresh.Margin = new System.Windows.Forms.Padding(2);
             btnRefresh.Name = "btnRefresh";
             btnRefresh.Size = new System.Drawing.Size(103, 42);
-            btnRefresh.TabIndex = 10;
+            btnRefresh.TabIndex = 12;
             btnRefresh.Text = "Refresh";
             toolTip1.SetToolTip(btnRefresh, "Reload Plugins (F5)");
             btnRefresh.UseVisualStyleBackColor = true;
@@ -2553,7 +2565,7 @@
             btnUpdate.Margin = new System.Windows.Forms.Padding(2);
             btnUpdate.Name = "btnUpdate";
             btnUpdate.Size = new System.Drawing.Size(101, 42);
-            btnUpdate.TabIndex = 11;
+            btnUpdate.TabIndex = 13;
             btnUpdate.Text = "Update";
             toolTip1.SetToolTip(btnUpdate, "Add or delete missing mods from Plugins.txt, Check for Duplicates");
             btnUpdate.UseVisualStyleBackColor = true;
@@ -2567,7 +2579,7 @@
             btnLoot.Margin = new System.Windows.Forms.Padding(2);
             btnLoot.Name = "btnLoot";
             btnLoot.Size = new System.Drawing.Size(115, 42);
-            btnLoot.TabIndex = 12;
+            btnLoot.TabIndex = 14;
             btnLoot.Text = "Autosort";
             toolTip1.SetToolTip(btnLoot, "LOOT Autosort");
             btnLoot.UseVisualStyleBackColor = true;
@@ -2581,7 +2593,7 @@
             btnCatalog.Margin = new System.Windows.Forms.Padding(2);
             btnCatalog.Name = "btnCatalog";
             btnCatalog.Size = new System.Drawing.Size(105, 42);
-            btnCatalog.TabIndex = 13;
+            btnCatalog.TabIndex = 15;
             btnCatalog.Text = "Catalog";
             toolTip1.SetToolTip(btnCatalog, "Catalog Check Tools");
             btnCatalog.UseVisualStyleBackColor = true;
@@ -2595,7 +2607,7 @@
             btnRun.Margin = new System.Windows.Forms.Padding(2);
             btnRun.Name = "btnRun";
             btnRun.Size = new System.Drawing.Size(66, 42);
-            btnRun.TabIndex = 14;
+            btnRun.TabIndex = 16;
             btnRun.Text = "Run";
             toolTip1.SetToolTip(btnRun, "Run the game (R)");
             btnRun.UseVisualStyleBackColor = true;
@@ -2609,7 +2621,7 @@
             btnCancel.Margin = new System.Windows.Forms.Padding(2);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new System.Drawing.Size(95, 42);
-            btnCancel.TabIndex = 15;
+            btnCancel.TabIndex = 17;
             btnCancel.Text = "Cancel";
             toolTip1.SetToolTip(btnCancel, "Exit without saving changes");
             btnCancel.UseVisualStyleBackColor = true;
@@ -2623,7 +2635,7 @@
             btnQuit.Margin = new System.Windows.Forms.Padding(2);
             btnQuit.Name = "btnQuit";
             btnQuit.Size = new System.Drawing.Size(61, 42);
-            btnQuit.TabIndex = 16;
+            btnQuit.TabIndex = 18;
             btnQuit.Text = "Exit";
             toolTip1.SetToolTip(btnQuit, "Save changes and Exit");
             btnQuit.UseVisualStyleBackColor = true;
@@ -2675,24 +2687,12 @@
             toolStripClearLogRow.Text = "Clear";
             toolStripClearLogRow.Click += toolStripClearLogRow_Click;
             // 
-            // btnFindNext
-            // 
-            btnFindNext.AutoSize = true;
-            btnFindNext.Location = new System.Drawing.Point(371, 3);
-            btnFindNext.Name = "btnFindNext";
-            btnFindNext.Size = new System.Drawing.Size(127, 42);
-            btnFindNext.TabIndex = 19;
-            btnFindNext.Text = "Find Next";
-            toolTip1.SetToolTip(btnFindNext, "Find next match in search");
-            btnFindNext.UseVisualStyleBackColor = true;
-            btnFindNext.Click += btnFindNext_Click;
-            // 
             // frmLoadOrder
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(192F, 192F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            ClientSize = new System.Drawing.Size(1811, 1013);
+            ClientSize = new System.Drawing.Size(1987, 1013);
             Controls.Add(progressBar1);
             Controls.Add(tableLayoutPanel1);
             Controls.Add(statusStrip1);
