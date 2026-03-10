@@ -125,6 +125,10 @@ namespace hstCMM.Shared // Various functions used by the app
         public List<string> PluginList { get; set; }
         public string GameDocuments { get; }
 
+        public void debugMsg(string msg)
+        {
+            MessageBox.Show("DEBUG: "+msg);
+        }
         public static List<string> BlockedMods()
         {
             try

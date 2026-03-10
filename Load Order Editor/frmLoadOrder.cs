@@ -144,7 +144,7 @@ namespace hstCMM
             {
                 if (arg.StartsWith("-profile", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    tempstr = Path.Combine(Properties.Settings.Default.ProfileFolder, Environment.GetCommandLineArgs()[2]);
+                    tempstr = Path.Combine(Properties.Settings.Default.ProfileFolder, GameName, Environment.GetCommandLineArgs()[2]);
                     //LastProfile = Environment.GetCommandLineArgs()[2];
                     SwitchProfile(tempstr);
                 }
@@ -827,21 +827,23 @@ namespace hstCMM
 
         private void BackupProfiles()
         {
+            string profilePath = Path.Combine(Properties.Settings.Default.ProfileFolder, GameName);
+
             if (Properties.Settings.Default.ProfileFolder == "")
             {
                 MessageBox.Show("No profile folder set");
                 return;
             }
 
-            if (!Directory.Exists(Path.Combine(Properties.Settings.Default.ProfileFolder, "Backup")))
+            if (!Directory.Exists(Path.Combine(profilePath, "Backup")))
             {
-                Directory.CreateDirectory(Path.Combine(Properties.Settings.Default.ProfileFolder, "Backup"));
+                Directory.CreateDirectory(Path.Combine(profilePath, "Backup"));
             }
             activityLog.WriteLog("Starting profile backup");
-            foreach (var item in Directory.EnumerateFiles(Properties.Settings.Default.ProfileFolder, "*.txt", SearchOption.TopDirectoryOnly))
+            foreach (var item in Directory.EnumerateFiles(profilePath, "*.txt", SearchOption.TopDirectoryOnly))
             {
                 string fileName = Path.GetFileName(item);
-                string destinationPath = Path.Combine(Properties.Settings.Default.ProfileFolder, "Backup", fileName);
+                string destinationPath = Path.Combine(profilePath, "Backup", fileName);
                 File.Copy(item, destinationPath, true);
                 activityLog.WriteLog($"Backed up {item} to backup folder {destinationPath}.");
             }
@@ -1148,7 +1150,7 @@ namespace hstCMM
 
         private void cmbProfile_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SwitchProfile(Path.Combine(Properties.Settings.Default.ProfileFolder, (string)cmbProfile.SelectedItem));
+            SwitchProfile(Path.Combine(Properties.Settings.Default.ProfileFolder, GameName, (string)cmbProfile.SelectedItem));
         }
 
         private void CompareProfiles()
@@ -1392,7 +1394,7 @@ namespace hstCMM
             GridSorted = true;
         }
 
-        private bool Delccc(bool noErrorLog = false) // true to log delete failed 
+        private bool Delccc(bool noErrorLog = false) // true to log delete failed
         {
             try
             {
@@ -2055,7 +2057,7 @@ namespace hstCMM
             var rand = new Random();
             var set = new HashSet<string>();
             var chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            using var writer = new StreamWriter(Path.Combine(Properties.Settings.Default.ProfileFolder, "unique_plugins.txt"));
+            using var writer = new StreamWriter(Path.Combine(Properties.Settings.Default.ProfileFolder, GameName, "unique_plugins.txt"));
 
             while (set.Count < Count)
             {
@@ -2072,15 +2074,14 @@ namespace hstCMM
 
         private void GetProfiles()
         {
-            string ProfileFolder;
+            string ProfileFolder = "";
+
             if (!Profiles)
                 return;
             cmbProfile.Items.Clear();
-            ProfileFolder = Properties.Settings.Default.ProfileFolder;
             ProfileFolder = string.IsNullOrEmpty(ProfileFolder)
-        ? Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) : ProfileFolder;
+                ? Path.Combine(Properties.Settings.Default.ProfileFolder, GameName) : Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
-            //LastProfile ??= Properties.Settings.Default.LastProfile;
             try
             {
                 foreach (var profileName in Directory.EnumerateFiles(ProfileFolder, "*.txt", SearchOption.TopDirectoryOnly))
@@ -2089,7 +2090,6 @@ namespace hstCMM
                 }
 
                 int index = cmbProfile.Items.IndexOf(Properties.Settings.Default.LastProfile);
-
                 if (index != -1)
                 {
                     cmbProfile.SelectedIndex = index;
@@ -3372,7 +3372,7 @@ namespace hstCMM
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string profileFolder = Properties.Settings.Default.ProfileFolder
+            string profileFolder = Path.Combine(Properties.Settings.Default.ProfileFolder, GameName)
                                    ?? Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
             System.Windows.Forms.OpenFileDialog openPlugins = new()
@@ -3386,7 +3386,7 @@ namespace hstCMM
             {
                 if (Profiles)
                 {
-                    Properties.Settings.Default.ProfileFolder = Path.GetDirectoryName(openPlugins.FileName) ?? profileFolder;
+                    Properties.Settings.Default.ProfileFolder = Path.GetDirectoryName(openPlugins.FileName).Replace(GameName, "") ?? profileFolder;
                     SwitchProfile(openPlugins.FileName);
                     GetProfiles();
                     SaveSettings();
@@ -3966,7 +3966,8 @@ namespace hstCMM
 
         private void restoreProfilesToolStripMenuItem_Click(object sender, EventArgs e) // Restore profiles from Backup folder
         {
-            if (Properties.Settings.Default.ProfileFolder == "" || !Directory.Exists(Path.Combine(Properties.Settings.Default.ProfileFolder, "Backup")))
+            if (Properties.Settings.Default.ProfileFolder == "" ||
+                !Directory.Exists(Path.Combine(Properties.Settings.Default.ProfileFolder, GameName, "Backup")))
             {
                 MessageBox.Show("No profile or backup folder set");
                 return;
@@ -3978,13 +3979,13 @@ namespace hstCMM
                 return;
             }
 
-            if (Directory.Exists(Path.Combine(Properties.Settings.Default.ProfileFolder, "Backup")))
+            if (Directory.Exists(Path.Combine(Properties.Settings.Default.ProfileFolder, GameName, "Backup")))
             {
-                foreach (var item in Directory.EnumerateFiles(Path.Combine(Properties.Settings.Default.ProfileFolder, "Backup"), "*.txt",
+                foreach (var item in Directory.EnumerateFiles(Path.Combine(Properties.Settings.Default.ProfileFolder, GameName, "Backup"), "*.txt",
                     SearchOption.TopDirectoryOnly))
                 {
                     string fileName = Path.GetFileName(item);
-                    string destinationPath = Path.Combine(Properties.Settings.Default.ProfileFolder, fileName);
+                    string destinationPath = Path.Combine(Properties.Settings.Default.ProfileFolder, GameName, fileName);
                     File.Copy(item, destinationPath, true);
                     activityLog.WriteLog($"Restored {item} from backup folder {destinationPath}.");
                 }
@@ -4038,9 +4039,17 @@ namespace hstCMM
 
         private void runBatchFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(Properties.Settings.Default.ReadFileBatchPath))
-                Task.Run(() => Tools.OpenFile(Properties.Settings.Default.ReadFileBatchPath));
-            //Tools.OpenFile(Properties.Settings.Default.ReadFileBatchPath);
+            tempstr = "\"" + Properties.Settings.Default.ReadFileBatchPath + "\"";
+
+            if (!string.IsNullOrEmpty(tempstr))
+                //Task.Run(() => Tools.OpenFile(Path.Combine(Properties.Settings.Default.ReadfilePath,Properties.Settings.Default.ReadFileBatchPath)));
+
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = tempstr,
+                    WorkingDirectory = Properties.Settings.Default.ReadFileBatchPath,
+                    UseShellExecute = true
+                });
             else
                 MessageBox.Show("Batch file path not set. Please set it in the settings.", "Batch File Not Set", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
@@ -4175,9 +4184,19 @@ namespace hstCMM
 
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (!Directory.Exists(Path.Combine(Properties.Settings.Default.ProfileFolder, GameName)))
+            {
+                if (Tools.ConfirmAction($"{GameName} Directory does not exist. Create it?", "Create Directory?",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "hst Mod Manager", GameName));
+                    Properties.Settings.Default.ProfileFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "hst Mod Manager");
+                }
+            }
+
             System.Windows.Forms.SaveFileDialog saveDialog = new()
             {
-                InitialDirectory = Properties.Settings.Default.ProfileFolder ??
+                InitialDirectory = Path.Combine(Properties.Settings.Default.ProfileFolder, GameName) ??
                                    Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                 Filter = "Txt File|*.txt",
                 Title = "Save Profile"
@@ -4188,7 +4207,6 @@ namespace hstCMM
 
             isModified = true;
             SaveLO(saveDialog.FileName);
-
             SaveProfileSettings(saveDialog.FileName);
         }
 
@@ -4265,7 +4283,7 @@ namespace hstCMM
 
             if (Profiles && !string.IsNullOrEmpty(cmbProfile.Text))
             {
-                string profilePath = Path.Combine(Properties.Settings.Default.ProfileFolder, cmbProfile.Text);
+                string profilePath = Path.Combine(Properties.Settings.Default.ProfileFolder, GameName, cmbProfile.Text);
 
                 if (!Tools.FileCompare(pluginPath, profilePath))
                 {
@@ -4277,7 +4295,7 @@ namespace hstCMM
 
         private void SaveProfileSettings(string fileName)
         {
-            Properties.Settings.Default.ProfileFolder = Path.GetDirectoryName(fileName);
+            Properties.Settings.Default.ProfileFolder = Path.GetDirectoryName(fileName).Replace(GameName, "");
             SaveSettings();
             SwitchProfile(fileName);
             GetProfiles();
@@ -4901,7 +4919,8 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             try
             {
                 File.Copy(ProfileName, Path.Combine(Tools.GameAppData, "Plugins.txt"), true);
-                Properties.Settings.Default.LastProfile = ProfileName[(ProfileName.LastIndexOf('\\') + 1)..];
+                //Properties.Settings.Default.LastProfile = ProfileName[(ProfileName.LastIndexOf('\\') + 1)..];
+                Properties.Settings.Default.LastProfile = Path.GetFileName(ProfileName);
                 SaveSettings();
                 isModified = false;
                 InitDataGrid();
@@ -5251,7 +5270,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 {
                     if (selectedRow.Cells["PluginName"].Value != null) // Ensure the cell value is not null
                     {
-                        frmAddModToProfile addMod = new(profiles, selectedRow.Cells["PluginName"].Value.ToString());
+                        frmAddModToProfile addMod = new(profiles, selectedRow.Cells["PluginName"].Value.ToString(),GameName);
                         addMod.ShowDialog(cmbProfile);
                     }
                 }
@@ -5637,7 +5656,6 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     randomToolStripMenuItem.Checked = false;
                     Properties.Settings.Default.LoadScreenSequence = false;
                     sequenceToolStripMenuItem.Checked = false;
-
                 }
             }
         }
@@ -6064,12 +6082,12 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             }
 
             // Profile folder path
-            string folder = Properties.Settings.Default.ProfileFolder;
+            string profileFolder = Path.Combine(Properties.Settings.Default.ProfileFolder, GameName);
 
             // Iterate once per profile
             foreach (var name in profiles)
             {
-                string path = Path.Combine(folder, name);
+                string path = Path.Combine(profileFolder, name);
                 SwitchProfile(path);
                 RefreshDataGrid();
                 totalChanges += SyncPlugins();
@@ -6079,7 +6097,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             }
 
             // Restore the original profile & UI state
-            SwitchProfile(Path.Combine(folder, activeProfile));
+            SwitchProfile(Path.Combine(profileFolder, activeProfile));
             RefreshDataGrid();
 
             if (wasActiveOnly)
@@ -6610,6 +6628,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
             if (resizeToolStripMenuItem.Checked)
                 ResizeForm();
+            sbar("Showing blocked mods only. Refresh to clear");
         }
 
         private void btnFindNext_Click(object sender, EventArgs e)
@@ -6617,7 +6636,50 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             if (String.IsNullOrEmpty(txtSearchBox.Text)) // Return if search box is empty
                 return;
             SearchMod();
+        }
 
+        private void moveUnusedModsBackToDataDirectoryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var openFolderDialog = new OpenFolderDialog
+            {
+                Title = "Select folder where unused mods were moved to"
+            };
+
+            var dlgResult = openFolderDialog.ShowDialog();
+            if (dlgResult == false)
+                return;
+
+            // Continue if folder selected
+            var sourceFiles = Directory.GetFiles(openFolderDialog.FolderName, "*.esm", SearchOption.TopDirectoryOnly);
+            var filesToCopy = sourceFiles.
+                Select(fileName => Path.GetFileName(fileName)).Except(pluginList, StringComparer.OrdinalIgnoreCase);
+            var tempForm = new frmGenericTextList("Files to copy", filesToCopy.ToList());
+            tempForm.Show();
+
+            if (MessageBox.Show("Do you want to copy these files back to the Data directory?", "Confirm Copy",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                string dataDirectory = Path.Combine(GamePath, "Data");
+                foreach (var fileName in filesToCopy)
+                {
+                    string sourceFilePath = Path.Combine(openFolderDialog.FolderName, Path.GetFileNameWithoutExtension(fileName))+"*.*";
+                    string destFilePath = Path.Combine(dataDirectory, fileName);
+                    try
+                    {
+                        if (!File.Exists(destFilePath))
+                        {
+                            //File.Copy(sourceFilePath, destFilePath, true);
+                            activityLog.WriteLog($"Copied {sourceFilePath} back to Data directory.");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        LogError(ex.Message);
+                        MessageBox.Show($"Failed to copy {fileName}: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+                sbar("Unused mods copied back to Data directory.");
+            }
         }
     }
 }

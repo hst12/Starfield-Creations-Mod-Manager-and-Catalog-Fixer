@@ -13,8 +13,8 @@ namespace hstCMM.Load_Order_Editor
         private string ModName;
         private frmLoadOrder.ActivityLog activityLog = frmLoadOrder.activityLog;
         private bool log = Properties.Settings.Default.Log;
-
-        public frmAddModToProfile(List<string> items, string modName) // List of profiles and mod name
+        public string gameName;
+        public frmAddModToProfile(List<string> items, string modName,string GameName) // List of profiles and mod name
         {
             InitializeComponent();
 
@@ -24,6 +24,7 @@ namespace hstCMM.Load_Order_Editor
             }
             this.Text = "Enable or Disable " + modName + " in Profile(s)"; // Change form title to name of mod being applied
             ModName = modName;
+            gameName = GameName;
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -39,11 +40,11 @@ namespace hstCMM.Load_Order_Editor
             {
                 foreach (var item in checkedListBox1.CheckedItems)
                 {
-                    fileContents = File.ReadAllLines(Path.Combine(Properties.Settings.Default.ProfileFolder, item.ToString())).ToList();
+                    fileContents = File.ReadAllLines(Path.Combine(Properties.Settings.Default.ProfileFolder, gameName,item.ToString())).ToList();
                     fileContents.Remove("*" + ModName);
                     fileContents.Add(ModName); // Add the mod back without the * to indicate it is inactive
                     fileContents = fileContents.Distinct().ToList(); // Avoid adding a duplicate
-                    File.WriteAllLines(Path.Combine(Properties.Settings.Default.ProfileFolder, item.ToString()), fileContents);
+                    File.WriteAllLines(Path.Combine(Properties.Settings.Default.ProfileFolder,gameName, item.ToString()), fileContents);
                     if (log)
                         activityLog.WriteLog("Removed " + ModName + " from " + item.ToString() + " profile.");
                 }
@@ -80,13 +81,13 @@ namespace hstCMM.Load_Order_Editor
             {
                 foreach (var item in checkedListBox1.CheckedItems)
                 {
-                    filePath = Path.Combine(Properties.Settings.Default.ProfileFolder, item.ToString());
+                    filePath = Path.Combine(Properties.Settings.Default.ProfileFolder, gameName,item.ToString());
                     fileContents = File.ReadAllLines(filePath).ToList();
                     fileContents.Remove(ModName);
                     fileContents.Remove("*" + ModName);
                     fileContents.Add("*" + ModName); // Add the mod back with the * to indicate it is active
                     fileContents = fileContents.Distinct().ToList(); // Avoid adding a duplicate
-                    File.WriteAllLines(Path.Combine(Properties.Settings.Default.ProfileFolder, item.ToString()), fileContents);
+                    File.WriteAllLines(Path.Combine(Properties.Settings.Default.ProfileFolder, gameName, item.ToString()), fileContents);
                     if (log)
                         activityLog.WriteLog("Added " + ModName + " to " + item.ToString() + " profile.");
                 }

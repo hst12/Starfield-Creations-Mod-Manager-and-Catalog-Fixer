@@ -246,6 +246,7 @@
             readfilePathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             displayAllSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             moveUnusedModsOutOfDataDirectoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            moveUnusedModsBackToDataDirectoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator55 = new System.Windows.Forms.ToolStripSeparator();
             OptionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuGame = new System.Windows.Forms.ToolStripMenuItem();
@@ -1827,7 +1828,7 @@
             // 
             // advancedToolStripMenuItem
             // 
-            advancedToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { readfileToolStripMenuItem, displayAllSettingsToolStripMenuItem, moveUnusedModsOutOfDataDirectoryToolStripMenuItem });
+            advancedToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { readfileToolStripMenuItem, displayAllSettingsToolStripMenuItem, moveUnusedModsOutOfDataDirectoryToolStripMenuItem, moveUnusedModsBackToDataDirectoryToolStripMenuItem });
             advancedToolStripMenuItem.Name = "advancedToolStripMenuItem";
             advancedToolStripMenuItem.Size = new System.Drawing.Size(407, 44);
             advancedToolStripMenuItem.Text = "Advanced";
@@ -1836,7 +1837,7 @@
             // 
             readfileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { runBatchFileToolStripMenuItem, configurationToolStripMenuItem, toolStripSeparator49, readfilePathToolStripMenuItem });
             readfileToolStripMenuItem.Name = "readfileToolStripMenuItem";
-            readfileToolStripMenuItem.Size = new System.Drawing.Size(592, 44);
+            readfileToolStripMenuItem.Size = new System.Drawing.Size(605, 44);
             readfileToolStripMenuItem.Text = "Readfile";
             // 
             // runBatchFileToolStripMenuItem
@@ -1868,16 +1869,23 @@
             // displayAllSettingsToolStripMenuItem
             // 
             displayAllSettingsToolStripMenuItem.Name = "displayAllSettingsToolStripMenuItem";
-            displayAllSettingsToolStripMenuItem.Size = new System.Drawing.Size(592, 44);
+            displayAllSettingsToolStripMenuItem.Size = new System.Drawing.Size(605, 44);
             displayAllSettingsToolStripMenuItem.Text = "Display All Settings";
             displayAllSettingsToolStripMenuItem.Click += displayAllSettingsToolStripMenuItem_Click;
             // 
             // moveUnusedModsOutOfDataDirectoryToolStripMenuItem
             // 
             moveUnusedModsOutOfDataDirectoryToolStripMenuItem.Name = "moveUnusedModsOutOfDataDirectoryToolStripMenuItem";
-            moveUnusedModsOutOfDataDirectoryToolStripMenuItem.Size = new System.Drawing.Size(592, 44);
+            moveUnusedModsOutOfDataDirectoryToolStripMenuItem.Size = new System.Drawing.Size(605, 44);
             moveUnusedModsOutOfDataDirectoryToolStripMenuItem.Text = "Move unused mods out of Data Directory";
             moveUnusedModsOutOfDataDirectoryToolStripMenuItem.Click += moveUnusedModsOutOfDataDirectoryToolStripMenuItem_Click;
+            // 
+            // moveUnusedModsBackToDataDirectoryToolStripMenuItem
+            // 
+            moveUnusedModsBackToDataDirectoryToolStripMenuItem.Name = "moveUnusedModsBackToDataDirectoryToolStripMenuItem";
+            moveUnusedModsBackToDataDirectoryToolStripMenuItem.Size = new System.Drawing.Size(605, 44);
+            moveUnusedModsBackToDataDirectoryToolStripMenuItem.Text = "Move unused mods back to Data Directory";
+            moveUnusedModsBackToDataDirectoryToolStripMenuItem.Click += moveUnusedModsBackToDataDirectoryToolStripMenuItem_Click;
             // 
             // toolStripSeparator55
             // 
@@ -2370,15 +2378,16 @@
             flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Left;
             flowLayoutPanel1.Location = new System.Drawing.Point(3, 940);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new System.Drawing.Size(1929, 48);
+            flowLayoutPanel1.Size = new System.Drawing.Size(1927, 48);
             flowLayoutPanel1.TabIndex = 8;
             flowLayoutPanel1.WrapContents = false;
             // 
             // btnUp
             // 
+            btnUp.Anchor = System.Windows.Forms.AnchorStyles.Left;
             btnUp.AutoSize = true;
             btnUp.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            btnUp.Location = new System.Drawing.Point(2, 2);
+            btnUp.Location = new System.Drawing.Point(2, 3);
             btnUp.Margin = new System.Windows.Forms.Padding(2);
             btnUp.Name = "btnUp";
             btnUp.Size = new System.Drawing.Size(46, 42);
@@ -2390,9 +2399,10 @@
             // 
             // btnDown
             // 
+            btnDown.Anchor = System.Windows.Forms.AnchorStyles.Left;
             btnDown.AutoSize = true;
             btnDown.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            btnDown.Location = new System.Drawing.Point(52, 2);
+            btnDown.Location = new System.Drawing.Point(52, 3);
             btnDown.Margin = new System.Windows.Forms.Padding(2);
             btnDown.Name = "btnDown";
             btnDown.Size = new System.Drawing.Size(37, 42);
@@ -2404,9 +2414,10 @@
             // 
             // btnTop
             // 
+            btnTop.Anchor = System.Windows.Forms.AnchorStyles.Left;
             btnTop.AutoSize = true;
             btnTop.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            btnTop.Location = new System.Drawing.Point(93, 2);
+            btnTop.Location = new System.Drawing.Point(93, 3);
             btnTop.Margin = new System.Windows.Forms.Padding(2);
             btnTop.Name = "btnTop";
             btnTop.Size = new System.Drawing.Size(39, 42);
@@ -2418,9 +2429,10 @@
             // 
             // btnBottom
             // 
+            btnBottom.Anchor = System.Windows.Forms.AnchorStyles.Left;
             btnBottom.AutoSize = true;
             btnBottom.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            btnBottom.Location = new System.Drawing.Point(136, 2);
+            btnBottom.Location = new System.Drawing.Point(136, 3);
             btnBottom.Margin = new System.Windows.Forms.Padding(2);
             btnBottom.Name = "btnBottom";
             btnBottom.Size = new System.Drawing.Size(41, 42);
@@ -2444,7 +2456,8 @@
             // 
             // txtSearchBox
             // 
-            txtSearchBox.Location = new System.Drawing.Point(270, 2);
+            txtSearchBox.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            txtSearchBox.Location = new System.Drawing.Point(270, 4);
             txtSearchBox.Margin = new System.Windows.Forms.Padding(2);
             txtSearchBox.Name = "txtSearchBox";
             txtSearchBox.Size = new System.Drawing.Size(96, 39);
@@ -2453,8 +2466,10 @@
             // 
             // btnFindNext
             // 
+            btnFindNext.Anchor = System.Windows.Forms.AnchorStyles.Left;
             btnFindNext.AutoSize = true;
-            btnFindNext.Location = new System.Drawing.Point(371, 3);
+            btnFindNext.Location = new System.Drawing.Point(370, 3);
+            btnFindNext.Margin = new System.Windows.Forms.Padding(2);
             btnFindNext.Name = "btnFindNext";
             btnFindNext.Size = new System.Drawing.Size(127, 42);
             btnFindNext.TabIndex = 5;
@@ -2465,8 +2480,9 @@
             // 
             // chkProfile
             // 
+            chkProfile.Anchor = System.Windows.Forms.AnchorStyles.Left;
             chkProfile.AutoSize = true;
-            chkProfile.Location = new System.Drawing.Point(503, 2);
+            chkProfile.Location = new System.Drawing.Point(501, 6);
             chkProfile.Margin = new System.Windows.Forms.Padding(2);
             chkProfile.Name = "chkProfile";
             chkProfile.Size = new System.Drawing.Size(114, 36);
@@ -2478,10 +2494,11 @@
             // 
             // cmbProfile
             // 
+            cmbProfile.Anchor = System.Windows.Forms.AnchorStyles.Left;
             cmbProfile.DropDownWidth = 300;
             cmbProfile.FormattingEnabled = true;
             cmbProfile.ItemHeight = 32;
-            cmbProfile.Location = new System.Drawing.Point(621, 2);
+            cmbProfile.Location = new System.Drawing.Point(619, 4);
             cmbProfile.Margin = new System.Windows.Forms.Padding(2);
             cmbProfile.Name = "cmbProfile";
             cmbProfile.Size = new System.Drawing.Size(300, 40);
@@ -2491,9 +2508,10 @@
             // 
             // btnSave
             // 
+            btnSave.Anchor = System.Windows.Forms.AnchorStyles.Left;
             btnSave.AutoSize = true;
             btnSave.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            btnSave.Location = new System.Drawing.Point(925, 2);
+            btnSave.Location = new System.Drawing.Point(923, 3);
             btnSave.Margin = new System.Windows.Forms.Padding(2);
             btnSave.Name = "btnSave";
             btnSave.Size = new System.Drawing.Size(74, 42);
@@ -2505,9 +2523,10 @@
             // 
             // btnActiveOnly
             // 
+            btnActiveOnly.Anchor = System.Windows.Forms.AnchorStyles.Left;
             btnActiveOnly.AutoSize = true;
             btnActiveOnly.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            btnActiveOnly.Location = new System.Drawing.Point(1003, 2);
+            btnActiveOnly.Location = new System.Drawing.Point(1001, 3);
             btnActiveOnly.Margin = new System.Windows.Forms.Padding(2);
             btnActiveOnly.Name = "btnActiveOnly";
             btnActiveOnly.Size = new System.Drawing.Size(77, 42);
@@ -2519,8 +2538,9 @@
             // 
             // btnGroups
             // 
+            btnGroups.Anchor = System.Windows.Forms.AnchorStyles.Left;
             btnGroups.AutoSize = true;
-            btnGroups.Location = new System.Drawing.Point(1085, 3);
+            btnGroups.Location = new System.Drawing.Point(1083, 3);
             btnGroups.Name = "btnGroups";
             btnGroups.Size = new System.Drawing.Size(100, 42);
             btnGroups.TabIndex = 10;
@@ -2531,9 +2551,10 @@
             // 
             // btnLog
             // 
+            btnLog.Anchor = System.Windows.Forms.AnchorStyles.Left;
             btnLog.AutoSize = true;
             btnLog.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            btnLog.Location = new System.Drawing.Point(1190, 2);
+            btnLog.Location = new System.Drawing.Point(1188, 3);
             btnLog.Margin = new System.Windows.Forms.Padding(2);
             btnLog.Name = "btnLog";
             btnLog.Size = new System.Drawing.Size(63, 42);
@@ -2545,9 +2566,10 @@
             // 
             // btnRefresh
             // 
+            btnRefresh.Anchor = System.Windows.Forms.AnchorStyles.Left;
             btnRefresh.AutoSize = true;
             btnRefresh.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            btnRefresh.Location = new System.Drawing.Point(1257, 2);
+            btnRefresh.Location = new System.Drawing.Point(1255, 3);
             btnRefresh.Margin = new System.Windows.Forms.Padding(2);
             btnRefresh.Name = "btnRefresh";
             btnRefresh.Size = new System.Drawing.Size(103, 42);
@@ -2559,9 +2581,10 @@
             // 
             // btnUpdate
             // 
+            btnUpdate.Anchor = System.Windows.Forms.AnchorStyles.Left;
             btnUpdate.AutoSize = true;
             btnUpdate.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            btnUpdate.Location = new System.Drawing.Point(1364, 2);
+            btnUpdate.Location = new System.Drawing.Point(1362, 3);
             btnUpdate.Margin = new System.Windows.Forms.Padding(2);
             btnUpdate.Name = "btnUpdate";
             btnUpdate.Size = new System.Drawing.Size(101, 42);
@@ -2573,9 +2596,10 @@
             // 
             // btnLoot
             // 
+            btnLoot.Anchor = System.Windows.Forms.AnchorStyles.Left;
             btnLoot.AutoSize = true;
             btnLoot.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            btnLoot.Location = new System.Drawing.Point(1469, 2);
+            btnLoot.Location = new System.Drawing.Point(1467, 3);
             btnLoot.Margin = new System.Windows.Forms.Padding(2);
             btnLoot.Name = "btnLoot";
             btnLoot.Size = new System.Drawing.Size(115, 42);
@@ -2587,9 +2611,10 @@
             // 
             // btnCatalog
             // 
+            btnCatalog.Anchor = System.Windows.Forms.AnchorStyles.Left;
             btnCatalog.AutoSize = true;
             btnCatalog.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            btnCatalog.Location = new System.Drawing.Point(1588, 2);
+            btnCatalog.Location = new System.Drawing.Point(1586, 3);
             btnCatalog.Margin = new System.Windows.Forms.Padding(2);
             btnCatalog.Name = "btnCatalog";
             btnCatalog.Size = new System.Drawing.Size(105, 42);
@@ -2601,9 +2626,10 @@
             // 
             // btnRun
             // 
+            btnRun.Anchor = System.Windows.Forms.AnchorStyles.Left;
             btnRun.AutoSize = true;
             btnRun.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            btnRun.Location = new System.Drawing.Point(1697, 2);
+            btnRun.Location = new System.Drawing.Point(1695, 3);
             btnRun.Margin = new System.Windows.Forms.Padding(2);
             btnRun.Name = "btnRun";
             btnRun.Size = new System.Drawing.Size(66, 42);
@@ -2615,9 +2641,10 @@
             // 
             // btnCancel
             // 
+            btnCancel.Anchor = System.Windows.Forms.AnchorStyles.Left;
             btnCancel.AutoSize = true;
             btnCancel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            btnCancel.Location = new System.Drawing.Point(1767, 2);
+            btnCancel.Location = new System.Drawing.Point(1765, 3);
             btnCancel.Margin = new System.Windows.Forms.Padding(2);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new System.Drawing.Size(95, 42);
@@ -2629,9 +2656,10 @@
             // 
             // btnQuit
             // 
+            btnQuit.Anchor = System.Windows.Forms.AnchorStyles.Left;
             btnQuit.AutoSize = true;
             btnQuit.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            btnQuit.Location = new System.Drawing.Point(1866, 2);
+            btnQuit.Location = new System.Drawing.Point(1864, 3);
             btnQuit.Margin = new System.Windows.Forms.Padding(2);
             btnQuit.Name = "btnQuit";
             btnQuit.Size = new System.Drawing.Size(61, 42);
@@ -3038,5 +3066,6 @@
         private System.Windows.Forms.ToolStripMenuItem sequenceToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem blockedOnlyToolStripMenuItem;
         private System.Windows.Forms.Button btnFindNext;
+        private System.Windows.Forms.ToolStripMenuItem moveUnusedModsBackToDataDirectoryToolStripMenuItem;
     }
 }

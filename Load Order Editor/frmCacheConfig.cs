@@ -81,7 +81,7 @@ namespace hstCMM.Load_Order_Editor
             using (StreamWriter writer = new(saveDialog.FileName))
             {
                 foreach (var item in cacheOptions.Concat(selectedOptions))
-                    writer.WriteLine($"{readfilePath} \"{Path.Combine(frmLoadOrder.GamePath, item)}\" /b");
+                    writer.WriteLine($"\"{readfilePath}\" \"{Path.Combine(frmLoadOrder.GamePath, item)}\" /b");
             }
             Properties.Settings.Default.ReadFileBatchPath = saveDialog.FileName;
             if (Tools.ConfirmAction("Readfile generation complete", "Run batch file?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
