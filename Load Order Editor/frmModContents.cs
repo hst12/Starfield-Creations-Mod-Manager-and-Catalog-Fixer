@@ -48,8 +48,8 @@ namespace hstCMM.Load_Order_Editor
             foreach (var item in files)
             {
                 FileInfo fileInfo = new FileInfo(item);
-                long fileSize = fileInfo.Length / 1024;
-                richTextBox1.Text += $"{Path.GetFileName(item)}, Size: {fileSize} Kb\n";
+                long fileSize = fileInfo.Length;
+                richTextBox1.Text += $"{Path.GetFileName(item)}, Size: {fileSize} b\n";
             }
         }
 

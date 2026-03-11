@@ -526,7 +526,7 @@
             contextMenuDatagrid.ImageScalingSize = new System.Drawing.Size(32, 32);
             contextMenuDatagrid.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuEnableDisable, toolStripMenuAddToProfile, blockUnblockToolStripMenuItem, toolStripSeparator10, toolStripMenuUp, toolStripMenuDown, toolStripMenuTop, toolStripMenuBottom, toolStripSeparator4, toolStripMenAddRemoveContext, toolStripMenuDelContext, toolStripSeparator32, toolStripMenuInstallMod, toolStripMenuUninstallContext, toolStripSeparator36, modContentsToolStripMenuItem, toolStripMenuViewWebSite, toolStripSeparator31, renameModToolStripMenuItem, toolStripMenuDuplicateRename, toolStripSeparator18, archiveModToolStripMenuItem, updateArchivedModsToolStripMenuItem, toolStripSeparator11, toolStripMenuLootAutoSort, toolStripSeparator12, toolStripMenuRefresh });
             contextMenuDatagrid.Name = "contextMenuDatagrid";
-            contextMenuDatagrid.Size = new System.Drawing.Size(625, 812);
+            contextMenuDatagrid.Size = new System.Drawing.Size(625, 856);
             // 
             // toolStripMenuEnableDisable
             // 

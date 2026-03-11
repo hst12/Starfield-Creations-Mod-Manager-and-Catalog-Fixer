@@ -6662,7 +6662,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 string dataDirectory = Path.Combine(GamePath, "Data");
                 foreach (var fileName in filesToCopy)
                 {
-                    string sourceFilePath = Path.Combine(openFolderDialog.FolderName, Path.GetFileNameWithoutExtension(fileName))+"*.*";
+                    string sourceFilePath = Path.Combine(openFolderDialog.FolderName, Path.GetFileNameWithoutExtension(fileName));
                     string destFilePath = Path.Combine(dataDirectory, fileName);
                     try
                     {
