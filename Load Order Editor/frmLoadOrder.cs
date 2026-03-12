@@ -4595,9 +4595,9 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 return;
 
             tableLayoutPanel1.RowStyles[1].SizeType = SizeType.Percent; // Set datagrid display height
-            tableLayoutPanel1.RowStyles[1].Height = 90f;
+            tableLayoutPanel1.RowStyles[1].Height = 85f;
             tableLayoutPanel1.RowStyles[2].SizeType = SizeType.Percent; // Set log display height
-            tableLayoutPanel1.RowStyles[2].Height = 10f;
+            tableLayoutPanel1.RowStyles[2].Height = 15f;
             rtbLog.Visible = true;
             rtbLog.Dock = DockStyle.Fill;
             ResizeForm();
@@ -6660,22 +6660,33 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 string dataDirectory = Path.Combine(GamePath, "Data");
+                string sourceFilePath = openFolderDialog.FolderName;
                 foreach (var fileName in filesToCopy)
                 {
-                    string sourceFilePath = Path.Combine(openFolderDialog.FolderName, Path.GetFileNameWithoutExtension(fileName));
+                    
                     string destFilePath = Path.Combine(dataDirectory, fileName);
                     try
                     {
                         if (!File.Exists(destFilePath))
                         {
+                            var modFiles=Directory.GetFiles(sourceFilePath,  Path.GetFileNameWithoutExtension(fileName)+"*");
+                            foreach (var modFile in modFiles)
+                            {
+                                if (!File.Exists(destFilePath))
+                                {
+
+                                    File.Copy(modFile, destFilePath, false);
+                                    activityLog.WriteLog($"Copied {modFile} back to Data directory.");
+                                }
+                            }
                             //File.Copy(sourceFilePath, destFilePath, true);
-                            activityLog.WriteLog($"Copied {sourceFilePath} back to Data directory.");
+                            //activityLog.WriteLog($"Copied {sourceFilePath} back to Data directory.");
                         }
                     }
                     catch (Exception ex)
                     {
                         LogError(ex.Message);
-                        MessageBox.Show($"Failed to copy {fileName}: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show(ex.Message);
                     }
                 }
                 sbar("Unused mods copied back to Data directory.");
