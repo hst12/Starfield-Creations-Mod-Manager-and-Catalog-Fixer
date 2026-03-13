@@ -696,6 +696,7 @@ namespace hstCMM
         {
             AutoUpdate = autoUpdateModsToolStripMenuItem.Checked = !AutoUpdate;
             Properties.Settings.Default.AutoUpdate = AutoUpdate;
+            SaveSettings();
 
         }
         private void autoUpdateModsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -3233,6 +3234,7 @@ namespace hstCMM
         private void moveUnusedModsOutOfDataDirectoryToolStripMenuItem_Click(object sender, EventArgs e)
         {
             List<string> mods = new(), modsToMove = new();
+            int moveCount = 0;
 
             frmMoveMods moveModsForm = new();
             moveModsForm.ShowDialog();
@@ -3312,8 +3314,15 @@ namespace hstCMM
                         {
                             sbar($"Moving {Path.GetFileName(file)}...");
                             statusStrip1.Refresh();
-                            File.Move(file, destPath);
-                            activityLog.WriteLog($"Moved inactive mod file {Path.GetFileName(file)} to Inactive Mods folder.");
+                            if (!File.Exists(destPath))
+                            {
+                                File.Move(file, destPath);
+                                activityLog.WriteLog($"Moved inactive mod file {Path.GetFileName(file)} to Inactive Mods folder.");
+                                moveCount++;
+                            }
+                            else
+                                activityLog.WriteLog($"Skipped {Path.GetFileName(file)}. File exists.");
+
                         }
                         catch (Exception ex)
                         {
@@ -3323,8 +3332,14 @@ namespace hstCMM
                     }
                 }
             }
-            sbar($"Inactive mods moved to {destDir}");
-            MessageBox.Show("Press the Update button to refresh the mod list or Cancel to leave the Plugins.txt file unchanged.");
+            if (moveCount > 0)
+            {
+                sbar($"Inactive mods moved to {destDir}");
+                activityLog.WriteLog($"Moved {moveCount} inactive mod files to {destDir}");
+                MessageBox.Show("Press the Update button to refresh the mod list or Cancel to leave the Plugins.txt file unchanged.");
+            }
+            else
+                activityLog.WriteLog("No files were moved. All destination files already exist.");
         }
 
         private void MoveUp()
@@ -5275,7 +5290,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 {
                     if (selectedRow.Cells["PluginName"].Value != null) // Ensure the cell value is not null
                     {
-                        frmAddModToProfile addMod = new(profiles, selectedRow.Cells["PluginName"].Value.ToString(),GameName);
+                        frmAddModToProfile addMod = new(profiles, selectedRow.Cells["PluginName"].Value.ToString(), GameName);
                         addMod.ShowDialog(cmbProfile);
                     }
                 }
@@ -6676,13 +6691,13 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 string sourceFilePath = openFolderDialog.FolderName;
                 foreach (var fileName in filesToCopy)
                 {
-                    
+
                     string destFilePath = Path.Combine(dataDirectory, fileName);
                     try
                     {
                         if (!File.Exists(destFilePath))
                         {
-                            var modFiles=Directory.GetFiles(sourceFilePath,  Path.GetFileNameWithoutExtension(fileName)+"*");
+                            var modFiles = Directory.GetFiles(sourceFilePath, Path.GetFileNameWithoutExtension(fileName) + "*");
                             foreach (var modFile in modFiles)
                             {
                                 tempstr = Path.Combine(dataDirectory, Path.GetFileName(modFile));
@@ -6706,8 +6721,10 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 if (copyCount > 0)
                 {
                     AutoUpdate = false;
-                    toggleAutoUpdate();
-                    MessageBox.Show($"{copyCount} files copied back. Auto Update mods turned off.");
+                    Properties.Settings.Default.ActivateNew = false;
+                    activateNewModsToolStripMenuItem.Checked = false;
+                    SaveSettings();
+                    MessageBox.Show($"{copyCount} files copied back. Activate new mods turned off.");
                 }
             }
         }
