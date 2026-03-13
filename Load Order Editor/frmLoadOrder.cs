@@ -692,10 +692,15 @@ namespace hstCMM
             AutoSort = Properties.Settings.Default.AutoSort;
         }
 
-        private void autoUpdateModsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void toggleAutoUpdate()
         {
             AutoUpdate = autoUpdateModsToolStripMenuItem.Checked = !AutoUpdate;
             Properties.Settings.Default.AutoUpdate = AutoUpdate;
+
+        }
+        private void autoUpdateModsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            toggleAutoUpdate();
         }
 
         private void BackupAppSettings(bool useDocuments = false)
@@ -6640,6 +6645,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
         private void moveUnusedModsBackToDataDirectoryToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            int copyCount = 0;
             var openFolderDialog = new OpenFolderDialog
             {
                 Title = "Select folder where unused mods were moved to"
@@ -6653,6 +6659,13 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             var sourceFiles = Directory.GetFiles(openFolderDialog.FolderName, "*.esm", SearchOption.TopDirectoryOnly);
             var filesToCopy = sourceFiles.
                 Select(fileName => Path.GetFileName(fileName)).Except(pluginList, StringComparer.OrdinalIgnoreCase);
+
+            if (filesToCopy.Count() == 0)
+            {
+                MessageBox.Show("No unused mods found in the selected folder.");
+                return;
+            }
+
             var tempForm = new frmGenericTextList("Files to copy", filesToCopy.ToList());
             tempForm.Show();
 
@@ -6672,15 +6685,15 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                             var modFiles=Directory.GetFiles(sourceFilePath,  Path.GetFileNameWithoutExtension(fileName)+"*");
                             foreach (var modFile in modFiles)
                             {
-                                if (!File.Exists(destFilePath))
+                                tempstr = Path.Combine(dataDirectory, Path.GetFileName(modFile));
+                                if (!File.Exists(tempstr))
                                 {
 
-                                    File.Copy(modFile, destFilePath, false);
-                                    activityLog.WriteLog($"Copied {modFile} back to Data directory.");
+                                    File.Copy(modFile, tempstr, false);
+                                    activityLog.WriteLog($"Copied {modFile} back to {tempstr}.");
+                                    copyCount++;
                                 }
                             }
-                            //File.Copy(sourceFilePath, destFilePath, true);
-                            //activityLog.WriteLog($"Copied {sourceFilePath} back to Data directory.");
                         }
                     }
                     catch (Exception ex)
@@ -6690,6 +6703,12 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     }
                 }
                 sbar("Unused mods copied back to Data directory.");
+                if (copyCount > 0)
+                {
+                    AutoUpdate = false;
+                    toggleAutoUpdate();
+                    MessageBox.Show($"{copyCount} files copied back. Auto Update mods turned off.");
+                }
             }
         }
     }
