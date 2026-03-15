@@ -1352,6 +1352,7 @@ namespace hstCMM
                     break;
                 case Keys.Q:
                     ActiveOnlyToggle();
+                    dataGridView1.Focus();
                     break;
                 case Keys.R:
                     RunGame();
@@ -1749,25 +1750,33 @@ namespace hstCMM
 
         private void EnableDisable()
         {
-            if (GridSorted)
+            if (GridSorted || dataGridView1.CurrentRow?.Cells["PluginName"].Value is null)
                 return;
-
-            if (Tools.BlockedMods().Contains((string)dataGridView1.CurrentRow.Cells["PluginName"].Value))
+            try
             {
-                sbar("Mod is blocked");
-                return;
-            }
+                if (Tools.BlockedMods().Contains((string)dataGridView1.CurrentRow.Cells["PluginName"].Value))
+                {
+                    sbar("Mod is blocked");
+                    return;
+                }
 
-            foreach (var row in dataGridView1.SelectedRows)
+
+                foreach (var row in dataGridView1.SelectedRows)
+                {
+                    DataGridViewRow currentRow = (DataGridViewRow)row;
+                    currentRow.Cells["ModEnabled"].Value = !(bool)(currentRow.Cells["ModEnabled"].Value);
+                }
+
+                activityLog.WriteLog($"Enable/Disable mod: {dataGridView1.CurrentRow.Cells["PluginName"].Value}," +
+                    $" {dataGridView1.CurrentRow.Cells["ModEnabled"].Value}");
+                isModified = true;
+                SavePlugins();
+            }
+            catch (Exception ex)
             {
-                DataGridViewRow currentRow = (DataGridViewRow)row;
-                currentRow.Cells["ModEnabled"].Value = !(bool)(currentRow.Cells["ModEnabled"].Value);
+                LogError(ex.Message);
+                /*MessageBox.Show(ex.Message);*/
             }
-
-            activityLog.WriteLog($"Enable/Disable mod: {dataGridView1.CurrentRow.Cells["PluginName"].Value}," +
-                $" {dataGridView1.CurrentRow.Cells["ModEnabled"].Value}");
-            isModified = true;
-            SavePlugins();
         }
 
         private void EnableLog()
@@ -4636,7 +4645,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             rtbLog.Visible = true;
             rtbLog.Dock = DockStyle.Fill;
             ResizeForm();
-            rtbLog.ScrollToCaret();
+            //rtbLog.ScrollToCaret();
         }
 
         private void SetUpMenus()
@@ -6669,7 +6678,10 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
         private void btnFindNext_Click(object sender, EventArgs e)
         {
             if (String.IsNullOrEmpty(txtSearchBox.Text)) // Return if search box is empty
+            {
+                MessageBox.Show("Search aborted.");
                 return;
+            }
             SearchMod();
         }
 
