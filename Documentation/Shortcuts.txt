@@ -9,6 +9,8 @@ Move Top - A
 Move Bottom -D
 Alternatively, drag and drop with mouse
 
+Enable/Disable mod - Space or E
+
 Run game - R
 Save Plugins - Ctrl-S
 Open Profile - Ctrl-O

@@ -375,7 +375,6 @@
             dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             dataGridView1.Size = new System.Drawing.Size(1983, 888);
             dataGridView1.TabIndex = 0;
-            dataGridView1.TabStop = false;
             dataGridView1.CellDoubleClick += dataGridView1_CellDoubleClick;
             dataGridView1.DataError += dataGridView1_DataError;
             dataGridView1.Sorted += dataGridView1_Sorted;
@@ -2476,6 +2475,7 @@
             txtSearchBox.Name = "txtSearchBox";
             txtSearchBox.Size = new System.Drawing.Size(96, 39);
             txtSearchBox.TabIndex = 5;
+            toolTip1.SetToolTip(txtSearchBox, "Search Text (Ctrl-F to focus, ESC to clear)");
             txtSearchBox.KeyDown += txtSearchBox_KeyDown;
             // 
             // btnFindNext
