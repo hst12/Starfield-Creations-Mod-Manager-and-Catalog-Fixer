@@ -2420,7 +2420,7 @@
             btnTop.Margin = new System.Windows.Forms.Padding(2);
             btnTop.Name = "btnTop";
             btnTop.Size = new System.Drawing.Size(39, 42);
-            btnTop.TabIndex = 2;
+            btnTop.TabIndex = 3;
             btnTop.Text = "A";
             toolTip1.SetToolTip(btnTop, "Move mod to the top (A)");
             btnTop.UseVisualStyleBackColor = true;
@@ -2435,7 +2435,7 @@
             btnBottom.Margin = new System.Windows.Forms.Padding(2);
             btnBottom.Name = "btnBottom";
             btnBottom.Size = new System.Drawing.Size(41, 42);
-            btnBottom.TabIndex = 3;
+            btnBottom.TabIndex = 4;
             btnBottom.Text = "D";
             toolTip1.SetToolTip(btnBottom, "Move mod to the bottom (D)");
             btnBottom.UseVisualStyleBackColor = true;
@@ -2449,7 +2449,7 @@
             btnToggleMod.Margin = new System.Windows.Forms.Padding(2);
             btnToggleMod.Name = "btnToggleMod";
             btnToggleMod.Size = new System.Drawing.Size(41, 42);
-            btnToggleMod.TabIndex = 19;
+            btnToggleMod.TabIndex = 5;
             btnToggleMod.Text = "E";
             toolTip1.SetToolTip(btnToggleMod, "Mod Enable/Disable (Space or E)");
             btnToggleMod.UseVisualStyleBackColor = true;
@@ -2474,7 +2474,7 @@
             txtSearchBox.Margin = new System.Windows.Forms.Padding(2);
             txtSearchBox.Name = "txtSearchBox";
             txtSearchBox.Size = new System.Drawing.Size(96, 39);
-            txtSearchBox.TabIndex = 4;
+            txtSearchBox.TabIndex = 5;
             txtSearchBox.KeyDown += txtSearchBox_KeyDown;
             // 
             // btnFindNext
@@ -2485,7 +2485,7 @@
             btnFindNext.Margin = new System.Windows.Forms.Padding(2);
             btnFindNext.Name = "btnFindNext";
             btnFindNext.Size = new System.Drawing.Size(127, 42);
-            btnFindNext.TabIndex = 5;
+            btnFindNext.TabIndex = 6;
             btnFindNext.Text = "Find Next";
             toolTip1.SetToolTip(btnFindNext, "Find next match in search");
             btnFindNext.UseVisualStyleBackColor = true;
@@ -2499,7 +2499,7 @@
             chkProfile.Margin = new System.Windows.Forms.Padding(2);
             chkProfile.Name = "chkProfile";
             chkProfile.Size = new System.Drawing.Size(114, 36);
-            chkProfile.TabIndex = 6;
+            chkProfile.TabIndex = 7;
             chkProfile.Text = "Profile";
             toolTip1.SetToolTip(chkProfile, "Enable/Disable Profiles");
             chkProfile.UseVisualStyleBackColor = true;
@@ -2515,7 +2515,7 @@
             cmbProfile.Margin = new System.Windows.Forms.Padding(2);
             cmbProfile.Name = "cmbProfile";
             cmbProfile.Size = new System.Drawing.Size(300, 40);
-            cmbProfile.TabIndex = 7;
+            cmbProfile.TabIndex = 8;
             toolTip1.SetToolTip(cmbProfile, "Profile select");
             cmbProfile.SelectedIndexChanged += cmbProfile_SelectedIndexChanged;
             // 
@@ -2528,7 +2528,7 @@
             btnSave.Margin = new System.Windows.Forms.Padding(2);
             btnSave.Name = "btnSave";
             btnSave.Size = new System.Drawing.Size(74, 42);
-            btnSave.TabIndex = 8;
+            btnSave.TabIndex = 9;
             btnSave.Text = "Save";
             toolTip1.SetToolTip(btnSave, "Save Plugins.txt (Ctrl-S)");
             btnSave.UseVisualStyleBackColor = true;
@@ -2543,7 +2543,7 @@
             btnActiveOnly.Margin = new System.Windows.Forms.Padding(2);
             btnActiveOnly.Name = "btnActiveOnly";
             btnActiveOnly.Size = new System.Drawing.Size(77, 42);
-            btnActiveOnly.TabIndex = 9;
+            btnActiveOnly.TabIndex = 10;
             btnActiveOnly.Text = "Filter";
             toolTip1.SetToolTip(btnActiveOnly, "Show all or show active mods only (Q)");
             btnActiveOnly.UseVisualStyleBackColor = true;
@@ -2556,7 +2556,7 @@
             btnGroups.Location = new System.Drawing.Point(1128, 3);
             btnGroups.Name = "btnGroups";
             btnGroups.Size = new System.Drawing.Size(100, 42);
-            btnGroups.TabIndex = 10;
+            btnGroups.TabIndex = 11;
             btnGroups.Text = "Groups";
             toolTip1.SetToolTip(btnGroups, "Group Filter - Refresh to Clear");
             btnGroups.UseVisualStyleBackColor = true;
@@ -2571,7 +2571,7 @@
             btnLog.Margin = new System.Windows.Forms.Padding(2);
             btnLog.Name = "btnLog";
             btnLog.Size = new System.Drawing.Size(63, 42);
-            btnLog.TabIndex = 11;
+            btnLog.TabIndex = 12;
             btnLog.Text = "Log";
             toolTip1.SetToolTip(btnLog, "View Log File");
             btnLog.UseVisualStyleBackColor = true;
@@ -2586,7 +2586,7 @@
             btnRefresh.Margin = new System.Windows.Forms.Padding(2);
             btnRefresh.Name = "btnRefresh";
             btnRefresh.Size = new System.Drawing.Size(103, 42);
-            btnRefresh.TabIndex = 12;
+            btnRefresh.TabIndex = 13;
             btnRefresh.Text = "Refresh";
             toolTip1.SetToolTip(btnRefresh, "Reload Plugins (F5)");
             btnRefresh.UseVisualStyleBackColor = true;
@@ -2601,7 +2601,7 @@
             btnUpdate.Margin = new System.Windows.Forms.Padding(2);
             btnUpdate.Name = "btnUpdate";
             btnUpdate.Size = new System.Drawing.Size(101, 42);
-            btnUpdate.TabIndex = 13;
+            btnUpdate.TabIndex = 14;
             btnUpdate.Text = "Update";
             toolTip1.SetToolTip(btnUpdate, "Add or delete missing mods from Plugins.txt, Check for Duplicates");
             btnUpdate.UseVisualStyleBackColor = true;
@@ -2616,7 +2616,7 @@
             btnLoot.Margin = new System.Windows.Forms.Padding(2);
             btnLoot.Name = "btnLoot";
             btnLoot.Size = new System.Drawing.Size(115, 42);
-            btnLoot.TabIndex = 14;
+            btnLoot.TabIndex = 15;
             btnLoot.Text = "Autosort";
             toolTip1.SetToolTip(btnLoot, "LOOT Autosort");
             btnLoot.UseVisualStyleBackColor = true;
