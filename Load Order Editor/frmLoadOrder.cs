@@ -914,6 +914,7 @@ namespace hstCMM
         private void btnActiveOnly_Click(object sender, EventArgs e)
         {
             ActiveOnlyToggle();
+            dataGridView1.Focus();
         }
 
         private void btnBottom_Click(object sender, EventArgs e)
@@ -940,6 +941,7 @@ namespace hstCMM
             if (!String.IsNullOrEmpty(pathToFile))
                 activityLog.PersistLog(pathToFile);
             ShowLog();
+            dataGridView1.Focus();
         }
 
         private void btnLoot_Click(object sender, EventArgs e)
@@ -962,6 +964,7 @@ namespace hstCMM
         {
             RefreshDataGrid();
             btnGroups.Font = new System.Drawing.Font(btnGroups.Font, FontStyle.Regular);
+            dataGridView1.Focus();
         }
 
         private void btnRun_Click(object sender, EventArgs e)
@@ -973,6 +976,7 @@ namespace hstCMM
         {
             SavePlugins();
             SaveSettings();
+            dataGridView1.Focus();
         }
 
         private void btnTop_Click(object sender, EventArgs e)
@@ -988,6 +992,7 @@ namespace hstCMM
         private void btnUpdate_Click(object sender, EventArgs e)
         {
             UpdatePlugins();
+            dataGridView1.Focus();
         }
 
         private void ChangeSettings(bool NewSetting)

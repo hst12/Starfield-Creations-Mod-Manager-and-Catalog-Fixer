@@ -375,6 +375,7 @@
             dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             dataGridView1.Size = new System.Drawing.Size(1983, 888);
             dataGridView1.TabIndex = 0;
+            dataGridView1.TabStop = false;
             dataGridView1.CellDoubleClick += dataGridView1_CellDoubleClick;
             dataGridView1.DataError += dataGridView1_DataError;
             dataGridView1.Sorted += dataGridView1_Sorted;
