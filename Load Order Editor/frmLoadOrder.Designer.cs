@@ -2453,6 +2453,7 @@
             btnToggleMod.Text = "E";
             toolTip1.SetToolTip(btnToggleMod, "Mod Enable/Disable (Space or E)");
             btnToggleMod.UseVisualStyleBackColor = true;
+            btnToggleMod.Click += btnToggleMod_Click;
             // 
             // label1
             // 
@@ -2544,7 +2545,7 @@
             btnActiveOnly.Size = new System.Drawing.Size(77, 42);
             btnActiveOnly.TabIndex = 9;
             btnActiveOnly.Text = "Filter";
-            toolTip1.SetToolTip(btnActiveOnly, "Show all or show active mods only");
+            toolTip1.SetToolTip(btnActiveOnly, "Show all or show active mods only (Q)");
             btnActiveOnly.UseVisualStyleBackColor = true;
             btnActiveOnly.Click += btnActiveOnly_Click;
             // 

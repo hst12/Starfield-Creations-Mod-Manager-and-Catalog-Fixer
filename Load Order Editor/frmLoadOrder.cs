@@ -945,6 +945,7 @@ namespace hstCMM
         private void btnLoot_Click(object sender, EventArgs e)
         {
             RunLOOT(true);
+            dataGridView1.Focus();
         }
 
         private void btnOK_Click(object sender, EventArgs e)
@@ -1341,7 +1342,9 @@ namespace hstCMM
                 case Keys.E:
                     EnableDisable();
                     break;
-
+                case Keys.Q:
+                    ActiveOnlyToggle();
+                    break;
                 case Keys.R:
                     RunGame();
                     break;
@@ -6725,6 +6728,11 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     MessageBox.Show($"{copyCount} files copied back. Activate new mods turned off.");
                 }
             }
+        }
+
+        private void btnToggleMod_Click(object sender, EventArgs e)
+        {
+            EnableDisable();
         }
     }
 }
