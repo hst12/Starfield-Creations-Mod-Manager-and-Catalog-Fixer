@@ -2475,7 +2475,7 @@
             txtSearchBox.Name = "txtSearchBox";
             txtSearchBox.Size = new System.Drawing.Size(96, 39);
             txtSearchBox.TabIndex = 5;
-            toolTip1.SetToolTip(txtSearchBox, "Search Text (Ctrl-F to focus, ESC to clear)");
+            toolTip1.SetToolTip(txtSearchBox, "Search Text (Ctrl-F to focus, Enter - Next match, Esc - Clear)");
             txtSearchBox.KeyDown += txtSearchBox_KeyDown;
             // 
             // btnFindNext

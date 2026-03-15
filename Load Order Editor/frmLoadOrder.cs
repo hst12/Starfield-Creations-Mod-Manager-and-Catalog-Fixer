@@ -2794,7 +2794,8 @@ namespace hstCMM
 
                 case Keys.Escape:
                     txtSearchBox.Clear();
-                    txtSearchBox.Focus(); // Clear search box and focus it when Escape is pressed
+                    //txtSearchBox.Focus(); // Clear search box and focus it when Escape is pressed
+                    dataGridView1.Focus();
                     break;
             }
             if (e.Control && e.KeyCode == Keys.F) // Ctrl+F to search
