@@ -4,18 +4,19 @@ Delete from Plugins.txt - Del - Does not delete the mod files from the Data fold
 Mod move order keys:
 Select a mod by clicking once on it then:
 Move Up - W
-Move Down -S
+Move Down - S
 Move Top - A
-Move Bottom -D
-Alternatively, drag and drop with mouse
+Move Bottom - D
+Alternatively, drag and drop with mouse to move mods
 
+Other keys:
+Active mod filter - Q
 Enable/Disable mod - Space or E
-
 Run game - R
 Save Plugins - Ctrl-S
 Open Profile - Ctrl-O
-
 Ctrl-F - Search for mod by name or description
+ESC key clears the search box
 
 Install mods by dragging and dropping the zip file onto the mod list. Multiple files can be selected.
 
