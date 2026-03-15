@@ -1347,6 +1347,9 @@ namespace hstCMM
                 case Keys.E:
                     EnableDisable();
                     break;
+                case Keys.F:
+                    txtSearchBox.Focus();
+                    break;
                 case Keys.Q:
                     ActiveOnlyToggle();
                     break;
@@ -1874,6 +1877,7 @@ namespace hstCMM
             SetupJumpList();
             if (Properties.Settings.Default.Resize)
                 ResizeForm();
+            dataGridView1.Focus();
         }
 
         private void gameSelectToolStripMenuItem_Click(object sender, EventArgs e)
