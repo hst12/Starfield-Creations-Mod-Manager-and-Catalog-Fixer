@@ -697,8 +697,8 @@ namespace hstCMM
             AutoUpdate = autoUpdateModsToolStripMenuItem.Checked = !AutoUpdate;
             Properties.Settings.Default.AutoUpdate = AutoUpdate;
             SaveSettings();
-
         }
+
         private void autoUpdateModsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             toggleAutoUpdate();
@@ -924,11 +924,6 @@ namespace hstCMM
         private void btnCancel_Click(object sender, EventArgs e)
         {
             Environment.Exit(0);
-        }
-
-        private void btnCatalog_Click(object sender, EventArgs e)
-        {
-            CheckCatalog();
         }
 
         private void btnDown_Click(object sender, EventArgs e)
@@ -1343,6 +1338,10 @@ namespace hstCMM
                     EnableDisable();
                     break;
 
+                case Keys.E:
+                    EnableDisable();
+                    break;
+
                 case Keys.R:
                     RunGame();
                     break;
@@ -1745,7 +1744,7 @@ namespace hstCMM
                 sbar("Mod is blocked");
                 return;
             }
-            isModified = true;
+
             foreach (var row in dataGridView1.SelectedRows)
             {
                 DataGridViewRow currentRow = (DataGridViewRow)row;
@@ -1754,6 +1753,7 @@ namespace hstCMM
 
             activityLog.WriteLog($"Enable/Disable mod: {dataGridView1.CurrentRow.Cells["PluginName"].Value}," +
                 $" {dataGridView1.CurrentRow.Cells["ModEnabled"].Value}");
+            isModified = true;
             SavePlugins();
         }
 
@@ -3322,7 +3322,6 @@ namespace hstCMM
                             }
                             else
                                 activityLog.WriteLog($"Skipped {Path.GetFileName(file)}. File exists.");
-
                         }
                         catch (Exception ex)
                         {
@@ -3821,6 +3820,7 @@ namespace hstCMM
         {
             Properties.Settings.Default.LoadScreenFilename = "";
             Properties.Settings.Default.RandomLoadScreen = randomToolStripMenuItem.Checked = false;
+            Properties.Settings.Default.LoadScreenIndex = 0;
             SaveSettings();
         }
 
@@ -6691,7 +6691,6 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 string sourceFilePath = openFolderDialog.FolderName;
                 foreach (var fileName in filesToCopy)
                 {
-
                     string destFilePath = Path.Combine(dataDirectory, fileName);
                     try
                     {
@@ -6703,7 +6702,6 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                                 tempstr = Path.Combine(dataDirectory, Path.GetFileName(modFile));
                                 if (!File.Exists(tempstr))
                                 {
-
                                     File.Copy(modFile, tempstr, false);
                                     activityLog.WriteLog($"Copied {modFile} back to {tempstr}.");
                                     copyCount++;

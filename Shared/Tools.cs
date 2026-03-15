@@ -611,10 +611,22 @@ namespace hstCMM.Shared // Various functions used by the app
                     ModFiles.OldModFormat,
                     ModArchives.OldArchiveFormat,
                     "1946160",5,"Fallout4"),
-                new GameInfo(3, "Elder Scrolls 6", "ES6","ES6","ES6","ES6.exe", ModFiles.NewModFormat,
-                    ModArchives.NewArchiveFormat,"Unknown",3,"ES6"),
-                new GameInfo(4, "Fallout 5", "Fallout5","Fallout 5","Fallout 5","Fallout5.exe", ModFiles.NewModFormat,
-                    ModArchives.NewArchiveFormat,"Unknown", 3,"Fallout5")
+                new GameInfo(3, "Elder Scrolls 6",
+                    "ES6",
+                    "ES6",
+                    "ES6",
+                    "ES6.exe", 
+                    ModFiles.NewModFormat,
+                    ModArchives.NewArchiveFormat,
+                    "Unknown",3,"ES6"),
+                new GameInfo(4, "Fallout 5",
+                    "Fallout5",
+                    "Fallout 5",
+                    "Fallout 5",
+                    "Fallout5.exe",
+                    ModFiles.NewModFormat,
+                    ModArchives.NewArchiveFormat,
+                    "Unknown", 3,"Fallout5")
             };
 
             public static GameInfo GetByExecutable(string exeName) =>
