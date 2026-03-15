@@ -1353,7 +1353,9 @@ namespace hstCMM
                 case Keys.R:
                     RunGame();
                     break;
-
+                case Keys.X:
+                    System.Windows.Forms.Application.Exit();
+                    break;
                 case Keys.F12:
                     MessageBox.Show("F12 pressed, operation cancelled");
                     break;
