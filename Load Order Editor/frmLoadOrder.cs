@@ -2232,7 +2232,8 @@ namespace hstCMM
                     var item = kvp.Value;
                     var files = item.Files;
 
-                    foreach (var file in files.Where(f => f.EndsWith(".esm")))
+                    // Collect detail info for each .esm file. Handles Creation mod packs with multiple plugins.
+                    foreach (var file in files.Where(f => f.EndsWith(".esm"))) 
                     {
                         CreationsPlugin.Add(file);
                         CreationsTitle.Add(item.Title);
@@ -2289,8 +2290,6 @@ namespace hstCMM
                 if (creationLookup.TryGetValue(pluginName, out int idx))
                 {
                     description = CreationsTitle[idx];
-                    //Debug.WriteLine($"Found creation for plugin {pluginName} at index {idx}");
-
                     rawVersion = CreationsVersion[idx];
                     versionDelimiter = rawVersion.IndexOf('.');
                     if (versionDelimiter > 0)
@@ -2328,11 +2327,7 @@ namespace hstCMM
                         CreationsTitle[idx].Replace(" ", "_").Replace("[", "_").Replace("]", "_");
                 }
                 else
-                {
-                    Debug.WriteLine($"No creation found for plugin {pluginName}, CreationsTitle: {CreationsTitle[idx]}");
-                    /*description = CreationsTitle[idx];*/
                     description = "Not found in catalog";
-                }
 
                 // Buffer the row before adding.
 
