@@ -17,13 +17,12 @@ namespace hstCMM.Shared // Various functions used by the app
         public static readonly List<string> LooseFolderDirsOnly =
         [
             "meshes",
-"interface",
-"textures",
-"geometries",
-"scripts",
-"materials",
-"sound" ,
-"naf"
+            "interface",
+            "textures",
+            "geometries",
+            "scripts",
+            "materials",
+            "sound"
         ];
 
         public static readonly List<string> LooseFolders =
@@ -43,8 +42,7 @@ namespace hstCMM.Shared // Various functions used by the app
 "geometries",
 "scripts",
 "materials",
-"sound" ,
-"naf"
+"sound" 
 ];
 
         public static readonly List<string> Suffixes =

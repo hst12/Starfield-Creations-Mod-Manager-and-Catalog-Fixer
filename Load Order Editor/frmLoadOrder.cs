@@ -70,7 +70,10 @@ namespace hstCMM
                 }
 
                 if (arg.Equals("-reset", StringComparison.InvariantCultureIgnoreCase))
+                {
                     ResetPreferences();
+                    Application.Exit();
+                }
 
                 if (arg.Equals("-norestore", StringComparison.InvariantCultureIgnoreCase))
                 {
@@ -1006,7 +1009,7 @@ namespace hstCMM
             AutoUpdate = props.AutoUpdate;
             props.AutoUpdate = NewSetting;
             props.AutoReset = NewSetting;
-            props.AutoDelccc = NewSetting;
+            //props.AutoDelccc = NewSetting;
             props.CompareProfiles = NewSetting;
             props.ActivateNew = NewSetting;
             props.LOOTEnabled = NewSetting;
@@ -1347,19 +1350,24 @@ namespace hstCMM
                 case Keys.E:
                     EnableDisable();
                     break;
+
                 case Keys.F:
                     txtSearchBox.Focus();
                     break;
+
                 case Keys.Q:
                     ActiveOnlyToggle();
                     dataGridView1.Focus();
                     break;
+
                 case Keys.R:
                     RunGame();
                     break;
+
                 case Keys.X:
                     System.Windows.Forms.Application.Exit();
                     break;
+
                 case Keys.F12:
                     MessageBox.Show("F12 pressed, operation cancelled");
                     break;
@@ -1759,7 +1767,6 @@ namespace hstCMM
                     sbar("Mod is blocked");
                     return;
                 }
-
 
                 foreach (var row in dataGridView1.SelectedRows)
                 {
@@ -2225,19 +2232,17 @@ namespace hstCMM
                     var item = kvp.Value;
                     var files = item.Files;
 
-                    // Add files that end with .esm or .esp (ignoring case)
-                    CreationsPlugin.AddRange(files.Where(file =>
-                        file.EndsWith(".esm", StringComparison.OrdinalIgnoreCase) ||
-                        file.EndsWith(".esp", StringComparison.OrdinalIgnoreCase) ||
-                        file.EndsWith(".esl", StringComparison.OrdinalIgnoreCase)));
-
-                    CreationsTitle.Add(item.Title);
-                    CreationsVersion.Add(item.Version);
-                    CreationsFiles.Add(string.Join(", ", files));
-                    AchievementSafe.Add(item.AchievementSafe);
-                    TimeStamp.Add(item.Timestamp);
-                    CreationsID.Add(kvp.Key);
-                    FileSize.Add(item.FilesSize);
+                    foreach (var file in files.Where(f => f.EndsWith(".esm")))
+                    {
+                        CreationsPlugin.Add(file);
+                        CreationsTitle.Add(item.Title);
+                        CreationsVersion.Add(item.Version);
+                        CreationsFiles.Add(string.Join(", ", files));
+                        AchievementSafe.Add(item.AchievementSafe);
+                        TimeStamp.Add(item.Timestamp);
+                        CreationsID.Add(kvp.Key);
+                        FileSize.Add(item.FilesSize);
+                    }
                 }
             }
             catch (Exception ex)
@@ -2247,16 +2252,10 @@ namespace hstCMM
 
             // Pre-build a dictionary for quick lookup from plugin name (.esm and .esp) to index
             var creationLookup = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+
             for (i = 0; i < CreationsPlugin.Count; i++)
             {
-                dotIndex = CreationsPlugin[i].LastIndexOf('.');
-                if (dotIndex > 0)
-                {
-                    string baseName = CreationsPlugin[i][..dotIndex];
-                    creationLookup[baseName + ".esm"] = i;
-                    creationLookup[baseName + ".esp"] = i;
-                    creationLookup[baseName + ".esl"] = i;
-                }
+                creationLookup.TryAdd(CreationsPlugin[i], i);
             }
 
             progressBar1.Maximum = lines.Length;
@@ -2290,6 +2289,7 @@ namespace hstCMM
                 if (creationLookup.TryGetValue(pluginName, out int idx))
                 {
                     description = CreationsTitle[idx];
+                    //Debug.WriteLine($"Found creation for plugin {pluginName} at index {idx}");
 
                     rawVersion = CreationsVersion[idx];
                     versionDelimiter = rawVersion.IndexOf('.');
@@ -2326,6 +2326,12 @@ namespace hstCMM
                     url = $"https://creations.bethesda.net/en/{Tools.GameLibrary.GetById(Properties.Settings.Default.Game).
                         CreationsSite}/details/{(modID.Length > 3 ? modID[webskipchars..] : modID)}/" +
                         CreationsTitle[idx].Replace(" ", "_").Replace("[", "_").Replace("]", "_");
+                }
+                else
+                {
+                    Debug.WriteLine($"No creation found for plugin {pluginName}, CreationsTitle: {CreationsTitle[idx]}");
+                    /*description = CreationsTitle[idx];*/
+                    description = "Not found in catalog";
                 }
 
                 // Buffer the row before adding.
@@ -4322,7 +4328,7 @@ namespace hstCMM
 
         private void SavePlugins()
         {
-            string pluginPath = Path.Combine(Tools.GameAppData, @"Plugins.txt");
+            string pluginPath = Path.Combine(Tools.GameAppData, "Plugins.txt");
             SaveLO(pluginPath);
 
             if (Profiles && !string.IsNullOrEmpty(cmbProfile.Text))
@@ -6678,10 +6684,8 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
         private void btnFindNext_Click(object sender, EventArgs e)
         {
             if (String.IsNullOrEmpty(txtSearchBox.Text)) // Return if search box is empty
-            {
-                MessageBox.Show("Search aborted.");
                 return;
-            }
+
             SearchMod();
         }
 

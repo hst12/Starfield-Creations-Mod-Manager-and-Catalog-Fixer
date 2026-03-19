@@ -1,10 +1,17 @@
-﻿using hstCMM.Properties;
+﻿using hstCMM.Common;
+using hstCMM.Properties;
 using hstCMM.Shared;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+
+using System.Reflection;
+
 using System.Windows.Forms;
+using System.Windows.Media.Animation;
 
 namespace hstCMM
 {
@@ -72,7 +79,7 @@ namespace hstCMM
                     if (index < files.Length - 1)
                         Properties.Settings.Default.LoadScreenIndex++; // Select the next load screen for the next time
                     else
-                        Properties.Settings.Default.LoadScreenIndex = 0; // Start over at the beginning of the list 
+                        Properties.Settings.Default.LoadScreenIndex = 0; // Start over at the beginning of the list
                 }
             }
 
@@ -92,6 +99,11 @@ namespace hstCMM
                     Settings.Default.LoadScreenFilename = "";
                     Settings.Default.Save();
                 }
+            }
+
+            if (string.Compare(Properties.Settings.Default.LastProfile, "NSFW.txt", true) == 0)
+            {
+                this.BackgroundImage = Properties.Resources.Sarah;
             }
 
             // Ensure the background image is already set in the designer

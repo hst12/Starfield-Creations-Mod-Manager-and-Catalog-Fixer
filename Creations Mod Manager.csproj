@@ -49,9 +49,9 @@
     <SignAssembly>False</SignAssembly>
     <Description>Creations Mod Manager</Description>
     <PackageTags>Starfield;Bethesda</PackageTags>
-    <FileVersion>1.17.5</FileVersion>
-    <AssemblyVersion>1.17.5</AssemblyVersion>
-    <Version>1.17.5</Version>
+    <FileVersion>1.17.6</FileVersion>
+    <AssemblyVersion>1.17.6</AssemblyVersion>
+    <Version>1.17.6</Version>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <OutputPath>bin\x64\Debug\</OutputPath>
@@ -115,6 +115,7 @@
     <None Remove="Documentation\Buttons.htm" />
     <None Remove="Documentation\Index.htm" />
     <None Remove="Documentation\Menus.htm" />
+    <None Remove="Resources\1724076530026721.jpg" />
     <None Remove="SpaceShip.png" />
     <None Remove="StarfieldTools.db" />
   </ItemGroup>
@@ -187,6 +188,11 @@
     <PackageReference Include="YamlDotNet" Version="16.3.0" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Update="Shared\frmAbout.cs">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Compile>
@@ -198,11 +204,6 @@
     </Compile>
     <Compile Update="Shared\frmSplashScreen.cs">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Compile>
-    <Compile Update="Properties\Resources.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Update="Properties\Settings.Designer.cs">
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
