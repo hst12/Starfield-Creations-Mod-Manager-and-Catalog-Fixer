@@ -138,6 +138,7 @@ namespace hstCMM.Shared // Various functions used by the app
                 }
                 else
                     return (File.ReadAllLines(Path.Combine(LocalAppDataPath, "BlockedMods.txt")).ToList()); // Don't enable these mods
+                
             }
             catch (Exception ex)
             {
@@ -466,7 +467,8 @@ namespace hstCMM.Shared // Various functions used by the app
                 {
                     var modFiles = Directory.EnumerateFiles(dataPath, pattern, SearchOption.TopDirectoryOnly)
                                     .Select(Path.GetFileName)
-                                    .Where(fileName => !BethFiles.Contains(fileName))
+                                    .Where(fileName => !BethFiles.Contains(fileName,StringComparer.OrdinalIgnoreCase) 
+                                        && !fileName.Contains("blueprintships-", StringComparison.OrdinalIgnoreCase))
                                     .ToList();
                     foreach (var item in modFiles)
                         plugins.Add(item);

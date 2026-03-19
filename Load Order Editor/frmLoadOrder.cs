@@ -2201,9 +2201,14 @@ namespace hstCMM
             if (File.Exists(Tools.GetCatalogPath()))
                 json = File.ReadAllText(Tools.GetCatalogPath()); // Read Catalog
             var bethFilesSet = new HashSet<string>(tools.BethFiles); // Read files to exclude
+
             string[] lines;
-            if (File.Exists(loText))
-                lines = File.ReadAllLines(loText); // Read Plugins.txt
+
+
+            if (File.Exists(loText))  // Read Plugins.txt
+                lines = File.ReadAllLines(loText);
+
+
             else
             {
                 sbar("Plugins.txt not found");
@@ -2233,7 +2238,7 @@ namespace hstCMM
                     var files = item.Files;
 
                     // Collect detail info for each .esm file. Handles Creation mod packs with multiple plugins.
-                    foreach (var file in files.Where(f => f.EndsWith(".esm"))) 
+                    foreach (var file in files.Where(f => f.EndsWith(".esm")))
                     {
                         CreationsPlugin.Add(file);
                         CreationsTitle.Add(item.Title);
@@ -2259,7 +2264,7 @@ namespace hstCMM
                 creationLookup.TryAdd(CreationsPlugin[i], i);
             }
 
-            progressBar1.Maximum = lines.Length;
+            progressBar1.Maximum = lines.Count();
             progressBar1.Value = 0;
             progressBar1.Show();
 
@@ -2405,6 +2410,12 @@ namespace hstCMM
                 /*else
                     row.DefaultCellStyle.BackColor = System.Drawing.Color.White;*/
             } // End of main loop
+
+            foreach (var row in rowBuffer)
+            {
+                if (row.Cells[2].Value.ToString().Contains("blueprintships-")) // disable mod
+                    row.Cells[1].Value = false;
+            }
 
             dataGridView1.Rows.AddRange(rowBuffer.ToArray());
 
@@ -4996,11 +5007,12 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 try
                 {
                     // Use parallel enumeration for large directories
-                    var espFiles = Directory.EnumerateFiles(dataDir, pattern, SearchOption.TopDirectoryOnly)
+                    var esmFiles = Directory.EnumerateFiles(dataDir, pattern, SearchOption.TopDirectoryOnly)
                                            .AsParallel()
                                            .Select(Path.GetFileName)
+                                           .Where(p=>!p.Contains("blueprintships-",StringComparison.OrdinalIgnoreCase))
                                            .ToList();
-                    pluginFiles.AddRange(espFiles);
+                    pluginFiles.AddRange(esmFiles);
                 }
                 catch (Exception ex)
                 {
@@ -5059,7 +5071,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 }
 
                 // Removal check (not on disk OR is Beth file)
-                if (!onDisk.Contains(pluginName) || bethFilesSet.Contains(pluginName))
+                if (!onDisk.Contains(pluginName) || bethFilesSet.Contains(pluginName) || pluginName.Contains("blueprintships-", StringComparison.OrdinalIgnoreCase))
                 {
                     rowsToRemove.Add(row);
                     removed++;
