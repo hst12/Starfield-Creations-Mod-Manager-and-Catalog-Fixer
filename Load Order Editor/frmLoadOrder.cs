@@ -134,7 +134,6 @@ namespace hstCMM
             {
                 toolStripMenuProfilesOn.Checked = true;
                 Profiles = true;
-
                 chkProfile.Checked = true;
             }
             else
@@ -167,7 +166,12 @@ namespace hstCMM
 
             cmbProfile.Enabled = Profiles;
             if (Profiles)
+            {
+                tempstr = Path.Combine(Properties.Settings.Default.ProfileFolder, GameName);
+                if (!Directory.Exists(tempstr)) 
+                    Directory.CreateDirectory(tempstr);
                 GetProfiles();
+            }
             else
                 InitDataGrid();
 
