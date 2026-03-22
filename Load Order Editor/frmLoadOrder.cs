@@ -1147,6 +1147,8 @@ namespace hstCMM
             // Report results
             if (unused.Count > 0)
             {
+                /*var existingForm = Application.OpenForms.OfType<frmGenericTextList>().FirstOrDefault(); // Check if the form is already open
+                    existingForm?.Close(); // Close the existing form*/
                 frmGenericTextList unusedForm = new frmGenericTextList(windowTitle: "Unused Plugins in userlist.yaml", textLines: unused);
                 unusedForm.Show();
             }
@@ -1194,17 +1196,9 @@ namespace hstCMM
         {
             activityLog.WriteLog("Converting loose files to archive(s)");
             returnStatus = 0;
-            /*try
-            {*/
             frmConvertLooseFiles frmCLF = new frmConvertLooseFiles(esm);
             frmCLF.StartPosition = FormStartPosition.CenterScreen;
             frmCLF.ShowDialog();
-            /*}
-            catch (Exception ex)
-            {
-                LogError(ex.Message);
-                //MessageBox.Show($"Error converting loose files. {ex.Message}.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }*/
 
             if (returnStatus > 0)
             {
@@ -1786,7 +1780,6 @@ namespace hstCMM
             catch (Exception ex)
             {
                 LogError(ex.Message);
-                /*MessageBox.Show(ex.Message);*/
             }
         }
 
@@ -2336,7 +2329,7 @@ namespace hstCMM
                         CreationsTitle[idx].Replace(" ", "_").Replace("[", "_").Replace("]", "_");
                 }
                 else
-                    description = "Not found in catalog";
+                    description = "";
 
                 // Buffer the row before adding.
 
@@ -3694,6 +3687,8 @@ namespace hstCMM
                     activityLog.WriteLog("Deleting " + tempstr);
                     File.Delete(file);
                 }
+                else
+                    activityLog.WriteLog($"{tempstr} not found");
             }
 
             tempstr = Path.Combine(GamePath, "sfse_loader.exe");
@@ -3703,7 +3698,7 @@ namespace hstCMM
                 File.Delete(tempstr);
             }
             else
-                LogError($"{tempstr} not found");
+                activityLog.WriteLog($"{tempstr} not found");
         }
 
         private void renameModToolStripMenuItem_Click(object sender, EventArgs e)
@@ -6272,7 +6267,10 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     files.Clear();
                 }
                 sbar(modsArchived + " Mod(s) archived");
+                if (modsArchived > 0)
                 activityLog.WriteLog($"{modsArchived} mods archived to {selectedFolderPath}");
+                else
+                    activityLog.WriteLog("No mods found to archive");
             }
         }
 
@@ -6412,14 +6410,6 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
             public void DeleteLog()
             {
-                /*try
-                {
-                    memoryStream.SetLength(0);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error deleting log: {ex.Message}");
-                }*/
                 try
                 {
                     string logFilePath = Path.Combine(string.IsNullOrEmpty(Properties.Settings.Default.LogFileDirectory)
