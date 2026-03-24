@@ -4213,12 +4213,13 @@ namespace hstCMM
                     Delccc();
                 InitDataGrid();
 
-                // Remove base game files if LOOT added them
+                // Remove base game files and blueprintships- files if LOOT added them
                 tools.BethFiles.ForEach(bethFile =>
                 {
                     var rowToRemove = dataGridView1.Rows
                         .Cast<DataGridViewRow>()
-                        .FirstOrDefault(row => row.Cells["PluginName"].Value as string == bethFile);
+                        .FirstOrDefault(row => row.Cells["PluginName"].Value as string == bethFile ||
+                            row.Cells["PluginName"].Value.ToString().Contains("blueprintships-",StringComparison.OrdinalIgnoreCase));
 
                     if (rowToRemove != null) dataGridView1.Rows.Remove(rowToRemove);
                 });
