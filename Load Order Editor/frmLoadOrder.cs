@@ -46,8 +46,8 @@ namespace hstCMM
         private string LastProfile, tempstr;
         private List<string> pluginList;
 
-        private bool Profiles = false, GridSorted = false, AutoUpdate = false, ActiveOnly = false, AutoSort = false, isModified = false,
-            LooseFiles, GameExists, devMode = false;
+        private bool Profiles = false, GridSorted = false, AutoUpdate = false, ActiveOnly = false,
+            AutoSort = false, isModified = false, LooseFiles, GameExists, devMode = false;
 
         private int rowIndexFromMouseDown, rowIndexOfItemUnderMouseToDrop, GameVersion = Steam;
 
@@ -113,11 +113,13 @@ namespace hstCMM
                 MessageBox.Show(ex.Message);
             }
 
+            // UI Setup
             SetUpMenus();
             SetupColumns();
 
             // Do a 1-time backup of StarfieldCustom.ini if it doesn't exist
-            tempstr = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), Path.Combine("My Games", GameName, "StarfieldCustom.ini"));
+            tempstr = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                Path.Combine("My Games", GameName, "StarfieldCustom.ini"));
             if (!File.Exists(tempstr + ".bak") && File.Exists(tempstr))
             {
                 sbar2("StarfieldCustom.ini backed up to StarfieldCustom.ini.bak");
@@ -137,9 +139,8 @@ namespace hstCMM
                 chkProfile.Checked = true;
             }
             else
-            {
                 Profiles = false;
-            }
+
             LastProfile ??= Properties.Settings.Default.LastProfile;
 
             foreach (var arg in Environment.GetCommandLineArgs()) // Handle other command line arguments
@@ -168,7 +169,7 @@ namespace hstCMM
             if (Profiles)
             {
                 tempstr = Path.Combine(Properties.Settings.Default.ProfileFolder, GameName);
-                if (!Directory.Exists(tempstr)) 
+                if (!Directory.Exists(tempstr))
                     Directory.CreateDirectory(tempstr);
                 GetProfiles();
             }
@@ -2201,11 +2202,8 @@ namespace hstCMM
 
             string[] lines;
 
-
             if (File.Exists(loText))  // Read Plugins.txt
                 lines = File.ReadAllLines(loText);
-
-
             else
             {
                 sbar("Plugins.txt not found");
@@ -4219,7 +4217,7 @@ namespace hstCMM
                     var rowToRemove = dataGridView1.Rows
                         .Cast<DataGridViewRow>()
                         .FirstOrDefault(row => row.Cells["PluginName"].Value as string == bethFile ||
-                            row.Cells["PluginName"].Value.ToString().Contains("blueprintships-",StringComparison.OrdinalIgnoreCase));
+                            row.Cells["PluginName"].Value.ToString().Contains("blueprintships-", StringComparison.OrdinalIgnoreCase));
 
                     if (rowToRemove != null) dataGridView1.Rows.Remove(rowToRemove);
                 });
@@ -5010,7 +5008,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     var esmFiles = Directory.EnumerateFiles(dataDir, pattern, SearchOption.TopDirectoryOnly)
                                            .AsParallel()
                                            .Select(Path.GetFileName)
-                                           .Where(p=>!p.Contains("blueprintships-",StringComparison.OrdinalIgnoreCase))
+                                           .Where(p => !p.Contains("blueprintships-", StringComparison.OrdinalIgnoreCase))
                                            .ToList();
                     pluginFiles.AddRange(esmFiles);
                 }
@@ -6166,7 +6164,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             SaveSettings();
 
             sbar3($"Changes made: {totalChanges}");
-            activityLog.WriteLog($"UpdateAllProfiles – total changes: {totalChanges}");
+            activityLog.WriteLog($"Update All Profiles – total changes: {totalChanges}");
             progressBar1.Hide();
         }
 
@@ -6269,7 +6267,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 }
                 sbar(modsArchived + " Mod(s) archived");
                 if (modsArchived > 0)
-                activityLog.WriteLog($"{modsArchived} mods archived to {selectedFolderPath}");
+                    activityLog.WriteLog($"{modsArchived} mods archived to {selectedFolderPath}");
                 else
                     activityLog.WriteLog("No mods found to archive");
             }

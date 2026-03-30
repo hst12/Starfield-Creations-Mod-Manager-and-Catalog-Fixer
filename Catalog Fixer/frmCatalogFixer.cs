@@ -66,8 +66,8 @@ namespace hstCMM
                             toolStripStatusLabel1.Text = "Catalog backup restored";
                     }
                     else
-                    if (AutoClean)
-                        CleanCatalog();
+                        if (AutoClean)
+                            CleanCatalog();
                 }
                 else
                     toolStripStatusLabel1.Text = "Catalog ok";
@@ -168,7 +168,7 @@ namespace hstCMM
 
             json = Newtonsoft.Json.JsonConvert.SerializeObject(data, Newtonsoft.Json.Formatting.Indented);
 
-            // Hack the Bethesda header back in
+            // Insert the Bethesda header
             json = Tools.MakeHeader() + json[1..];
 
             File.WriteAllText(Tools.GetCatalogPath(), json); // Write updated catalog
@@ -244,7 +244,7 @@ namespace hstCMM
 
             json = Newtonsoft.Json.JsonConvert.SerializeObject(data, Newtonsoft.Json.Formatting.Indented);
 
-            // Hack the Bethesda header back in
+            // Insert the Bethesda header
             json = Tools.MakeHeader() + json[1..];
 
             try
@@ -612,19 +612,16 @@ namespace hstCMM
             List<string> CreationsPlugin = []; // filename of .esm
             List<string> CreationsTitle = []; // Display title for .esm
             List<string> CreationsGUID = []; // Creations GUID
-            int RemovalCount = 0;
-            int index;
+            int RemovalCount = 0, index;
             bool unusedMods = false;
-            richTextBox2.Text += "\nChecking for unused items in catalog...\n";
-            if (log)
-                activityLog.WriteLog("Checking for unused items in catalog.");
-
             string filePath = Path.Combine(Tools.GameAppData, "Plugins.txt");
+            richTextBox2.Text += "\nChecking for unused items in catalog...\n";
+            activityLog.WriteLog("Checking for unused items in catalog.");
 
             // Split the content into lines
-            List<string> lines = File.ReadLines(filePath)
-                                         .Select(line => line.Trim())
-                                         .ToList();
+            List<string> lines = File.ReadLines(filePath).Select(line => line.Trim()).ToList();
+
+            // TODO: Handle Creations with multiple .esm files such as the TA pack
 
             foreach (var file in lines) // Process Plugins.txt to a list of .esm files
             {
@@ -665,8 +662,7 @@ namespace hstCMM
                             if (kvp.Value.Files[i].ToLower().IndexOf(".esp") > 0)
                             {
                                 richTextBox2.Text += "\nWarning - esp file found in catalog file - " + kvp.Value.Files[i] + "\n";
-                                if (log)
-                                    activityLog.WriteLog($"Warning - esp file found in catalog file - {kvp.Value.Files[i]}");
+                                activityLog.WriteLog($"Warning - esp file found in catalog file - {kvp.Value.Files[i]}");
                             }
                         }
                     }
@@ -703,13 +699,12 @@ namespace hstCMM
                     toolStripStatusLabel1.Text = RemovalCount.ToString() + " Unused mods removed from catalog";
                     json = Newtonsoft.Json.JsonConvert.SerializeObject(data, Newtonsoft.Json.Formatting.Indented);
 
-                    // Hack the Bethesda header back in
+                    // Insert the Bethesda header
                     json = Tools.MakeHeader() + json[1..];
                     if (Tools.ConfirmAction("Do you want to continue?", $"{RemovalCount} Unused mods found in catalog. Remove them?", MessageBoxButtons.YesNo) == DialogResult.No)
                     {
                         toolStripStatusLabel1.Text = "No changes made to catalog";
-                        if (log)
-                            activityLog.WriteLog("No changes made to catalog");
+                        activityLog.WriteLog("No changes made to catalog");
                         return;
                     }
                     else
@@ -720,8 +715,7 @@ namespace hstCMM
                     richTextBox2.Text += "\nNo unused mods found in catalog\n";
                     ScrollToEnd();
                     toolStripStatusLabel1.Text = "No unused mods found in catalog";
-                    if (log)
-                        activityLog.WriteLog("No unused mods found in catalog");
+                    activityLog.WriteLog("No unused mods found in catalog");
                 }
             }
             catch (Exception ex)
