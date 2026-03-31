@@ -42,7 +42,7 @@ namespace hstCMM.Shared // Various functions used by the app
 "geometries",
 "scripts",
 "materials",
-"sound" 
+"sound"
 ];
 
         public static readonly List<string> Suffixes =
@@ -125,8 +125,9 @@ namespace hstCMM.Shared // Various functions used by the app
 
         public void debugMsg(string msg)
         {
-            MessageBox.Show("DEBUG: "+msg);
+            MessageBox.Show("DEBUG: " + msg);
         }
+
         public static List<string> BlockedMods()
         {
             try
@@ -138,7 +139,6 @@ namespace hstCMM.Shared // Various functions used by the app
                 }
                 else
                     return (File.ReadAllLines(Path.Combine(LocalAppDataPath, "BlockedMods.txt")).ToList()); // Don't enable these mods
-                
             }
             catch (Exception ex)
             {
@@ -459,15 +459,12 @@ namespace hstCMM.Shared // Various functions used by the app
             string[] patterns;
             try
             {
-                if (Game == 0) // Starfield or possibly future BGS games without ESL support
-                    patterns = new[] { "*.esm", "*.esp" };
-                else
-                    patterns = new[] { "*.esm", "*.esl", "*.esp" };
+                patterns = GameLibrary.GetById(Game).ModFormats;
                 foreach (var pattern in patterns)
                 {
                     var modFiles = Directory.EnumerateFiles(dataPath, pattern, SearchOption.TopDirectoryOnly)
                                     .Select(Path.GetFileName)
-                                    .Where(fileName => !BethFiles.Contains(fileName,StringComparer.OrdinalIgnoreCase) 
+                                    .Where(fileName => !BethFiles.Contains(fileName, StringComparer.OrdinalIgnoreCase)
                                         && !fileName.Contains("blueprintships-", StringComparison.OrdinalIgnoreCase))
                                     .ToList();
                     foreach (var item in modFiles)
@@ -475,6 +472,32 @@ namespace hstCMM.Shared // Various functions used by the app
                 }
 
                 return plugins;
+            }
+            catch (Exception ex)
+            {
+                return new List<string>();
+            }
+        }
+
+        public List<string> GetModList()
+        {
+            string dataPath = Path.Combine(frmLoadOrder.GamePath, "Data");
+            List<string> mods = new();
+            string[] patterns = { "*.esm", "*.ba2" };
+            try
+            {
+                foreach (var pattern in patterns)
+                {
+                    var modFiles = Directory.EnumerateFiles(dataPath, pattern, SearchOption.TopDirectoryOnly)
+                                    .Select(Path.GetFileName)
+                                    .Where(fileName => !BethFiles.Contains(fileName, StringComparer.OrdinalIgnoreCase)
+                                        && !fileName.Contains("blueprintships-", StringComparison.OrdinalIgnoreCase))
+                                    .ToList();
+                    foreach (var item in modFiles)
+                        mods.Add(item);
+                }
+
+                return mods;
             }
             catch (Exception ex)
             {
@@ -615,7 +638,7 @@ namespace hstCMM.Shared // Various functions used by the app
                     "ES6",
                     "ES6",
                     "ES6",
-                    "ES6.exe", 
+                    "ES6.exe",
                     ModFiles.NewModFormat,
                     ModArchives.NewArchiveFormat,
                     "Unknown",3,"ES6"),

@@ -948,7 +948,7 @@
             editStarfieldCustominiToolStripMenuItem.Name = "editStarfieldCustominiToolStripMenuItem";
             editStarfieldCustominiToolStripMenuItem.Size = new System.Drawing.Size(628, 44);
             editStarfieldCustominiToolStripMenuItem.Text = "Edit StarfieldCustom.ini";
-            editStarfieldCustominiToolStripMenuItem.Click += editStarfieldCustominiToolStripMenuItem_Click;
+            editStarfieldCustominiToolStripMenuItem.Click += editCustominiToolStripMenuItem_Click;
             // 
             // editContentCatalogtxtToolStripMenuItem
             // 
@@ -988,7 +988,7 @@
             uIToEditStarfieldCustominiToolStripMenuItem.Name = "uIToEditStarfieldCustominiToolStripMenuItem";
             uIToEditStarfieldCustominiToolStripMenuItem.Size = new System.Drawing.Size(628, 44);
             uIToEditStarfieldCustominiToolStripMenuItem.Text = "StarfieldCustom.ini Editor";
-            uIToEditStarfieldCustominiToolStripMenuItem.Click += uIToEditStarfieldCustominiToolStripMenuItem_Click;
+            uIToEditStarfieldCustominiToolStripMenuItem.Click += uIToEditGameCustominiToolStripMenuItem_Click;
             // 
             // toolStripSeparator3
             // 
@@ -1059,7 +1059,7 @@
             deleteStarfieldCustominiToolStripMenuItem.Name = "deleteStarfieldCustominiToolStripMenuItem";
             deleteStarfieldCustominiToolStripMenuItem.Size = new System.Drawing.Size(888, 44);
             deleteStarfieldCustominiToolStripMenuItem.Text = "Delete StarfieldCustom.ini";
-            deleteStarfieldCustominiToolStripMenuItem.Click += deleteStarfieldCustominiToolStripMenuItem_Click;
+            deleteStarfieldCustominiToolStripMenuItem.Click += deleteCustominiToolStripMenuItem_Click;
             // 
             // toolStripMenuItemDeletePlugins
             // 
@@ -1104,21 +1104,21 @@
             compareStarfieldCustominiToBackupToolStripMenuItem.Name = "compareStarfieldCustominiToBackupToolStripMenuItem";
             compareStarfieldCustominiToBackupToolStripMenuItem.Size = new System.Drawing.Size(888, 44);
             compareStarfieldCustominiToBackupToolStripMenuItem.Text = "Compare StarfieldCustom.ini to backup";
-            compareStarfieldCustominiToBackupToolStripMenuItem.Click += compareStarfieldCustominiToBackupToolStripMenuItem_Click;
+            compareStarfieldCustominiToBackupToolStripMenuItem.Click += compareGameCustominiToBackupToolStripMenuItem_Click;
             // 
             // resetStarfieldCustominiToolStripMenuItem
             // 
             resetStarfieldCustominiToolStripMenuItem.Name = "resetStarfieldCustominiToolStripMenuItem";
             resetStarfieldCustominiToolStripMenuItem.Size = new System.Drawing.Size(888, 44);
             resetStarfieldCustominiToolStripMenuItem.Text = "Reset StarfieldCustom.ini";
-            resetStarfieldCustominiToolStripMenuItem.Click += toolStripMenuResetStarfieldCustom_Click;
+            resetStarfieldCustominiToolStripMenuItem.Click += toolStripMenuResetGameCustom_Click;
             // 
             // restoreStarfieldiniToolStripMenuItem
             // 
             restoreStarfieldiniToolStripMenuItem.Name = "restoreStarfieldiniToolStripMenuItem";
             restoreStarfieldiniToolStripMenuItem.Size = new System.Drawing.Size(888, 44);
             restoreStarfieldiniToolStripMenuItem.Text = "Reset Starfield.ini";
-            restoreStarfieldiniToolStripMenuItem.Click += restoreStarfieldiniToolStripMenuItem_Click;
+            restoreStarfieldiniToolStripMenuItem.Click += restoreGameiniToolStripMenuItem_Click;
             // 
             // toolStripSeparator37
             // 
@@ -1149,7 +1149,7 @@
             resetToVanillaStarfieldSettingsToolStripMenuItem.Name = "resetToVanillaStarfieldSettingsToolStripMenuItem";
             resetToVanillaStarfieldSettingsToolStripMenuItem.Size = new System.Drawing.Size(888, 44);
             resetToVanillaStarfieldSettingsToolStripMenuItem.Text = "Disable Vortex Changes, Delete Starfield.ccc, Reset StarfieldCustom.ini";
-            resetToVanillaStarfieldSettingsToolStripMenuItem.Click += resetToVanillaStarfieldSettingsToolStripMenuItem_Click;
+            resetToVanillaStarfieldSettingsToolStripMenuItem.Click += resetToVanillaGameSettingsToolStripMenuItem_Click;
             // 
             // toolStripSeparator34
             // 

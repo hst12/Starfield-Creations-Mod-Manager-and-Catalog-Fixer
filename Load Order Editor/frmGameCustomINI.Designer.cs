@@ -1,6 +1,6 @@
 ﻿namespace hstCMM.Load_Order_Editor
 {
-    partial class frmStarfieldCustomINI
+    partial class frmGameCustomINI
     {
         /// <summary>
         /// Required designer variable.

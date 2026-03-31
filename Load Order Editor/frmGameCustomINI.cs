@@ -5,9 +5,9 @@ using System.Windows.Forms;
 
 namespace hstCMM.Load_Order_Editor
 {
-    public partial class frmStarfieldCustomINI : Form
+    public partial class frmGameCustomINI : Form
     {
-        public frmStarfieldCustomINI()
+        public frmGameCustomINI()
         {
             InitializeComponent();
             string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"My Games\Starfield\StarfieldCustom.ini");

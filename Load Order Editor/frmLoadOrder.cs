@@ -38,7 +38,6 @@ namespace hstCMM
         public static bool NoWarn, log;
         public static int returnStatus;
         public int Game = Properties.Settings.Default.Game;
-        private readonly List<Tools.GameInfo> gameInfo = new();
         private readonly Tools tools = new();
         private CancellationTokenSource cancellationTokenSource;
         private Rectangle dragBoxFromMouseDown;
@@ -117,14 +116,8 @@ namespace hstCMM
             SetUpMenus();
             SetupColumns();
 
-            // Do a 1-time backup of StarfieldCustom.ini if it doesn't exist
-            tempstr = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                Path.Combine("My Games", GameName, "StarfieldCustom.ini"));
-            if (!File.Exists(tempstr + ".bak") && File.Exists(tempstr))
-            {
-                sbar2("StarfieldCustom.ini backed up to StarfieldCustom.ini.bak");
-                File.Copy(tempstr, tempstr + ".bak");
-            }
+            // Do a 1-time backup of [GameNmae]Custom.ini if it doesn't exist
+            BackupCustomINI();
 
             if (Properties.Settings.Default.LOOTEnabled) // Cache LOOT groups
                 ReadLOOTGroups();
@@ -225,16 +218,26 @@ namespace hstCMM
             this.Text = tools.AppName() + " - " + GameName + " "; // Show selected game in title bar
         }
 
+        private void BackupCustomINI()
+        {
+            tempstr = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                Path.Combine("My Games", GameName, GameName+"Custom.ini"));
+            if (!File.Exists(tempstr + ".bak") && File.Exists(tempstr))
+            {
+                sbar2($"{GameName}Custom.ini backed up to {GameName}Custom.ini.bak");
+                File.Copy(tempstr, tempstr + ".bak");
+            }
+        }
         private void LooseFilesCheck()
         {
             string LooseFilesDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName),
-    filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
+             filePath = Path.Combine(LooseFilesDir, GameName+"Custom.ini");
             try
             {
                 if (File.Exists(filePath))
                 {
-                    var StarfieldCustomINI = File.ReadAllLines(filePath);
-                    foreach (var lines in StarfieldCustomINI)
+                    var CustomINI = File.ReadAllLines(filePath);
+                    foreach (var lines in CustomINI)
                         if (lines.Contains("bInvalidateOlderFiles"))
                         {
                             Properties.Settings.Default.LooseFiles = true;
@@ -1093,11 +1096,11 @@ namespace hstCMM
 
         private string CheckCatalog()
         {
-            frmCatalogFixer StarfieldTools = new();
+            frmCatalogFixer catalogChecker = new();
             activityLog.WriteLog("Starting Catalog Checker");
-            StarfieldTools.Show();
-            sbar4(StarfieldTools.CatalogStatus);
-            return StarfieldTools.CatalogStatus;
+            catalogChecker.Show();
+            sbar4(catalogChecker.CatalogStatus);
+            return catalogChecker.CatalogStatus;
         }
 
         private bool CheckGamePath() // Check if game path is set
@@ -1182,7 +1185,7 @@ namespace hstCMM
             CompareProfiles();
         }
 
-        private void compareStarfieldCustominiToBackupToolStripMenuItem_Click(object sender, EventArgs e)
+        private void compareGameCustominiToBackupToolStripMenuItem_Click(object sender, EventArgs e)
         {
             sbar3(CheckGameCustom() ? "Same" : "Modified");
         }
@@ -1229,7 +1232,7 @@ namespace hstCMM
                 {
                     SaveSettings();
                     string stringValue = (string)Registry.GetValue(KeyName, "SteamExe", ""); // Get Steam path from Registry
-                    var processInfo = new ProcessStartInfo(stringValue, $"-applaunch {Tools.GameLibrary.GetById(Properties.Settings.Default.Game).CKId}");
+                    var processInfo = new ProcessStartInfo(stringValue, $"-applaunch {Tools.GameLibrary.GetById(Game).CKId}");
                     var process = Process.Start(processInfo);
                     activityLog.WriteLog("Starting Creation Kit");
                     System.Windows.Forms.Application.Exit();
@@ -1424,10 +1427,10 @@ namespace hstCMM
         {
             try
             {
-                string Starfieldccc = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName, $"{GameName}.ccc");
-                if (File.Exists(Starfieldccc))
+                string ccc = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName, $"{GameName}.ccc");
+                if (File.Exists(ccc))
                 {
-                    File.Delete(Starfieldccc);
+                    File.Delete(ccc);
                     sbar3($"{GameName}.ccc deleted");
                     activityLog.WriteLog($"GameName.ccc deleted");
                     return true;
@@ -1490,7 +1493,7 @@ namespace hstCMM
             sbar3($"Folders Deleted: {DeleteLooseFileFolders().ToString()}");
         }
 
-        private void deleteStarfieldCustominiToolStripMenuItem_Click(object sender, EventArgs e)
+        private void deleteCustominiToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
@@ -1683,7 +1686,7 @@ namespace hstCMM
             RefreshDataGrid();
         }
 
-        private void editStarfieldCustominiToolStripMenuItem_Click(object sender, EventArgs e)
+        private void editCustominiToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Tools.OpenFile(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                 "My Games", GameName, $"{GameName}Custom.ini"));
@@ -2006,7 +2009,7 @@ namespace hstCMM
             List<string> bsaArchives = Directory.EnumerateFiles(Path.Combine(GamePath, "Data"), "*.bsa").Select(p => Path.GetFileNameWithoutExtension(p)).ToList();
             List<string> bgsArchives = new List<string>();
             List<string> allArchives = ba2Archives.Concat(bsaArchives).ToList();
-            string GameFolder = Tools.GameLibrary.GetById(Properties.Settings.Default.Game).ExcludeFile;
+            string GameFolder = Tools.GameLibrary.GetById(Game).ExcludeFile;
 
             foreach (string fileName in allArchives)
             {
@@ -2018,11 +2021,8 @@ namespace hstCMM
                 }
             }
             bgsArchives = allArchives.Except(bgsArchives).ToList();
-            List<string> modifiedLines;
-            if (Game == 0)
-                modifiedLines = new(bgsArchives.Select(line => line + ".ba2"));
-            else
-                modifiedLines = new(bgsArchives.Select(line => line + ".bsa"));
+            List<string> modifiedLines = new(bgsArchives.Select(line => line +
+                Tools.GameLibrary.GetById(Game).ArchiveFormat));
 
             System.Windows.Forms.SaveFileDialog saveDialog = new()
             {
@@ -2030,7 +2030,7 @@ namespace hstCMM
                 Filter = "Txt File|*.txt",
                 Title = "Create Game Archives.txt",
                 //FileName = GameFolder + " Archives.txt";
-                FileName = Tools.GameLibrary.GetById(Properties.Settings.Default.Game).ExcludeFile + " Archives.txt"
+                FileName = Tools.GameLibrary.GetById(Game).ExcludeFile + " Archives.txt"
             };
 
             if (saveDialog.ShowDialog() != DialogResult.OK || string.IsNullOrEmpty(saveDialog.FileName))
@@ -2067,7 +2067,7 @@ namespace hstCMM
                 InitialDirectory = Tools.CommonFolder,
                 Filter = "Txt File|*.txt",
                 Title = "Create Game Exclude File",
-                FileName = Tools.CommonFolder + "\\" + (Tools.GameLibrary.GetById(Properties.Settings.Default.Game).ExcludeFile + " Exclude.txt")
+                FileName = Tools.CommonFolder + "\\" + (Tools.GameLibrary.GetById(Game).ExcludeFile + " Exclude.txt")
             };
 
             if (saveDialog.ShowDialog() != DialogResult.OK || string.IsNullOrEmpty(saveDialog.FileName))
@@ -2160,7 +2160,7 @@ namespace hstCMM
         private void InitDataGrid()
         {
             int enabledCount = 0, IndexCount = 1, i, versionDelimiter, dotIndex,
-                webskipchars = Tools.GameLibrary.GetById(Properties.Settings.Default.Game).WebSkipChars;
+                webskipchars = Tools.GameLibrary.GetById(Game).WebSkipChars;
 
             double totalFileSize = 0;
 
@@ -2322,7 +2322,7 @@ namespace hstCMM
                     modFileSize = FileSize[idx] / 1024;
                     if (modEnabled)
                         totalFileSize += modFileSize;
-                    url = $"https://creations.bethesda.net/en/{Tools.GameLibrary.GetById(Properties.Settings.Default.Game).
+                    url = $"https://creations.bethesda.net/en/{Tools.GameLibrary.GetById(Game).
                         CreationsSite}/details/{(modID.Length > 3 ? modID[webskipchars..] : modID)}/" +
                         CreationsTitle[idx].Replace(" ", "_").Replace("[", "_").Replace("]", "_");
                 }
@@ -2408,7 +2408,7 @@ namespace hstCMM
 
             foreach (var row in rowBuffer)
             {
-                if (row.Cells[2].Value.ToString().Contains("blueprintships-")) // disable mod
+                if (row.Cells[2].Value.ToString().Contains("blueprintships-", StringComparison.OrdinalIgnoreCase)) // disable mod
                     row.Cells[1].Value = false;
             }
 
@@ -2855,10 +2855,10 @@ namespace hstCMM
         private void LooseFilesOnOff(bool enable)
         {
             string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                "My Games", Tools.GameName, "StarfieldCustom.ini");
+                "My Games", Tools.GameName, GameName+"Custom.ini");
 
             if (Tools.FileCompare(filePath, Path.Combine(Tools.CommonFolder,
-                "StarfieldCustom.ini")) && enable == false) // Return if loose files are already disabled
+                GameName+"Custom.ini")) && enable == false) // Return if loose files are already disabled
                 return;
 
             if (enable)
@@ -2872,7 +2872,7 @@ namespace hstCMM
                     File.AppendAllLines(filePath, linesToAppend.Where(line => !existingLines.Contains(line)));
                     LooseFiles = true;
                     sbar("Loose Files Enabled");
-                    activityLog.WriteLog("Loose files enabled in StarfieldCustom.ini");
+                    activityLog.WriteLog($"Loose files enabled in {GameName}Custom.ini");
                 }
             }
             else if (File.Exists(filePath))
@@ -2884,7 +2884,7 @@ namespace hstCMM
                 File.WriteAllLines(filePath, updatedLines);
                 LooseFiles = false;
                 sbar("Loose Files Disabled");
-                activityLog.WriteLog("Loose files disabled in StarfieldCustom.ini");
+                activityLog.WriteLog($"Loose files disabled in {GameName}Custom.ini");
             }
         }
 
@@ -3804,7 +3804,7 @@ namespace hstCMM
                 MessageBoxIcon.Exclamation, true) == DialogResult.No)
                 return;
             activityLog.WriteLog("Starting reset everything.");
-            //actionCount = RestoreStarfieldINI();
+            //actionCount = Restore [GameName]INI();
             actionCount = DeleteLooseFileFolders();
             actionCount += ResetDefaults();
             actionCount += CheckArchives();
@@ -3857,7 +3857,7 @@ namespace hstCMM
             SaveSettings();
         }
 
-        private void resetToVanillaStarfieldSettingsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void resetToVanillaGameSettingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (Tools.ConfirmAction("Reset ini settings?", "Reset to recommended settings", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 ResetDefaults();
@@ -4051,11 +4051,11 @@ namespace hstCMM
             }
         }
 
-        private int RestoreStarfieldINI()
+        private int RestoreGameINI()
         {
-            string StarfieldiniPath = Path.Combine(GamePath, $"{GameName}.ini");
+            string iniPath = Path.Combine(GamePath, $"{GameName}.ini");
 
-            if (!Tools.FileCompare(StarfieldiniPath, Path.Combine(Tools.CommonFolder, $"{GameName}.ini")))
+            if (!Tools.FileCompare(iniPath, Path.Combine(Tools.CommonFolder, $"{GameName}.ini")))
             {
                 try
                 {
@@ -4079,9 +4079,9 @@ namespace hstCMM
             }
         }
 
-        private void restoreStarfieldiniToolStripMenuItem_Click(object sender, EventArgs e)
+        private void restoreGameiniToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            RestoreStarfieldINI();
+            RestoreGameINI();
         }
 
         private void rtbLog_MouseDown(object sender, MouseEventArgs e)
@@ -4161,7 +4161,7 @@ namespace hstCMM
 
         private void RunLOOT(bool LOOTMode) // True for autosort
         {
-            string GameFolder = Tools.GameLibrary.GetById(Properties.Settings.Default.Game).AppData;
+            string GameFolder = Tools.GameLibrary.GetById(Game).AppData;
             bool profilesActive = Profiles;
             string lootPath = Properties.Settings.Default.LOOTPath;
 
@@ -4555,7 +4555,7 @@ namespace hstCMM
 
             //GameName = gl.GameName(Properties.Settings.Default.Game);
             var x = Properties.Settings.Default.Game;
-            GameName = Tools.GameLibrary.GetById(Properties.Settings.Default.Game).GameName;
+            GameName = Tools.GameLibrary.GetById(Game).GameName;
             activityLog.WriteLog($"Game set to {GameName}");
             GameExists = Tools.CheckGame(); // Check if game appdata folder exists
 
@@ -4750,14 +4750,14 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
         private string ShowModStats(List<string> CreationsPlugin, int enabledCount, double totalFileSize)
         {
             string loText = Path.Combine(Tools.GameAppData, "Plugins.txt"), StatText = "",
-                GameFolder = Tools.GameLibrary.GetById(Properties.Settings.Default.Game).AppData; ;
+                GameFolder = Tools.GameLibrary.GetById(Game).AppData; ;
             int ba2Count, esmCount, espCount, mainCount;
             try
             {
                 // Cache file paths and load BGS archives
                 var dataDirectory = Path.Combine(GamePath, "Data");
                 var bgsArchives = File.ReadLines(Path.Combine(Tools.CommonFolder,
-                    Tools.GameLibrary.GetById(Properties.Settings.Default.Game).ExcludeFile + " Archives.txt"))
+                    Tools.GameLibrary.GetById(Game).ExcludeFile + " Archives.txt"))
                     .Where(line => line.Length > 4)
                     .Select(line => line[..^4].ToLowerInvariant())
                     .ToHashSet(StringComparer.OrdinalIgnoreCase);
@@ -5778,7 +5778,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             RefreshDataGrid();
         }
 
-        private void toolStripMenuResetStarfieldCustom_Click(object sender, EventArgs e)
+        private void toolStripMenuResetGameCustom_Click(object sender, EventArgs e)
         {
             ResetGameCustomINI(true);
         }
@@ -5896,18 +5896,18 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 SearchMod();
         }
 
-        private void uIToEditStarfieldCustominiToolStripMenuItem_Click(object sender, EventArgs e)
+        private void uIToEditGameCustominiToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            frmStarfieldCustomINI fci = new();
+            frmGameCustomINI fci = new();
             fci.ShowDialog();
             string PluginsPath = Path.Combine(Tools.GameAppData, "Plugins.txt"),
         LooseFilesDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName), // Check if loose files are enabled
-        filePath = Path.Combine(LooseFilesDir, "StarfieldCustom.ini");
+        filePath = Path.Combine(LooseFilesDir, GameName+"Custom.ini");
             LooseFiles = false;
             try
             {
-                var StarfieldCustomINI = File.ReadAllLines(filePath);
-                foreach (var lines in StarfieldCustomINI)
+                var CustomINI = File.ReadAllLines(filePath);
+                foreach (var lines in CustomINI)
                 {
                     if (lines.Contains("bInvalidateOlderFiles"))
                     {
@@ -5942,16 +5942,16 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             }
 
             string FolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", Tools.GameName);
-            if (File.Exists(Path.Combine(FolderPath, "StarfieldCustom.ini.base")))
+            if (File.Exists(Path.Combine(FolderPath, GameName+"Custom.ini.base")))
             {
-                File.Copy(Path.Combine(FolderPath, "StarfieldCustom.ini.base"), Path.Combine(FolderPath, "StarfieldCustom.ini"), true);
-                File.Delete(Path.Combine(FolderPath, "StarfieldCustom.ini.base"));
+                File.Copy(Path.Combine(FolderPath, GameName+"Custom.ini.base"), Path.Combine(FolderPath, GameName+"Custom.ini"), true);
+                File.Delete(Path.Combine(FolderPath, GameName+"Custom.ini.base"));
                 ChangeCount++;
             }
-            if (File.Exists(Path.Combine(FolderPath, "StarfieldPrefs.ini.base")))
+            if (File.Exists(Path.Combine(FolderPath, GameName+"Prefs.ini.base")))
             {
-                File.Copy(Path.Combine(FolderPath, "StarfieldPrefs.ini.base"), Path.Combine(FolderPath, "StarfieldPrefs.ini"), true);
-                File.Delete(Path.Combine(FolderPath, "StarfieldPrefs.ini.base"));
+                File.Copy(Path.Combine(FolderPath, GameName+"Prefs.ini.base"), Path.Combine(FolderPath, GameName+"Prefs.ini"), true);
+                File.Delete(Path.Combine(FolderPath, GameName+"Prefs.ini.base"));
                 ChangeCount++;
             }
             ChangeCount += CheckAndDeleteINI($"{GameName}.ini");
