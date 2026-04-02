@@ -2409,7 +2409,10 @@ namespace hstCMM
             foreach (var row in rowBuffer)
             {
                 if (row.Cells[2].Value.ToString().Contains("blueprintships-", StringComparison.OrdinalIgnoreCase)) // disable mod
+                {
                     row.Cells[1].Value = false;
+                    activityLog.WriteLog($"Removed {row.Cells[2].Value}");
+                }
             }
 
             dataGridView1.Rows.AddRange(rowBuffer.ToArray());
@@ -6133,6 +6136,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 // Restore original state
                 if (wasActiveOnly) ActiveOnlyToggle();
                 Properties.Settings.Default.CompareProfiles = wasCompareMode;
+                Properties.Settings.Default.ModStats = wasModStats;
                 return;
             }
 
