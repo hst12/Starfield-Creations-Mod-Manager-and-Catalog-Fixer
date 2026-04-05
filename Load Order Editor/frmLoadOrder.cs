@@ -221,7 +221,7 @@ namespace hstCMM
         private void BackupCustomINI()
         {
             tempstr = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                Path.Combine("My Games", GameName, GameName+"Custom.ini"));
+                Path.Combine("My Games", GameName, GameName + "Custom.ini"));
             if (!File.Exists(tempstr + ".bak") && File.Exists(tempstr))
             {
                 sbar2($"{GameName}Custom.ini backed up to {GameName}Custom.ini.bak");
@@ -231,7 +231,7 @@ namespace hstCMM
         private void LooseFilesCheck()
         {
             string LooseFilesDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName),
-             filePath = Path.Combine(LooseFilesDir, GameName+"Custom.ini");
+             filePath = Path.Combine(LooseFilesDir, GameName + "Custom.ini");
             try
             {
                 if (File.Exists(filePath))
@@ -1171,6 +1171,7 @@ namespace hstCMM
         private void cmbProfile_SelectedIndexChanged(object sender, EventArgs e)
         {
             SwitchProfile(Path.Combine(Properties.Settings.Default.ProfileFolder, GameName, (string)cmbProfile.SelectedItem));
+            ResizeForm();
         }
 
         private void CompareProfiles()
@@ -2368,6 +2369,7 @@ namespace hstCMM
                     row.Cells[4].Value = $"{currentGroupX} (Bethesda)";
                 }*/
 
+
                 // Update required cells.
                 row.Cells[1].Value = modEnabled; // Enabled = column 1
                 row.Cells[2].Value = pluginName; // PluginName = column 2
@@ -2858,10 +2860,10 @@ namespace hstCMM
         private void LooseFilesOnOff(bool enable)
         {
             string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                "My Games", Tools.GameName, GameName+"Custom.ini");
+                "My Games", Tools.GameName, GameName + "Custom.ini");
 
             if (Tools.FileCompare(filePath, Path.Combine(Tools.CommonFolder,
-                GameName+"Custom.ini")) && enable == false) // Return if loose files are already disabled
+                GameName + "Custom.ini")) && enable == false) // Return if loose files are already disabled
                 return;
 
             if (enable)
@@ -3856,7 +3858,7 @@ namespace hstCMM
         {
             Properties.Settings.Default.LoadScreenFilename = "";
             Properties.Settings.Default.RandomLoadScreen = randomToolStripMenuItem.Checked = false;
-            Properties.Settings.Default.LoadScreenSequence=sequenceToolStripMenuItem.Checked = false;
+            Properties.Settings.Default.LoadScreenSequence = sequenceToolStripMenuItem.Checked = false;
             Properties.Settings.Default.LoadScreenIndex = 0;
             SaveSettings();
         }
@@ -5906,7 +5908,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             fci.ShowDialog();
             string PluginsPath = Path.Combine(Tools.GameAppData, "Plugins.txt"),
         LooseFilesDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName), // Check if loose files are enabled
-        filePath = Path.Combine(LooseFilesDir, GameName+"Custom.ini");
+        filePath = Path.Combine(LooseFilesDir, GameName + "Custom.ini");
             LooseFiles = false;
             try
             {
@@ -5946,16 +5948,16 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             }
 
             string FolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", Tools.GameName);
-            if (File.Exists(Path.Combine(FolderPath, GameName+"Custom.ini.base")))
+            if (File.Exists(Path.Combine(FolderPath, GameName + "Custom.ini.base")))
             {
-                File.Copy(Path.Combine(FolderPath, GameName+"Custom.ini.base"), Path.Combine(FolderPath, GameName+"Custom.ini"), true);
-                File.Delete(Path.Combine(FolderPath, GameName+"Custom.ini.base"));
+                File.Copy(Path.Combine(FolderPath, GameName + "Custom.ini.base"), Path.Combine(FolderPath, GameName + "Custom.ini"), true);
+                File.Delete(Path.Combine(FolderPath, GameName + "Custom.ini.base"));
                 ChangeCount++;
             }
-            if (File.Exists(Path.Combine(FolderPath, GameName+"Prefs.ini.base")))
+            if (File.Exists(Path.Combine(FolderPath, GameName + "Prefs.ini.base")))
             {
-                File.Copy(Path.Combine(FolderPath, GameName+"Prefs.ini.base"), Path.Combine(FolderPath, GameName+"Prefs.ini"), true);
-                File.Delete(Path.Combine(FolderPath, GameName+"Prefs.ini.base"));
+                File.Copy(Path.Combine(FolderPath, GameName + "Prefs.ini.base"), Path.Combine(FolderPath, GameName + "Prefs.ini"), true);
+                File.Delete(Path.Combine(FolderPath, GameName + "Prefs.ini.base"));
                 ChangeCount++;
             }
             ChangeCount += CheckAndDeleteINI($"{GameName}.ini");
@@ -6766,6 +6768,32 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
         private void btnToggleMod_Click(object sender, EventArgs e)
         {
             EnableDisable();
+        }
+
+        private void enableAllCreationsModsOnlyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Tools.ConfirmAction("Do you want to continue",
+                "Warning - this will alter your current load order to Creations mods only",
+                MessageBoxButtons.YesNo) == DialogResult.No)
+                return;
+
+            bool ActiveOnlyStatus = ActiveOnly;
+            DisableAll();
+            if (ActiveOnly)
+                ActiveOnlyToggle();
+
+            for (int i = 0; i < dataGridView1.Rows.Count; i++)
+            {
+                if (!string.IsNullOrEmpty((string)dataGridView1.Rows[i].Cells["Version"].Value))
+                    dataGridView1.Rows[i].Cells["ModEnabled"].Value = true;
+            }
+
+            if (ActiveOnlyStatus)
+                ActiveOnlyToggle();
+            sbar2("All Creations mods enabled");
+            isModified = true;
+            SavePlugins();
+            activityLog.WriteLog("Creations mods enabled");
         }
     }
 }
