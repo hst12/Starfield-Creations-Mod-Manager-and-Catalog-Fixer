@@ -3856,6 +3856,7 @@ namespace hstCMM
         {
             Properties.Settings.Default.LoadScreenFilename = "";
             Properties.Settings.Default.RandomLoadScreen = randomToolStripMenuItem.Checked = false;
+            Properties.Settings.Default.LoadScreenSequence=sequenceToolStripMenuItem.Checked = false;
             Properties.Settings.Default.LoadScreenIndex = 0;
             SaveSettings();
         }
@@ -4148,7 +4149,7 @@ namespace hstCMM
             result = Tools.StartGame(GameVersion);
             activityLog.WriteLog($"Game started: {GameVersion}, Status: {result}");
 
-            if (!result)
+            if (!result) // Stop timer and close load screen if game failed to start
             {
                 timer1.Stop();
                 SS.Close();
