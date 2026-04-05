@@ -651,7 +651,9 @@ namespace hstCMM
                     {
                         for (int i = 0; i < kvp.Value.Files.Length; i++)
                         {
-                            if (kvp.Value.Files[i].ToLower().IndexOf(".esm") > 0 || kvp.Value.Files[i].ToLower().IndexOf(".esp") > 0) // Look for .esm or .esp files
+                            if ((kvp.Value.Files[i].ToLower().IndexOf(".esm") > 0 
+                                || kvp.Value.Files[i].ToLower().IndexOf(".esp") > 0) 
+                                && !kvp.Value.Files[i].ToLower().StartsWith("blueprintships-")) // Look for .esm or .esp files
                             {
                                 CreationsPlugin.Add(kvp.Value.Files[i]);
                                 CreationsGUID.Add(kvp.Key);
@@ -685,8 +687,7 @@ namespace hstCMM
                             if (CreationsPlugin[i].ToLower() == missingStrings[index].ToLower())
                             {
                                 richTextBox2.Text += "Removing " + CreationsGUID[i] + " " + CreationsTitle[i] + "\n";
-                                if (log)
-                                    activityLog.WriteLog($"Removing {CreationsGUID[i]} {CreationsTitle[i]}");
+                                activityLog.WriteLog($"Removing {CreationsGUID[i]} {CreationsTitle[i]}");
                                 data.Remove(CreationsGUID[i]);
                                 unusedMods = true;
                                 RemovalCount++;

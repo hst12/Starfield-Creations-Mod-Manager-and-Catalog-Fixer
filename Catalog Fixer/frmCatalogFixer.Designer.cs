@@ -438,7 +438,7 @@
             tableLayoutPanel1.Size = new System.Drawing.Size(1637, 1100);
             tableLayoutPanel1.TabIndex = 0;
             // 
-            // frmStarfieldTools
+            // frmCatalogFixer
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(192F, 192F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
@@ -448,7 +448,7 @@
             Controls.Add(statusStrip1);
             Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
             Margin = new System.Windows.Forms.Padding(4);
-            Name = "frmStarfieldTools";
+            Name = "frmCatalogFixer";
             StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             Text = "Creations Mod Manager";
             FormClosing += frmStarfieldTools_FormClosing;
