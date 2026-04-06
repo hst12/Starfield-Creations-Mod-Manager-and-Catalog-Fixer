@@ -1628,7 +1628,6 @@ namespace hstCMM
 
             foreach (var prop in props)
             {
-                Debug.WriteLine($"Property: {prop.Name}, Type: {prop.PropertyType}");
                 try
                 {
                     var value = prop.GetValue(settings, null);
@@ -2001,18 +2000,21 @@ namespace hstCMM
             return result;
         }
 
-        private void generateBGSArchivestxtToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ArchivesGen(bool saveToCommon = false)
         {
-            List<string> plugins = tools.GetPluginList(Game).Select(p => Path.GetFileNameWithoutExtension(p)).ToList();
-            List<string> ba2Archives = Directory.EnumerateFiles(Path.Combine(GamePath, "Data"), "*.ba2").Select(p => Path.GetFileNameWithoutExtension(p)).ToList();
-            List<string> bsaArchives = Directory.EnumerateFiles(Path.Combine(GamePath, "Data"), "*.bsa").Select(p => Path.GetFileNameWithoutExtension(p)).ToList();
+            //List<string> plugins = tools.GetPluginList(Game).Select(p => Path.GetFileNameWithoutExtension(p)).ToList();
+
+            List<string> ba2Archives = Directory.EnumerateFiles(Path.Combine(GamePath, "Data"), "*.ba2")
+                .Select(p => Path.GetFileNameWithoutExtension(p)).ToList();
+            List<string> bsaArchives = Directory.EnumerateFiles(Path.Combine(GamePath, "Data"), "*.bsa")
+                .Select(p => Path.GetFileNameWithoutExtension(p)).ToList();
             List<string> bgsArchives = new List<string>();
             List<string> allArchives = ba2Archives.Concat(bsaArchives).ToList();
             string GameFolder = Tools.GameLibrary.GetById(Game).ExcludeFile;
 
             foreach (string fileName in allArchives)
             {
-                foreach (string plugin in plugins)
+                foreach (string plugin in pluginList.Select(s=>Path.GetFileNameWithoutExtension(s)))
                 {
                     if (fileName.StartsWith(plugin))
                         bgsArchives.Add(fileName);
@@ -2032,13 +2034,24 @@ namespace hstCMM
                 FileName = Tools.GameLibrary.GetById(Game).ExcludeFile + " Archives.txt"
             };
 
-            if (saveDialog.ShowDialog() != DialogResult.OK || string.IsNullOrEmpty(saveDialog.FileName))
-                return;
+            if (saveToCommon)
+                saveDialog.FileName = Path.Combine(Tools.CommonFolder, saveDialog.FileName);
+            else
+            {
+                if (saveDialog.ShowDialog() != DialogResult.OK || string.IsNullOrEmpty(saveDialog.FileName))
+                    return;
+            }
 
             File.WriteAllLines(saveDialog.FileName, modifiedLines);
+            activityLog.WriteLog($"Archives file generated with {modifiedLines.Count} entries");
+
+        }
+        private void generateBGSArchivestxtToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ArchivesGen();
         }
 
-        private void generateExcludeFileToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ExcludeGen(bool saveToCommon = false)
         {
             if (string.IsNullOrEmpty(GamePath) || !Directory.Exists(GamePath))
             {
@@ -2069,17 +2082,26 @@ namespace hstCMM
                 FileName = Tools.CommonFolder + "\\" + (Tools.GameLibrary.GetById(Game).ExcludeFile + " Exclude.txt")
             };
 
-            if (saveDialog.ShowDialog() != DialogResult.OK || string.IsNullOrEmpty(saveDialog.FileName))
-                return;
+            if (saveToCommon)
+                saveDialog.FileName = Path.Combine(Tools.CommonFolder, saveDialog.FileName);
+            else
+            {
+                if (saveDialog.ShowDialog() != DialogResult.OK || string.IsNullOrEmpty(saveDialog.FileName))
+                    return;
+            }
 
             using (StreamWriter writer = new StreamWriter(saveDialog.FileName))
             {
                 foreach (var item in excludefiles)
                 {
                     writer.WriteLine(Path.GetFileName(item));
-                    Debug.WriteLine(Path.GetFileName(item));
                 }
             }
+            activityLog.WriteLog($"Exclude file generated with {excludefiles.Count} entries");
+        }
+        private void generateExcludeFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ExcludeGen();
         }
 
         private void generateTestPluginstxtToolStripMenuItem_Click(object sender, EventArgs e)
@@ -6816,6 +6838,12 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             isModified = true;
             SavePlugins();
             activityLog.WriteLog("Creations mods disabled");
+        }
+
+        private void generateArchiveAndExcludeFilesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ArchivesGen(true);
+            ExcludeGen(true);
         }
     }
 }

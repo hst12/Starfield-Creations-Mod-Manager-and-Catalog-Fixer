@@ -314,6 +314,7 @@
             testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             generateBGSArchivestxtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             generateExcludeFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            generateArchiveAndExcludeFilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator51 = new System.Windows.Forms.ToolStripSeparator();
             generateTestPluginstxtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator52 = new System.Windows.Forms.ToolStripSeparator();
@@ -2324,7 +2325,7 @@
             // 
             // testToolStripMenuItem
             // 
-            testToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { generateBGSArchivestxtToolStripMenuItem, generateExcludeFileToolStripMenuItem, toolStripSeparator51, generateTestPluginstxtToolStripMenuItem, toolStripSeparator52, testToolStripMenuItem1 });
+            testToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { generateBGSArchivestxtToolStripMenuItem, generateExcludeFileToolStripMenuItem, generateArchiveAndExcludeFilesToolStripMenuItem, toolStripSeparator51, generateTestPluginstxtToolStripMenuItem, toolStripSeparator52, testToolStripMenuItem1 });
             testToolStripMenuItem.Name = "testToolStripMenuItem";
             testToolStripMenuItem.Size = new System.Drawing.Size(76, 38);
             testToolStripMenuItem.Text = "Dev";
@@ -2333,38 +2334,45 @@
             // generateBGSArchivestxtToolStripMenuItem
             // 
             generateBGSArchivestxtToolStripMenuItem.Name = "generateBGSArchivestxtToolStripMenuItem";
-            generateBGSArchivestxtToolStripMenuItem.Size = new System.Drawing.Size(422, 44);
+            generateBGSArchivestxtToolStripMenuItem.Size = new System.Drawing.Size(862, 44);
             generateBGSArchivestxtToolStripMenuItem.Text = "Generate BGS Archives.txt";
             generateBGSArchivestxtToolStripMenuItem.Click += generateBGSArchivestxtToolStripMenuItem_Click;
             // 
             // generateExcludeFileToolStripMenuItem
             // 
             generateExcludeFileToolStripMenuItem.Name = "generateExcludeFileToolStripMenuItem";
-            generateExcludeFileToolStripMenuItem.Size = new System.Drawing.Size(422, 44);
+            generateExcludeFileToolStripMenuItem.Size = new System.Drawing.Size(862, 44);
             generateExcludeFileToolStripMenuItem.Text = "Generate Exclude File";
             generateExcludeFileToolStripMenuItem.Click += generateExcludeFileToolStripMenuItem_Click;
+            // 
+            // generateArchiveAndExcludeFilesToolStripMenuItem
+            // 
+            generateArchiveAndExcludeFilesToolStripMenuItem.Name = "generateArchiveAndExcludeFilesToolStripMenuItem";
+            generateArchiveAndExcludeFilesToolStripMenuItem.Size = new System.Drawing.Size(862, 44);
+            generateArchiveAndExcludeFilesToolStripMenuItem.Text = "Generate Archive and Exclude Files and Save to Common Directory";
+            generateArchiveAndExcludeFilesToolStripMenuItem.Click += generateArchiveAndExcludeFilesToolStripMenuItem_Click;
             // 
             // toolStripSeparator51
             // 
             toolStripSeparator51.Name = "toolStripSeparator51";
-            toolStripSeparator51.Size = new System.Drawing.Size(419, 6);
+            toolStripSeparator51.Size = new System.Drawing.Size(859, 6);
             // 
             // generateTestPluginstxtToolStripMenuItem
             // 
             generateTestPluginstxtToolStripMenuItem.Name = "generateTestPluginstxtToolStripMenuItem";
-            generateTestPluginstxtToolStripMenuItem.Size = new System.Drawing.Size(422, 44);
+            generateTestPluginstxtToolStripMenuItem.Size = new System.Drawing.Size(862, 44);
             generateTestPluginstxtToolStripMenuItem.Text = "Generate test Plugins.txt";
             generateTestPluginstxtToolStripMenuItem.Click += generateTestPluginstxtToolStripMenuItem_Click;
             // 
             // toolStripSeparator52
             // 
             toolStripSeparator52.Name = "toolStripSeparator52";
-            toolStripSeparator52.Size = new System.Drawing.Size(419, 6);
+            toolStripSeparator52.Size = new System.Drawing.Size(859, 6);
             // 
             // testToolStripMenuItem1
             // 
             testToolStripMenuItem1.Name = "testToolStripMenuItem1";
-            testToolStripMenuItem1.Size = new System.Drawing.Size(422, 44);
+            testToolStripMenuItem1.Size = new System.Drawing.Size(862, 44);
             testToolStripMenuItem1.Text = "Test";
             testToolStripMenuItem1.Click += testToolStripMenuItem1_Click;
             // 
@@ -3086,5 +3094,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Blocked;
         private System.Windows.Forms.ToolStripMenuItem enableAllCreationsModsOnlyToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem disableAllCreationsModsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem generateArchiveAndExcludeFilesToolStripMenuItem;
     }
 }

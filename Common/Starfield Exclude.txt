@@ -1,3 +1,5 @@
+blueprintships-sfta03.esm
+blueprintships-sfta06.esm
 BlueprintShips-Starfield.esm
 Constellation.esm
 OldMars.esm
@@ -8,4 +10,3 @@ SFBGS007.esm
 SFBGS008.esm
 ShatteredSpace.esm
 Starfield.esm
-

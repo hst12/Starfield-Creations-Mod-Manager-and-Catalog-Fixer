@@ -456,10 +456,10 @@ namespace hstCMM.Shared // Various functions used by the app
         {
             string dataPath = Path.Combine(frmLoadOrder.GamePath, "Data");
             List<string> plugins = new();
-            string[] patterns;
+            string[] patterns= {"*.esm","*.esp" };
             try
             {
-                patterns = GameLibrary.GetById(Game).ModFormats;
+                //patterns = GameLibrary.GetById(Game).ModFormats;
                 foreach (var pattern in patterns)
                 {
                     var modFiles = Directory.EnumerateFiles(dataPath, pattern, SearchOption.TopDirectoryOnly)
