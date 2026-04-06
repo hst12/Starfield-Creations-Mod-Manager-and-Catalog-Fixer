@@ -2047,6 +2047,7 @@ namespace hstCMM
             {
                 File.WriteAllLines(saveDialog.FileName, modifiedLines);
                 activityLog.WriteLog($"Archives file generated with {modifiedLines.Count} entries");
+                MessageBox.Show($"Archives file generated with {modifiedLines.Count} entries", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
@@ -2109,6 +2110,7 @@ namespace hstCMM
                     }
                 }
                 activityLog.WriteLog($"Exclude file generated with {excludefiles.Count} entries");
+                MessageBox.Show($"Exclude file generated with {excludefiles.Count} entries", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
@@ -6859,8 +6861,15 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
         private void generateUpdateFilesForGameUpdateToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ArchivesGen(true);
-            ExcludeGen(true);
+            var result = MessageBox.Show("This will generate the necessary files to update the app for the latest game update. Do you want to continue?",
+                "Confirm Action", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result == DialogResult.Yes)
+            {
+                ArchivesGen(true);
+                ExcludeGen(true);
+                MessageBox.Show("Restart the app without admin permission for normal use", "Update Complete",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
     }
 }

@@ -247,6 +247,7 @@
             displayAllSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             moveUnusedModsOutOfDataDirectoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             moveUnusedModsBackToDataDirectoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripSeparator58 = new System.Windows.Forms.ToolStripSeparator();
             generateUpdateFilesForGameUpdateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator55 = new System.Windows.Forms.ToolStripSeparator();
             OptionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -1832,7 +1833,7 @@
             // 
             // advancedToolStripMenuItem
             // 
-            advancedToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { readfileToolStripMenuItem, displayAllSettingsToolStripMenuItem, moveUnusedModsOutOfDataDirectoryToolStripMenuItem, moveUnusedModsBackToDataDirectoryToolStripMenuItem, generateUpdateFilesForGameUpdateToolStripMenuItem });
+            advancedToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { readfileToolStripMenuItem, displayAllSettingsToolStripMenuItem, moveUnusedModsOutOfDataDirectoryToolStripMenuItem, moveUnusedModsBackToDataDirectoryToolStripMenuItem, toolStripSeparator58, generateUpdateFilesForGameUpdateToolStripMenuItem });
             advancedToolStripMenuItem.Name = "advancedToolStripMenuItem";
             advancedToolStripMenuItem.Size = new System.Drawing.Size(407, 44);
             advancedToolStripMenuItem.Text = "Advanced";
@@ -1890,6 +1891,11 @@
             moveUnusedModsBackToDataDirectoryToolStripMenuItem.Size = new System.Drawing.Size(605, 44);
             moveUnusedModsBackToDataDirectoryToolStripMenuItem.Text = "Move unused mods back to Data Directory";
             moveUnusedModsBackToDataDirectoryToolStripMenuItem.Click += moveUnusedModsBackToDataDirectoryToolStripMenuItem_Click;
+            // 
+            // toolStripSeparator58
+            // 
+            toolStripSeparator58.Name = "toolStripSeparator58";
+            toolStripSeparator58.Size = new System.Drawing.Size(602, 6);
             // 
             // generateUpdateFilesForGameUpdateToolStripMenuItem
             // 
@@ -3095,5 +3101,6 @@
         private System.Windows.Forms.ToolStripMenuItem enableAllCreationsModsOnlyToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem disableAllCreationsModsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem generateUpdateFilesForGameUpdateToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator58;
     }
 }
