@@ -682,7 +682,7 @@ namespace hstCMM
                 DialogResult DialogResult =
                     MessageBox.Show("This will run every time the app is started - Are you sure?",
                     "This will reset settings made by other mod managers.",
-                                MessageBoxButtons.YesNo, MessageBoxIcon.Stop);
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Stop);
                 if (DialogResult != DialogResult.Yes)
                     return;
             }
@@ -1208,7 +1208,7 @@ namespace hstCMM
 
             if (returnStatus > 0)
             {
-                if (Tools.ConfirmAction("Delete Them?", "Loose File Folders Remain",MessageBoxButtons.YesNo,
+                if (Tools.ConfirmAction("Delete Them?", "Loose File Folders Remain", MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question) == DialogResult.Yes)
                     DeleteLooseFileFolders();
                 LooseFilesOnOff(false);
@@ -3750,7 +3750,7 @@ namespace hstCMM
             if (!CheckGamePath()) // Abort if game path not set
                 return;
 
-            if (Tools.ConfirmAction("This may affect other mods.", "Rename mod - Use with caution", MessageBoxButtons.YesNo, 
+            if (Tools.ConfirmAction("This may affect other mods.", "Rename mod - Use with caution", MessageBoxButtons.YesNo,
                 MessageBoxIcon.Exclamation) != DialogResult.Yes)
                 return;
 
