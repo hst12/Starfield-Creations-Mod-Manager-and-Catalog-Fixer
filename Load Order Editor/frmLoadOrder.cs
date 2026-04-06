@@ -228,6 +228,7 @@ namespace hstCMM
                 File.Copy(tempstr, tempstr + ".bak");
             }
         }
+
         private void LooseFilesCheck()
         {
             string LooseFilesDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName),
@@ -2014,7 +2015,7 @@ namespace hstCMM
 
             foreach (string fileName in allArchives)
             {
-                foreach (string plugin in pluginList.Select(s=>Path.GetFileNameWithoutExtension(s)))
+                foreach (string plugin in pluginList.Select(s => Path.GetFileNameWithoutExtension(s)))
                 {
                     if (fileName.StartsWith(plugin))
                         bgsArchives.Add(fileName);
@@ -2042,10 +2043,18 @@ namespace hstCMM
                     return;
             }
 
-            File.WriteAllLines(saveDialog.FileName, modifiedLines);
-            activityLog.WriteLog($"Archives file generated with {modifiedLines.Count} entries");
-
+            try
+            {
+                File.WriteAllLines(saveDialog.FileName, modifiedLines);
+                activityLog.WriteLog($"Archives file generated with {modifiedLines.Count} entries");
+            }
+            catch (Exception ex)
+            {
+                LogError(ex.Message);
+                MessageBox.Show("Error writing Archives file: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
+
         private void generateBGSArchivestxtToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ArchivesGen();
@@ -2090,15 +2099,24 @@ namespace hstCMM
                     return;
             }
 
-            using (StreamWriter writer = new StreamWriter(saveDialog.FileName))
+            try
             {
-                foreach (var item in excludefiles)
+                using (StreamWriter writer = new StreamWriter(saveDialog.FileName))
                 {
-                    writer.WriteLine(Path.GetFileName(item));
+                    foreach (var item in excludefiles)
+                    {
+                        writer.WriteLine(Path.GetFileName(item));
+                    }
                 }
+                activityLog.WriteLog($"Exclude file generated with {excludefiles.Count} entries");
             }
-            activityLog.WriteLog($"Exclude file generated with {excludefiles.Count} entries");
+            catch (Exception ex)
+            {
+                LogError(ex.Message);
+                MessageBox.Show("Error writing Exclude file: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
+
         private void generateExcludeFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ExcludeGen();
@@ -2388,7 +2406,6 @@ namespace hstCMM
                     string currentGroupX = row.Cells[4].Value?.ToString() ?? "Bethesda Game Studios Creations"; //Group = column 4
                     row.Cells[4].Value = $"{currentGroupX} (Bethesda)";
                 }*/
-
 
                 // Update required cells.
                 row.Cells[1].Value = modEnabled; // Enabled = column 1
@@ -6840,7 +6857,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             activityLog.WriteLog("Creations mods disabled");
         }
 
-        private void generateArchiveAndExcludeFilesToolStripMenuItem_Click(object sender, EventArgs e)
+        private void generateUpdateFilesForGameUpdateToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ArchivesGen(true);
             ExcludeGen(true);
