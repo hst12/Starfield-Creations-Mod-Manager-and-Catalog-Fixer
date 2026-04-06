@@ -3,8 +3,13 @@ Important Notes
 - May conflict with mod managers like Vortex or MO2. Running Vortex after using this tool can disrupt your load order.
 - Works with .esm and .ba2 files but has limited support for loose file mods.
 
-Experimental support for Fallout 4 Aniversary Edition and Skyrim Special Edition
-- To enable, pin the app to the taskbar, right-click the icon, then select Dev Mode. Game switching options are under the menu Game -> Game Select
+Free Lanes and Terran Armada (probably) ready release.
+Additional steps required after updating the game. Don't run this app yet.
+
+1. Right-click the desktop icon for the app and choose Run as administrator.
+2. From the top menus choose Tools->Advanced->Generate updated files for game update.
+3. If the process completes without errors, restart the app using normal non-admin permissions.
+4. Repeat this process only when new game patches or DLC have been downloaded.
 
 Key Features
 Mod Management

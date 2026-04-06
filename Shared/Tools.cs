@@ -161,7 +161,7 @@ namespace hstCMM.Shared // Various functions used by the app
             bool overRide = false) // overRide - always show dialog
         {
             if (frmLoadOrder.NoWarn && !overRide)
-                return DialogResult.OK;
+                return DialogResult.Yes;
 
             return MessageBox.Show(ActionText, ActionTitle, buttons, icon);
         }

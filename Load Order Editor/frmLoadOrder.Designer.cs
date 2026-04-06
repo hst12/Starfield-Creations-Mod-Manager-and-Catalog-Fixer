@@ -311,7 +311,10 @@
             helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuShortcuts = new System.Windows.Forms.ToolStripMenuItem();
             documentationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripSeparator60 = new System.Windows.Forms.ToolStripSeparator();
             githubLatestReleaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            githubAllReleasesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripSeparator59 = new System.Windows.Forms.ToolStripSeparator();
             aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             generateBGSArchivestxtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -2301,7 +2304,7 @@
             // 
             // helpToolStripMenuItem
             // 
-            helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuShortcuts, documentationToolStripMenuItem, githubLatestReleaseToolStripMenuItem, aboutToolStripMenuItem });
+            helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuShortcuts, documentationToolStripMenuItem, toolStripSeparator60, githubLatestReleaseToolStripMenuItem, githubAllReleasesToolStripMenuItem, toolStripSeparator59, aboutToolStripMenuItem });
             helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             helpToolStripMenuItem.Size = new System.Drawing.Size(84, 38);
             helpToolStripMenuItem.Text = "&Help";
@@ -2321,12 +2324,29 @@
             documentationToolStripMenuItem.Visible = false;
             documentationToolStripMenuItem.Click += documentationToolStripMenuItem_Click;
             // 
+            // toolStripSeparator60
+            // 
+            toolStripSeparator60.Name = "toolStripSeparator60";
+            toolStripSeparator60.Size = new System.Drawing.Size(416, 6);
+            // 
             // githubLatestReleaseToolStripMenuItem
             // 
             githubLatestReleaseToolStripMenuItem.Name = "githubLatestReleaseToolStripMenuItem";
             githubLatestReleaseToolStripMenuItem.Size = new System.Drawing.Size(419, 44);
             githubLatestReleaseToolStripMenuItem.Text = "Github Latest Release";
             githubLatestReleaseToolStripMenuItem.Click += githubLatestReleaseToolStripMenuItem_Click;
+            // 
+            // githubAllReleasesToolStripMenuItem
+            // 
+            githubAllReleasesToolStripMenuItem.Name = "githubAllReleasesToolStripMenuItem";
+            githubAllReleasesToolStripMenuItem.Size = new System.Drawing.Size(419, 44);
+            githubAllReleasesToolStripMenuItem.Text = "Github All Releases";
+            githubAllReleasesToolStripMenuItem.Click += githubAllReleasesToolStripMenuItem_Click;
+            // 
+            // toolStripSeparator59
+            // 
+            toolStripSeparator59.Name = "toolStripSeparator59";
+            toolStripSeparator59.Size = new System.Drawing.Size(416, 6);
             // 
             // aboutToolStripMenuItem
             // 
@@ -3102,5 +3122,8 @@
         private System.Windows.Forms.ToolStripMenuItem disableAllCreationsModsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem generateUpdateFilesForGameUpdateToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator58;
+        private System.Windows.Forms.ToolStripMenuItem githubAllReleasesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator60;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator59;
     }
 }

@@ -587,6 +587,7 @@ namespace hstCMM
         private void archiveModToolStripMenuItem_Click_1(object sender, EventArgs e) // Make a zip of a mod and copy it to specified folder
         {
             List<string> files = new();
+            int modCounter = 0;
             if (!CheckGamePath()) // Abort if game path not set
                 return;
 
@@ -644,6 +645,7 @@ namespace hstCMM
                         sbar3($"{ModName} archived");
                         activityLog.WriteLog($"Created archive for {ModName} at {zipPath}");
                         statusStrip1.Refresh();
+                        modCounter++;
                         files.Clear();
                     }
 
@@ -669,7 +671,7 @@ namespace hstCMM
                 }
 
                 LoadScreen.Close();
-                sbar3("Mods archived");
+                sbar3($"{modCounter} Mods archived");
             }
         }
 
@@ -680,8 +682,8 @@ namespace hstCMM
                 DialogResult DialogResult =
                     MessageBox.Show("This will run every time the app is started - Are you sure?",
                     "This will reset settings made by other mod managers.",
-                                MessageBoxButtons.OKCancel, MessageBoxIcon.Stop);
-                if (DialogResult != DialogResult.OK)
+                                MessageBoxButtons.YesNo, MessageBoxIcon.Stop);
+                if (DialogResult != DialogResult.Yes)
                     return;
             }
 
@@ -1206,7 +1208,8 @@ namespace hstCMM
 
             if (returnStatus > 0)
             {
-                if (Tools.ConfirmAction("Delete Them?", "Loose File Folders Remain") == DialogResult.OK)
+                if (Tools.ConfirmAction("Delete Them?", "Loose File Folders Remain",MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question) == DialogResult.Yes)
                     DeleteLooseFileFolders();
                 LooseFilesOnOff(false);
             }
@@ -1740,7 +1743,7 @@ namespace hstCMM
         private void enableAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (Tools.ConfirmAction("Enable All settings?", "This will turn on a most of the Tools menu settings and reset ini settings",
-                MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) == DialogResult.OK)
+                MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes)
             {
                 ChangeSettings(true);
                 activityLog.WriteLog("Enabling all settings");
@@ -3451,7 +3454,7 @@ namespace hstCMM
             string url;
 
             if (Tools.ConfirmAction("Are you sure you want to open all mod web pages?", "This might take a while and a lot of memory",
-                MessageBoxButtons.YesNo) == DialogResult.Yes || NoWarn)
+                MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 for (i = 0; i < dataGridView1.RowCount; i++)
                 {
@@ -3747,7 +3750,8 @@ namespace hstCMM
             if (!CheckGamePath()) // Abort if game path not set
                 return;
 
-            if (Tools.ConfirmAction("This may affect other mods.", "Rename mod - Use with caution", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) != DialogResult.OK)
+            if (Tools.ConfirmAction("This may affect other mods.", "Rename mod - Use with caution", MessageBoxButtons.YesNo, 
+                MessageBoxIcon.Exclamation) != DialogResult.Yes)
                 return;
 
             string directoryPath = Path.Combine(GamePath, "Data");
@@ -3860,8 +3864,8 @@ namespace hstCMM
             if (ConfirmOverwrite)
             {
                 DialogResult DialogResult = MessageBox.Show($"This will overwrite your {GameName}Custom.ini to a recommended version", "Are you sure?",
-                    MessageBoxButtons.OKCancel, MessageBoxIcon.Stop);
-                if (DialogResult != DialogResult.OK)
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Stop);
+                if (DialogResult != DialogResult.Yes)
                     return 0;
             }
 
@@ -4071,7 +4075,7 @@ namespace hstCMM
                 return;
             }
 
-            if (Tools.ConfirmAction("Restore Profile Backup", "Restore Backup", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.Cancel)
+            if (Tools.ConfirmAction("Restore Profile Backup", "Restore Backup", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
             {
                 sbar("Restore cancelled");
                 return;
@@ -5981,8 +5985,8 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             if (ConfirmPrompt)
             {
                 DialogResult DialogResult = MessageBox.Show("Are you sure?", "This will remove all changes made by Vortex",
-        MessageBoxButtons.OKCancel, MessageBoxIcon.Stop);
-                if (DialogResult != DialogResult.OK)
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Stop);
+                if (DialogResult != DialogResult.Yes)
                     return 0;
             }
 
@@ -6862,7 +6866,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
         private void generateUpdateFilesForGameUpdateToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var result = MessageBox.Show("This will generate the necessary files to update the app for the latest game update. Do you want to continue?",
-                "Confirm Action", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                "Confirm Action - Administrative permissions required", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (result == DialogResult.Yes)
             {
                 ArchivesGen(true);
@@ -6870,6 +6874,11 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 MessageBox.Show("Restart the app without admin permission for normal use", "Update Complete",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
+        }
+
+        private void githubAllReleasesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Tools.OpenUrl("https://github.com/hst12/Starfield-Creations-Mod-Manager-and-Catalog-Fixer/releases");
         }
     }
 }
