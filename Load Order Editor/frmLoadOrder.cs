@@ -456,9 +456,7 @@ namespace hstCMM
 
             dataGridView1.ResumeLayout();
             sbar4(showAll ? "All mods shown" : "Active mods only");
-
-            if (resizeToolStripMenuItem.Checked)
-                ResizeForm();
+            ResizeForm();
             btnActiveOnly.Font = new System.Drawing.Font(btnActiveOnly.Font, ActiveOnly ? FontStyle.Bold : FontStyle.Regular);
         }
 
@@ -2443,9 +2441,7 @@ namespace hstCMM
 
             dataGridView1.ResumeLayout(); // Resume layout
             dataGridView1.EndEdit();
-
-            if (Properties.Settings.Default.Resize)
-                ResizeForm();
+            ResizeForm();
 
             // -- Process mod stats if the game path is set --
             if (!string.IsNullOrEmpty(GamePath) && Properties.Settings.Default.ModStats)
@@ -3882,6 +3878,9 @@ namespace hstCMM
 
         private void ResizeForm()
         {
+            if (!resizeToolStripMenuItem.Checked)
+                return;
+
             // Force autosize calculation
             dataGridView1.AutoResizeColumns();
             dataGridView1.AutoResizeRows();
@@ -3933,8 +3932,7 @@ namespace hstCMM
         private void resizeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             resizeToolStripMenuItem.Checked = Properties.Settings.Default.Resize = !resizeToolStripMenuItem.Checked;
-            if (resizeToolStripMenuItem.Checked)
-                ResizeForm();
+            ResizeForm();
         }
 
         private void RestoreAppSettings()
@@ -6683,8 +6681,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 row.Visible = isBlocked;
             }
 
-            if (resizeToolStripMenuItem.Checked)
-                ResizeForm();
+            ResizeForm();
             sbar("Showing blocked mods only. Refresh to clear");
         }
 
