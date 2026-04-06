@@ -6792,5 +6792,30 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             SavePlugins();
             activityLog.WriteLog("Creations mods enabled");
         }
+
+        private void disableAllCreationsModsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Tools.ConfirmAction("Do you want to continue",
+    "Warning - this will alter your current load order to disable all Creations mods",
+    MessageBoxButtons.YesNo) == DialogResult.No)
+                return;
+
+            bool ActiveOnlyStatus = ActiveOnly;
+            if (ActiveOnly)
+                ActiveOnlyToggle();
+
+            for (int i = 0; i < dataGridView1.Rows.Count; i++)
+            {
+                if (!string.IsNullOrEmpty((string)dataGridView1.Rows[i].Cells["Version"].Value))
+                    dataGridView1.Rows[i].Cells["ModEnabled"].Value = false;
+            }
+
+            if (ActiveOnlyStatus)
+                ActiveOnlyToggle();
+            sbar2("All Creations mods disabled");
+            isModified = true;
+            SavePlugins();
+            activityLog.WriteLog("Creations mods disabled");
+        }
     }
 }

@@ -269,6 +269,7 @@
             toolStripMenuDisableAll = new System.Windows.Forms.ToolStripMenuItem();
             enableAchievementSafeOnlyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             enableAllCreationsModsOnlyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            disableAllCreationsModsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             toolStripMenuDelete = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
@@ -2003,7 +2004,7 @@
             // 
             // toolStripMenuMods
             // 
-            toolStripMenuMods.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuEnableAll, toolStripMenuDisableAll, enableAchievementSafeOnlyToolStripMenuItem, enableAllCreationsModsOnlyToolStripMenuItem, toolStripSeparator6, toolStripMenuDelete, toolStripSeparator8, toolStripMenuAutoClean, toolStripMenuScanMods, toolStripMenuCleanup, removeDuplicatesToolStripMenuItem, toolStripSeparator7, toolStripMenuInstall, toolStripMenuUninstall, toolStripSeparator9, toolStripMenuLoot, toolStripMenuLootSort, toolStripSeparator15, vortexToolStripMenuItem, mO2ToolStripMenuItem, creationKitToolStripMenuItem, xEditToolStripMenuItem, starUIConfiguratorToolStripMenuItem, toolStripSeparator26, openAllActiveModWebPagesToolStripMenuItem, toolStripSeparator29, looseFilesDisabledToolStripMenuItem, toolStripSeparator28, sFSEPluginsEnableDisableToolStripMenuItem });
+            toolStripMenuMods.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuEnableAll, toolStripMenuDisableAll, enableAchievementSafeOnlyToolStripMenuItem, enableAllCreationsModsOnlyToolStripMenuItem, disableAllCreationsModsToolStripMenuItem, toolStripSeparator6, toolStripMenuDelete, toolStripSeparator8, toolStripMenuAutoClean, toolStripMenuScanMods, toolStripMenuCleanup, removeDuplicatesToolStripMenuItem, toolStripSeparator7, toolStripMenuInstall, toolStripMenuUninstall, toolStripSeparator9, toolStripMenuLoot, toolStripMenuLootSort, toolStripSeparator15, vortexToolStripMenuItem, mO2ToolStripMenuItem, creationKitToolStripMenuItem, xEditToolStripMenuItem, starUIConfiguratorToolStripMenuItem, toolStripSeparator26, openAllActiveModWebPagesToolStripMenuItem, toolStripSeparator29, looseFilesDisabledToolStripMenuItem, toolStripSeparator28, sFSEPluginsEnableDisableToolStripMenuItem });
             toolStripMenuMods.Name = "toolStripMenuMods";
             toolStripMenuMods.Size = new System.Drawing.Size(94, 38);
             toolStripMenuMods.Text = "Mods";
@@ -2035,6 +2036,13 @@
             enableAllCreationsModsOnlyToolStripMenuItem.Size = new System.Drawing.Size(498, 44);
             enableAllCreationsModsOnlyToolStripMenuItem.Text = "Enable all Creations mods only";
             enableAllCreationsModsOnlyToolStripMenuItem.Click += enableAllCreationsModsOnlyToolStripMenuItem_Click;
+            // 
+            // disableAllCreationsModsToolStripMenuItem
+            // 
+            disableAllCreationsModsToolStripMenuItem.Name = "disableAllCreationsModsToolStripMenuItem";
+            disableAllCreationsModsToolStripMenuItem.Size = new System.Drawing.Size(498, 44);
+            disableAllCreationsModsToolStripMenuItem.Text = "Disable all Creations mods";
+            disableAllCreationsModsToolStripMenuItem.Click += disableAllCreationsModsToolStripMenuItem_Click;
             // 
             // toolStripSeparator6
             // 
@@ -3077,5 +3085,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn URL;
         private System.Windows.Forms.DataGridViewTextBoxColumn Blocked;
         private System.Windows.Forms.ToolStripMenuItem enableAllCreationsModsOnlyToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem disableAllCreationsModsToolStripMenuItem;
     }
 }
