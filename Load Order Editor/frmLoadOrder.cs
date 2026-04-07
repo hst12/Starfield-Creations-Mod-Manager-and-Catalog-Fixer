@@ -6732,9 +6732,6 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
         private void btnFindNext_Click(object sender, EventArgs e)
         {
-            if (String.IsNullOrEmpty(txtSearchBox.Text)) // Return if search box is empty
-                return;
-
             SearchMod();
         }
 
