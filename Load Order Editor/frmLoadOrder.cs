@@ -3357,6 +3357,11 @@ namespace hstCMM
                 return;
             }
 
+            foreach (var dontRemove in tools.BethFiles)
+            {
+                modsToMove.RemoveAll(m => m.StartsWith(dontRemove, StringComparison.OrdinalIgnoreCase));
+            }
+
             frmGenericTextList inactive = new("These mods will be moved", modsToMove); // Show list of mods to be moved
             inactive.ShowDialog();
             if (returnStatus == 0)

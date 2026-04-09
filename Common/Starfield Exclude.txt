@@ -12,3 +12,4 @@ ShatteredSpace.esm
 Starfield.esm
 SFBGS00D.esm
 SFBGS047.esm
+SFBGS050.esm
