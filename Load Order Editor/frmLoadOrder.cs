@@ -457,8 +457,8 @@ namespace hstCMM
 
             dataGridView1.ResumeLayout();
             sbar4(showAll ? "All mods shown" : "Active mods only");
-            ResizeForm();
             btnActiveOnly.Font = new System.Drawing.Font(btnActiveOnly.Font, ActiveOnly ? FontStyle.Bold : FontStyle.Regular);
+            ResizeForm();
         }
 
         private void activeOnlyToolStripMenuItem_Click(object sender, EventArgs e)
