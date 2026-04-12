@@ -11,6 +11,7 @@ Alternatively, drag and drop with mouse to move mods
 
 Other keys:
 Active mod filter - Q
+LOOT Autosort - Z
 Enable/Disable mod - Space or E
 Run game - R
 Save Plugins - Ctrl-S

@@ -1373,6 +1373,10 @@ namespace hstCMM
                 case Keys.X:
                     System.Windows.Forms.Application.Exit();
                     break;
+                case Keys.Z:
+                    RunLOOT(true);
+                    dataGridView1.Focus();
+                    break;
 
                 case Keys.F12:
                     MessageBox.Show("F12 pressed, operation cancelled");
