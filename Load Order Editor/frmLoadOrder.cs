@@ -26,6 +26,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
+using static System.Windows.Forms.DataFormats;
 using File = System.IO.File;
 
 namespace hstCMM
@@ -5122,7 +5123,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     continue;
                 }
 
-                // Removal check (not on disk OR is Beth file)
+                // Removal check (not on disk or is Beth file)
                 if (!onDisk.Contains(pluginName) || bethFilesSet.Contains(pluginName) || pluginName.Contains("blueprintships-", StringComparison.OrdinalIgnoreCase))
                 {
                     rowsToRemove.Add(row);
@@ -6226,6 +6227,11 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
         private void updateAllProfilesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             UpdateAllProfiles();
+            // Close all instances of frmGenericTextList
+            foreach (Form frm in Application.OpenForms.OfType<frmGenericTextList>().ToList())
+            {
+                frm.Close();
+            }
         }
 
         private async void updateArchivedModsToolStripMenuItem_Click(object sender, EventArgs e)
