@@ -116,7 +116,6 @@
             exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuExportActive = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuExportCSV = new System.Windows.Forms.ToolStripMenuItem();
-            mnuExportPDF = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator17 = new System.Windows.Forms.ToolStripSeparator();
             convertLooseFilesModToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator19 = new System.Windows.Forms.ToolStripSeparator();
@@ -1006,7 +1005,7 @@
             // 
             // exportToolStripMenuItem
             // 
-            exportToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuExportActive, toolStripMenuExportCSV, mnuExportPDF });
+            exportToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuExportActive, toolStripMenuExportCSV });
             exportToolStripMenuItem.Name = "exportToolStripMenuItem";
             exportToolStripMenuItem.Size = new System.Drawing.Size(504, 44);
             exportToolStripMenuItem.Text = "Export";
@@ -1024,13 +1023,6 @@
             toolStripMenuExportCSV.Size = new System.Drawing.Size(404, 44);
             toolStripMenuExportCSV.Text = "Export Mods to CSV";
             toolStripMenuExportCSV.Click += toolStripMenuExportCSV_Click;
-            // 
-            // mnuExportPDF
-            // 
-            mnuExportPDF.Name = "mnuExportPDF";
-            mnuExportPDF.Size = new System.Drawing.Size(404, 44);
-            mnuExportPDF.Text = "Export Mods to PDF";
-            mnuExportPDF.Click += mnuExportPDF_Click;
             // 
             // toolStripSeparator17
             // 
@@ -3095,7 +3087,6 @@
         private System.Windows.Forms.ToolStripMenuItem exportToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuExportActive;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuExportCSV;
-        private System.Windows.Forms.ToolStripMenuItem mnuExportPDF;
         private System.Windows.Forms.ToolStripMenuItem sFSEPluginsEnableDisableToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem randomToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator57;

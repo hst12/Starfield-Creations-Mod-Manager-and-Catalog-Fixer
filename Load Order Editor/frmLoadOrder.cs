@@ -5,9 +5,6 @@ using Microsoft.VisualBasic;
 using Microsoft.Win32;
 using Microsoft.WindowsAPICodePack.Shell;
 using Microsoft.WindowsAPICodePack.Taskbar;
-using QuestPDF.Fluent;
-using QuestPDF.Helpers;
-using QuestPDF.Infrastructure;
 using SevenZipExtractor;
 using System;
 using System.Collections.Generic;
@@ -26,7 +23,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
-using static System.Windows.Forms.DataFormats;
 using File = System.IO.File;
 
 namespace hstCMM
@@ -2948,209 +2944,7 @@ namespace hstCMM
             BackupBlockedMods();
         }
 
-        private void mnuExportPDF_Click(object sender, EventArgs e)
-        {
-            var tableData = new List<List<string>>();
-            var groupData = new List<string>(); // Store group information separately
-
-            var visibleColumns = dataGridView1.Columns
-                .Cast<DataGridViewColumn>()
-                .Where(col => col.Visible && (!ActiveOnly || col.Name != "ModEnabled"))
-                .ToList();
-
-            // Find and remove the group column from visible columns
-            var groupColumn = visibleColumns.FirstOrDefault(col => col.Name.ToLower().Contains("group") || col.HeaderText.ToLower().Contains("group"));
-            if (groupColumn != null)
-            {
-                visibleColumns.Remove(groupColumn);
-            }
-
-            foreach (DataGridViewRow row in dataGridView1.Rows)
-            {
-                if (!row.IsNewRow && row.Visible)
-                {
-                    var rowData = new List<string>();
-
-                    // Store group information
-                    string groupValue = "";
-                    if (groupColumn != null)
-                    {
-                        groupValue = row.Cells[groupColumn.Index].Value?.ToString() ?? "";
-                    }
-                    groupData.Add(groupValue);
-
-                    foreach (var column in visibleColumns)
-                    {
-                        var cell = row.Cells[column.Index];
-                        rowData.Add(cell.Value?.ToString() ?? "");
-                    }
-
-                    tableData.Add(rowData);
-                }
-            }
-
-            // Group the data by group value while preserving order
-            var groupedData = new Dictionary<string, List<List<string>>>();
-            var groupOrder = new List<string>(); // Track the order of groups as they appear
-
-            for (int i = 0; i < tableData.Count; i++)
-            {
-                string group = groupData[i];
-                if (string.IsNullOrEmpty(group))
-                    group = "Ungrouped";
-
-                if (!groupedData.ContainsKey(group))
-                {
-                    groupedData[group] = new List<List<string>>();
-                    groupOrder.Add(group); // Track the first occurrence of each group
-                }
-
-                groupedData[group].Add(tableData[i]);
-            }
-
-            var columnWidths = new List<int>();
-
-            using (Graphics g = dataGridView1.CreateGraphics())
-            {
-                foreach (var column in visibleColumns)
-                {
-                    // Prefer DefaultCellStyle.Font or fallback to grid's font
-                    var font = column.DefaultCellStyle.Font ?? dataGridView1.Font;
-                    int maxWidth = TextRenderer.MeasureText(g, column.HeaderText ?? "", font).Width;
-
-                    foreach (DataGridViewRow row in dataGridView1.Rows)
-                    {
-                        if (!row.IsNewRow && row.Visible)
-                        {
-                            string value = row.Cells[column.Index].Value?.ToString() ?? "";
-                            int cellWidth = TextRenderer.MeasureText(g, value, font).Width;
-                            maxWidth = Math.Max(maxWidth, cellWidth);
-                        }
-                    }
-
-                    // Add padding and optionally clamp
-                    columnWidths.Add(Math.Min(maxWidth + 12, 300)); // cap to 300pt max width
-                }
-            }
-
-            // Generate PDF
-            QuestPDF.Settings.License = LicenseType.Community;
-
-            // Prompt for file name and path
-            System.Windows.Forms.SaveFileDialog ExportActive = new()
-            {
-                Filter = "PDF File|*.pdf",
-                Title = "Export to PDF",
-                FileName = "Plugins.pdf",
-            };
-
-            DialogResult dlgResult = ExportActive.ShowDialog();
-            if (dlgResult == DialogResult.OK)
-            {
-                Document.Create(container =>
-                {
-                    container.Page(page =>
-                    {
-                        page.MaxSize(PageSizes.A0.Landscape());
-                        page.Size(PageSizes.A4.Landscape());
-                        page.Margin(20);
-                        page.DefaultTextStyle(x => x.FontSize(12).FontColor(Colors.Black));
-
-                        page.Footer().AlignLeft().Text(text =>
-                        {
-                            text.Span($"Exported on {DateTime.Now:yyyy-MM-dd}").FontSize(8).FontColor(Colors.Grey.Darken1);
-                            text.Span(" - Page ").FontSize(8).FontColor(Colors.Grey.Darken1);
-                            text.CurrentPageNumber().FontSize(8).FontColor(Colors.Grey.Darken1);
-                            text.Span(" of ").FontSize(8).FontColor(Colors.Grey.Darken1);
-                            text.TotalPages().FontSize(8).FontColor(Colors.Grey.Darken1);
-                        });
-
-                        page.Content().Column(col =>
-                        {
-                            // Main title on first page
-                            col.Item().Text($"Mod List Export {cmbProfile.Text}").FontSize(28).Bold().FontColor(Colors.Blue.Darken2).AlignCenter();
-                            col.Item().PaddingBottom(20);
-
-                            // Define single color per group
-                            var groupColors = new[]
-                            {
-                        Colors.Blue.Darken2,      // Professional navy
-                        Colors.Green.Darken2,     // Forest green
-                        Colors.Purple.Darken2,    // Deep purple
-                        Colors.Orange.Darken2,    // Burnt orange
-                        Colors.Red.Darken2,       // Dark red
-                        Colors.Teal.Darken2,      // Dark teal
-                        Colors.Brown.Darken2,     // Dark brown
-                        Colors.Indigo.Darken2     // Deep indigo
-                    };
-
-                            // Create one continuous table with all data
-                            col.Item().Table(table =>
-                            {
-                                // Define columns
-                                table.ColumnsDefinition(columns =>
-                                {
-                                    foreach (var width in columnWidths)
-                                    {
-                                        //columns.ConstantColumn(width);
-                                        columns.RelativeColumn(1);
-                                    }
-                                });
-
-                                // Header row that will repeat on each page
-                                table.Header(header =>
-                                {
-                                    foreach (DataGridViewColumn column in visibleColumns)
-                                    {
-                                        header.Cell().Element(c => c.Background(Colors.Grey.Lighten3)
-                                            .BorderBottom(2)
-                                            .BorderColor(Colors.Blue.Darken2)
-                                            .PaddingVertical(8)
-                                            .PaddingHorizontal(8))
-                                            .Text(text => text.Span(column.HeaderText).Bold().FontColor(Colors.Blue.Darken2));
-                                    }
-                                });
-
-                                // Data rows for all groups - iterate in original order
-                                int colorIndex = 0;
-                                foreach (var groupName in groupOrder)
-                                {
-                                    var groupColor = groupColors[colorIndex % groupColors.Length];
-                                    colorIndex++;
-
-                                    // Group subheading row - single color background with white text
-                                    table.Cell().ColumnSpan((uint)visibleColumns.Count)
-                                        .Element(c => c.Background(groupColor)
-                                            .PaddingVertical(10)
-                                            .PaddingHorizontal(12))
-                                        .Text(text => text.Span(groupName).FontSize(12).Bold().FontColor(Colors.White));
-
-                                    // Data rows for this group - black text on white background
-                                    foreach (var row in groupedData[groupName])
-                                    {
-                                        foreach (var cell in row)
-                                        {
-                                            table.Cell().Element(CellStyle).Text(text => text.Span(cell).FontColor(Colors.Black));
-                                        }
-                                    }
-                                }
-
-                                // Styling helper for data cells - clean white background with subtle borders
-                                static IContainer CellStyle(IContainer container) => container
-                                    .Background(Colors.White)
-                                    .Padding(8)
-                                    //.BorderBottom(1)
-                                    .BorderColor(Colors.Grey.Lighten1);
-                            });
-                        });
-                    });
-                }).GeneratePdf(ExportActive.FileName);
-            }
-
-            // Open the PDF if the user confirms
-            if (Tools.ConfirmAction("Open PDF", "Open the exported file", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                Tools.OpenFile(ExportActive.FileName);
-        }
+        
 
         private void mnuRestoreBlockedMods_Click(object sender, EventArgs e) // Restore BlockedMods.txt from backup folder
         {
@@ -6891,6 +6685,11 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
         private void githubAllReleasesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Tools.OpenUrl("https://github.com/hst12/Starfield-Creations-Mod-Manager-and-Catalog-Fixer/releases");
+        }
+
+        private void frmLoadOrder_ResizeEnd(object sender, EventArgs e)
+        {
+
         }
     }
 }
