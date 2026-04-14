@@ -1157,8 +1157,6 @@ namespace hstCMM
             // Report results
             if (unused.Count > 0)
             {
-                /*var existingForm = Application.OpenForms.OfType<frmGenericTextList>().FirstOrDefault(); // Check if the form is already open
-                    existingForm?.Close(); // Close the existing form*/
                 frmGenericTextList unusedForm = new frmGenericTextList(windowTitle: "Unused Plugins in userlist.yaml", textLines: unused);
                 unusedForm.Show();
             }
@@ -1178,6 +1176,7 @@ namespace hstCMM
         {
             SwitchProfile(Path.Combine(Properties.Settings.Default.ProfileFolder, GameName, (string)cmbProfile.SelectedItem));
             ResizeForm();
+            dataGridView1.Focus();
         }
 
         private void CompareProfiles()
@@ -5293,7 +5292,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 SavePlugins();
             }
 
-            sbar3("Update complete");
+            sbar3($"Update: {totalChanges} changes");
             dataGridView1.ResumeLayout();
             return totalChanges;
         }
