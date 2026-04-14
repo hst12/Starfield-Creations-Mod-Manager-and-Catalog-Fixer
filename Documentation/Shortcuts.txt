@@ -10,6 +10,7 @@ Move Bottom - D
 Alternatively, drag and drop with mouse to move mods
 
 Other keys:
+Refresh - C
 Active mod filter - Q
 LOOT Autosort - Z
 Enable/Disable mod - Space or E

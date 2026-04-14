@@ -26,7 +26,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
-using static System.Windows.Forms.DataFormats;
 using File = System.IO.File;
 
 namespace hstCMM
@@ -973,11 +972,16 @@ namespace hstCMM
             System.Windows.Forms.Application.Exit();
         }
 
-        private void btnRefresh_Click(object sender, EventArgs e)
+        private void RefreshDisplay()
         {
             RefreshDataGrid();
             btnGroups.Font = new System.Drawing.Font(btnGroups.Font, FontStyle.Regular);
             dataGridView1.Focus();
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            RefreshDisplay();
         }
 
         private void btnRun_Click(object sender, EventArgs e)
@@ -1345,6 +1349,10 @@ namespace hstCMM
                     MoveTop();
                     break;
 
+                case Keys.C:
+                    RefreshDisplay();
+                    break;
+
                 case Keys.D:
                     MoveBottom();
                     break;
@@ -1373,6 +1381,7 @@ namespace hstCMM
                 case Keys.X:
                     System.Windows.Forms.Application.Exit();
                     break;
+
                 case Keys.Z:
                     RunLOOT(true);
                     dataGridView1.Focus();
