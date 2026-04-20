@@ -6900,5 +6900,10 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
         {
             Tools.OpenUrl("https://github.com/hst12/Starfield-Creations-Mod-Manager-and-Catalog-Fixer/releases");
         }
+
+        private void screenshotsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Tools.OpenFolder(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName,"Data\\Textures\\Photos"));
+        }
     }
 }
