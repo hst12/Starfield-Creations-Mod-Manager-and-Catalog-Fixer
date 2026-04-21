@@ -363,17 +363,21 @@ namespace hstCMM
                     }
 
                     // Check the entire version string for invalid characters (anything other than letters, digits, or '.')
+
+                    // Skip this check for now
+
+                    /*
                     foreach (char c in versionStr)
                     {
                         if (!char.IsLetterOrDigit(c) && c != '.' && c != '\\' && c != ' ' && c != '=')
                         {
                             errorCount++;
                             richTextBox2.AppendText($"Non numeric version number detected in {creation.Title} - {c}\n");
-                            if (log)
-                                activityLog.WriteLog($"Non numeric version number detected in {creation.Title} - {c}");
+                            activityLog.WriteLog($"Non numeric version number detected in {creation.Title} - {c}");
                             break;
                         }
                     }
+                    */
                 }
 
                 // Reporting based on error and warning counts
@@ -651,8 +655,8 @@ namespace hstCMM
                     {
                         for (int i = 0; i < kvp.Value.Files.Length; i++)
                         {
-                            if ((kvp.Value.Files[i].ToLower().IndexOf(".esm") > 0 
-                                || kvp.Value.Files[i].ToLower().IndexOf(".esp") > 0) 
+                            if ((kvp.Value.Files[i].ToLower().IndexOf(".esm") > 0
+                                || kvp.Value.Files[i].ToLower().IndexOf(".esp") > 0)
                                 && !kvp.Value.Files[i].ToLower().StartsWith("blueprintships-")) // Look for .esm or .esp files
                             {
                                 CreationsPlugin.Add(kvp.Value.Files[i]);
