@@ -2290,7 +2290,7 @@ namespace hstCMM
                     var files = item.Files;
 
                     // Collect detail info for each .esm file. Handles Creation mod packs with multiple plugins.
-                    foreach (var file in files.Where(f => f.EndsWith(".esm")))
+                    foreach (var file in files.Where(f => f.EndsWith(".esm", StringComparison.OrdinalIgnoreCase)))
                     {
                         CreationsPlugin.Add(file);
                         CreationsTitle.Add(item.Title);
@@ -2409,7 +2409,7 @@ namespace hstCMM
                 }
 
                 // Process blocked mods.
-                if (blockedMods.Contains(pluginName))
+                if (blockedMods.Contains(pluginName, StringComparer.OrdinalIgnoreCase))
                 {
                     modEnabled = false;
                     row.Cells[13].Value = true; // Blocked column
@@ -2500,7 +2500,7 @@ namespace hstCMM
             dataGridView1.EndEdit();
             ResizeForm();
 
-            // -- Process mod stats if the game path is set --
+            // Process mod stats if the game path is set
             if (!string.IsNullOrEmpty(GamePath) && Properties.Settings.Default.ModStats)
                 sbar(ShowModStats(CreationsPlugin, enabledCount, totalFileSize));
             else
@@ -3511,8 +3511,9 @@ namespace hstCMM
             }
         }
 
-        private void prepareForCreationsUpdateToolStripMenuItem_Click(object sender, EventArgs e) // Workaround for Creations update re-downloading mods
+        private void CreationsUpdateStart()
         {
+
             if (!Properties.Settings.Default.CreationsUpdate) // Catalog Auto Restore off etc.
             {
                 cretionsUpdateToolStripMenuItem.Checked = true;
@@ -3537,6 +3538,10 @@ namespace hstCMM
                 MessageBox.Show("Catalog Auto Restore set to on", "Creations Update Cancelled");
                 activityLog.WriteLog("Creations Update Cancelled");
             }
+        }
+        private void prepareForCreationsUpdateToolStripMenuItem_Click(object sender, EventArgs e) // Workaround for Creations update re-downloading mods
+        {
+            CreationsUpdateStart();
         }
 
         private void profileToolStripMenuItem_Click(object sender, EventArgs e)
@@ -4361,9 +4366,8 @@ namespace hstCMM
                         if (string.IsNullOrEmpty(pluginName))
                             continue;
 
-                        bool modEnabled = row.Cells["ModEnabled"].Value as bool? ?? false;
-
                         // Disable mod if it exists in BlockedMods
+                        bool modEnabled = row.Cells["ModEnabled"].Value as bool? ?? false;
                         modEnabled &= !Tools.BlockedMods().Contains(pluginName);
 
                         writer.Write(modEnabled ? "*" : "");
@@ -5215,6 +5219,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
                 // Sort indices descending for safe removal
                 rowsToRemove.Sort((r1, r2) => r2.Index.CompareTo(r1.Index));
+
 
                 var removalCounter = rowsToRemove.Count;
 
@@ -6903,7 +6908,12 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
         private void screenshotsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Tools.OpenFolder(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName,"Data\\Textures\\Photos"));
+            Tools.OpenFolder(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName, "Data\\Textures\\Photos"));
+        }
+
+        private void btnCreationsUpdate_Click(object sender, EventArgs e)
+        {
+            CreationsUpdateStart();
         }
     }
 }
