@@ -44,6 +44,7 @@ namespace hstCMM
         private Tools.Configuration Groups = new();
         private string LastProfile, tempstr;
         private List<string> pluginList;
+        private int previousRowIndex,newRowIndex;
 
         private bool Profiles = false, GridSorted = false, AutoUpdate = false, ActiveOnly = false,
             AutoSort = false, isModified = false, LooseFiles, GameExists, devMode = false;
@@ -1301,7 +1302,8 @@ namespace hstCMM
             // Convert screen coordinates to client coordinates
             Point clientPoint = dataGridView1.PointToClient(new Point(e.X, e.Y));
             rowIndexOfItemUnderMouseToDrop = dataGridView1.HitTest(clientPoint.X, clientPoint.Y).RowIndex;
-
+            previousRowIndex = rowIndexFromMouseDown;
+            newRowIndex = rowIndexOfItemUnderMouseToDrop;
             // If the drag operation was a move, remove and insert the row
             if (e.Effect == DragDropEffects.Move)
             {
@@ -1314,6 +1316,17 @@ namespace hstCMM
             }
         }
 
+        private void UndoLastAction()
+        {
+            if (previousRowIndex+newRowIndex == 0)
+                return; // No move to undo
+
+            DataGridViewRow rowToMove = dataGridView1.Rows[newRowIndex];
+            dataGridView1.Rows.RemoveAt(newRowIndex);
+            dataGridView1.Rows.Insert(previousRowIndex, rowToMove);
+            previousRowIndex = newRowIndex = 0;
+            activityLog.WriteLog($"Undo - Row moved: {rowToMove.Cells["PluginName"].Value}");
+        }
         private void dataGridView1_DragEnter(object sender, DragEventArgs e) // Handle drag and drop of files into the DataGridView
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
@@ -1382,9 +1395,17 @@ namespace hstCMM
                     break;
 
                 case Keys.Z:
-                    RunLOOT(true);
-                    dataGridView1.Focus();
+                    if (e.Control) // Detect Ctrl+Z
+                    {
+                        UndoLastAction(); // Your custom undo logic
+                    }
+                    else
+                    {
+                        RunLOOT(true);
+                        dataGridView1.Focus();
+                    }
                     break;
+
 
                 case Keys.F12:
                     MessageBox.Show("F12 pressed, operation cancelled");
@@ -3513,7 +3534,6 @@ namespace hstCMM
 
         private void CreationsUpdateStart()
         {
-
             if (!Properties.Settings.Default.CreationsUpdate) // Catalog Auto Restore off etc.
             {
                 cretionsUpdateToolStripMenuItem.Checked = true;
@@ -3539,6 +3559,7 @@ namespace hstCMM
                 activityLog.WriteLog("Creations Update Cancelled");
             }
         }
+
         private void prepareForCreationsUpdateToolStripMenuItem_Click(object sender, EventArgs e) // Workaround for Creations update re-downloading mods
         {
             CreationsUpdateStart();
@@ -5220,7 +5241,6 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 // Sort indices descending for safe removal
                 rowsToRemove.Sort((r1, r2) => r2.Index.CompareTo(r1.Index));
 
-
                 var removalCounter = rowsToRemove.Count;
 
                 // Batch UI updates every 10 removals to reduce overhead
@@ -5533,7 +5553,8 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
         private void toolStripMenuDeleteLine_Click(object sender, EventArgs e)
         {
-            dataGridView1.Rows.RemoveAt(dataGridView1.CurrentRow.Index);
+            if (dataGridView1.CurrentRow is not null)
+                dataGridView1.Rows.RemoveAt(dataGridView1.CurrentRow.Index);
         }
 
         private void toolStripMenuDescription_Click(object sender, EventArgs e)
@@ -6913,7 +6934,9 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
         private void btnCreationsUpdate_Click(object sender, EventArgs e)
         {
+            bool cUpdate = Properties.Settings.Default.CreationsUpdate;
             CreationsUpdateStart();
+            btnCreationsUpdate.Font = new System.Drawing.Font(btnCreationsUpdate.Font, cUpdate ? FontStyle.Regular : FontStyle.Bold);
         }
     }
 }

@@ -63,18 +63,18 @@
     <OutputPath>bin\x64\Release\</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <IsPublishable>False</IsPublishable>
+    <IsPublishable>True</IsPublishable>
     <Optimize>False</Optimize>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IsPublishable>False</IsPublishable>
+    <IsPublishable>True</IsPublishable>
     <Optimize>False</Optimize>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <IsPublishable>False</IsPublishable>
+    <IsPublishable>True</IsPublishable>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IsPublishable>False</IsPublishable>
+    <IsPublishable>True</IsPublishable>
   </PropertyGroup>
 	<PropertyGroup>
 		<NoWarn>$(NoWarn);WFO5001</NoWarn>
