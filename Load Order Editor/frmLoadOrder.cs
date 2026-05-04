@@ -44,7 +44,7 @@ namespace hstCMM
         private Tools.Configuration Groups = new();
         private string LastProfile, tempstr;
         private List<string> pluginList;
-        private int previousRowIndex,newRowIndex;
+        private int previousRowIndex, newRowIndex;
 
         private bool Profiles = false, GridSorted = false, AutoUpdate = false, ActiveOnly = false,
             AutoSort = false, isModified = false, LooseFiles, GameExists, devMode = false;
@@ -1311,22 +1311,29 @@ namespace hstCMM
                 dataGridView1.Rows.RemoveAt(rowIndexFromMouseDown);
                 dataGridView1.Rows.Insert(rowIndexOfItemUnderMouseToDrop, rowToMove);
                 isModified = true;
-                activityLog.WriteLog($"Row moved: {rowToMove.Cells["PluginName"].Value}");
                 SavePlugins();
+                activityLog.WriteLog($"Row moved: {rowToMove.Cells["PluginName"].Value}");
             }
         }
 
         private void UndoLastAction()
         {
-            if (previousRowIndex+newRowIndex == 0)
+            // Only handles 1 level of undo row move
+            if (previousRowIndex + newRowIndex == 0)
+            {
+                activityLog.WriteLog("Nothing to undo");
                 return; // No move to undo
+            }
 
             DataGridViewRow rowToMove = dataGridView1.Rows[newRowIndex];
             dataGridView1.Rows.RemoveAt(newRowIndex);
             dataGridView1.Rows.Insert(previousRowIndex, rowToMove);
             previousRowIndex = newRowIndex = 0;
+            isModified = true;
+            SavePlugins();
             activityLog.WriteLog($"Undo - Row moved: {rowToMove.Cells["PluginName"].Value}");
         }
+
         private void dataGridView1_DragEnter(object sender, DragEventArgs e) // Handle drag and drop of files into the DataGridView
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
@@ -1405,7 +1412,6 @@ namespace hstCMM
                         dataGridView1.Focus();
                     }
                     break;
-
 
                 case Keys.F12:
                     MessageBox.Show("F12 pressed, operation cancelled");
