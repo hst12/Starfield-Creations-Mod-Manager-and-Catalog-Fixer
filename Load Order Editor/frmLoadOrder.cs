@@ -91,8 +91,10 @@ namespace hstCMM
             if (Properties.Settings.Default.AutoCheck && GameExists)
             {
                 tempstr = catalogFixer.CatalogStatus;
-                if (tempstr != null && catalogFixer.CatalogStatus.Contains("Error"))
+                if (tempstr != null && catalogFixer.CatalogStatus.Contains("Error",StringComparison.OrdinalIgnoreCase))
                     catalogFixer.Show(); // Show catalog fixer if catalog broken
+                if (!Properties.Settings.Default.AutoRestore)
+                    activityLog.WriteLog("Catalog autorestore is off");
             }
 
             LooseFilesCheck(); // Check if loose files are enabled
@@ -1312,7 +1314,9 @@ namespace hstCMM
                 dataGridView1.Rows.Insert(rowIndexOfItemUnderMouseToDrop, rowToMove);
                 isModified = true;
                 SavePlugins();
-                activityLog.WriteLog($"Row moved: {rowToMove.Cells["PluginName"].Value}");
+                tempstr = rowToMove.Cells["PluginName"].Value.ToString();
+                sbar(tempstr + " moved");
+                activityLog.WriteLog($"Row moved: {tempstr}");
             }
         }
 
@@ -1322,6 +1326,7 @@ namespace hstCMM
             if (previousRowIndex + newRowIndex == 0)
             {
                 activityLog.WriteLog("Nothing to undo");
+                sbar("Nothing to undo");
                 return; // No move to undo
             }
 
@@ -1331,7 +1336,9 @@ namespace hstCMM
             previousRowIndex = newRowIndex = 0;
             isModified = true;
             SavePlugins();
-            activityLog.WriteLog($"Undo - Row moved: {rowToMove.Cells["PluginName"].Value}");
+            tempstr = rowToMove.Cells["PluginName"].Value.ToString();
+            sbar(tempstr+" moved back");
+            activityLog.WriteLog($"Undo - Row moved back: {tempstr}");
         }
 
         private void dataGridView1_DragEnter(object sender, DragEventArgs e) // Handle drag and drop of files into the DataGridView

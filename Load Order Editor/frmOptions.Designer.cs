@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmOptions));
             btnLOOT = new System.Windows.Forms.Button();
             btnMO2 = new System.Windows.Forms.Button();
             btnVortex = new System.Windows.Forms.Button();
@@ -60,54 +61,35 @@
             // 
             // btnLOOT
             // 
-            btnLOOT.AutoSize = true;
-            btnLOOT.Location = new System.Drawing.Point(3, 87);
+            resources.ApplyResources(btnLOOT, "btnLOOT");
             btnLOOT.Name = "btnLOOT";
-            btnLOOT.Size = new System.Drawing.Size(209, 42);
-            btnLOOT.TabIndex = 2;
-            btnLOOT.Text = "LOOT";
             btnLOOT.UseVisualStyleBackColor = true;
             btnLOOT.Click += btnLOOT_Click;
             // 
             // btnMO2
             // 
-            btnMO2.AutoSize = true;
-            btnMO2.Location = new System.Drawing.Point(3, 139);
+            resources.ApplyResources(btnMO2, "btnMO2");
             btnMO2.Name = "btnMO2";
-            btnMO2.Size = new System.Drawing.Size(209, 42);
-            btnMO2.TabIndex = 4;
-            btnMO2.Text = "Mod Organzser 2";
             btnMO2.UseVisualStyleBackColor = true;
             btnMO2.Click += btnMO2_Click;
             // 
             // btnVortex
             // 
-            btnVortex.AutoSize = true;
-            btnVortex.Location = new System.Drawing.Point(3, 191);
+            resources.ApplyResources(btnVortex, "btnVortex");
             btnVortex.Name = "btnVortex";
-            btnVortex.Size = new System.Drawing.Size(209, 42);
-            btnVortex.TabIndex = 6;
-            btnVortex.Text = "Vortex";
             btnVortex.UseVisualStyleBackColor = true;
             btnVortex.Click += btnVortex_Click;
             // 
             // btnxEdit
             // 
-            btnxEdit.AutoSize = true;
-            btnxEdit.Location = new System.Drawing.Point(3, 243);
+            resources.ApplyResources(btnxEdit, "btnxEdit");
             btnxEdit.Name = "btnxEdit";
-            btnxEdit.Size = new System.Drawing.Size(209, 42);
-            btnxEdit.TabIndex = 8;
-            btnxEdit.Text = "xEdit";
             btnxEdit.UseVisualStyleBackColor = true;
             btnxEdit.Click += btnxEdit_Click;
             // 
             // tableLayoutPanel1
             // 
-            tableLayoutPanel1.ColumnCount = 3;
-            tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            resources.ApplyResources(tableLayoutPanel1, "tableLayoutPanel1");
             tableLayoutPanel1.Controls.Add(btnFont, 0, 7);
             tableLayoutPanel1.Controls.Add(btnGame, 0, 1);
             tableLayoutPanel1.Controls.Add(txtGame, 1, 1);
@@ -132,233 +114,140 @@
             tableLayoutPanel1.Controls.Add(btnClearMO2, 2, 3);
             tableLayoutPanel1.Controls.Add(btnClearVortex, 2, 4);
             tableLayoutPanel1.Controls.Add(btnClearxEdit, 2, 5);
-            tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
-            tableLayoutPanel1.RowCount = 11;
-            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            tableLayoutPanel1.Size = new System.Drawing.Size(1062, 493);
-            tableLayoutPanel1.TabIndex = 5;
             // 
             // btnFont
             // 
-            btnFont.AutoSize = true;
-            btnFont.Location = new System.Drawing.Point(3, 327);
+            resources.ApplyResources(btnFont, "btnFont");
             btnFont.Name = "btnFont";
-            btnFont.Size = new System.Drawing.Size(209, 42);
-            btnFont.TabIndex = 10;
-            btnFont.Text = "Font Size";
             btnFont.UseVisualStyleBackColor = true;
             btnFont.Click += btnFont_Click;
             // 
             // btnGame
             // 
-            btnGame.AutoSize = true;
-            btnGame.Location = new System.Drawing.Point(3, 35);
+            resources.ApplyResources(btnGame, "btnGame");
             btnGame.Name = "btnGame";
-            btnGame.Size = new System.Drawing.Size(209, 42);
-            btnGame.TabIndex = 0;
-            btnGame.Text = "Game";
             btnGame.UseVisualStyleBackColor = true;
             btnGame.Click += btnGame_Click;
             // 
             // txtGame
             // 
             txtGame.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            txtGame.Dock = System.Windows.Forms.DockStyle.Fill;
-            txtGame.Location = new System.Drawing.Point(218, 35);
+            resources.ApplyResources(txtGame, "txtGame");
             txtGame.Name = "txtGame";
             txtGame.ReadOnly = true;
-            txtGame.Size = new System.Drawing.Size(685, 32);
-            txtGame.TabIndex = 1;
             txtGame.TabStop = false;
             // 
             // txtLOOT
             // 
             txtLOOT.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            txtLOOT.Dock = System.Windows.Forms.DockStyle.Fill;
-            txtLOOT.Location = new System.Drawing.Point(218, 87);
+            resources.ApplyResources(txtLOOT, "txtLOOT");
             txtLOOT.Name = "txtLOOT";
             txtLOOT.ReadOnly = true;
-            txtLOOT.Size = new System.Drawing.Size(685, 32);
-            txtLOOT.TabIndex = 3;
             txtLOOT.TabStop = false;
             // 
             // txtMO2
             // 
             txtMO2.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            txtMO2.Dock = System.Windows.Forms.DockStyle.Fill;
-            txtMO2.Location = new System.Drawing.Point(218, 139);
+            resources.ApplyResources(txtMO2, "txtMO2");
             txtMO2.Name = "txtMO2";
             txtMO2.ReadOnly = true;
-            txtMO2.Size = new System.Drawing.Size(685, 32);
-            txtMO2.TabIndex = 5;
             txtMO2.TabStop = false;
             // 
             // txtVortex
             // 
             txtVortex.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            txtVortex.Dock = System.Windows.Forms.DockStyle.Fill;
-            txtVortex.Location = new System.Drawing.Point(218, 191);
+            resources.ApplyResources(txtVortex, "txtVortex");
             txtVortex.Name = "txtVortex";
             txtVortex.ReadOnly = true;
-            txtVortex.Size = new System.Drawing.Size(685, 32);
-            txtVortex.TabIndex = 7;
             txtVortex.TabStop = false;
             // 
             // txtxEdit
             // 
             txtxEdit.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            txtxEdit.Dock = System.Windows.Forms.DockStyle.Fill;
-            txtxEdit.Location = new System.Drawing.Point(218, 243);
+            resources.ApplyResources(txtxEdit, "txtxEdit");
             txtxEdit.Name = "txtxEdit";
             txtxEdit.ReadOnly = true;
-            txtxEdit.Size = new System.Drawing.Size(685, 32);
-            txtxEdit.TabIndex = 9;
             txtxEdit.TabStop = false;
             // 
             // label1
             // 
-            label1.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            label1.AutoSize = true;
-            label1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            label1.Location = new System.Drawing.Point(3, 0);
+            resources.ApplyResources(label1, "label1");
             label1.Name = "label1";
-            label1.Size = new System.Drawing.Size(209, 32);
-            label1.TabIndex = 11;
-            label1.Text = "Directories";
-            label1.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             // 
             // label2
             // 
-            label2.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            label2.AutoSize = true;
-            label2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            label2.Location = new System.Drawing.Point(3, 292);
+            resources.ApplyResources(label2, "label2");
             label2.Name = "label2";
-            label2.Size = new System.Drawing.Size(209, 32);
-            label2.TabIndex = 12;
-            label2.Text = "Other Options";
-            label2.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             // 
             // btnDetect
             // 
-            btnDetect.AutoSize = true;
-            btnDetect.Location = new System.Drawing.Point(218, 327);
+            resources.ApplyResources(btnDetect, "btnDetect");
             btnDetect.Name = "btnDetect";
-            btnDetect.Size = new System.Drawing.Size(363, 42);
-            btnDetect.TabIndex = 11;
-            btnDetect.Text = "Detect Game Path - Steam Only";
             btnDetect.UseVisualStyleBackColor = true;
             btnDetect.Click += btnDetect_Click;
             // 
             // btnOk
             // 
-            btnOk.Location = new System.Drawing.Point(3, 439);
+            resources.ApplyResources(btnOk, "btnOk");
             btnOk.Name = "btnOk";
-            btnOk.Size = new System.Drawing.Size(209, 46);
-            btnOk.TabIndex = 12;
-            btnOk.Text = "Ok";
             btnOk.UseVisualStyleBackColor = true;
             btnOk.Click += btnOk_Click;
             // 
             // btnCancel
             // 
-            btnCancel.Location = new System.Drawing.Point(218, 439);
+            resources.ApplyResources(btnCancel, "btnCancel");
             btnCancel.Name = "btnCancel";
-            btnCancel.Size = new System.Drawing.Size(209, 46);
-            btnCancel.TabIndex = 13;
-            btnCancel.Text = "Cancel";
             btnCancel.UseVisualStyleBackColor = true;
             btnCancel.Click += btnCancel_Click;
             // 
             // label3
             // 
-            label3.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            label3.AutoSize = true;
-            label3.Location = new System.Drawing.Point(3, 372);
+            resources.ApplyResources(label3, "label3");
             label3.Name = "label3";
-            label3.Size = new System.Drawing.Size(209, 32);
-            label3.TabIndex = 14;
-            label3.Text = "Creation Kit";
-            label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblCK
             // 
-            lblCK.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
-            lblCK.AutoSize = true;
-            lblCK.Location = new System.Drawing.Point(218, 372);
+            resources.ApplyResources(lblCK, "lblCK");
             lblCK.Name = "lblCK";
-            lblCK.Size = new System.Drawing.Size(126, 32);
-            lblCK.TabIndex = 15;
-            lblCK.Text = "Undefined";
-            lblCK.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblSpacer
             // 
-            lblSpacer.AutoSize = true;
-            lblSpacer.Location = new System.Drawing.Point(3, 404);
+            resources.ApplyResources(lblSpacer, "lblSpacer");
             lblSpacer.Name = "lblSpacer";
-            lblSpacer.Size = new System.Drawing.Size(0, 32);
-            lblSpacer.TabIndex = 16;
             // 
             // btnClearGame
             // 
-            btnClearGame.Location = new System.Drawing.Point(909, 35);
+            resources.ApplyResources(btnClearGame, "btnClearGame");
             btnClearGame.Name = "btnClearGame";
-            btnClearGame.Size = new System.Drawing.Size(150, 46);
-            btnClearGame.TabIndex = 17;
-            btnClearGame.Text = "Clear";
             btnClearGame.UseVisualStyleBackColor = true;
             btnClearGame.Click += btnClearGame_Click;
             // 
             // btnClearLOOT
             // 
-            btnClearLOOT.Location = new System.Drawing.Point(909, 87);
+            resources.ApplyResources(btnClearLOOT, "btnClearLOOT");
             btnClearLOOT.Name = "btnClearLOOT";
-            btnClearLOOT.Size = new System.Drawing.Size(150, 46);
-            btnClearLOOT.TabIndex = 18;
-            btnClearLOOT.Text = "Clear";
             btnClearLOOT.UseVisualStyleBackColor = true;
             btnClearLOOT.Click += btnClearLOOT_Click;
             // 
             // btnClearMO2
             // 
-            btnClearMO2.Location = new System.Drawing.Point(909, 139);
+            resources.ApplyResources(btnClearMO2, "btnClearMO2");
             btnClearMO2.Name = "btnClearMO2";
-            btnClearMO2.Size = new System.Drawing.Size(150, 46);
-            btnClearMO2.TabIndex = 19;
-            btnClearMO2.Text = "Clear";
             btnClearMO2.UseVisualStyleBackColor = true;
             btnClearMO2.Click += btnClearMO2_Click;
             // 
             // btnClearVortex
             // 
-            btnClearVortex.Location = new System.Drawing.Point(909, 191);
+            resources.ApplyResources(btnClearVortex, "btnClearVortex");
             btnClearVortex.Name = "btnClearVortex";
-            btnClearVortex.Size = new System.Drawing.Size(150, 46);
-            btnClearVortex.TabIndex = 20;
-            btnClearVortex.Text = "Clear";
             btnClearVortex.UseVisualStyleBackColor = true;
             btnClearVortex.Click += btnClearVortex_Click;
             // 
             // btnClearxEdit
             // 
-            btnClearxEdit.Location = new System.Drawing.Point(909, 243);
+            resources.ApplyResources(btnClearxEdit, "btnClearxEdit");
             btnClearxEdit.Name = "btnClearxEdit";
-            btnClearxEdit.Size = new System.Drawing.Size(150, 46);
-            btnClearxEdit.TabIndex = 21;
-            btnClearxEdit.Text = "Clear";
             btnClearxEdit.UseVisualStyleBackColor = true;
             btnClearxEdit.Click += btnClearxEdit_Click;
             // 
@@ -368,13 +257,10 @@
             // 
             // frmOptions
             // 
-            AutoScaleDimensions = new System.Drawing.SizeF(13F, 32F);
+            resources.ApplyResources(this, "$this");
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(1062, 493);
             Controls.Add(tableLayoutPanel1);
             Name = "frmOptions";
-            StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            Text = "Options";
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
             ResumeLayout(false);
