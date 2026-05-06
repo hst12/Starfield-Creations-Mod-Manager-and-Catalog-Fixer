@@ -91,7 +91,7 @@ namespace hstCMM
             if (Properties.Settings.Default.AutoCheck && GameExists)
             {
                 tempstr = catalogFixer.CatalogStatus;
-                if (tempstr != null && catalogFixer.CatalogStatus.Contains("Error",StringComparison.OrdinalIgnoreCase))
+                if (tempstr != null && catalogFixer.CatalogStatus.Contains("Error", StringComparison.OrdinalIgnoreCase))
                     catalogFixer.Show(); // Show catalog fixer if catalog broken
                 if (!Properties.Settings.Default.AutoRestore)
                     activityLog.WriteLog("Catalog autorestore is off");
@@ -1337,7 +1337,7 @@ namespace hstCMM
             isModified = true;
             SavePlugins();
             tempstr = rowToMove.Cells["PluginName"].Value.ToString();
-            sbar(tempstr+" moved back");
+            sbar(tempstr + " moved back");
             activityLog.WriteLog($"Undo - Row moved back: {tempstr}");
         }
 
@@ -5438,15 +5438,11 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 {
                     LogError(ex.Message);
                 }
-
-                var dlgResult = Tools.ConfirmAction("Run update/sort on all profiles", "Update All Profiles?",
-                        MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
-                if (dlgResult == DialogResult.Yes)
-                    UpdateAllProfiles();
-
-                if (dlgResult == DialogResult.Cancel)
-                    return;
             }
+
+            if (Tools.ConfirmAction("Run update/sort on all profiles", "Update All Profiles?",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                UpdateAllProfiles();
         }
 
         private void toolStripMenuAuthorVersion_Click(object sender, EventArgs e) // View author column
