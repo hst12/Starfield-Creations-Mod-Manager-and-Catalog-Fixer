@@ -2633,6 +2633,7 @@ namespace hstCMM
                         LogError("Extraction failed: " + ex.Message);
                         MessageBox.Show("Extraction failed: " + ex.Message);
                         loadScreen.Close();
+                        sbar2("Extraction failed: " + ex.Message);
                         return false;
                     }
 
@@ -2782,11 +2783,9 @@ namespace hstCMM
             }
 
             if (filesInstalled > 0)
-            {
                 UpdatePlugins();
-                sbar2($"Files installed: {filesInstalled}");
-            }
 
+            sbar2($"Files installed: {filesInstalled}");
             activityLog.WriteLog($"Mod files installed: {filesInstalled}");
 
             return true;
@@ -4310,6 +4309,8 @@ namespace hstCMM
                 using (Process process = Process.Start(startInfo))
                 {
                     process.WaitForExit();
+                    /*int returnCode = process.ExitCode;
+                    activityLog.WriteLog($"LOOT exited with code: {returnCode}");*/
                     ReadLOOTGroups();
                 }
 
