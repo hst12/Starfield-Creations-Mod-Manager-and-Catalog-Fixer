@@ -2651,7 +2651,7 @@
             btnRefresh.Size = new System.Drawing.Size(103, 42);
             btnRefresh.TabIndex = 13;
             btnRefresh.Text = "Refresh";
-            toolTip1.SetToolTip(btnRefresh, "Reload Plugins (F5)");
+            toolTip1.SetToolTip(btnRefresh, "Reload Plugins (F5 or C)");
             btnRefresh.UseVisualStyleBackColor = true;
             btnRefresh.Click += btnRefresh_Click;
             // 
@@ -2681,7 +2681,7 @@
             btnLoot.Size = new System.Drawing.Size(67, 42);
             btnLoot.TabIndex = 15;
             btnLoot.Text = "Sort";
-            toolTip1.SetToolTip(btnLoot, "LOOT Autosort");
+            toolTip1.SetToolTip(btnLoot, "LOOT Autosort (Z)");
             btnLoot.UseVisualStyleBackColor = true;
             btnLoot.Click += btnLoot_Click;
             // 
