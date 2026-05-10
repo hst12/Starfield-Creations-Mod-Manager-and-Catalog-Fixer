@@ -6948,5 +6948,10 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             CreationsUpdateStart();
             btnCreationsUpdate.Font = new System.Drawing.Font(btnCreationsUpdate.Font, cUpdate ? FontStyle.Regular : FontStyle.Bold);
         }
+
+        private void undoRowMoveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            UndoLastAction();
+        }
     }
 }
