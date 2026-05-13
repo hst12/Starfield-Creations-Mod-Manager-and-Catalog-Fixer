@@ -6942,12 +6942,6 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             Tools.OpenFolder(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName, "Data\\Textures\\Photos"));
         }
 
-        private void btnCreationsUpdate_Click(object sender, EventArgs e)
-        {
-            bool cUpdate = Properties.Settings.Default.CreationsUpdate;
-            CreationsUpdateStart();
-            btnCreationsUpdate.Font = new System.Drawing.Font(btnCreationsUpdate.Font, cUpdate ? FontStyle.Regular : FontStyle.Bold);
-        }
 
         private void undoRowMoveToolStripMenuItem_Click(object sender, EventArgs e)
         {
