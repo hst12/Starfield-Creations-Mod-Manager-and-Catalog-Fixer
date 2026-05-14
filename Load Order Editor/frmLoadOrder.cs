@@ -3570,7 +3570,8 @@ namespace hstCMM
                 cretionsUpdateToolStripMenuItem.Checked = false; // Cancel Creations update
                 Properties.Settings.Default.CreationsUpdate = false;
                 Properties.Settings.Default.AutoRestore = true;
-                MessageBox.Show("Catalog Auto Restore set to on", "Creations Update Cancelled");
+                MessageBox.Show("Catalog Auto Restore set to on", "Creations Update Cancelled",
+                    MessageBoxButtons.OK,MessageBoxIcon.Information);
                 activityLog.WriteLog("Creations Update Cancelled");
             }
         }
@@ -6949,6 +6950,11 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
         private void undoRowMoveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             UndoLastAction();
+        }
+
+        private void creationsUpdateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CreationsUpdateStart();
         }
     }
 }
