@@ -2520,7 +2520,7 @@
             btnToggleMod.Size = new System.Drawing.Size(41, 42);
             btnToggleMod.TabIndex = 5;
             btnToggleMod.Text = "E";
-            toolTip1.SetToolTip(btnToggleMod, "Mod Enable/Disable (Space or E)");
+            toolTip1.SetToolTip(btnToggleMod, "Mod Enable/Disable (Space, E or double-click)");
             btnToggleMod.UseVisualStyleBackColor = true;
             btnToggleMod.Click += btnToggleMod_Click;
             // 

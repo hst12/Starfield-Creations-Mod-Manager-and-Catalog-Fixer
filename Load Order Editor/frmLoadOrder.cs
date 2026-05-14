@@ -462,7 +462,7 @@ namespace hstCMM
             sbar4(showAll ? "All mods shown" : "Active mods only");
             btnActiveOnly.Font = new System.Drawing.Font(btnActiveOnly.Font, ActiveOnly ? FontStyle.Bold : FontStyle.Regular);
             ResizeForm();
-            if (dataGridView1.CurrentRow != null) // Keep the current row in view after toggling
+            if (dataGridView1.CurrentRow != null) // Keep the current row in view after turning filter off
                 dataGridView1.FirstDisplayedScrollingRowIndex = dataGridView1.CurrentRow.Index;
         }
 
