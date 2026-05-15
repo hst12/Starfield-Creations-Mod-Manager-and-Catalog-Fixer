@@ -556,7 +556,7 @@ namespace hstCMM
                     richTextBox2.AppendText($"Checking {kvp.Value.Title}, {versionStr}\n");
 
                 // Check for any invalid characters in the version (allows letters, digits, or '.').
-                bool fixVersion = versionStr.Any(ch => !char.IsLetterOrDigit(ch) && ch != '.');
+                bool fixVersion = versionStr.Any(ch => !char.IsLetterOrDigit(ch) && ch != '.' && ch!='_');
 
                 // If the version does not match the header, perform the timestamp check.
                 if (versionStr != Tools.CatalogVersion)
@@ -655,9 +655,9 @@ namespace hstCMM
                     {
                         for (int i = 0; i < kvp.Value.Files.Length; i++)
                         {
-                            if ((kvp.Value.Files[i].ToLower().IndexOf(".esm") > 0
-                                || kvp.Value.Files[i].ToLower().IndexOf(".esp") > 0)
-                                && !kvp.Value.Files[i].ToLower().StartsWith("blueprintships-")) // Look for .esm or .esp files
+                            if ((kvp.Value.Files[i].IndexOf(".esm") > 0
+                                || kvp.Value.Files[i].IndexOf(".esp") > 0)
+                                && !kvp.Value.Files[i].StartsWith("blueprintships-")) // Look for .esm or .esp files
                             {
                                 CreationsPlugin.Add(kvp.Value.Files[i]);
                                 CreationsGUID.Add(kvp.Key);
@@ -665,7 +665,7 @@ namespace hstCMM
                                 if (Verbose)
                                     richTextBox2.Text += kvp.Value.Title + "\n";
                             }
-                            if (kvp.Value.Files[i].ToLower().IndexOf(".esp") > 0)
+                            if (kvp.Value.Files[i].IndexOf(".esp") > 0)
                             {
                                 richTextBox2.Text += "\nWarning - esp file found in catalog file - " + kvp.Value.Files[i] + "\n";
                                 activityLog.WriteLog($"Warning - esp file found in catalog file - {kvp.Value.Files[i]}");
@@ -688,7 +688,7 @@ namespace hstCMM
                     {
                         for (int i = 0; i < CreationsGUID.Count; i++)
                         {
-                            if (CreationsPlugin[i].ToLower() == missingStrings[index].ToLower())
+                            if (CreationsPlugin[i] == missingStrings[index])
                             {
                                 richTextBox2.Text += "Removing " + CreationsGUID[i] + " " + CreationsTitle[i] + "\n";
                                 activityLog.WriteLog($"Removing {CreationsGUID[i]} {CreationsTitle[i]}");

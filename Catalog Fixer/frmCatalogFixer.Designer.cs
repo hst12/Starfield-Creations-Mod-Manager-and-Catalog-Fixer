@@ -450,7 +450,7 @@
             Margin = new System.Windows.Forms.Padding(4);
             Name = "frmCatalogFixer";
             StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            Text = "Creations Mod Manager";
+            Text = "Creations Mod Manager - Catalog Checker";
             FormClosing += frmStarfieldTools_FormClosing;
             Shown += frmStarfieldTools_Shown;
             statusStrip1.ResumeLayout(false);
