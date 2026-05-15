@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
+using static hstCMM.frmLoadOrder;
 
 namespace hstCMM.Shared // Various functions used by the app
 {
@@ -419,7 +420,7 @@ namespace hstCMM.Shared // Various functions used by the app
                 string line;
                 while ((line = sr.ReadLine()) != null)
                 {
-                    bgsArchives.Add(line.ToLower());
+                    bgsArchives.Add(line);
                 }
             }
             return bgsArchives;
@@ -456,7 +457,7 @@ namespace hstCMM.Shared // Various functions used by the app
         {
             string dataPath = Path.Combine(frmLoadOrder.GamePath, "Data");
             List<string> plugins = new();
-            string[] patterns= {"*.esm","*.esp" };
+            string[] patterns = { "*.esm", "*.esp" };
             try
             {
                 //patterns = GameLibrary.GetById(Game).ModFormats;
@@ -677,7 +678,7 @@ namespace hstCMM.Shared // Various functions used by the app
             public static bool IsValidModExtension(string extension, bool useNewFormat = true)
             {
                 var formats = useNewFormat ? NewModFormat : OldModFormat;
-                return formats.Contains(extension.ToLower());
+                return formats.Contains(extension);
             }
         }
 
@@ -787,6 +788,40 @@ namespace hstCMM.Shared // Various functions used by the app
         {
             public string link { get; set; }
             public string name { get; set; }
+        }
+
+
+        public void CopyDirectory(string sourceDir, string destinationDir)
+        {
+            //ActivityLog activityLog2 = new ActivityLog(Path.Combine(Tools.LocalAppDataPath, "Activity Log.txt"));
+
+            // Get information about the source directory
+            var dir = new DirectoryInfo(sourceDir);
+
+            // Check if the source directory exists
+            if (!dir.Exists)
+            {
+                throw new DirectoryNotFoundException($"Source directory not found: {dir.FullName}");
+            }
+
+            // Create the destination directory
+            Directory.CreateDirectory(destinationDir);
+
+            // Copy files in the source directory to the destination directory
+            foreach (var file in dir.GetFiles())
+            {
+                string targetFilePath = Path.Combine(destinationDir, file.Name);
+                if (Properties.Settings.Default.Log)
+                    activityLog.WriteLog($"Copying {file.FullName} to {targetFilePath}");
+                file.CopyTo(targetFilePath, overwrite: true);
+            }
+
+            // Recursively copy subdirectories
+            foreach (var subDir in dir.GetDirectories())
+            {
+                string newDestinationDir = Path.Combine(destinationDir, subDir.Name);
+                CopyDirectory(subDir.FullName, newDestinationDir);
+            }
         }
     }
 }

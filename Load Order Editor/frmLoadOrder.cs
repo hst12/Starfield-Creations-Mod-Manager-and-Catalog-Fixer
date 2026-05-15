@@ -65,6 +65,9 @@ namespace hstCMM
                 if (arg.Equals("-noauto", StringComparison.InvariantCultureIgnoreCase))
                 {
                     ChangeSettings(false); // Disable auto settings
+                    NoWarn = false;
+                    Properties.Settings.Default.NoWarn = false;
+                    SaveSettings();
                     sbar3("Auto Settings Disabled");
                     activityLog.WriteLog("Auto Settings Disabled via command line");
                 }
@@ -465,7 +468,6 @@ namespace hstCMM
             if (dataGridView1.CurrentRow != null) // Keep the current row in view after turning filter off
                 dataGridView1.FirstDisplayedScrollingRowIndex = dataGridView1.CurrentRow.Index;
         }
-
 
         private void activeOnlyToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -1640,6 +1642,9 @@ namespace hstCMM
                 ActiveOnlyToggle();
             ChangeSettings(false);
             disableAllWarnings();
+            NoWarn = false;
+            Properties.Settings.Default.NoWarn = false;
+            SaveSettings();
             activityLog.WriteLog("Disabling all settings");
             sbar5("");
         }
@@ -2720,7 +2725,7 @@ namespace hstCMM
                 foreach (string dir in sfseDirs)
                 {
                     tempstr = Path.Combine(GamePath, "Data", "SFSE");
-                    CopyDirectory(dir, tempstr);
+                    tools.CopyDirectory(dir, tempstr);
                     filesInstalled++;
                 }
             }
@@ -2746,7 +2751,7 @@ namespace hstCMM
 
                 foreach (var sourceDir in directoriesFound)
                 {
-                    CopyDirectory(sourceDir, Path.Combine(targetDir, dirName));
+                    tools.CopyDirectory(sourceDir, Path.Combine(targetDir, dirName));
                     activityLog.WriteLog($"Copying {sourceDir} to {Path.Combine(targetDir, dirName)}");
                     filesInstalled++;
                 }
@@ -2831,40 +2836,6 @@ namespace hstCMM
                     }
                 }
                 return count;
-            }
-
-            // Local static recursive function to copy an entire directory.
-            static void CopyDirectory(string sourceDir, string destinationDir)
-            {
-                //ActivityLog activityLog2 = new ActivityLog(Path.Combine(Tools.LocalAppDataPath, "Activity Log.txt"));
-
-                // Get information about the source directory
-                var dir = new DirectoryInfo(sourceDir);
-
-                // Check if the source directory exists
-                if (!dir.Exists)
-                {
-                    throw new DirectoryNotFoundException($"Source directory not found: {dir.FullName}");
-                }
-
-                // Create the destination directory
-                Directory.CreateDirectory(destinationDir);
-
-                // Copy files in the source directory to the destination directory
-                foreach (var file in dir.GetFiles())
-                {
-                    string targetFilePath = Path.Combine(destinationDir, file.Name);
-                    if (Properties.Settings.Default.Log)
-                        activityLog.WriteLog($"Copying {file.FullName} to {targetFilePath}");
-                    file.CopyTo(targetFilePath, overwrite: true);
-                }
-
-                // Recursively copy subdirectories
-                foreach (var subDir in dir.GetDirectories())
-                {
-                    string newDestinationDir = Path.Combine(destinationDir, subDir.Name);
-                    CopyDirectory(subDir.FullName, newDestinationDir);
-                }
             }
         }
 
@@ -3571,7 +3542,7 @@ namespace hstCMM
                 Properties.Settings.Default.CreationsUpdate = false;
                 Properties.Settings.Default.AutoRestore = true;
                 MessageBox.Show("Catalog Auto Restore set to on", "Creations Update Cancelled",
-                    MessageBoxButtons.OK,MessageBoxIcon.Information);
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
                 activityLog.WriteLog("Creations Update Cancelled");
             }
         }
@@ -5239,7 +5210,8 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                                     {
                                         try
                                         {
-                                            File.Copy(file, Path.Combine(dataDir, Path.GetFileName(file)), true);
+                                            InstallMod(file);
+                                            //File.Copy(file, Path.Combine(dataDir, Path.GetFileName(file)), true);
                                             activityLog.WriteLog("Copying " + file + " to " + Path.Combine(dataDir, Path.GetFileName(file)));
                                         }
                                         catch (Exception ex)
@@ -6946,7 +6918,6 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             Tools.OpenFolder(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName, "Data\\Textures\\Photos"));
         }
 
-
         private void undoRowMoveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             UndoLastAction();
@@ -6955,6 +6926,116 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
         private void creationsUpdateToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CreationsUpdateStart();
+        }
+
+        private void mergeModsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (ActiveOnly)
+            {
+                MessageBox.Show("Please disable Active Only filter to merge mods.", "Merge Mods - Active Only enabled",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (dataGridView1.SelectedRows.Count < 2) // Must selecte 2 or more mods to merge
+            {
+                MessageBox.Show("Please select 2 or more mods to merge.", $"Merge Mods - {dataGridView1.SelectedRows.Count} selected",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (!File.Exists(Path.Combine(frmLoadOrder.GamePath, @"Tools\Archive2", "Archive2.exe"))) // Check if Archive2.exe exists
+            {
+                MessageBox.Show("Install the Creation Kit.", "Archive2.exe not found", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            var selectedModNames = dataGridView1.SelectedRows
+                .Cast<DataGridViewRow>()
+                .OrderBy(r => r.Index) // sort by row index
+                .Select(r => ((string)r.Cells["PluginName"].Value)
+                 .Substring(0, ((string)r.Cells["PluginName"].Value).Length - 4)) // strip ".esm"
+                .ToList();
+
+            frmGenericTextList adjustMods = new("Mods selected for merge", selectedModNames);
+            adjustMods.ShowDialog();
+            if (returnStatus == 0) // User cancelled at confirmation dialog
+                return;
+            if (Tools.ConfirmAction(
+                @"
+Merging mods will extract the selected mods, combine them and disable the original files.
+
+This function is only meant to be used on mods with empty .esm files",
+                "Merge Mods - Do you want to continue?",
+                MessageBoxButtons.YesNo) == DialogResult.No)
+                return;
+
+            string cmdLine = "";
+            string archive2Path = Path.Combine(GamePath, "Tools", "Archive2", "Archive2.exe");
+            string workingDirectory = $"{GamePath}\\Data";
+            string extactDirectory = Path.Combine(Path.GetTempPath(), "hstCMM");
+
+            CleanUpTempFiles(extactDirectory);
+
+            foreach (var modName in selectedModNames)
+            {
+                foreach (var archiveName in Directory.GetFiles(workingDirectory, modName + "*.ba2"))
+                {
+                    cmdLine = $"\"{archiveName}\" -extract=\"{extactDirectory}\"";
+                    activityLog.WriteLog($"{cmdLine}");
+
+                    ProcessStartInfo startInfo = new()
+                    {
+                        FileName = archive2Path,
+                        Arguments = cmdLine,
+                        WorkingDirectory = workingDirectory
+                    };
+
+                    using (Process process = Process.Start(startInfo))
+                    {
+                        process.WaitForExit();
+                        //process.Start();
+                    }
+                }
+            }
+            // Move extracted files to Documents folder
+            string destDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName, "Data");
+            tools.CopyDirectory(extactDirectory, destDirectory);
+            CleanUpTempFiles(extactDirectory);
+
+            // Disable original mods
+            foreach (var modName in selectedModNames)
+            {
+                foreach (DataGridViewRow row in dataGridView1.Rows)
+                {
+                    string pluginName = row.Cells["PluginName"].Value as string ?? "";
+                    if (pluginName.StartsWith(modName, StringComparison.OrdinalIgnoreCase))
+                    {
+                        row.Cells["ModEnabled"].Value = false;
+                        activityLog.WriteLog($"Disabled {pluginName} after merge");
+                    }
+                }
+            }
+            SavePlugins();
+            ConvertLooseFiles();
+            SyncPlugins();
+            if (AutoSort)
+                RunLOOT(true);
+
+            return;
+
+            // Local function to clean up temp files
+            static void CleanUpTempFiles(string extactDirectory)
+            {
+                if (Directory.Exists(extactDirectory))
+                {
+                    try { Directory.Delete(extactDirectory, true); }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Unable to clear extract directory " + ex.Message);
+                    }
+                }
+            }
         }
     }
 }

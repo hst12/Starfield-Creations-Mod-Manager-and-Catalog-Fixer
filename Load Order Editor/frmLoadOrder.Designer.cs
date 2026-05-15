@@ -67,6 +67,7 @@
             toolStripSeparator31 = new System.Windows.Forms.ToolStripSeparator();
             renameModToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuDuplicateRename = new System.Windows.Forms.ToolStripMenuItem();
+            mergeModsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator18 = new System.Windows.Forms.ToolStripSeparator();
             archiveModToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             updateArchivedModsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -536,9 +537,9 @@
             // contextMenuDatagrid
             // 
             contextMenuDatagrid.ImageScalingSize = new System.Drawing.Size(32, 32);
-            contextMenuDatagrid.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuEnableDisable, toolStripMenuAddToProfile, blockUnblockToolStripMenuItem, toolStripSeparator10, toolStripMenuUp, toolStripMenuDown, toolStripMenuTop, toolStripMenuBottom, toolStripSeparator4, toolStripMenAddRemoveContext, toolStripMenuDelContext, toolStripSeparator32, toolStripMenuInstallMod, toolStripMenuUninstallContext, toolStripSeparator36, modContentsToolStripMenuItem, toolStripMenuViewWebSite, toolStripSeparator31, renameModToolStripMenuItem, toolStripMenuDuplicateRename, toolStripSeparator18, archiveModToolStripMenuItem, updateArchivedModsToolStripMenuItem, toolStripSeparator11, toolStripMenuLootAutoSort, toolStripSeparator12, toolStripMenuRefresh });
+            contextMenuDatagrid.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuEnableDisable, toolStripMenuAddToProfile, blockUnblockToolStripMenuItem, toolStripSeparator10, toolStripMenuUp, toolStripMenuDown, toolStripMenuTop, toolStripMenuBottom, toolStripSeparator4, toolStripMenAddRemoveContext, toolStripMenuDelContext, toolStripSeparator32, toolStripMenuInstallMod, toolStripMenuUninstallContext, toolStripSeparator36, modContentsToolStripMenuItem, toolStripMenuViewWebSite, toolStripSeparator31, renameModToolStripMenuItem, toolStripMenuDuplicateRename, mergeModsToolStripMenuItem, toolStripSeparator18, archiveModToolStripMenuItem, updateArchivedModsToolStripMenuItem, toolStripSeparator11, toolStripMenuLootAutoSort, toolStripSeparator12, toolStripMenuRefresh });
             contextMenuDatagrid.Name = "contextMenuDatagrid";
-            contextMenuDatagrid.Size = new System.Drawing.Size(625, 812);
+            contextMenuDatagrid.Size = new System.Drawing.Size(625, 852);
             // 
             // toolStripMenuEnableDisable
             // 
@@ -671,6 +672,13 @@
             toolStripMenuDuplicateRename.Size = new System.Drawing.Size(624, 40);
             toolStripMenuDuplicateRename.Text = "Duplicate and Rename Mod";
             toolStripMenuDuplicateRename.Click += toolStripMenuDuplicateRename_Click;
+            // 
+            // mergeModsToolStripMenuItem
+            // 
+            mergeModsToolStripMenuItem.Name = "mergeModsToolStripMenuItem";
+            mergeModsToolStripMenuItem.Size = new System.Drawing.Size(624, 40);
+            mergeModsToolStripMenuItem.Text = "Merge Mods";
+            mergeModsToolStripMenuItem.Click += mergeModsToolStripMenuItem_Click;
             // 
             // toolStripSeparator18
             // 
@@ -3160,5 +3168,6 @@
         private System.Windows.Forms.ToolStripMenuItem undoRowMoveToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem creationsUpdateToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator61;
+        private System.Windows.Forms.ToolStripMenuItem mergeModsToolStripMenuItem;
     }
 }
