@@ -1052,25 +1052,25 @@ namespace hstCMM
                 return 0;
 
             // Build a list of all plugins excluding base game files
-            plugins = pluginList.Select(s => s[..^4].ToLower()).ToList();
+            plugins = pluginList.Select(s => s[..^4]).ToList();
 
             foreach (string file in Directory.EnumerateFiles(Path.Combine(GamePath, "Data"), "*.ba2", SearchOption.TopDirectoryOnly))
             // Build a list of all .ba 2archives
             {
-                archives.Add(Path.GetFileName(file).ToLower());
+                archives.Add(Path.GetFileName(file));
             }
 
             foreach (string file in Directory.EnumerateFiles(Path.Combine(GamePath, "Data"), "*.bsa", SearchOption.TopDirectoryOnly))
             // Build a list of all .bsa archives
             {
-                archives.Add(Path.GetFileName(file).ToLower());
+                archives.Add(Path.GetFileName(file));
             }
 
             try
             {
                 List<string> modArchives = archives.Except(tools.BGSArchives()) // Exclude BGS Archives
-                    .Select(s => s.ToLower().Replace(".ba2", string.Empty)) // Remove ".ba2" from archive names
-                    .Select(s => s.ToLower().Replace(".bsa", string.Empty)) // Remove ".bsa" from archive names
+                    .Select(s => s.Replace(".ba2", string.Empty)) // Remove ".ba2" from archive names
+                    .Select(s => s.Replace(".bsa", string.Empty)) // Remove ".bsa" from archive names
                     .ToList();
 
                 foreach (var archive in modArchives) // Check if archive is orphaned
@@ -2089,7 +2089,6 @@ namespace hstCMM
                 InitialDirectory = Tools.CommonFolder,
                 Filter = "Txt File|*.txt",
                 Title = "Create Game Archives.txt",
-                //FileName = GameFolder + " Archives.txt";
                 FileName = Tools.GameLibrary.GetById(Game).ExcludeFile + " Archives.txt"
             };
 
