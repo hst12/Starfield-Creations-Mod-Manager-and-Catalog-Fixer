@@ -40,6 +40,7 @@ namespace hstCMM.Shared // Various functions used by the app
 "textures\\items",
 "textures\\setdressing",
 "textures\\ships",
+"textures\\sky",
 "geometries",
 "scripts",
 "materials",

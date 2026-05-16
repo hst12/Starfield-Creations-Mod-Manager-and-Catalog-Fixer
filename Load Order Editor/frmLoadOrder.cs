@@ -1210,11 +1210,11 @@ namespace hstCMM
             frmCacheConfig.Show();
         }
 
-        private void ConvertLooseFiles(string esm = "")
+        private void ConvertLooseFiles(string esm = "", bool useDocuments = true)
         {
             activityLog.WriteLog("Converting loose files to archive(s)");
             returnStatus = 0;
-            frmConvertLooseFiles frmCLF = new frmConvertLooseFiles(esm);
+            frmConvertLooseFiles frmCLF = new frmConvertLooseFiles(esm, useDocuments);
             frmCLF.StartPosition = FormStartPosition.CenterScreen;
             frmCLF.ShowDialog();
 
@@ -4523,7 +4523,7 @@ namespace hstCMM
             }
 
             // Notify that the search query was not found.
-            sbar2($"{txtSearchBox.Text} not found");
+            sbar($"{txtSearchBox.Text} not found");
         }
 
         private void setDirectoryToolStripMenuItem_Click(object sender, EventArgs e)
@@ -6719,15 +6719,12 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
         private void testToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            List<string> pluginSizes = Directory.GetFiles(Path.Combine(GamePath, "Data"))
-                .Where(f => f.EndsWith(".esm", StringComparison.OrdinalIgnoreCase))
-                .Select(f => new FileInfo(f))
-                .Where(fi => fi.Length == 77)
-                .Select(fi => $"{fi.Name} - {fi.Length} bytes")
-                .ToList();
-
-            frmGenericTextList displayList = new("Plugin Sizes", pluginSizes);
-            displayList.Show();
+            int index = cmbProfile.Items.IndexOf(Properties.Settings.Default.LastProfile);
+            string loText = Path.Combine(Tools.GameAppData, "Plugins.txt");
+            string profileFolder = Path.Combine(Properties.Settings.Default.ProfileFolder, GameName,  cmbProfile.Items[index].ToString());
+            var x = tools.GetPluginList(Game);
+            activityLog.WriteLog(loText + " " + profileFolder);
+            File.Copy(loText, profileFolder,true);
         }
 
         private void sFSEPluginsEnableDisableToolStripMenuItem_Click(object sender, EventArgs e)
@@ -6977,7 +6974,7 @@ This function is only meant to be used on mods with empty .esm files",
             string cmdLine = "";
             string archive2Path = Path.Combine(GamePath, "Tools", "Archive2", "Archive2.exe");
             string workingDirectory = $"{GamePath}\\Data";
-            string extactDirectory = Path.Combine(Path.GetTempPath(), "hstCMM");
+            string extactDirectory = Path.Combine(Path.GetTempPath(), "hstCMMExtract");
 
             CleanUpTempFiles(extactDirectory);
 
@@ -7021,7 +7018,7 @@ This function is only meant to be used on mods with empty .esm files",
                 }
             }
             SavePlugins();
-            ConvertLooseFiles();
+            ConvertLooseFiles(useDocuments: true); // Use temp directory for conversion
             SyncPlugins();
             if (AutoSort)
                 RunLOOT(true);

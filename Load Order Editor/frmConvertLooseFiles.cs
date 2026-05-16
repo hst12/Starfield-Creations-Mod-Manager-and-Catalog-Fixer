@@ -11,10 +11,11 @@ namespace hstCMM.Load_Order_Editor
         private string esm;
         private frmLoadOrder.ActivityLog activityLog = frmLoadOrder.activityLog;
 
-        private bool log = Properties.Settings.Default.Log;
+        private bool log = Properties.Settings.Default.Log, useDocs = true;
 
-        public frmConvertLooseFiles(string esmFile = "")
+        public frmConvertLooseFiles(string esmFile = "", bool useDocuments = true)
         {
+            useDocs = useDocuments;
             InitializeComponent();
             frmLoadOrder.returnStatus = 0;
             txtEsm.Text = esmFile = esm = esmFile;
@@ -55,7 +56,14 @@ namespace hstCMM.Load_Order_Editor
                     return;
 
             string archive2Path = Path.Combine(frmLoadOrder.GamePath, "Tools", "Archive2", "Archive2.exe");
-            string workingDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), $"My Games\\{frmLoadOrder.GameName}\\Data");
+            string workingDirectory = "";
+            if (useDocs)
+                workingDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), $"My Games\\{frmLoadOrder.GameName}\\Data");
+            else
+            {
+                workingDirectory = Path.Combine(Path.GetTempPath(), "hstCMMExtract");
+                Directory.CreateDirectory(workingDirectory);
+            }
 
             // Create texture archive
             /*cmdLine = @"textures -create=""" + Path.Combine(frmLoadOrder.GamePath, "Data", Path.GetFileNameWithoutExtension(esm)) + " - textures.ba2" + @""""
@@ -125,7 +133,8 @@ namespace hstCMM.Load_Order_Editor
 
                 if (File.Exists(Path.Combine(frmLoadOrder.GamePath, "Data", Path.GetFileNameWithoutExtension(esm) + " - main.ba2")))
                 {
-                    if (Tools.ConfirmAction("Sound archive exists", "Overwrite sound archive", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    if (Tools.ConfirmAction("Sound archive exists", "Overwrite sound archive", MessageBoxButtons.YesNo, 
+                        MessageBoxIcon.Question) == DialogResult.Yes)
                     {
                         if (log)
                             activityLog.WriteLog($"Creating sound archive\n{archive2Path} {cmdLine}");
