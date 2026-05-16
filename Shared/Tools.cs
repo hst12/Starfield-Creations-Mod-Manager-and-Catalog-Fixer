@@ -480,32 +480,6 @@ namespace hstCMM.Shared // Various functions used by the app
             }
         }
 
-        public List<string> GetModList()
-        {
-            string dataPath = Path.Combine(frmLoadOrder.GamePath, "Data");
-            List<string> mods = new();
-            string[] patterns = { "*.esm", "*.ba2" };
-            try
-            {
-                foreach (var pattern in patterns)
-                {
-                    var modFiles = Directory.EnumerateFiles(dataPath, pattern, SearchOption.TopDirectoryOnly)
-                                    .Select(Path.GetFileName)
-                                    .Where(fileName => !BethFiles.Contains(fileName, StringComparer.OrdinalIgnoreCase)
-                                        && !fileName.Contains("blueprintships-", StringComparison.OrdinalIgnoreCase))
-                                    .ToList();
-                    foreach (var item in modFiles)
-                        mods.Add(item);
-                }
-
-                return mods;
-            }
-            catch (Exception ex)
-            {
-                return new List<string>();
-            }
-        }
-
         public string GetSteamGamePath(string gameName)
         {
             try
@@ -789,7 +763,6 @@ namespace hstCMM.Shared // Various functions used by the app
             public string link { get; set; }
             public string name { get; set; }
         }
-
 
         public void CopyDirectory(string sourceDir, string destinationDir)
         {

@@ -6962,10 +6962,15 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 return;
             if (Tools.ConfirmAction(
                 @"
-Merging mods will extract the selected mods, combine them and disable the original files.
+Merging mods will extract the selected mods, then combine them into one mod.
+
+This function combines ALL loose files found in your game's Documents directory and optionally deletes them.
+DO NOT PROCEED IF YOU DON'T WANT THIS TO HAPPEN.
+
+The original files will be left in place but disabled in the load order.
 
 This function is only meant to be used on mods with empty .esm files",
-                "Merge Mods - Do you want to continue?",
+                "Merge Mods - Read the warning below before proceeding.",
                 MessageBoxButtons.YesNo) == DialogResult.No)
                 return;
 
