@@ -17,8 +17,9 @@ Enable/Disable mod - Space or E
 Run game - R
 Save Plugins - Ctrl-S
 Open Profile - Ctrl-O
+Undo row move - Ctrl-Z
 F, Ctrl-F - Search for mod by name or description
-ESC key clears the search box
+ESC key clears the search box and sets focus to the mod list.
 
 Exit app - X
 
