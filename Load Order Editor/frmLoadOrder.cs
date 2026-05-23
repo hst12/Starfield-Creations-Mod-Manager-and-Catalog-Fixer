@@ -1423,11 +1423,11 @@ namespace hstCMM
                 case Keys.Z:
                     if (e.Control) // Detect Ctrl+Z
                     {
-                        UndoLastAction(); // Your custom undo logic
+                        UndoLastAction();
                     }
                     else
                     {
-                        RunLOOT(true);
+                        RunLOOT(true); // Sort
                         dataGridView1.Focus();
                     }
                     break;
@@ -2875,9 +2875,9 @@ namespace hstCMM
         {
             switch (e.KeyCode)
             {
-                case Keys.F5:
+                /*case Keys.F5:
                     RefreshDataGrid();
-                    break;
+                    break;*/
 
                 case Keys.Escape:
                     txtSearchBox.Clear();
