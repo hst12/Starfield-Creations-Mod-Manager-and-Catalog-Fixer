@@ -1014,10 +1014,14 @@ namespace hstCMM
             MoveUp();
         }
 
-        private void btnUpdate_Click(object sender, EventArgs e)
+        private void DoUpdate()
         {
             UpdatePlugins();
             dataGridView1.Focus();
+        }
+        private void btnUpdate_Click(object sender, EventArgs e)
+        {
+            DoUpdate();
         }
 
         private void ChangeSettings(bool NewSetting)
@@ -1407,6 +1411,9 @@ namespace hstCMM
 
                 case Keys.R:
                     RunGame();
+                    break;
+                case Keys.V:
+                    DoUpdate();
                     break;
 
                 case Keys.X:
@@ -5079,7 +5086,8 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             // 2) Gather all on-disk plugin filenames
             var pluginFiles = tools.GetPluginList(Game);
             string dataDir = Path.Combine(GamePath, "Data");
-            string[] patterns = { "*.esp", "*.esm", "*.esl" };
+            //string[] patterns = { "*.esp", "*.esm", "*.esl" };
+            string[] patterns = { "*.esm"};
             foreach (var pattern in patterns)
             {
                 try
@@ -5163,28 +5171,36 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
             frmGenericTextList fgt;
             List<string> missingMods = new();
+            if (rowsToRemove.Count > 0)
+            {
+                foreach (var row in rowsToRemove)
+                {
+                    missingMods.Add(row.Cells[pluginNameIndex].Value.ToString());
+                }
+            }
+            fgt = new frmGenericTextList("Missing Mods", missingMods);
+
             // Removal using batch operations
             if (rowsToRemove.Count > 0)
             {
+                fgt.Show();
                 if (log)
                 {
                     foreach (var row in rowsToRemove)
                     {
                         activityLog.WriteLog($"Found missing mods {row.Cells[pluginNameIndex].Value} from Plugins.txt");
-                        missingMods.Add(row.Cells[pluginNameIndex].Value.ToString());
                     }
-                    fgt = new frmGenericTextList("Missing Mods", missingMods);
-                    fgt.Show();
                 }
 
-                DialogResult missingMod = Tools.ConfirmAction("Choose Yes to proceed and remove the missing mods from Plugins.txt or No cancel",
-                    "Missing mods found", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                /*if (missingMod== DialogResult.Cancel)
+                DialogResult missingMod = Tools.ConfirmAction("Choose Yes to proceed and remove the missing mods from Plugins.txt.",
+                    "Missing mods found", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
+                if (missingMod== DialogResult.Cancel)
                 {
                     sbar3("Update cancelled");
+                    fgt.Close();
                     dataGridView1.ResumeLayout();
                     return (0);
-                }*/
+                }
                 if (missingMod == DialogResult.No)
                 {
                     if (Tools.ConfirmAction("Copy mods from backup folder?", "Attempt to Restore Missing Mods",
@@ -5200,8 +5216,8 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
                             foreach (var mod in rowsToRemove)
                             {
-                                if (bool.TryParse(mod.Cells["ModEnabled"].Value?.ToString(), out bool enabled) && enabled) // Enabled mods only
-                                {
+                                /*if (bool.TryParse(mod.Cells["ModEnabled"].Value?.ToString(), out bool enabled) && enabled) // Enabled mods only
+                                {*/
                                     modName = Path.GetFileNameWithoutExtension(mod.Cells[pluginNameIndex].Value.ToString());
                                     var modFiles = Directory.EnumerateFiles(selectedFolderPath, modName + "*", SearchOption.TopDirectoryOnly);
 
@@ -5218,7 +5234,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                                             LogError($"Error restoring {Path.GetFileName(file)}: {ex.Message}");
                                         }
                                     }
-                                }
+                                //}
                             }
                         }
                     }
