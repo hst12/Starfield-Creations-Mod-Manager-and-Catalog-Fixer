@@ -822,9 +822,13 @@ namespace hstCMM
         {
             if (Properties.Settings.Default.LOOTPath == "")
                 return;
-            string yamlPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                 $"LOOT\\games\\{GameName}\\userlist.yaml");
-            BackupFile(yamlPath, UseDocuments);
+            
+            BackupFile(filePath, UseDocuments);
+            filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                $"LOOT\\games\\{GameName}\\group_node_positions.bin");
+            BackupFile(filePath, UseDocuments);
         }
 
         private void BackupPlugins()
@@ -2741,6 +2745,26 @@ namespace hstCMM
                 MessageBox.Show($"An error occurred: {ex.Message}");
             }
 
+            // Install SAF files if found.
+            try
+            {
+                string[] SAFDirs = Directory.GetDirectories(extractPath, "SAF", SearchOption.AllDirectories);
+                /*if (SAFDirs.Length > 0)
+                    SFSEMod = true;*/
+
+                foreach (string dir in SAFDirs)
+                {
+                    tempstr = Path.Combine(GamePath, "Data", "SAF");
+                    tools.CopyDirectory(dir, tempstr);
+                    filesInstalled++;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(ex.Message);
+                MessageBox.Show($"An error occurred: {ex.Message}");
+            }
+
             // Install Loose files
             List<string> looseFileDirs = Tools.LooseFolderDirsOnly; // Get the list of loose file directories from the Tools class
 
@@ -3639,6 +3663,7 @@ namespace hstCMM
             isModified = false;
             GameVersionDisplay();
             toolStripStatusStats.ForeColor = DefaultForeColor;
+            activityLog.WriteLog("Refresh complete");
             sbar3("Refresh complete");
             sbar4("");
         }
@@ -5716,9 +5741,9 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             if (exportMods[0].StartsWith("\n# "))
                 exportMods[0] = exportMods[0].Substring(1);
 
-            string header = $"# Exported active mod list from hst {GameName} Tools";
+            string header = $"# Exported active mod list from hst Creations Mod Manager - {GameName}.";
             if (Profiles)
-                header += " using profile " + cmbProfile.Text;
+                header += " Using profile " + cmbProfile.Text;
 
             using (StreamWriter writer = new StreamWriter(exportDialog.FileName))
             {
