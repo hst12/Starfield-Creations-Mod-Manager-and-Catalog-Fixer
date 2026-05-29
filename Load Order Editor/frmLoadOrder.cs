@@ -824,7 +824,7 @@ namespace hstCMM
                 return;
             string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                 $"LOOT\\games\\{GameName}\\userlist.yaml");
-            
+
             BackupFile(filePath, UseDocuments);
             filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                 $"LOOT\\games\\{GameName}\\group_node_positions.bin");
@@ -1023,6 +1023,7 @@ namespace hstCMM
             UpdatePlugins();
             dataGridView1.Focus();
         }
+
         private void btnUpdate_Click(object sender, EventArgs e)
         {
             DoUpdate();
@@ -1308,8 +1309,8 @@ namespace hstCMM
                     isModified = true;
                     //SavePlugins();
                 }
-                if (AutoSort)
-                    RunLOOT(true);
+                /*if (AutoSort)
+                    RunLOOT(true);*/
                 sbar3(ModCounter + " Mods installed");
                 return;
             }
@@ -1416,6 +1417,7 @@ namespace hstCMM
                 case Keys.R:
                     RunGame();
                     break;
+
                 case Keys.V:
                     DoUpdate();
                     break;
@@ -1835,6 +1837,7 @@ namespace hstCMM
                 if (Tools.BlockedMods().Contains((string)dataGridView1.CurrentRow.Cells["PluginName"].Value))
                 {
                     sbar("Mod is blocked");
+                    MessageBox.Show("Blocked Mod - Unblock the mod to enable it", "This mod is blocked.", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
@@ -4294,9 +4297,11 @@ namespace hstCMM
             }
 
             ResetGroupsButton();
-            lootPath = Properties.Settings.Default.LOOTPath;
             string cmdLine = (GameVersion != MS) ? $"--game=\"{GameFolder}\"" : $"--game=\"{GameFolder} (MS Store)\"";
             if (LOOTMode) cmdLine += " --auto-sort";
+
+            // Cache current Plugins.txt
+            //var currentPlugins = tools.GetPluginList(Game);
 
             // Temporarily disable profiles
             Profiles = cmbProfile.Enabled = chkProfile.Checked = false;
@@ -4309,32 +4314,40 @@ namespace hstCMM
                 WorkingDirectory = Path.GetDirectoryName(lootPath) ?? string.Empty
             };
 
-            if (File.Exists(lootPath))
+            activityLog.WriteLog($"Starting LOOT with arguments: {cmdLine}");
+            using (Process process = Process.Start(startInfo))
             {
-                activityLog.WriteLog($"Starting LOOT with arguments: {cmdLine}");
-                using (Process process = Process.Start(startInfo))
-                {
-                    process.WaitForExit();
-                    /*int returnCode = process.ExitCode;
-                    activityLog.WriteLog($"LOOT exited with code: {returnCode}");*/
-                    ReadLOOTGroups();
-                }
-
-                if (Properties.Settings.Default.AutoDelccc)
-                    Delccc();
-                InitDataGrid();
-
-                // Remove base game files and blueprintships- files if LOOT added them
-                tools.BethFiles.ForEach(bethFile =>
-                {
-                    var rowToRemove = dataGridView1.Rows
-                        .Cast<DataGridViewRow>()
-                        .FirstOrDefault(row => row.Cells["PluginName"].Value as string == bethFile ||
-                            row.Cells["PluginName"].Value.ToString().Contains("blueprintships-", StringComparison.OrdinalIgnoreCase));
-
-                    if (rowToRemove != null) dataGridView1.Rows.Remove(rowToRemove);
-                });
+                process.WaitForExit();
+                /*int returnCode = process.ExitCode;
+                activityLog.WriteLog($"LOOT exited with code: {returnCode}");*/
+                ReadLOOTGroups();
             }
+
+            if (Properties.Settings.Default.AutoDelccc)
+                Delccc();
+            InitDataGrid();
+
+            // Remove base game files and blueprintships- files if LOOT added them
+            tools.BethFiles.ForEach(bethFile =>
+            {
+                var rowToRemove = dataGridView1.Rows
+                    .Cast<DataGridViewRow>()
+                    .FirstOrDefault(row => row.Cells["PluginName"].Value as string == bethFile ||
+                        row.Cells["PluginName"].Value.ToString().Contains("blueprintships-", StringComparison.OrdinalIgnoreCase));
+
+                if (rowToRemove != null) dataGridView1.Rows.Remove(rowToRemove);
+            });
+
+            /*var newPlugins = tools.GetPluginList(Game);
+            if (!currentPlugins.SequenceEqual(newPlugins))
+            {
+                activityLog.WriteLog("LOOT sorting complete");
+            }
+            else
+            {
+                sbar("LOOT did not change plugin order");
+                activityLog.WriteLog("LOOT did not change plugin order");
+            }*/
 
             // Re-enable profiles if previously active
             Profiles = profilesActive;
@@ -5112,7 +5125,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             var pluginFiles = tools.GetPluginList(Game);
             string dataDir = Path.Combine(GamePath, "Data");
             //string[] patterns = { "*.esp", "*.esm", "*.esl" };
-            string[] patterns = { "*.esm"};
+            string[] patterns = { "*.esm" };
             foreach (var pattern in patterns)
             {
                 try
@@ -5219,7 +5232,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
                 DialogResult missingMod = Tools.ConfirmAction("Choose Yes to proceed and remove the missing mods from Plugins.txt.",
                     "Missing mods found", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
-                if (missingMod== DialogResult.Cancel)
+                if (missingMod == DialogResult.Cancel)
                 {
                     sbar3("Update cancelled");
                     fgt.Close();
@@ -5243,22 +5256,22 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                             {
                                 /*if (bool.TryParse(mod.Cells["ModEnabled"].Value?.ToString(), out bool enabled) && enabled) // Enabled mods only
                                 {*/
-                                    modName = Path.GetFileNameWithoutExtension(mod.Cells[pluginNameIndex].Value.ToString());
-                                    var modFiles = Directory.EnumerateFiles(selectedFolderPath, modName + "*", SearchOption.TopDirectoryOnly);
+                                modName = Path.GetFileNameWithoutExtension(mod.Cells[pluginNameIndex].Value.ToString());
+                                var modFiles = Directory.EnumerateFiles(selectedFolderPath, modName + "*", SearchOption.TopDirectoryOnly);
 
-                                    foreach (var file in modFiles)
+                                foreach (var file in modFiles)
+                                {
+                                    try
                                     {
-                                        try
-                                        {
-                                            InstallMod(file);
-                                            //File.Copy(file, Path.Combine(dataDir, Path.GetFileName(file)), true);
-                                            activityLog.WriteLog("Copying " + file + " to " + Path.Combine(dataDir, Path.GetFileName(file)));
-                                        }
-                                        catch (Exception ex)
-                                        {
-                                            LogError($"Error restoring {Path.GetFileName(file)}: {ex.Message}");
-                                        }
+                                        InstallMod(file);
+                                        //File.Copy(file, Path.Combine(dataDir, Path.GetFileName(file)), true);
+                                        activityLog.WriteLog("Copying " + file + " to " + Path.Combine(dataDir, Path.GetFileName(file)));
                                     }
+                                    catch (Exception ex)
+                                    {
+                                        LogError($"Error restoring {Path.GetFileName(file)}: {ex.Message}");
+                                    }
+                                }
                                 //}
                             }
                         }
@@ -6762,10 +6775,10 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
         {
             int index = cmbProfile.Items.IndexOf(Properties.Settings.Default.LastProfile);
             string loText = Path.Combine(Tools.GameAppData, "Plugins.txt");
-            string profileFolder = Path.Combine(Properties.Settings.Default.ProfileFolder, GameName,  cmbProfile.Items[index].ToString());
+            string profileFolder = Path.Combine(Properties.Settings.Default.ProfileFolder, GameName, cmbProfile.Items[index].ToString());
             var x = tools.GetPluginList(Game);
             activityLog.WriteLog(loText + " " + profileFolder);
-            File.Copy(loText, profileFolder,true);
+            File.Copy(loText, profileFolder, true);
         }
 
         private void sFSEPluginsEnableDisableToolStripMenuItem_Click(object sender, EventArgs e)
