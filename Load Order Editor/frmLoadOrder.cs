@@ -5207,7 +5207,6 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 }
             }
 
-            frmGenericTextList fgt;
             List<string> missingMods = new();
             if (rowsToRemove.Count > 0)
             {
@@ -5216,87 +5215,22 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     missingMods.Add(row.Cells[pluginNameIndex].Value.ToString());
                 }
             }
-            fgt = new frmGenericTextList("Missing Mods", missingMods);
 
-            // Removal using batch operations
-            if (rowsToRemove.Count > 0)
+            // Sort indices descending for safe removal
+            rowsToRemove.Sort((r1, r2) => r2.Index.CompareTo(r1.Index));
+
+            var removalCounter = rowsToRemove.Count;
+
+            // Batch UI updates every 10 removals to reduce overhead
+            for (int i = 0; i < rowsToRemove.Count; i++)
             {
-                fgt.Show();
-                if (log)
+                if (i % 10 == 0)
                 {
-                    foreach (var row in rowsToRemove)
-                    {
-                        activityLog.WriteLog($"Found missing mods {row.Cells[pluginNameIndex].Value} from Plugins.txt");
-                    }
+                    sbar($"Removing {removalCounter}");
+                    statusStrip1.Refresh();
                 }
-
-                DialogResult missingMod = Tools.ConfirmAction("Choose Yes to proceed and remove the missing mods from Plugins.txt.",
-                    "Missing mods found", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
-                if (missingMod == DialogResult.Cancel)
-                {
-                    sbar3("Update cancelled");
-                    fgt.Close();
-                    dataGridView1.ResumeLayout();
-                    return (0);
-                }
-                if (missingMod == DialogResult.No)
-                {
-                    if (Tools.ConfirmAction("Copy mods from backup folder?", "Attempt to Restore Missing Mods",
-                        MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                    {
-                        string modName;
-                        using FolderBrowserDialog folderBrowserDialog = new();
-                        folderBrowserDialog.Description = "Choose Backup Folder";
-                        folderBrowserDialog.InitialDirectory = Properties.Settings.Default.BackupDirectory;
-                        if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
-                        {
-                            string selectedFolderPath = folderBrowserDialog.SelectedPath;
-
-                            foreach (var mod in rowsToRemove)
-                            {
-                                /*if (bool.TryParse(mod.Cells["ModEnabled"].Value?.ToString(), out bool enabled) && enabled) // Enabled mods only
-                                {*/
-                                modName = Path.GetFileNameWithoutExtension(mod.Cells[pluginNameIndex].Value.ToString());
-                                var modFiles = Directory.EnumerateFiles(selectedFolderPath, modName + "*", SearchOption.TopDirectoryOnly);
-
-                                foreach (var file in modFiles)
-                                {
-                                    try
-                                    {
-                                        InstallMod(file);
-                                        //File.Copy(file, Path.Combine(dataDir, Path.GetFileName(file)), true);
-                                        activityLog.WriteLog("Copying " + file + " to " + Path.Combine(dataDir, Path.GetFileName(file)));
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        LogError($"Error restoring {Path.GetFileName(file)}: {ex.Message}");
-                                    }
-                                }
-                                //}
-                            }
-                        }
-                    }
-                    sbar3("Update cancelled");
-                    dataGridView1.ResumeLayout();
-                    return (0);
-                }
-
-                // Sort indices descending for safe removal
-                rowsToRemove.Sort((r1, r2) => r2.Index.CompareTo(r1.Index));
-
-                var removalCounter = rowsToRemove.Count;
-
-                // Batch UI updates every 10 removals to reduce overhead
-                for (int i = 0; i < rowsToRemove.Count; i++)
-                {
-                    if (i % 10 == 0)
-                    {
-                        sbar($"Removing {removalCounter}");
-                        statusStrip1.Refresh();
-                    }
-                    rows.Remove(rowsToRemove[i]);
-                    removalCounter--;
-                }
+                rows.Remove(rowsToRemove[i]);
+                removalCounter--;
             }
 
             // Batch write logs to avoid I/O overhead
@@ -6923,8 +6857,8 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
         private void disableAllCreationsModsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (Tools.ConfirmAction("Do you want to continue",
-    "Warning - this will alter your current load order to disable all Creations mods",
-    MessageBoxButtons.YesNo) == DialogResult.No)
+        "Warning - this will alter your current load order to disable all Creations mods",
+        MessageBoxButtons.YesNo) == DialogResult.No)
                 return;
 
             bool ActiveOnlyStatus = ActiveOnly;
