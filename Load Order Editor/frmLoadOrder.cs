@@ -4297,8 +4297,8 @@ namespace hstCMM
             string cmdLine = (GameVersion != MS) ? $"--game=\"{GameFolder}\"" : $"--game=\"{GameFolder} (MS Store)\"";
             if (LOOTMode) cmdLine += " --auto-sort";
 
-            // Cache current Plugins.txt
-            //var currentPlugins = tools.GetPluginList(Game);
+            // Store current Plugins.txt
+            var currentPlugins = File.ReadAllText(Path.Combine(Tools.GameAppData, "Plugins.txt"));
 
             // Temporarily disable profiles
             Profiles = cmbProfile.Enabled = chkProfile.Checked = false;
@@ -4335,16 +4335,19 @@ namespace hstCMM
                 if (rowToRemove != null) dataGridView1.Rows.Remove(rowToRemove);
             });
 
-            /*var newPlugins = tools.GetPluginList(Game);
+            var newPlugins = File.ReadAllText(Path.Combine(Tools.GameAppData, "Plugins.txt")); // Get new plugin list after LOOT changes
             if (!currentPlugins.SequenceEqual(newPlugins))
             {
-                activityLog.WriteLog("LOOT sorting complete");
+                tempstr = "LOOT sorting complete";
+                activityLog.WriteLog(tempstr);
+                sbar(tempstr);
             }
             else
             {
-                sbar("LOOT did not change plugin order");
-                activityLog.WriteLog("LOOT did not change plugin order");
-            }*/
+                tempstr = "LOOT did not change plugin order";
+                activityLog.WriteLog(tempstr);
+                sbar(tempstr);
+            }
 
             // Re-enable profiles if previously active
             Profiles = profilesActive;
@@ -5404,6 +5407,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             if (Tools.ConfirmAction("Run update/sort on all profiles", "Update All Profiles?",
                 MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 UpdateAllProfiles();
+            dataGridView1.Focus();
         }
 
         private void toolStripMenuAuthorVersion_Click(object sender, EventArgs e) // View author column
