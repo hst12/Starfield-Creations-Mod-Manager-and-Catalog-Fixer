@@ -2752,9 +2752,6 @@ namespace hstCMM
             try
             {
                 string[] SAFDirs = Directory.GetDirectories(extractPath, "SAF", SearchOption.AllDirectories);
-                /*if (SAFDirs.Length > 0)
-                    SFSEMod = true;*/
-
                 foreach (string dir in SAFDirs)
                 {
                     tempstr = Path.Combine(GamePath, "Data", "SAF");
@@ -4537,12 +4534,12 @@ namespace hstCMM
             // Lowercase the search query for case-insensitive matching.
             string searchQuery = txtSearchBox.Text.ToLowerInvariant();
 
-            // Return early if no current cell is selected.
-            if (dataGridView1.CurrentCell is null)
-                return;
-
             if (ActiveOnly)
                 ActiveOnlyToggle(); // Disable filter
+
+            // Set current cell if not selected
+            if (dataGridView1.CurrentCell is null)
+                dataGridView1.CurrentCell = dataGridView1.Rows[0].Cells["PluginName"];
 
             int currentIndex = dataGridView1.CurrentCell.RowIndex;
             int totalRows = dataGridView1.RowCount;
