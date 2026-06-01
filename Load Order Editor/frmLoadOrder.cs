@@ -2630,7 +2630,6 @@ namespace hstCMM
             }
 
             activityLog.WriteLog($"Starting mod install: {modFilePath}");
-
             // Show a loading screen while extracting.
             Form loadScreen = new frmLoading("Extracting mod...");
             loadScreen.Show();
@@ -2654,7 +2653,7 @@ namespace hstCMM
                         LogError("Extraction failed: " + ex.Message);
                         MessageBox.Show("Extraction failed: " + ex.Message);
                         loadScreen.Close();
-                        sbar2("Extraction failed: " + ex.Message);
+                        sbar("Extraction failed: " + ex.Message);
                         return false;
                     }
 
@@ -2683,7 +2682,7 @@ namespace hstCMM
                                 foreach (string file in archiveFiles)
                                 {
                                     using ArchiveFile archiveFile2 = new ArchiveFile(file);
-                                    sbar2($"Extracting embedded archive: {file}");
+                                    sbar($"Extracting embedded archive: {file}");
                                     statusStrip1.Refresh();
                                     archiveFile2.Extract(extractPath);
                                     activityLog.WriteLog($"Extracting embedded archive: {file}");
@@ -2705,12 +2704,15 @@ namespace hstCMM
                 return false;
             }
 
+            // Check what file types are in the arive
             if (Directory.EnumerateFiles(extractPath, "*.esm", SearchOption.AllDirectories).Any())
                 esmFile = Directory.GetFiles(extractPath, "*.esm", SearchOption.AllDirectories).FirstOrDefault();
             if (Directory.EnumerateFiles(extractPath, "*.esp", SearchOption.AllDirectories).Any())
                 esmFile = Directory.GetFiles(extractPath, "*.esp", SearchOption.AllDirectories).FirstOrDefault();
             if (Directory.EnumerateFiles(extractPath, "*.esl", SearchOption.AllDirectories).Any())
                 esmFile = Directory.GetFiles(extractPath, "*.esl", SearchOption.AllDirectories).FirstOrDefault();
+            if (Directory.EnumerateFiles(extractPath, "*.bk2", SearchOption.AllDirectories).Any())
+                activityLog.WriteLog("Warning: .bk2 files found in mod - these are not currently supported and will be ignored");
 
             // Move .esm and .ba2 files to the game's Data folder.
             try
@@ -2810,7 +2812,7 @@ namespace hstCMM
                     else
                         ConvertLooseFiles();
                     sbar3("Converted loose files to archives");
-                    if (log && returnStatus > 0)
+                    if (returnStatus > 0)
                         activityLog.WriteLog("Converted loose files to archives");
                 }
             }
@@ -7026,6 +7028,11 @@ This function is only meant to be used on mods with empty .esm files",
                     }
                 }
             }
+        }
+
+        private void iNaraToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Tools.OpenUrl($"https://inara.cz/{GameName.ToLower()}");
         }
     }
 }

@@ -311,6 +311,8 @@
             toolStripMenuBGSX = new System.Windows.Forms.ToolStripMenuItem();
             steamDBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator45 = new System.Windows.Forms.ToolStripSeparator();
+            iNaraToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripSeparator62 = new System.Windows.Forms.ToolStripSeparator();
             webPageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuGitHub = new System.Windows.Forms.ToolStripMenuItem();
             helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -2268,7 +2270,7 @@
             // 
             // toolStripMenuLinks
             // 
-            toolStripMenuLinks.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuCreations, toolStripMenuNexus, nexusUpdatedModsToolStripMenuItem, nexusTrackingToolStripMenuItem, toolStripMenuBGSStarfield, toolStripMenuBGSX, steamDBToolStripMenuItem, toolStripSeparator45, webPageToolStripMenuItem, toolStripMenuGitHub });
+            toolStripMenuLinks.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuCreations, toolStripMenuNexus, nexusUpdatedModsToolStripMenuItem, nexusTrackingToolStripMenuItem, toolStripMenuBGSStarfield, toolStripMenuBGSX, steamDBToolStripMenuItem, toolStripSeparator45, iNaraToolStripMenuItem, toolStripSeparator62, webPageToolStripMenuItem, toolStripMenuGitHub });
             toolStripMenuLinks.Name = "toolStripMenuLinks";
             toolStripMenuLinks.Size = new System.Drawing.Size(87, 38);
             toolStripMenuLinks.Text = "Links";
@@ -2326,6 +2328,18 @@
             // 
             toolStripSeparator45.Name = "toolStripSeparator45";
             toolStripSeparator45.Size = new System.Drawing.Size(550, 6);
+            // 
+            // iNaraToolStripMenuItem
+            // 
+            iNaraToolStripMenuItem.Name = "iNaraToolStripMenuItem";
+            iNaraToolStripMenuItem.Size = new System.Drawing.Size(553, 44);
+            iNaraToolStripMenuItem.Text = "INARA";
+            iNaraToolStripMenuItem.Click += iNaraToolStripMenuItem_Click;
+            // 
+            // toolStripSeparator62
+            // 
+            toolStripSeparator62.Name = "toolStripSeparator62";
+            toolStripSeparator62.Size = new System.Drawing.Size(550, 6);
             // 
             // webPageToolStripMenuItem
             // 
@@ -3169,5 +3183,7 @@
         private System.Windows.Forms.ToolStripMenuItem creationsUpdateToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator61;
         private System.Windows.Forms.ToolStripMenuItem mergeModsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem iNaraToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator62;
     }
 }
