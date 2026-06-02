@@ -3918,6 +3918,7 @@ namespace hstCMM
             actionCount = DeleteLooseFileFolders();
             actionCount += ResetDefaults();
             actionCount += CheckArchives();
+            ResetLoadScreen();
 
             sbar3(actionCount.ToString() + " Change(s) made");
             activityLog.WriteLog("Reset everything: " + actionCount.ToString() + " Change(s) made");
@@ -3959,13 +3960,18 @@ namespace hstCMM
             }
         }
 
-        private void resetLoadScreenToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ResetLoadScreen()
         {
             Properties.Settings.Default.LoadScreenFilename = "";
             Properties.Settings.Default.RandomLoadScreen = randomToolStripMenuItem.Checked = false;
             Properties.Settings.Default.LoadScreenSequence = sequenceToolStripMenuItem.Checked = false;
             Properties.Settings.Default.LoadScreenIndex = 0;
             SaveSettings();
+
+        }
+        private void resetLoadScreenToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ResetLoadScreen();
         }
 
         private void resetToVanillaGameSettingsToolStripMenuItem_Click(object sender, EventArgs e)

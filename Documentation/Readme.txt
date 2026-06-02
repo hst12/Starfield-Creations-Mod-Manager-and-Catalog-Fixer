@@ -3,13 +3,14 @@ Important Notes
 - May conflict with mod managers like Vortex or MO2. Running Vortex after using this tool can disrupt your load order.
 - Works with .esm and .ba2 files but has limited support for loose file mods.
 
-Free Lanes and Terran Armada (probably) ready release.
-Additional steps required after updating the game. Don't run this app yet.
-
-1. Right-click the desktop icon for the app and choose Run as administrator.
-2. From the top menus choose Tools->Advanced->Generate updated files for game update.
-3. If the process completes without errors, restart the app using normal non-admin permissions.
-4. Repeat this process only when new game patches or DLC have been downloaded.
+Design Goals
+- Provide a user-friendly interface for managing Starfield mods and load order.
+- Standard Windows Forms UI using the latest .NET Desktop version.
+- No dependancy on online services. Fast startup and operation.
+- Creations first focus, but also supports mods manually downloaded from Nexus or other sites with some limitations.
+- Use the same technique that the game uses in its Creations inteface menu to handle load order No folder redirection or virtual folders.
+- Encourage the use of .esm and .ba2 archives to simplify load order management.
+- Leverage existing tools instead of reinventing the wheel. LOOT (standalone version) for mod sorting and the Creation Kit tools for converting loose file mods to .ba2 archives.
 
 Key Features
 Mod Management
@@ -19,6 +20,7 @@ Mod Management
 - Install multiple mods by dragging and dropping .zip, .7z archives.
 - Prevent unnecessary re-downloading of Creations mods.
 - View LOOT groups if LOOT is installed.
+- Various troubleshooting tools to fix problems caused by partially installed mods and clean up left over files.
 Profiles
 - Create and switch between mod profiles for different save games.
 - Ensures load order is restored after being affected by other apps.
@@ -74,6 +76,11 @@ Additional Information
 - Faster than the Creations menu and displays more of the load order at once.
 - No .ini edits, folder junctions, or virtual folders required.
 - The tool automatically quits after launching the game.
+
+Recommended Additonal Tools
+- LOOT (https://loot.github.io/) for sorting mods and checking for conflicts.
+- Creation Kit tools (https://store.steampowered.com/app/2722710/Starfield_Creation_Kit/) for converting loose file mods to .ba2 archives.
+- Mod Organizer 2 (https://www.modorganizer.org/) to handle mods that include .fomod installers.
 
 Resources & Credits
 - 7-Zip (https://www.7-zip.org)
