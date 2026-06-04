@@ -1,4 +1,5 @@
 Creations Mod Manager - Load Order Editor
+
 Important Notes
 - May conflict with mod managers like Vortex or MO2. Running Vortex after using this tool can disrupt your load order.
 - Works with .esm and .ba2 files but has limited support for loose file mods.
@@ -13,6 +14,7 @@ Design Goals
 - Leverage existing tools instead of reinventing the wheel. LOOT (standalone version) for mod sorting and the Creation Kit tools for converting loose file mods to .ba2 archives.
 
 Key Features
+
 Mod Management
 - Reorder mods using drag-and-drop or hotkeys (WASD).
 - Enable/disable mods without removing files.
@@ -21,9 +23,11 @@ Mod Management
 - Prevent unnecessary re-downloading of Creations mods.
 - View LOOT groups if LOOT is installed.
 - Various troubleshooting tools to fix problems caused by partially installed mods and clean up left over files.
+
 Profiles
 - Create and switch between mod profiles for different save games.
 - Ensures load order is restored after being affected by other apps.
+
 Backup & Restore
 - Automatically backs up Plugins.txt on first run.
 - Restore original file via File -> Restore Plugins.txt.
@@ -37,25 +41,26 @@ Delete Loose File Folders
 - meshes, interface, scripts, sound, geometries
 - Various textures subfolders (actors, architecture, common, etc.)
 - materials (contents deleted but folder preserved)
+
 Reset Everything
 - Restores Starfield.ini and StarfieldCustom.ini to default.
 - Disables loose files and resets changes made by Vortex.
 - Deletes non-essential .ba2 archives without .esm files.
 
-Creations Mods
 Mod Blocking
 - Prevent Creations mods from being automatically downloaded.
 - Enable the Blocked column under View -> Columns -> Blocked.
 - Right-click a mod to block/unblock it.
 - Blocked mods are saved in %localappdata%\Creations Mod Manager\BlockedMods.txt.
+
 Managing Mods
 - Adjust load order, enable/disable mods outside of the game.
 - Subscribe/unsubscribe/bookmark mods via the Creations website.
 - Some Creations mods cannot be un-subscribed due to occasional Bethesda bugs.
+
 Using LOOT for Autosorting
 - If LOOT is installed, press Autosort to organize your load order after making in-game changes.
 
-Game Version Switching
 Switching Between Steam & MS Store Versions
 - Locate the directory with Starfield.exe:
 - Steam: E:\SteamLibrary\steamapps\common\Starfield

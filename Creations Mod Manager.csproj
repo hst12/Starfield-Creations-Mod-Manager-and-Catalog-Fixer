@@ -2,8 +2,6 @@
   <PropertyGroup>
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
     <TargetFramework>net10.0-windows10.0.17763.0</TargetFramework>
-	  <!-- Disable CET compatibility -->
-	  <CETCompat>false</CETCompat>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <OutputType>WinExe</OutputType>
     <RootNamespace>hstCMM</RootNamespace>
@@ -183,9 +181,9 @@
     <PackageReference Include="Microsoft-WindowsAPICodePack-Shell" Version="1.1.5" />
     <PackageReference Include="Narod.SteamGameFinder" Version="2.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
-    <PackageReference Include="QuestPDF" Version="2026.2.4" />
+    <PackageReference Include="QuestPDF" Version="2026.5.0" />
     <PackageReference Include="SevenZipExtractor" Version="1.0.19" />
-    <PackageReference Include="YamlDotNet" Version="17.1.0" />
+    <PackageReference Include="YamlDotNet" Version="18.0.0" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">

@@ -1064,7 +1064,7 @@ namespace hstCMM
             plugins = pluginList.Select(s => s[..^4]).ToList();
 
             foreach (string file in Directory.EnumerateFiles(Path.Combine(GamePath, "Data"), "*.ba2", SearchOption.TopDirectoryOnly))
-            // Build a list of all .ba 2archives
+            // Build a list of all .ba2archives
             {
                 archives.Add(Path.GetFileName(file));
             }
@@ -1088,7 +1088,10 @@ namespace hstCMM
                         toDelete.Add(Path.Combine(GamePath, "Data", archive) + ".ba2");
                     if (!plugins.Any(plugin => archive.StartsWith(plugin))) // If no plugin starts with the archive name
                         toDelete.Add(Path.Combine(GamePath, "Data", archive) + ".bsa");
+                    if (archive.EndsWith("_xbox"))
+                        toDelete.Add(Path.Combine(GamePath, "Data", archive) + ".ba2");
                 }
+
 
                 if (toDelete.Count > 0)
                 {
