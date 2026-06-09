@@ -1092,7 +1092,6 @@ namespace hstCMM
                         toDelete.Add(Path.Combine(GamePath, "Data", archive) + ".ba2");
                 }
 
-
                 if (toDelete.Count > 0)
                 {
                     activityLog.WriteLog($"Checked for orphaned archives - {toDelete.Count} found");
@@ -3921,7 +3920,6 @@ namespace hstCMM
             actionCount = DeleteLooseFileFolders();
             actionCount += ResetDefaults();
             actionCount += CheckArchives();
-            ResetLoadScreen();
 
             sbar3(actionCount.ToString() + " Change(s) made");
             activityLog.WriteLog("Reset everything: " + actionCount.ToString() + " Change(s) made");
@@ -3970,8 +3968,8 @@ namespace hstCMM
             Properties.Settings.Default.LoadScreenSequence = sequenceToolStripMenuItem.Checked = false;
             Properties.Settings.Default.LoadScreenIndex = 0;
             SaveSettings();
-
         }
+
         private void resetLoadScreenToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ResetLoadScreen();
@@ -5378,11 +5376,11 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             Properties.Settings.Default.Achievements = toolStripMenuAchievements.Checked;
         }
 
-        private void toolStripMenuAddToProfile_Click(object sender, EventArgs e) // Add selected mods to a different profile
+        private void toolStripMenuAddRemoveToProfile_Click(object sender, EventArgs e) // Enable/disable selected mods to different profile(s)
         {
             if (ActiveOnly && dataGridView1.SelectedRows.Count > 1)
             {
-                MessageBox.Show("Please disable Active Only mode to use this feature", "Mods may be disabled or enabled unintentionally");
+                MessageBox.Show("Please disable Active Only filter to use this feature", "Mods may be disabled or enabled unintentionally");
                 return;
             }
             List<string> profiles = new();
@@ -6353,7 +6351,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 if (modsArchived > 0)
                     activityLog.WriteLog($"{modsArchived} mods archived to {selectedFolderPath}");
                 else
-                    activityLog.WriteLog("No mods found to archive");
+                    activityLog.WriteLog("No new mods found to archive");
             }
         }
 
@@ -7042,6 +7040,85 @@ This function is only meant to be used on mods with empty .esm files",
         private void iNaraToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Tools.OpenUrl($"https://inara.cz/{GameName.ToLower()}");
+        }
+
+        private void EnableDisableInProfiles(bool addRemove) // false to disable, true to enable
+        {
+            if (ActiveOnly && dataGridView1.SelectedRows.Count > 1)
+            {
+                MessageBox.Show("Please disable Active Only filter to use this feature",
+                    "Mods may be disabled or enabled unintentionally");
+                return;
+            }
+            List<string> profiles = new();
+
+            if (cmbProfile.Items.Count == 0 || cmbProfile.SelectedItem is null)
+            {
+                MessageBox.Show("No valid profiles found");
+                return;
+            }
+
+            foreach (var item in cmbProfile.Items)
+            {
+                if (item.ToString() != "No Mods.txt")
+                    profiles.Add(item.ToString());
+            }
+
+            string ModName = string.Empty;
+            foreach (DataGridViewRow selectedRow in dataGridView1.SelectedRows)
+            {
+                try
+                {
+                    if (selectedRow.Cells["PluginName"].Value != null) // Ensure the cell value is not null
+                    {
+                        ModName = selectedRow.Cells["PluginName"].Value.ToString();
+                        List<string> fileContents = new();
+                        string filePath;
+
+                        if (Directory.Exists(Properties.Settings.Default.ProfileFolder) && dataGridView1.SelectedCells.Count > 0)
+                        {
+                            foreach (var item in profiles)
+                            {
+                                filePath = Path.Combine(Properties.Settings.Default.ProfileFolder, GameName, item.ToString());
+                                fileContents = File.ReadAllLines(filePath).ToList();
+                                fileContents.Remove(ModName);
+                                fileContents.Remove("*" + ModName);
+                                if (addRemove)
+                                    fileContents.Add("*" + ModName); // Add the mod back with the * to indicate it is active
+                                else
+                                    fileContents.Add(ModName); // Add the mod back without the * to disable.
+                                fileContents = fileContents.Distinct().ToList(); // Avoid adding a duplicate
+                                File.WriteAllLines(Path.Combine(Properties.Settings.Default.ProfileFolder, GameName, item.ToString()), fileContents);
+                                if (log)
+                                    activityLog.WriteLog("Added " + ModName + " to " + item.ToString() + " profile.");
+                            }
+                        }
+                        else
+                            return;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    LogError(ex.Message);
+                }
+            }
+
+            if (Tools.ConfirmAction("Run update/sort on all profiles", "Recommended - Update All Profiles?",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                UpdateAllProfiles();
+            else
+                RefreshDataGrid();
+            dataGridView1.Focus();
+        }
+
+        private void toolStripMenuAddToProfile_Click(object sender, EventArgs e)
+        {
+            EnableDisableInProfiles(true); // Enable
+        }
+
+        private void toolStripMenuRemoveFromAllProfiles_Click(object sender, EventArgs e)
+        {
+            EnableDisableInProfiles(false); // Disable
         }
     }
 }

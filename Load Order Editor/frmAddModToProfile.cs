@@ -46,10 +46,10 @@ namespace hstCMM.Load_Order_Editor
                     fileContents = fileContents.Distinct().ToList(); // Avoid adding a duplicate
                     File.WriteAllLines(Path.Combine(Properties.Settings.Default.ProfileFolder,gameName, item.ToString()), fileContents);
                     if (log)
-                        activityLog.WriteLog("Removed " + ModName + " from " + item.ToString() + " profile.");
+                        activityLog.WriteLog("Disabled " + ModName + " from " + item.ToString() + " profile.");
                 }
-                MessageBox.Show(checkedListBox1.CheckedItems.Count.ToString() + " profile(s) updated.", "Profiles Updated", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
+            
             else
                 return;
 
@@ -91,7 +91,6 @@ namespace hstCMM.Load_Order_Editor
                     if (log)
                         activityLog.WriteLog("Added " + ModName + " to " + item.ToString() + " profile.");
                 }
-                MessageBox.Show(checkedListBox1.CheckedItems.Count.ToString() + " profile(s) updated.", "Profiles Updated", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
                 return;
