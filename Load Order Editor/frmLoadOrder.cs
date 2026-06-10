@@ -189,12 +189,12 @@ namespace hstCMM
             bool BackupStatus = false;
             if (Properties.Settings.Default.CreationsUpdate)
             {
-                cretionsUpdateToolStripMenuItem.Checked = false;
                 Properties.Settings.Default.CreationsUpdate = false;
                 SaveSettings();
                 BackupStatus = catalogFixer.BackupCatalog();
                 tempstr = BackupStatus ? "Catalog backed up" : "Catalog backup is up to date";
                 Properties.Settings.Default.AutoRestore = true;
+                creationsUpdateToolStripMenuItem.Checked = false;
                 MessageBox.Show(tempstr + "\nAuto Restore turned on\n\nYou can now play the game normally until the next time you want to update\n\n" +
                     "Remember to choose the Prepare for Creations Update option again before you update or add new mods", "Creations update complete");
                 activityLog.WriteLog("Creations update complete, backup status: " + BackupStatus);
@@ -4369,6 +4369,7 @@ namespace hstCMM
         private void runProgramToolStripMenuItem_Click(object sender, EventArgs e)
         {
             runProgramToolStripMenuItem.Checked = Properties.Settings.Default.RunProgram = !runProgramToolStripMenuItem.Checked;
+            SaveSettings();
         }
 
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -6920,6 +6921,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
         private void creationsUpdateToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CreationsUpdateStart();
+            creationsUpdateToolStripMenuItem.Checked=!creationsUpdateToolStripMenuItem.Checked;
         }
 
         private void mergeModsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -7084,13 +7086,18 @@ This function is only meant to be used on mods with empty .esm files",
                                 fileContents.Remove(ModName);
                                 fileContents.Remove("*" + ModName);
                                 if (addRemove)
-                                    fileContents.Add("*" + ModName); // Add the mod back with the * to indicate it is active
+                                {
+                                    fileContents.Add("*" + ModName); // Add the mod back with the * to enable
+                                    activityLog.WriteLog("Enabled " + ModName + " in " + item.ToString() + " profile.");
+                                }
                                 else
+                                {
                                     fileContents.Add(ModName); // Add the mod back without the * to disable.
+                                    activityLog.WriteLog("Disabled " + ModName + " in " + item.ToString() + " profile.");
+                                }
                                 fileContents = fileContents.Distinct().ToList(); // Avoid adding a duplicate
                                 File.WriteAllLines(Path.Combine(Properties.Settings.Default.ProfileFolder, GameName, item.ToString()), fileContents);
-                                if (log)
-                                    activityLog.WriteLog("Added " + ModName + " to " + item.ToString() + " profile.");
+                                
                             }
                         }
                         else
