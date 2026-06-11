@@ -4784,9 +4784,9 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 return;
 
             tableLayoutPanel1.RowStyles[1].SizeType = SizeType.Percent; // Set datagrid display height
-            tableLayoutPanel1.RowStyles[1].Height = 85f;
+            tableLayoutPanel1.RowStyles[1].Height = 80f;
             tableLayoutPanel1.RowStyles[2].SizeType = SizeType.Percent; // Set log display height
-            tableLayoutPanel1.RowStyles[2].Height = 15f;
+            tableLayoutPanel1.RowStyles[2].Height = 20f;
             rtbLog.Visible = true;
             rtbLog.Dock = DockStyle.Fill;
             ResizeForm();
