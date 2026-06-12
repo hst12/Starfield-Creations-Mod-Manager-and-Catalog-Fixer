@@ -4784,9 +4784,9 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 return;
 
             tableLayoutPanel1.RowStyles[1].SizeType = SizeType.Percent; // Set datagrid display height
-            tableLayoutPanel1.RowStyles[1].Height = 80f;
+            tableLayoutPanel1.RowStyles[1].Height = 85f;
             tableLayoutPanel1.RowStyles[2].SizeType = SizeType.Percent; // Set log display height
-            tableLayoutPanel1.RowStyles[2].Height = 20f;
+            tableLayoutPanel1.RowStyles[2].Height = 15f;
             rtbLog.Visible = true;
             rtbLog.Dock = DockStyle.Fill;
             ResizeForm();
@@ -7060,6 +7060,8 @@ This function is only meant to be used on mods with empty .esm files",
                 return;
             }
 
+            int currentIndex = dataGridView1.CurrentRow?.Index ?? -1;
+
             foreach (var item in cmbProfile.Items)
             {
                 if (item.ToString() != "No Mods.txt")
@@ -7099,6 +7101,7 @@ This function is only meant to be used on mods with empty .esm files",
                                 File.WriteAllLines(Path.Combine(Properties.Settings.Default.ProfileFolder, GameName, item.ToString()), fileContents);
                                 
                             }
+
                         }
                         else
                             return;
@@ -7115,6 +7118,12 @@ This function is only meant to be used on mods with empty .esm files",
                 UpdateAllProfiles();
             else
                 RefreshDataGrid();
+            if (currentIndex >= 0 && currentIndex < dataGridView1.Rows.Count)
+            {
+
+                dataGridView1.CurrentCell = dataGridView1.Rows[currentIndex].Cells[1];
+                dataGridView1.Rows[currentIndex].Selected = true;
+            }
             dataGridView1.Focus();
         }
 
