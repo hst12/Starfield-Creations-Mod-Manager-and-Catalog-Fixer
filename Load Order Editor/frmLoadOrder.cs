@@ -36,7 +36,7 @@ namespace hstCMM
         public static ActivityLog activityLog;
         public static string GamePath, GameName;
         public static bool NoWarn, log;
-        public static int returnStatus;
+        public static int returnStatus, currentIndex;
         public int Game = Properties.Settings.Default.Game;
         private readonly Tools tools = new();
         private CancellationTokenSource cancellationTokenSource;
@@ -4279,11 +4279,12 @@ namespace hstCMM
             }
         }
 
-        private void RunLOOT(bool LOOTMode) // True for autosort
+        private int RunLOOT(bool LOOTMode) // True for autosort
         {
             string GameFolder = Tools.GameLibrary.GetById(Game).AppData;
             bool profilesActive = Profiles;
             string lootPath = Properties.Settings.Default.LOOTPath;
+            int sortResult = 0;
 
             if (isModified) SavePlugins();
 
@@ -4299,7 +4300,7 @@ namespace hstCMM
             if (string.IsNullOrEmpty(lootPath) && !SetLOOTPath())
             {
                 sbar("LOOT path is required to run LOOT");
-                return;
+                return 0;
             }
 
             ResetGroupsButton();
@@ -4350,6 +4351,7 @@ namespace hstCMM
                 tempstr = "LOOT sorting complete";
                 activityLog.WriteLog(tempstr);
                 sbar(tempstr);
+                sortResult = 1;
             }
             else
             {
@@ -4364,6 +4366,7 @@ namespace hstCMM
             SavePlugins();
             cmbProfile.Enabled = Profiles;
             chkProfile.Checked = Profiles;
+            return sortResult;
         }
 
         private void runProgramToolStripMenuItem_Click(object sender, EventArgs e)
@@ -6226,7 +6229,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 totalChanges += SyncPlugins();
 
                 if (AutoSort)
-                    RunLOOT(true);
+                    totalChanges+=RunLOOT(true);
             }
 
             // Restore the original profile & UI state
@@ -6921,7 +6924,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
         private void creationsUpdateToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CreationsUpdateStart();
-            creationsUpdateToolStripMenuItem.Checked=!creationsUpdateToolStripMenuItem.Checked;
+            creationsUpdateToolStripMenuItem.Checked = !creationsUpdateToolStripMenuItem.Checked;
         }
 
         private void mergeModsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -7044,6 +7047,26 @@ This function is only meant to be used on mods with empty .esm files",
             Tools.OpenUrl($"https://inara.cz/{GameName.ToLower()}");
         }
 
+        private void SetCurrentIndex()
+        {
+            currentIndex = dataGridView1.CurrentRow?.Index ?? -1; // Store the current row index
+        }
+
+        private void GetPreviousIndex()
+        {
+            if (currentIndex >= 0 && currentIndex < dataGridView1.Rows.Count) // Go back to the previously selected row
+            {
+                bool activeStatus = ActiveOnly;
+                if (ActiveOnly)
+                    ActiveOnlyToggle();
+                dataGridView1.CurrentCell = dataGridView1.Rows[currentIndex].Cells[1];
+                dataGridView1.Rows[currentIndex].Selected = true;
+                if (activeStatus)
+                    ActiveOnlyToggle();
+                dataGridView1.Focus();
+            }
+        }
+
         private void EnableDisableInProfiles(bool addRemove) // false to disable, true to enable
         {
             if (ActiveOnly && dataGridView1.SelectedRows.Count > 1)
@@ -7060,7 +7083,9 @@ This function is only meant to be used on mods with empty .esm files",
                 return;
             }
 
-            int currentIndex = dataGridView1.CurrentRow?.Index ?? -1;
+            SetCurrentIndex();
+
+            //currentIndex = dataGridView1.CurrentRow?.Index ?? -1; // Store the current row index
 
             foreach (var item in cmbProfile.Items)
             {
@@ -7099,9 +7124,7 @@ This function is only meant to be used on mods with empty .esm files",
                                 }
                                 fileContents = fileContents.Distinct().ToList(); // Avoid adding a duplicate
                                 File.WriteAllLines(Path.Combine(Properties.Settings.Default.ProfileFolder, GameName, item.ToString()), fileContents);
-                                
                             }
-
                         }
                         else
                             return;
@@ -7118,13 +7141,8 @@ This function is only meant to be used on mods with empty .esm files",
                 UpdateAllProfiles();
             else
                 RefreshDataGrid();
-            if (currentIndex >= 0 && currentIndex < dataGridView1.Rows.Count)
-            {
 
-                dataGridView1.CurrentCell = dataGridView1.Rows[currentIndex].Cells[1];
-                dataGridView1.Rows[currentIndex].Selected = true;
-            }
-            dataGridView1.Focus();
+            GetPreviousIndex();
         }
 
         private void toolStripMenuAddToProfile_Click(object sender, EventArgs e)
