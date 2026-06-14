@@ -5282,12 +5282,14 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     row.Cells[modEnabledIndex].Value =
                         (file.Length > 4 &&
                         (file.EndsWith(".esm", StringComparison.OrdinalIgnoreCase) ||
-                        file.EndsWith(".esl", StringComparison.OrdinalIgnoreCase) ||
-                        file.EndsWith(".esp", StringComparison.OrdinalIgnoreCase)))
+                        file.EndsWith(".esl", StringComparison.OrdinalIgnoreCase)))
                         && activateNew;
                     row.Cells[pluginNameIndex].Value = file;
 
-                    addLogEntries?.Add($"Adding {file} to Plugins.txt");
+                    if (row.Cells["PluginName"].Value.ToString().EndsWith(".esp", StringComparison.OrdinalIgnoreCase))
+                        addLogEntries?.Add($"Warning .esp file found - not activated: {file}");
+                    else
+                        addLogEntries?.Add($"Adding {file} to Plugins.txt");
                     added++;
                 }
 
@@ -6069,6 +6071,8 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 return;
 
             List<string> files = new();
+            string directoryPath = GamePath + "\\Data\\";
+            //frmGenericTextList frmSimilarMods = new();
 
             // Create a copy of selected rows to avoid collection-modification issues.
             var selectedRows = dataGridView1.SelectedRows.Cast<DataGridViewRow>().ToList();
@@ -6079,6 +6083,15 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             {
                 // Get the mod name from the PluginName cell (before the first dot).
                 string pluginName = row.Cells["PluginName"].Value?.ToString() ?? string.Empty;
+
+                List<string> similarFiles = Directory.GetFiles(directoryPath, Path.GetFileNameWithoutExtension(pluginName) + "*.esm").ToList();
+                if (similarFiles.Count > 1)
+                {
+                    frmGenericTextList frmsimilarMods = new frmGenericTextList("Warning: Similar named mods. Uninstall aborted", similarFiles);
+                    frmsimilarMods.ShowDialog();
+                    return;
+                }
+
                 int dotIndex = pluginName.LastIndexOf('.');
                 if (dotIndex < 0)
                     continue;
@@ -6150,7 +6163,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     }
 
                     // match files like 'modname - textures.ba2', 'modname - textures01.ba2', 'modname - textures02.ba2', etc.
-                    string directoryPath = GamePath + "\\Data\\";
+                    directoryPath = GamePath + "\\Data\\";
                     string[] textureFiles = Directory.GetFiles(directoryPath, modName + "* - textures*.ba2");
 
                     foreach (string file in textureFiles)
@@ -6229,7 +6242,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 totalChanges += SyncPlugins();
 
                 if (AutoSort)
-                    totalChanges+=RunLOOT(true);
+                    totalChanges += RunLOOT(true); // Increment if LOOT made changes
             }
 
             // Restore the original profile & UI state
