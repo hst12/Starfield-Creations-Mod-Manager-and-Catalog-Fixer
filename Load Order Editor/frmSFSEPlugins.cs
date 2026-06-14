@@ -89,7 +89,14 @@ namespace hstCMM.Load_Order_Editor
                     if (pluginName.EndsWith(".dll"))
                     {
                         string newName = Path.Combine(SFSEPluginPath, baseName + ".dll.disabled");
-                        File.Move(plugin, newName);
+                        try
+                        {
+                            File.Move(plugin, newName);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show($"Error disabling plugin {pluginName}: {ex.Message}","Error");
+                        }
                     }
                 }
             }
