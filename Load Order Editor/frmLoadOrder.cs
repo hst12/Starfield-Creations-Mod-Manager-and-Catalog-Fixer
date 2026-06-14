@@ -6072,7 +6072,6 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
             List<string> files = new();
             string directoryPath = GamePath + "\\Data\\";
-            //frmGenericTextList frmSimilarMods = new();
 
             // Create a copy of selected rows to avoid collection-modification issues.
             var selectedRows = dataGridView1.SelectedRows.Cast<DataGridViewRow>().ToList();
