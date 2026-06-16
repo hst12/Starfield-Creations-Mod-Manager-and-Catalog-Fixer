@@ -3640,18 +3640,18 @@ namespace hstCMM
             {
                 //var deserializer = new DeserializerBuilder().Build();
                 var deserializer = new DeserializerBuilder()
-    .WithNamingConvention(UnderscoredNamingConvention.Instance)
-    .IgnoreUnmatchedProperties()
-    .Build();
+                    .WithNamingConvention(UnderscoredNamingConvention.Instance)
+                    .IgnoreUnmatchedProperties()
+                    .Build();
 
                 string yamlContent = File.ReadAllText(yamlPath);
                 Groups = deserializer.Deserialize<Tools.Configuration>(yamlContent);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("LOOT userlist.yaml possibly corrupt\nPossible missing display field in required mods\nRun LOOT to edit metadata",
+                MessageBox.Show($"LOOT userlist.yaml possibly corrupt\nPossible missing display field in required mods\nRun LOOT to edit metadata\n{ex.InnerException?.Message}",
                     "Yaml decoding error", MessageBoxButtons.OK, MessageBoxIcon.Stop);
-                LogError(ex.Message);
+                LogError(ex.InnerException?.Message);
             }
         }
 
@@ -5804,12 +5804,9 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
         private void toolStripMenuLoot_Click(object sender, EventArgs e)
         {
-            RunLOOT(true);
-        }
-
-        private void toolStripMenuLoot_Click_1(object sender, EventArgs e)
-        {
+            SetCurrentIndex();
             RunLOOT(false);
+            GetPreviousIndex();
         }
 
         private void toolStripMenuLootAutoSort_Click(object sender, EventArgs e)

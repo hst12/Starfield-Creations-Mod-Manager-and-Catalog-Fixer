@@ -2182,7 +2182,7 @@
             toolStripMenuLoot.Name = "toolStripMenuLoot";
             toolStripMenuLoot.Size = new System.Drawing.Size(498, 44);
             toolStripMenuLoot.Text = "LOOT";
-            toolStripMenuLoot.Click += toolStripMenuLoot_Click_1;
+            toolStripMenuLoot.Click += toolStripMenuLoot_Click;
             // 
             // toolStripMenuLootSort
             // 

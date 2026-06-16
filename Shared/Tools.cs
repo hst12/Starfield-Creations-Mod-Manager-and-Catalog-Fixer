@@ -710,7 +710,6 @@ namespace hstCMM.Shared // Various functions used by the app
 
         public class Globals// LOOT
         {
-            public string condition { get; set; }
             public string content { get; set; }
             public List<string> subs { get; set; }
             public string type { get; set; }
@@ -720,6 +719,7 @@ namespace hstCMM.Shared // Various functions used by the app
         {
             public List<string> after { get; set; }
             public string name { get; set; }
+            public List<string> condition { get; set; }
         }
 
         public class MessageAnchor// LOOT
@@ -738,8 +738,8 @@ namespace hstCMM.Shared // Various functions used by the app
 
         public class Plugin // LOOT
         {
-            public List<string> after { get; set; }
             public string display { get; set; }
+
             public string group { get; set; }
             public List<string> inc { get; set; }
             public List<Msg> msg { get; set; }

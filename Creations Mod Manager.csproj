@@ -1,268 +1,268 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
-    <TargetFramework>net10.0-windows10.0.17763.0</TargetFramework>
-    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
-    <OutputType>WinExe</OutputType>
-    <RootNamespace>hstCMM</RootNamespace>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>true</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <UpdateUrl>https://github.com/hst12/Starfield-Tools---ContentCatalog.txt-fixer/releases/download/latest/Starfield.Tools.zip/</UpdateUrl>
-    <SupportUrl>https://github.com/hst12/Starfield-Tools---ContentCatalog.txt-fixer</SupportUrl>
-    <ProductName>Starfield Content Catalog Fixer</ProductName>
-    <PublisherName>hst</PublisherName>
-    <SuiteName>Creations Mod Manager</SuiteName>
-    <ApplicationRevision>7</ApplicationRevision>
-    <ApplicationVersion>1.7.0.0</ApplicationVersion>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <CreateDesktopShortcut>true</CreateDesktopShortcut>
-    <ExcludeDeploymentUrl>true</ExcludeDeploymentUrl>
-    <PublishWizardCompleted>true</PublishWizardCompleted>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <UseWindowsForms>true</UseWindowsForms>
-    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
-    <Configurations>Debug;Release</Configurations>
-    <Platforms>AnyCPU;x64</Platforms>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationIcon>SpaceShip.ico</ApplicationIcon>
-  </PropertyGroup>
-  <PropertyGroup>
-    <PlatformTarget>x64</PlatformTarget>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
-    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
-    <Title>Creations Mod Manager</Title>
-    <PackageIcon>SpaceShip.ico</PackageIcon>
-    <SignAssembly>False</SignAssembly>
-    <Description>Creations Mod Manager</Description>
-    <PackageTags>Starfield;Bethesda</PackageTags>
-    <FileVersion>1.18.7</FileVersion>
-    <AssemblyVersion>1.18.7</AssemblyVersion>
-    <Version>1.18.7</Version>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <OutputPath>bin\x64\Debug\</OutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutputPath>bin\x64\Release\</OutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='x64|x64'">
-    <OutputPath>bin\x64\Release\</OutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <IsPublishable>True</IsPublishable>
-    <Optimize>False</Optimize>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IsPublishable>True</IsPublishable>
-    <Optimize>False</Optimize>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <IsPublishable>True</IsPublishable>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IsPublishable>True</IsPublishable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+		<TargetFramework>net10.0-windows10.0.17763.0</TargetFramework>
+		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
+		<OutputType>WinExe</OutputType>
+		<RootNamespace>hstCMM</RootNamespace>
+		<IsWebBootstrapper>false</IsWebBootstrapper>
+		<PublishUrl>publish\</PublishUrl>
+		<Install>true</Install>
+		<InstallFrom>Disk</InstallFrom>
+		<UpdateEnabled>true</UpdateEnabled>
+		<UpdateMode>Foreground</UpdateMode>
+		<UpdateInterval>7</UpdateInterval>
+		<UpdateIntervalUnits>Days</UpdateIntervalUnits>
+		<UpdatePeriodically>false</UpdatePeriodically>
+		<UpdateRequired>false</UpdateRequired>
+		<MapFileExtensions>true</MapFileExtensions>
+		<UpdateUrl>https://github.com/hst12/Starfield-Tools---ContentCatalog.txt-fixer/releases/download/latest/Starfield.Tools.zip/</UpdateUrl>
+		<SupportUrl>https://github.com/hst12/Starfield-Tools---ContentCatalog.txt-fixer</SupportUrl>
+		<ProductName>Starfield Content Catalog Fixer</ProductName>
+		<PublisherName>hst</PublisherName>
+		<SuiteName>Creations Mod Manager</SuiteName>
+		<ApplicationRevision>7</ApplicationRevision>
+		<ApplicationVersion>1.7.0.0</ApplicationVersion>
+		<UseApplicationTrust>false</UseApplicationTrust>
+		<CreateDesktopShortcut>true</CreateDesktopShortcut>
+		<ExcludeDeploymentUrl>true</ExcludeDeploymentUrl>
+		<PublishWizardCompleted>true</PublishWizardCompleted>
+		<BootstrapperEnabled>true</BootstrapperEnabled>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<UseWindowsForms>true</UseWindowsForms>
+		<ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+		<Configurations>Debug;Release</Configurations>
+		<Platforms>AnyCPU;x64</Platforms>
+	</PropertyGroup>
+	<PropertyGroup>
+		<ApplicationIcon>SpaceShip.ico</ApplicationIcon>
+	</PropertyGroup>
+	<PropertyGroup>
+		<PlatformTarget>x64</PlatformTarget>
+		<ApplicationManifest>app.manifest</ApplicationManifest>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+		<Title>Creations Mod Manager</Title>
+		<PackageIcon>SpaceShip.ico</PackageIcon>
+		<SignAssembly>False</SignAssembly>
+		<Description>Creations Mod Manager</Description>
+		<PackageTags>Starfield;Bethesda</PackageTags>
+		<FileVersion>1.18.7</FileVersion>
+		<AssemblyVersion>1.18.7</AssemblyVersion>
+		<Version>1.18.7</Version>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+		<OutputPath>bin\x64\Debug\</OutputPath>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+		<OutputPath>bin\x64\Release\</OutputPath>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='x64|x64'">
+		<OutputPath>bin\x64\Release\</OutputPath>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<IsPublishable>True</IsPublishable>
+		<Optimize>False</Optimize>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+		<IsPublishable>True</IsPublishable>
+		<Optimize>False</Optimize>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<IsPublishable>True</IsPublishable>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+		<IsPublishable>True</IsPublishable>
+	</PropertyGroup>
 	<PropertyGroup>
 		<NoWarn>$(NoWarn);WFO5001</NoWarn>
 		<PackageProjectUrl>https://github.com/hst12/Starfield-Creations-Mod-Manager-and-Catalog-Fixer</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/hst12/Starfield-Creations-Mod-Manager-and-Catalog-Fixer</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 	</PropertyGroup>
-  <ItemGroup>
-    <Compile Remove="bin\**" />
-    <Compile Remove="Documentation\Images\**" />
-    <Compile Remove="Output\**" />
-    <EmbeddedResource Remove="bin\**" />
-    <EmbeddedResource Remove="Documentation\Images\**" />
-    <EmbeddedResource Remove="Output\**" />
-    <None Remove="bin\**" />
-    <None Remove="Documentation\Images\**" />
-    <None Remove="Output\**" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Remove="Shared\frmSplashScreenVideo.cs" />
-    <Compile Remove="Shared\frmSplashScreenVideo.Designer.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Remove="Shared\frmSplashScreenVideo.resx" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="Banner.jpg" />
-    <None Remove="Common\App Version.txt" />
-    <None Remove="Common\Catalog Version.txt" />
-    <None Remove="Common\dummy.esm" />
-    <None Remove="Common\exclude.txt" />
-    <None Remove="Common\Header.txt" />
-    <None Remove="Common\Readfile.txt" />
-    <None Remove="Common\Starfield Archives.txt" />
-    <None Remove="Common\Starfield Exclude.txt" />
-    <None Remove="Common\Starfield.ini" />
-    <None Remove="Common\StarFieldCustom.ini" />
-    <None Remove="Documentation\Buttons.htm" />
-    <None Remove="Documentation\Index.htm" />
-    <None Remove="Documentation\Menus.htm" />
-    <None Remove="Resources\1724076530026721.jpg" />
-    <None Remove="SpaceShip.png" />
-    <None Remove="StarfieldTools.db" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Clipboard.ico" />
-    <Content Include="Common\App Version.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Catalog Version.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\dummy.esm">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\exclude.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Fallout 4 Archives.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Fallout 4 Exclude.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Header.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Readfile.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Skyrim SE Exclude.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Starfield Archives.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Starfield Exclude.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Starfield.ini">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\StarFieldCustom.ini">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Documentation\Readme.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SpaceShip.ico">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include=".NETFramework,Version=v4.8">
-      <Visible>False</Visible>
-      <ProductName>Microsoft .NET Framework 4.8 %28x86 and x64%29</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft-WindowsAPICodePack-Shell" Version="1.1.5" />
-    <PackageReference Include="Narod.SteamGameFinder" Version="2.1.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
-    <PackageReference Include="QuestPDF" Version="2026.5.0" />
-    <PackageReference Include="SevenZipExtractor" Version="1.0.19" />
-    <PackageReference Include="YamlDotNet" Version="18.0.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="Properties\Resources.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Shared\frmAbout.cs">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Compile>
-    <Compile Update="Shared\frmGenericTextList.cs">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Compile>
-    <Compile Update="Shared\frmLoading.cs">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Compile>
-    <Compile Update="Shared\frmSplashScreen.cs">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Compile>
-    <Compile Update="Properties\Settings.Designer.cs">
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Update="Properties\Resources.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="cmm_log.ldf">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </None>
-    <None Update="Common\hstCMMdb">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </None>
-    <None Update="Common\hstCMMlog">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </None>
-    <None Update="Common\hstCMM Video.mp4">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </None>
-    <None Update="Common\LooseFilesOff.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Common\LooseFilesOn.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Common\Skyrim SE Archives.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="docs\index.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Documentation\Shortcuts.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="hstCMM.db">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <None Update="README.md">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-    <None Update="SpaceShip.ico">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="C:\Users\hst12\.nuget\packages\sevenzipextractor\1.0.19\build\x86\7z.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="bin\Debug\net10.0-windows10.0.17763.0\win-x64\" />
-  </ItemGroup>
+	<ItemGroup>
+		<Compile Remove="bin\**" />
+		<Compile Remove="Documentation\Images\**" />
+		<Compile Remove="Output\**" />
+		<EmbeddedResource Remove="bin\**" />
+		<EmbeddedResource Remove="Documentation\Images\**" />
+		<EmbeddedResource Remove="Output\**" />
+		<None Remove="bin\**" />
+		<None Remove="Documentation\Images\**" />
+		<None Remove="Output\**" />
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Remove="Shared\frmSplashScreenVideo.cs" />
+		<Compile Remove="Shared\frmSplashScreenVideo.Designer.cs" />
+	</ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Remove="Shared\frmSplashScreenVideo.resx" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Remove="Banner.jpg" />
+		<None Remove="Common\App Version.txt" />
+		<None Remove="Common\Catalog Version.txt" />
+		<None Remove="Common\dummy.esm" />
+		<None Remove="Common\exclude.txt" />
+		<None Remove="Common\Header.txt" />
+		<None Remove="Common\Readfile.txt" />
+		<None Remove="Common\Starfield Archives.txt" />
+		<None Remove="Common\Starfield Exclude.txt" />
+		<None Remove="Common\Starfield.ini" />
+		<None Remove="Common\StarFieldCustom.ini" />
+		<None Remove="Documentation\Buttons.htm" />
+		<None Remove="Documentation\Index.htm" />
+		<None Remove="Documentation\Menus.htm" />
+		<None Remove="Resources\1724076530026721.jpg" />
+		<None Remove="SpaceShip.png" />
+		<None Remove="StarfieldTools.db" />
+	</ItemGroup>
+	<ItemGroup>
+		<Content Include="Clipboard.ico" />
+		<Content Include="Common\App Version.txt">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Common\Catalog Version.txt">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Common\dummy.esm">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Common\exclude.txt">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Common\Fallout 4 Archives.txt">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Common\Fallout 4 Exclude.txt">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Common\Header.txt">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Common\Readfile.txt">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Common\Skyrim SE Exclude.txt">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Common\Starfield Archives.txt">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Common\Starfield Exclude.txt">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Common\Starfield.ini">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Common\StarFieldCustom.ini">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Documentation\Readme.txt">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="SpaceShip.ico">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+	<ItemGroup>
+		<BootstrapperPackage Include=".NETFramework,Version=v4.8">
+			<Visible>False</Visible>
+			<ProductName>Microsoft .NET Framework 4.8 %28x86 and x64%29</ProductName>
+			<Install>true</Install>
+		</BootstrapperPackage>
+		<BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+			<Visible>False</Visible>
+			<ProductName>.NET Framework 3.5 SP1</ProductName>
+			<Install>false</Install>
+		</BootstrapperPackage>
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft-WindowsAPICodePack-Shell" Version="1.1.5" />
+		<PackageReference Include="Narod.SteamGameFinder" Version="2.1.0" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+		<PackageReference Include="QuestPDF" Version="2026.5.0" />
+		<PackageReference Include="SevenZipExtractor" Version="1.0.19" />
+		<PackageReference Include="YamlDotNet" Version="18.0.0" />
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Update="Properties\Resources.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Resources.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Shared\frmAbout.cs">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Compile>
+		<Compile Update="Shared\frmGenericTextList.cs">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Compile>
+		<Compile Update="Shared\frmLoading.cs">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Compile>
+		<Compile Update="Shared\frmSplashScreen.cs">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Compile>
+		<Compile Update="Properties\Settings.Designer.cs">
+			<DesignTimeSharedInput>True</DesignTimeSharedInput>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Settings.settings</DependentUpon>
+		</Compile>
+	</ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Update="Properties\Resources.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>Resources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+	</ItemGroup>
+	<ItemGroup>
+		<None Update="cmm_log.ldf">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Update="Common\hstCMMdb">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Update="Common\hstCMMlog">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Update="Common\hstCMM Video.mp4">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Update="Common\LooseFilesOff.txt">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Common\LooseFilesOn.txt">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Common\Skyrim SE Archives.txt">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="docs\index.html">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Documentation\Shortcuts.txt">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="hstCMM.db">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Properties\Settings.settings">
+			<Generator>SettingsSingleFileGenerator</Generator>
+			<LastGenOutput>Settings.Designer.cs</LastGenOutput>
+		</None>
+		<None Update="README.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+		<None Update="SpaceShip.ico">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
+	<ItemGroup>
+		<None Remove="C:\Users\hst12\.nuget\packages\sevenzipextractor\1.0.19\build\x86\7z.dll" />
+	</ItemGroup>
+	<ItemGroup>
+		<Folder Include="bin\Debug\net10.0-windows10.0.17763.0\win-x64\" />
+	</ItemGroup>
 </Project>
