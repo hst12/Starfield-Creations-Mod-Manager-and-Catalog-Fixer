@@ -39,7 +39,8 @@ ArchitecturesInstallIn64BitMode=x64compatible
 ; Remove the following line to run in administrative install mode (install for all users).
 ; PrivilegesRequired=lowest
 OutputBaseFilename=hstCMM Installer
-SolidCompression=yes
+SolidCompression=no
+Compression=zip
 WizardStyle=modern
 SetupIconFile=SpaceShip.ico
 WizardSmallImageFile=SpaceShip.png
