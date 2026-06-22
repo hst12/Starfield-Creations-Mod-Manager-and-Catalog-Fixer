@@ -4550,9 +4550,6 @@ namespace hstCMM
             // Lowercase the search query for case-insensitive matching.
             string searchQuery = txtSearchBox.Text.ToLowerInvariant();
 
-            if (ActiveOnly)
-                ActiveOnlyToggle(); // Disable filter
-
             // Set current cell if not selected
             if (dataGridView1.CurrentCell is null)
                 dataGridView1.CurrentCell = dataGridView1.Rows[0].Cells["PluginName"];
@@ -4569,11 +4566,11 @@ namespace hstCMM
                 string cellText = cellValue?.ToString().ToLowerInvariant() ?? string.Empty;
                 string cellDescriptionText = cellDescription?.ToString().ToLowerInvariant() ?? string.Empty;
 
-                if (cellText.Contains(searchQuery) || cellDescriptionText.Contains(searchQuery))
+                if ((cellText.Contains(searchQuery) || cellDescriptionText.Contains(searchQuery)) && dataGridView1.Rows[rowIndex].Cells["PluginName"].Visible)
                 {
                     // Report the result.
                     string foundText = cellValue?.ToString() ?? "";
-                    sbar2($"Found {txtSearchBox.Text} in {foundText}");
+                    sbar($"Found {txtSearchBox.Text} in {foundText}");
                     // Set current cell
                     dataGridView1.CurrentCell = dataGridView1.Rows[rowIndex].Cells["PluginName"];
                     return;

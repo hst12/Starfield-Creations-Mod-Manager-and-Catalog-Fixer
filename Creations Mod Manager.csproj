@@ -47,9 +47,9 @@
 		<SignAssembly>False</SignAssembly>
 		<Description>Creations Mod Manager</Description>
 		<PackageTags>Starfield;Bethesda</PackageTags>
-		<FileVersion>1.18.8</FileVersion>
-		<AssemblyVersion>1.18.8</AssemblyVersion>
-		<Version>1.18.8</Version>
+		<FileVersion>1.18.9</FileVersion>
+		<AssemblyVersion>1.18.9</AssemblyVersion>
+		<Version>1.18.9</Version>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
 		<OutputPath>bin\x64\Debug\</OutputPath>

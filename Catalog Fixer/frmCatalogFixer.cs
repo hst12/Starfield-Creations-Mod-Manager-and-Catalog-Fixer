@@ -751,7 +751,7 @@ namespace hstCMM
                 richTextBox2.Text += "\nRestore complete\n";
                 toolStripStatusLabel1.Text = "Restore complete";
                 if (log)
-                    activityLog.WriteLog("Catalog Restore complete");
+                    activityLog.WriteLog("Catalog Restored");
                 return true;
             }
             catch (Exception ex)
