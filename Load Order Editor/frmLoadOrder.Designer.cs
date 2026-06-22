@@ -338,7 +338,7 @@
             btnTop = new System.Windows.Forms.Button();
             btnBottom = new System.Windows.Forms.Button();
             btnToggleMod = new System.Windows.Forms.Button();
-            label1 = new System.Windows.Forms.Label();
+            chkFindFiltered = new System.Windows.Forms.CheckBox();
             txtSearchBox = new System.Windows.Forms.TextBox();
             btnFindNext = new System.Windows.Forms.Button();
             chkProfile = new System.Windows.Forms.CheckBox();
@@ -2480,7 +2480,7 @@
             flowLayoutPanel1.Controls.Add(btnTop);
             flowLayoutPanel1.Controls.Add(btnBottom);
             flowLayoutPanel1.Controls.Add(btnToggleMod);
-            flowLayoutPanel1.Controls.Add(label1);
+            flowLayoutPanel1.Controls.Add(chkFindFiltered);
             flowLayoutPanel1.Controls.Add(txtSearchBox);
             flowLayoutPanel1.Controls.Add(btnFindNext);
             flowLayoutPanel1.Controls.Add(chkProfile);
@@ -2498,7 +2498,7 @@
             flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Left;
             flowLayoutPanel1.Location = new System.Drawing.Point(3, 940);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new System.Drawing.Size(1790, 48);
+            flowLayoutPanel1.Size = new System.Drawing.Size(1824, 48);
             flowLayoutPanel1.TabIndex = 8;
             flowLayoutPanel1.WrapContents = false;
             // 
@@ -2576,34 +2576,33 @@
             btnToggleMod.UseVisualStyleBackColor = true;
             btnToggleMod.Click += btnToggleMod_Click;
             // 
-            // label1
+            // chkFindFiltered
             // 
-            label1.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            label1.AutoSize = true;
-            label1.Location = new System.Drawing.Point(226, 8);
-            label1.Margin = new System.Windows.Forms.Padding(2);
-            label1.Name = "label1";
-            label1.Size = new System.Drawing.Size(60, 32);
-            label1.TabIndex = 18;
-            label1.Text = "Find";
-            toolTip1.SetToolTip(label1, "Ctrl-F to focus, Enter - Next match, Esc - Clear");
+            chkFindFiltered.AutoSize = true;
+            chkFindFiltered.Location = new System.Drawing.Point(227, 3);
+            chkFindFiltered.Name = "chkFindFiltered";
+            chkFindFiltered.Size = new System.Drawing.Size(92, 36);
+            chkFindFiltered.TabIndex = 20;
+            chkFindFiltered.Text = "Find";
+            chkFindFiltered.UseVisualStyleBackColor = true;
+            chkFindFiltered.CheckedChanged += chkFindFiltered_CheckedChanged;
             // 
             // txtSearchBox
             // 
             txtSearchBox.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            txtSearchBox.Location = new System.Drawing.Point(290, 4);
+            txtSearchBox.Location = new System.Drawing.Point(324, 4);
             txtSearchBox.Margin = new System.Windows.Forms.Padding(2);
             txtSearchBox.Name = "txtSearchBox";
             txtSearchBox.Size = new System.Drawing.Size(96, 39);
             txtSearchBox.TabIndex = 5;
-            toolTip1.SetToolTip(txtSearchBox, "Search Text (Ctrl-F to focus, Enter - Next match, Esc - Clear)");
+            toolTip1.SetToolTip(txtSearchBox, "Search Text (Ctrl-F to focus, Enter - Next match, Esc - Clear), Checkbox - Find in filtered mods only");
             txtSearchBox.KeyDown += txtSearchBox_KeyDown;
             // 
             // btnFindNext
             // 
             btnFindNext.Anchor = System.Windows.Forms.AnchorStyles.Left;
             btnFindNext.AutoSize = true;
-            btnFindNext.Location = new System.Drawing.Point(390, 3);
+            btnFindNext.Location = new System.Drawing.Point(424, 3);
             btnFindNext.Margin = new System.Windows.Forms.Padding(2);
             btnFindNext.Name = "btnFindNext";
             btnFindNext.Size = new System.Drawing.Size(127, 42);
@@ -2617,7 +2616,7 @@
             // 
             chkProfile.Anchor = System.Windows.Forms.AnchorStyles.Left;
             chkProfile.AutoSize = true;
-            chkProfile.Location = new System.Drawing.Point(521, 6);
+            chkProfile.Location = new System.Drawing.Point(555, 6);
             chkProfile.Margin = new System.Windows.Forms.Padding(2);
             chkProfile.Name = "chkProfile";
             chkProfile.Size = new System.Drawing.Size(114, 36);
@@ -2633,7 +2632,7 @@
             cmbProfile.DropDownWidth = 300;
             cmbProfile.FormattingEnabled = true;
             cmbProfile.ItemHeight = 32;
-            cmbProfile.Location = new System.Drawing.Point(639, 4);
+            cmbProfile.Location = new System.Drawing.Point(673, 4);
             cmbProfile.Margin = new System.Windows.Forms.Padding(2);
             cmbProfile.Name = "cmbProfile";
             cmbProfile.Size = new System.Drawing.Size(300, 40);
@@ -2646,7 +2645,7 @@
             btnSave.Anchor = System.Windows.Forms.AnchorStyles.Left;
             btnSave.AutoSize = true;
             btnSave.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            btnSave.Location = new System.Drawing.Point(943, 3);
+            btnSave.Location = new System.Drawing.Point(977, 3);
             btnSave.Margin = new System.Windows.Forms.Padding(2);
             btnSave.Name = "btnSave";
             btnSave.Size = new System.Drawing.Size(74, 42);
@@ -2661,7 +2660,7 @@
             btnActiveOnly.Anchor = System.Windows.Forms.AnchorStyles.Left;
             btnActiveOnly.AutoSize = true;
             btnActiveOnly.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            btnActiveOnly.Location = new System.Drawing.Point(1021, 3);
+            btnActiveOnly.Location = new System.Drawing.Point(1055, 3);
             btnActiveOnly.Margin = new System.Windows.Forms.Padding(2);
             btnActiveOnly.Name = "btnActiveOnly";
             btnActiveOnly.Size = new System.Drawing.Size(77, 42);
@@ -2675,7 +2674,7 @@
             // 
             btnGroups.Anchor = System.Windows.Forms.AnchorStyles.Left;
             btnGroups.AutoSize = true;
-            btnGroups.Location = new System.Drawing.Point(1103, 3);
+            btnGroups.Location = new System.Drawing.Point(1137, 3);
             btnGroups.Name = "btnGroups";
             btnGroups.Size = new System.Drawing.Size(100, 42);
             btnGroups.TabIndex = 11;
@@ -2689,7 +2688,7 @@
             btnLog.Anchor = System.Windows.Forms.AnchorStyles.Left;
             btnLog.AutoSize = true;
             btnLog.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            btnLog.Location = new System.Drawing.Point(1208, 3);
+            btnLog.Location = new System.Drawing.Point(1242, 3);
             btnLog.Margin = new System.Windows.Forms.Padding(2);
             btnLog.Name = "btnLog";
             btnLog.Size = new System.Drawing.Size(63, 42);
@@ -2704,7 +2703,7 @@
             btnRefresh.Anchor = System.Windows.Forms.AnchorStyles.Left;
             btnRefresh.AutoSize = true;
             btnRefresh.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            btnRefresh.Location = new System.Drawing.Point(1275, 3);
+            btnRefresh.Location = new System.Drawing.Point(1309, 3);
             btnRefresh.Margin = new System.Windows.Forms.Padding(2);
             btnRefresh.Name = "btnRefresh";
             btnRefresh.Size = new System.Drawing.Size(103, 42);
@@ -2719,7 +2718,7 @@
             btnUpdate.Anchor = System.Windows.Forms.AnchorStyles.Left;
             btnUpdate.AutoSize = true;
             btnUpdate.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            btnUpdate.Location = new System.Drawing.Point(1382, 3);
+            btnUpdate.Location = new System.Drawing.Point(1416, 3);
             btnUpdate.Margin = new System.Windows.Forms.Padding(2);
             btnUpdate.Name = "btnUpdate";
             btnUpdate.Size = new System.Drawing.Size(101, 42);
@@ -2734,7 +2733,7 @@
             btnLoot.Anchor = System.Windows.Forms.AnchorStyles.Left;
             btnLoot.AutoSize = true;
             btnLoot.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            btnLoot.Location = new System.Drawing.Point(1487, 3);
+            btnLoot.Location = new System.Drawing.Point(1521, 3);
             btnLoot.Margin = new System.Windows.Forms.Padding(2);
             btnLoot.Name = "btnLoot";
             btnLoot.Size = new System.Drawing.Size(67, 42);
@@ -2749,7 +2748,7 @@
             btnRun.Anchor = System.Windows.Forms.AnchorStyles.Left;
             btnRun.AutoSize = true;
             btnRun.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            btnRun.Location = new System.Drawing.Point(1558, 3);
+            btnRun.Location = new System.Drawing.Point(1592, 3);
             btnRun.Margin = new System.Windows.Forms.Padding(2);
             btnRun.Name = "btnRun";
             btnRun.Size = new System.Drawing.Size(66, 42);
@@ -2764,7 +2763,7 @@
             btnCancel.Anchor = System.Windows.Forms.AnchorStyles.Left;
             btnCancel.AutoSize = true;
             btnCancel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            btnCancel.Location = new System.Drawing.Point(1628, 3);
+            btnCancel.Location = new System.Drawing.Point(1662, 3);
             btnCancel.Margin = new System.Windows.Forms.Padding(2);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new System.Drawing.Size(95, 42);
@@ -2779,7 +2778,7 @@
             btnQuit.Anchor = System.Windows.Forms.AnchorStyles.Left;
             btnQuit.AutoSize = true;
             btnQuit.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            btnQuit.Location = new System.Drawing.Point(1727, 3);
+            btnQuit.Location = new System.Drawing.Point(1761, 3);
             btnQuit.Margin = new System.Windows.Forms.Padding(2);
             btnQuit.Name = "btnQuit";
             btnQuit.Size = new System.Drawing.Size(61, 42);
@@ -3114,7 +3113,6 @@
         private System.Windows.Forms.Button btnDown;
         private System.Windows.Forms.Button btnTop;
         private System.Windows.Forms.Button btnBottom;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtSearchBox;
         private System.Windows.Forms.CheckBox chkProfile;
         private System.Windows.Forms.ComboBox cmbProfile;
@@ -3203,5 +3201,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator62;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuAddToProfile;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuRemoveFromAllProfiles;
+        private System.Windows.Forms.CheckBox chkFindFiltered;
     }
 }

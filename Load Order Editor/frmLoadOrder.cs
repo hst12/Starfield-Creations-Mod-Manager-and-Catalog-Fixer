@@ -4541,11 +4541,14 @@ namespace hstCMM
             Tools.OpenFolder(tempstr);
         }
 
-        private void SearchMod()
+        private void FindMod()
         {
             // Exit if the search box is empty.
             if (string.IsNullOrEmpty(txtSearchBox.Text))
                 return;
+
+            if (!chkFindFiltered.Checked && ActiveOnly)
+                ActiveOnlyToggle();
 
             // Lowercase the search query for case-insensitive matching.
             string searchQuery = txtSearchBox.Text.ToLowerInvariant();
@@ -4827,6 +4830,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             rowHighlightToolStripMenuItem.Checked = Properties.Settings.Default.RowHighlight;
             randomToolStripMenuItem.Checked = Properties.Settings.Default.RandomLoadScreen;
             sequenceToolStripMenuItem.Checked = Properties.Settings.Default.LoadScreenSequence;
+            chkFindFiltered.Checked = Properties.Settings.Default.FindActiveOnly;
         }
 
         private void sFSEPluginsToolStripMenuItem_Click(object sender, EventArgs e) // Open SFSE Plugins Directory
@@ -5969,7 +5973,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
         private void txtSearchBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.F3)
-                SearchMod();
+                FindMod();
         }
 
         private void uIToEditGameCustominiToolStripMenuItem_Click(object sender, EventArgs e)
@@ -6771,7 +6775,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
         private void btnFindNext_Click(object sender, EventArgs e)
         {
-            SearchMod();
+            FindMod();
         }
 
         private void moveUnusedModsBackToDataDirectoryToolStripMenuItem_Click(object sender, EventArgs e)
@@ -7159,6 +7163,11 @@ This function is only meant to be used on mods with empty .esm files",
         private void toolStripMenuRemoveFromAllProfiles_Click(object sender, EventArgs e)
         {
             EnableDisableInProfiles(false); // Disable
+        }
+
+        private void chkFindFiltered_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.FindActiveOnly = chkFindFiltered.Checked;
         }
     }
 }
