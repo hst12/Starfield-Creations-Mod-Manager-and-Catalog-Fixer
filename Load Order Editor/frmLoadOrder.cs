@@ -4569,7 +4569,8 @@ namespace hstCMM
                 string cellText = cellValue?.ToString().ToLowerInvariant() ?? string.Empty;
                 string cellDescriptionText = cellDescription?.ToString().ToLowerInvariant() ?? string.Empty;
 
-                if ((cellText.Contains(searchQuery) || cellDescriptionText.Contains(searchQuery)) && dataGridView1.Rows[rowIndex].Cells["PluginName"].Visible)
+                if ((cellText.Contains(searchQuery) || cellDescriptionText.Contains(searchQuery)) &&
+                    dataGridView1.Rows[rowIndex].Cells["PluginName"].Visible)
                 {
                     // Report the result.
                     string foundText = cellValue?.ToString() ?? "";
@@ -7168,6 +7169,9 @@ This function is only meant to be used on mods with empty .esm files",
         private void chkFindFiltered_CheckedChanged(object sender, EventArgs e)
         {
             Properties.Settings.Default.FindActiveOnly = chkFindFiltered.Checked;
+            if (!ActiveOnly && chkFindFiltered.Checked)
+                ActiveOnlyToggle();
+            dataGridView1.Focus();
         }
     }
 }

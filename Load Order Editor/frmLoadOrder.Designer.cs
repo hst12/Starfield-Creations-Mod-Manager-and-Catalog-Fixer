@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmLoadOrder));
             dataGridView1 = new System.Windows.Forms.DataGridView();
             Index = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -453,8 +453,8 @@
             // Version
             // 
             Version.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            dataGridViewCellStyle2.NullValue = null;
-            Version.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.NullValue = null;
+            Version.DefaultCellStyle = dataGridViewCellStyle1;
             Version.HeaderText = "Date";
             Version.MinimumWidth = 10;
             Version.Name = "Version";
@@ -2582,7 +2582,7 @@
             chkFindFiltered.Location = new System.Drawing.Point(227, 3);
             chkFindFiltered.Name = "chkFindFiltered";
             chkFindFiltered.Size = new System.Drawing.Size(92, 36);
-            chkFindFiltered.TabIndex = 20;
+            chkFindFiltered.TabIndex = 6;
             chkFindFiltered.Text = "Find";
             chkFindFiltered.UseVisualStyleBackColor = true;
             chkFindFiltered.CheckedChanged += chkFindFiltered_CheckedChanged;
@@ -2594,7 +2594,7 @@
             txtSearchBox.Margin = new System.Windows.Forms.Padding(2);
             txtSearchBox.Name = "txtSearchBox";
             txtSearchBox.Size = new System.Drawing.Size(96, 39);
-            txtSearchBox.TabIndex = 5;
+            txtSearchBox.TabIndex = 7;
             toolTip1.SetToolTip(txtSearchBox, "Search Text (Ctrl-F to focus, Enter - Next match, Esc - Clear), Checkbox - Find in filtered mods only");
             txtSearchBox.KeyDown += txtSearchBox_KeyDown;
             // 
@@ -2606,9 +2606,9 @@
             btnFindNext.Margin = new System.Windows.Forms.Padding(2);
             btnFindNext.Name = "btnFindNext";
             btnFindNext.Size = new System.Drawing.Size(127, 42);
-            btnFindNext.TabIndex = 6;
+            btnFindNext.TabIndex = 8;
             btnFindNext.Text = "Next";
-            toolTip1.SetToolTip(btnFindNext, "Find next match in search");
+            toolTip1.SetToolTip(btnFindNext, "Find next match in search. Checkbox on the left searches in filtered mods only");
             btnFindNext.UseVisualStyleBackColor = true;
             btnFindNext.Click += btnFindNext_Click;
             // 
@@ -2620,7 +2620,7 @@
             chkProfile.Margin = new System.Windows.Forms.Padding(2);
             chkProfile.Name = "chkProfile";
             chkProfile.Size = new System.Drawing.Size(114, 36);
-            chkProfile.TabIndex = 7;
+            chkProfile.TabIndex = 9;
             chkProfile.Text = "Profile";
             toolTip1.SetToolTip(chkProfile, "Enable/Disable Profiles");
             chkProfile.UseVisualStyleBackColor = true;
@@ -2636,7 +2636,7 @@
             cmbProfile.Margin = new System.Windows.Forms.Padding(2);
             cmbProfile.Name = "cmbProfile";
             cmbProfile.Size = new System.Drawing.Size(300, 40);
-            cmbProfile.TabIndex = 8;
+            cmbProfile.TabIndex = 10;
             toolTip1.SetToolTip(cmbProfile, "Profile select");
             cmbProfile.SelectedIndexChanged += cmbProfile_SelectedIndexChanged;
             // 
@@ -2649,7 +2649,7 @@
             btnSave.Margin = new System.Windows.Forms.Padding(2);
             btnSave.Name = "btnSave";
             btnSave.Size = new System.Drawing.Size(74, 42);
-            btnSave.TabIndex = 9;
+            btnSave.TabIndex = 11;
             btnSave.Text = "Save";
             toolTip1.SetToolTip(btnSave, "Save Plugins.txt (Ctrl-S)");
             btnSave.UseVisualStyleBackColor = true;
@@ -2664,7 +2664,7 @@
             btnActiveOnly.Margin = new System.Windows.Forms.Padding(2);
             btnActiveOnly.Name = "btnActiveOnly";
             btnActiveOnly.Size = new System.Drawing.Size(77, 42);
-            btnActiveOnly.TabIndex = 10;
+            btnActiveOnly.TabIndex = 12;
             btnActiveOnly.Text = "Filter";
             toolTip1.SetToolTip(btnActiveOnly, "Show all or show active mods only (Q)");
             btnActiveOnly.UseVisualStyleBackColor = true;
@@ -2677,7 +2677,7 @@
             btnGroups.Location = new System.Drawing.Point(1137, 3);
             btnGroups.Name = "btnGroups";
             btnGroups.Size = new System.Drawing.Size(100, 42);
-            btnGroups.TabIndex = 11;
+            btnGroups.TabIndex = 13;
             btnGroups.Text = "Groups";
             toolTip1.SetToolTip(btnGroups, "Group Filter - Refresh to Clear");
             btnGroups.UseVisualStyleBackColor = true;
@@ -2692,7 +2692,7 @@
             btnLog.Margin = new System.Windows.Forms.Padding(2);
             btnLog.Name = "btnLog";
             btnLog.Size = new System.Drawing.Size(63, 42);
-            btnLog.TabIndex = 12;
+            btnLog.TabIndex = 14;
             btnLog.Text = "Log";
             toolTip1.SetToolTip(btnLog, "View Log File");
             btnLog.UseVisualStyleBackColor = true;
@@ -2707,7 +2707,7 @@
             btnRefresh.Margin = new System.Windows.Forms.Padding(2);
             btnRefresh.Name = "btnRefresh";
             btnRefresh.Size = new System.Drawing.Size(103, 42);
-            btnRefresh.TabIndex = 13;
+            btnRefresh.TabIndex = 15;
             btnRefresh.Text = "Refresh";
             toolTip1.SetToolTip(btnRefresh, "Reload Plugins (F5 or C)");
             btnRefresh.UseVisualStyleBackColor = true;
@@ -2722,7 +2722,7 @@
             btnUpdate.Margin = new System.Windows.Forms.Padding(2);
             btnUpdate.Name = "btnUpdate";
             btnUpdate.Size = new System.Drawing.Size(101, 42);
-            btnUpdate.TabIndex = 14;
+            btnUpdate.TabIndex = 16;
             btnUpdate.Text = "Update";
             toolTip1.SetToolTip(btnUpdate, "Add or delete missing mods from Plugins.txt, Check for Duplicates (V)");
             btnUpdate.UseVisualStyleBackColor = true;
@@ -2737,7 +2737,7 @@
             btnLoot.Margin = new System.Windows.Forms.Padding(2);
             btnLoot.Name = "btnLoot";
             btnLoot.Size = new System.Drawing.Size(67, 42);
-            btnLoot.TabIndex = 15;
+            btnLoot.TabIndex = 17;
             btnLoot.Text = "Sort";
             toolTip1.SetToolTip(btnLoot, "LOOT Autosort (Z)");
             btnLoot.UseVisualStyleBackColor = true;
@@ -2752,7 +2752,7 @@
             btnRun.Margin = new System.Windows.Forms.Padding(2);
             btnRun.Name = "btnRun";
             btnRun.Size = new System.Drawing.Size(66, 42);
-            btnRun.TabIndex = 17;
+            btnRun.TabIndex = 18;
             btnRun.Text = "Run";
             toolTip1.SetToolTip(btnRun, "Run the game (R)");
             btnRun.UseVisualStyleBackColor = true;
@@ -2767,7 +2767,7 @@
             btnCancel.Margin = new System.Windows.Forms.Padding(2);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new System.Drawing.Size(95, 42);
-            btnCancel.TabIndex = 18;
+            btnCancel.TabIndex = 19;
             btnCancel.Text = "Cancel";
             toolTip1.SetToolTip(btnCancel, "Exit without saving changes");
             btnCancel.UseVisualStyleBackColor = true;
@@ -2782,7 +2782,7 @@
             btnQuit.Margin = new System.Windows.Forms.Padding(2);
             btnQuit.Name = "btnQuit";
             btnQuit.Size = new System.Drawing.Size(61, 42);
-            btnQuit.TabIndex = 19;
+            btnQuit.TabIndex = 20;
             btnQuit.Text = "Exit";
             toolTip1.SetToolTip(btnQuit, "Save changes and Exit (X)");
             btnQuit.UseVisualStyleBackColor = true;
