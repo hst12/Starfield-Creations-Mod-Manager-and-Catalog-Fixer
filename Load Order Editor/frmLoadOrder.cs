@@ -594,6 +594,12 @@ namespace hstCMM
 
         private void archiveModToolStripMenuItem_Click_1(object sender, EventArgs e) // Make a zip of a mod and copy it to specified folder
         {
+            if (ActiveOnly)
+            {
+                MessageBox.Show("Please disable filter before proceeding", "Filter is active", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                return;
+            }
+
             List<string> files = new();
             int modCounter = 0;
             if (!CheckGamePath()) // Abort if game path not set
@@ -4553,11 +4559,16 @@ namespace hstCMM
             // Lowercase the search query for case-insensitive matching.
             string searchQuery = txtSearchBox.Text.ToLowerInvariant();
 
-            // Set current cell if not selected
-            if (dataGridView1.CurrentCell is null)
-                dataGridView1.CurrentCell = dataGridView1.Rows[0].Cells["PluginName"];
-
-            int currentIndex = dataGridView1.CurrentCell.RowIndex;
+            int currentIndex;
+            try
+            {
+                currentIndex = dataGridView1.CurrentCell.RowIndex;
+            }
+            catch
+            {
+                dataGridView1.Focus();
+                currentIndex = dataGridView1.CurrentCell.RowIndex;
+            }
             int totalRows = dataGridView1.RowCount;
 
             // Loop through all rows starting after the current one, then wrap around.
@@ -7172,6 +7183,69 @@ This function is only meant to be used on mods with empty .esm files",
             if (!ActiveOnly && chkFindFiltered.Checked)
                 ActiveOnlyToggle();
             dataGridView1.Focus();
+        }
+
+        private void DebugLog(string message)
+        {
+            activityLog.WriteLog(message);
+        }
+
+        private void extractModToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!File.Exists(Path.Combine(frmLoadOrder.GamePath, @"Tools\Archive2", "Archive2.exe"))) // Check if Archive2.exe exists
+            {
+                MessageBox.Show("Install the Creation Kit.", "Archive2.exe not found", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            string selectedModName = Path.GetFileNameWithoutExtension(dataGridView1.SelectedCells[2].Value.ToString());
+            DebugLog(selectedModName);
+
+            string cmdLine = "";
+            string archive2Path = Path.Combine(GamePath, "Tools", "Archive2", "Archive2.exe");
+            string workingDirectory = $"{GamePath}\\Data";
+            string extactDirectory = Path.Combine(Path.GetTempPath(), "hstCMMExtract");
+
+            CleanUpTempFiles(extactDirectory);
+
+
+            foreach (var archiveName in Directory.GetFiles(workingDirectory, selectedModName + "*.ba2"))
+            {
+                cmdLine = $"\"{archiveName}\" -extract=\"{extactDirectory}\"";
+                activityLog.WriteLog($"{cmdLine}");
+
+                ProcessStartInfo startInfo = new()
+                {
+                    FileName = archive2Path,
+                    Arguments = cmdLine,
+                    WorkingDirectory = workingDirectory
+                };
+
+                using (Process process = Process.Start(startInfo))
+                {
+                    process.WaitForExit();
+                    //process.Start();
+                }
+            }
+
+            // Move extracted files to Documents folder
+            string destDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName, "Data");
+            tools.CopyDirectory(extactDirectory, destDirectory);
+            CleanUpTempFiles(extactDirectory);
+
+            // Local function to clean up temp files
+            static void CleanUpTempFiles(string extactDirectory)
+            {
+                if (Directory.Exists(extactDirectory))
+                {
+                    try { Directory.Delete(extactDirectory, true); }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Unable to clear extract directory " + ex.Message);
+                    }
+                }
+            }
+            Tools.OpenFolder(destDirectory);
         }
     }
 }

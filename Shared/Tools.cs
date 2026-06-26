@@ -41,6 +41,7 @@ namespace hstCMM.Shared // Various functions used by the app
 "textures\\setdressing",
 "textures\\ships",
 "textures\\sky",
+"textures\\weapons",
 "geometries",
 "scripts",
 "materials",
@@ -767,34 +768,24 @@ namespace hstCMM.Shared // Various functions used by the app
 
         public void CopyDirectory(string sourceDir, string destinationDir)
         {
-            //ActivityLog activityLog2 = new ActivityLog(Path.Combine(Tools.LocalAppDataPath, "Activity Log.txt"));
-
-            // Get information about the source directory
             var dir = new DirectoryInfo(sourceDir);
+            if (!dir.Exists) throw new DirectoryNotFoundException($"Source: {dir.FullName}");
 
-            // Check if the source directory exists
-            if (!dir.Exists)
-            {
-                throw new DirectoryNotFoundException($"Source directory not found: {dir.FullName}");
-            }
-
-            // Create the destination directory
+            // Cache directories before creation to prevent infinite loops
+            DirectoryInfo[] dirs = dir.GetDirectories();
             Directory.CreateDirectory(destinationDir);
 
-            // Copy files in the source directory to the destination directory
-            foreach (var file in dir.GetFiles())
+            // Copy files
+            foreach (FileInfo file in dir.GetFiles())
             {
-                string targetFilePath = Path.Combine(destinationDir, file.Name);
-                if (Properties.Settings.Default.Log)
-                    activityLog.WriteLog($"Copying {file.FullName} to {targetFilePath}");
-                file.CopyTo(targetFilePath, overwrite: true);
+                file.CopyTo(Path.Combine(destinationDir, file.Name), true); // 'true' to overwrite
             }
 
-            // Recursively copy subdirectories
-            foreach (var subDir in dir.GetDirectories())
+            // Recursive call for subdirectories
+
+            foreach (DirectoryInfo subDir in dirs)
             {
-                string newDestinationDir = Path.Combine(destinationDir, subDir.Name);
-                CopyDirectory(subDir.FullName, newDestinationDir);
+                CopyDirectory(subDir.FullName, Path.Combine(destinationDir, subDir.Name));
             }
         }
     }

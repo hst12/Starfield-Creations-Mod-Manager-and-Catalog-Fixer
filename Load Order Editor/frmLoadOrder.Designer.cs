@@ -73,6 +73,7 @@
             toolStripSeparator18 = new System.Windows.Forms.ToolStripSeparator();
             archiveModToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             updateArchivedModsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            extractModToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             toolStripMenuLootAutoSort = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
@@ -541,9 +542,9 @@
             // contextMenuDatagrid
             // 
             contextMenuDatagrid.ImageScalingSize = new System.Drawing.Size(32, 32);
-            contextMenuDatagrid.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuEnableDisable, toolStripMenuAddRemoveToProfile, toolStripMenuAddToProfile, toolStripMenuRemoveFromAllProfiles, blockUnblockToolStripMenuItem, toolStripSeparator10, toolStripMenuUp, toolStripMenuDown, toolStripMenuTop, toolStripMenuBottom, toolStripSeparator4, toolStripMenAddRemoveContext, toolStripMenuDelContext, toolStripSeparator32, toolStripMenuInstallMod, toolStripMenuUninstallContext, toolStripSeparator36, modContentsToolStripMenuItem, toolStripMenuViewWebSite, toolStripSeparator31, renameModToolStripMenuItem, toolStripMenuDuplicateRename, mergeModsToolStripMenuItem, toolStripSeparator18, archiveModToolStripMenuItem, updateArchivedModsToolStripMenuItem, toolStripSeparator11, toolStripMenuLootAutoSort, toolStripSeparator12, toolStripMenuRefresh });
+            contextMenuDatagrid.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuEnableDisable, toolStripMenuAddRemoveToProfile, toolStripMenuAddToProfile, toolStripMenuRemoveFromAllProfiles, blockUnblockToolStripMenuItem, toolStripSeparator10, toolStripMenuUp, toolStripMenuDown, toolStripMenuTop, toolStripMenuBottom, toolStripSeparator4, toolStripMenAddRemoveContext, toolStripMenuDelContext, toolStripSeparator32, toolStripMenuInstallMod, toolStripMenuUninstallContext, toolStripSeparator36, modContentsToolStripMenuItem, toolStripMenuViewWebSite, toolStripSeparator31, renameModToolStripMenuItem, toolStripMenuDuplicateRename, mergeModsToolStripMenuItem, extractModToolStripMenuItem, toolStripSeparator18, archiveModToolStripMenuItem, updateArchivedModsToolStripMenuItem, toolStripSeparator11, toolStripMenuLootAutoSort, toolStripSeparator12, toolStripMenuRefresh });
             contextMenuDatagrid.Name = "contextMenuDatagrid";
-            contextMenuDatagrid.Size = new System.Drawing.Size(607, 932);
+            contextMenuDatagrid.Size = new System.Drawing.Size(607, 1016);
             // 
             // toolStripMenuEnableDisable
             // 
@@ -716,6 +717,13 @@
             updateArchivedModsToolStripMenuItem.Size = new System.Drawing.Size(606, 40);
             updateArchivedModsToolStripMenuItem.Text = "Add New Mods to Archive Folder";
             updateArchivedModsToolStripMenuItem.Click += updateArchivedModsToolStripMenuItem_Click;
+            // 
+            // extractModToolStripMenuItem
+            // 
+            extractModToolStripMenuItem.Name = "extractModToolStripMenuItem";
+            extractModToolStripMenuItem.Size = new System.Drawing.Size(606, 40);
+            extractModToolStripMenuItem.Text = "Extract Mod";
+            extractModToolStripMenuItem.Click += extractModToolStripMenuItem_Click;
             // 
             // toolStripSeparator11
             // 
@@ -3202,5 +3210,6 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuAddToProfile;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuRemoveFromAllProfiles;
         private System.Windows.Forms.CheckBox chkFindFiltered;
+        private System.Windows.Forms.ToolStripMenuItem extractModToolStripMenuItem;
     }
 }
