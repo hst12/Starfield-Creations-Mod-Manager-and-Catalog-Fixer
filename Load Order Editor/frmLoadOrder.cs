@@ -594,7 +594,7 @@ namespace hstCMM
 
         private void archiveModToolStripMenuItem_Click_1(object sender, EventArgs e) // Make a zip of a mod and copy it to specified folder
         {
-            if (ActiveOnly)
+            if (ActiveOnly && dataGridView1.SelectedRows.Count>1)
             {
                 MessageBox.Show("Please disable filter before proceeding", "Filter is active", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 return;
@@ -1199,8 +1199,10 @@ namespace hstCMM
 
         private void cmbProfile_SelectedIndexChanged(object sender, EventArgs e)
         {
+            SetCurrentIndex();
             SwitchProfile(Path.Combine(Properties.Settings.Default.ProfileFolder, GameName, (string)cmbProfile.SelectedItem));
             ResizeForm();
+            GetPreviousIndex();
             dataGridView1.Focus();
         }
 
@@ -4805,6 +4807,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             rtbLog.Visible = true;
             rtbLog.Dock = DockStyle.Fill;
             ResizeForm();
+            //DebugLog($"Log window height: {tableLayoutPanel1.RowStyles[2].Height.ToString()}%");
             //rtbLog.ScrollToCaret();
         }
 
@@ -5977,7 +5980,8 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 }
                 else
                 {
-                    sbar3($"No link for mod in row {selectedRow.Index + 1}");
+                    //sbar3($"No link for mod in row {selectedRow.Index + 1}");
+                    sbar3($"No link for {selectedRow.Cells["PluginName"].Value}");
                 }
             }
         }
@@ -7107,8 +7111,6 @@ This function is only meant to be used on mods with empty .esm files",
 
             SetCurrentIndex();
 
-            //currentIndex = dataGridView1.CurrentRow?.Index ?? -1; // Store the current row index
-
             foreach (var item in cmbProfile.Items)
             {
                 if (item.ToString() != "No Mods.txt")
@@ -7198,16 +7200,18 @@ This function is only meant to be used on mods with empty .esm files",
                 return;
             }
 
-            string selectedModName = Path.GetFileNameWithoutExtension(dataGridView1.SelectedCells[2].Value.ToString());
-            DebugLog(selectedModName);
+            if (Tools.ConfirmAction("This action will extract the selected mod archives to the Documents directory and overwrite any existing files",
+                "Warning",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Hand) != DialogResult.Yes)
+                return;
 
+            string selectedModName = Path.GetFileNameWithoutExtension(dataGridView1.SelectedCells[2].Value.ToString());
             string cmdLine = "";
             string archive2Path = Path.Combine(GamePath, "Tools", "Archive2", "Archive2.exe");
             string workingDirectory = $"{GamePath}\\Data";
             string extactDirectory = Path.Combine(Path.GetTempPath(), "hstCMMExtract");
 
             CleanUpTempFiles(extactDirectory);
-
 
             foreach (var archiveName in Directory.GetFiles(workingDirectory, selectedModName + "*.ba2"))
             {
