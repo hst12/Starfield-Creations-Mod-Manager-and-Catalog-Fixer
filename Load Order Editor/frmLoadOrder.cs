@@ -6255,7 +6255,10 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 totalChanges += SyncPlugins();
 
                 if (AutoSort)
+                {
+                    sbar($"Sorting {name}");
                     totalChanges += RunLOOT(true); // Increment if LOOT made changes
+                }
             }
 
             // Restore the original profile & UI state
