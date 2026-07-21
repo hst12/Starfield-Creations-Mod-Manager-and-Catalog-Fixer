@@ -150,12 +150,6 @@ namespace hstCMM
                     //LastProfile = Environment.GetCommandLineArgs()[2];
                     SwitchProfile(tempstr);
                 }
-                if (arg.StartsWith("-install")) // For future use (maybe) install mod from Nexus web link
-                {
-                    string strippedCommandLine = Environment.GetCommandLineArgs()[2];
-
-                    InstallMod(strippedCommandLine);
-                }
                 if (arg.Equals("-dev"))
                 {
                     testToolStripMenuItem.Visible = true;
@@ -218,6 +212,14 @@ namespace hstCMM
                         RunLOOT(true);
 
                     //InitDataGrid();
+                }
+            }
+
+            foreach (var arg in Environment.GetCommandLineArgs()) // Handle run command line argument
+            {
+                if (arg.Equals("-installmod", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    InstallMod();
                 }
             }
 
@@ -318,6 +320,14 @@ namespace hstCMM
                     Title = "Disable Catalog Restore"
                 };
 
+                JumpListLink installMod = new JumpListLink(Application.ExecutablePath, "Install Mod")
+                {
+                    Arguments = "-installmod",
+                    IconReference = new IconReference(Application.ExecutablePath, 0),
+                    WorkingDirectory = Path.GetDirectoryName(Application.ExecutablePath),
+                    Title = "Install Mod"
+                };
+
                 /*JumpListLink DemoTask = new JumpListLink(Application.ExecutablePath, "Demo Profile")
                 {
                     Arguments = "-profile Demo.txt",
@@ -326,7 +336,7 @@ namespace hstCMM
                     Title = "Demo Profile"
                 };*/
 
-                jumpList.AddUserTasks(runGameTask, devModeTask, disableSettings, disableCatalogRestore);
+                jumpList.AddUserTasks(runGameTask, devModeTask, disableSettings, disableCatalogRestore, installMod);
                 jumpList.Refresh();
             }
             catch (Exception ex)
@@ -594,7 +604,7 @@ namespace hstCMM
 
         private void archiveModToolStripMenuItem_Click_1(object sender, EventArgs e) // Make a zip of a mod and copy it to specified folder
         {
-            if (ActiveOnly && dataGridView1.SelectedRows.Count>1)
+            if (ActiveOnly && dataGridView1.SelectedRows.Count > 1)
             {
                 MessageBox.Show("Please disable filter before proceeding", "Filter is active", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 return;
@@ -2572,7 +2582,7 @@ namespace hstCMM
                 sbar("");
         }
 
-        private bool InstallMod(string InstallMod = "") // false for cancel
+        private bool InstallMod(string InstallMod = "")
         {
             string esmFile = "";
             string extractPath = Path.Combine(Path.GetTempPath(), "hstCMM");

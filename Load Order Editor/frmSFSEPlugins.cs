@@ -80,7 +80,14 @@ namespace hstCMM.Load_Order_Editor
                     if (pluginName.EndsWith(".disabled"))
                     {
                         string newName = Path.Combine(SFSEPluginPath, baseName + ".dll");
-                        File.Move(plugin, newName);
+                        try
+                        {
+                            File.Move(plugin, newName);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show($"Error renaming plugin {pluginName}: {ex.Message}", "Plugin already exists");
+                        }
                     }
                 }
                 else
