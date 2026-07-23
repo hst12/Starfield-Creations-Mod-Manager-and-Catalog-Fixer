@@ -2331,7 +2331,7 @@ namespace hstCMM
             if (File.Exists(Tools.GetCatalogPath()))
                 json = File.ReadAllText(Tools.GetCatalogPath()); // Read Catalog
             var bethFilesSet = new HashSet<string>(tools.BethFiles); // Read files to exclude
-
+            
             string[] lines;
 
             if (File.Exists(loText))  // Read Plugins.txt
@@ -3517,7 +3517,7 @@ namespace hstCMM
 
         private void nexusTrackingToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Tools.OpenUrl($"https://www.nexusmods.com/{GameName}/mods/trackingcentre?tab=tracked+content+updates");
+            Tools.OpenUrl($"https://www.nexusmods.com/{GameName.ToLower()}/mods/trackingcentre?tab=tracked+content+updates");
         }
 
         private void nexusUpdatedModsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -5192,12 +5192,15 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
             // Pre-allocate with estimated capacity and use fastest comparer
             var onDisk = new HashSet<string>(pluginFiles.Count, StringComparer.OrdinalIgnoreCase);
+            /*var onDisk = new Dictionary<string, string>(pluginFiles.Count, StringComparer.OrdinalIgnoreCase);*/
             var bethFilesSet = new HashSet<string>(tools.BethFiles.Count(), StringComparer.OrdinalIgnoreCase);
             var inGrid = new HashSet<string>(dataGridView1.Rows.Count, StringComparer.OrdinalIgnoreCase);
             var seenInGrid = new HashSet<string>(dataGridView1.Rows.Count, StringComparer.OrdinalIgnoreCase);
 
             // Populate sets with bulk operations
             foreach (var file in pluginFiles) onDisk.Add(file);
+            /*foreach (var file in pluginFiles) onDisk[file] = file;   // key is case-insensitive, value preserves disk case*/
+            
             foreach (var file in tools.BethFiles) bethFilesSet.Add(file);
 
             // Single pass using unsafe array access patterns
@@ -5234,14 +5237,30 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 }
 
                 // Removal check (not on disk or is Beth file)
-                if (!onDisk.Contains(pluginName) || bethFilesSet.Contains(pluginName) || pluginName.Contains("blueprintships-", StringComparison.OrdinalIgnoreCase))
+                if (!onDisk.Contains(pluginName) || bethFilesSet.Contains(pluginName) ||
+                    pluginName.Contains("blueprintships-", StringComparison.OrdinalIgnoreCase))
                 {
                     rowsToRemove.Add(row);
                     removed++;
                     logEntries?.Add($"Removing {pluginName} from Plugins.txt");
                 }
+                /*else
+                {
+                    inGrid.Add(pluginName);
+                }*/
+
                 else
                 {
+                    string diskName = pluginFiles.FirstOrDefault(
+                        p => p.Equals(pluginName, StringComparison.OrdinalIgnoreCase));
+
+                    if (diskName != null &&
+                        !pluginName.Equals(diskName, StringComparison.Ordinal))
+                    {
+                        row.Cells[pluginNameIndex].Value = diskName;
+                        pluginName = diskName;
+                    }
+
                     inGrid.Add(pluginName);
                 }
             }
@@ -5870,7 +5889,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
         private void toolStripMenuNexus_Click(object sender, EventArgs e)
         {
-            Tools.OpenUrl($"https://www.nexusmods.com/games/{GameName}/mods");
+            Tools.OpenUrl($"https://www.nexusmods.com/games/{GameName.ToLower()}/mods");
         }
 
         private void toolStripMenuProfilesOn_Click(object sender, EventArgs e)

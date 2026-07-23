@@ -308,7 +308,6 @@
             toolStripMenuLinks = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuCreations = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuNexus = new System.Windows.Forms.ToolStripMenuItem();
-            nexusUpdatedModsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             nexusTrackingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuBGSStarfield = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuBGSX = new System.Windows.Forms.ToolStripMenuItem();
@@ -2294,7 +2293,7 @@
             // 
             // toolStripMenuLinks
             // 
-            toolStripMenuLinks.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuCreations, toolStripMenuNexus, nexusUpdatedModsToolStripMenuItem, nexusTrackingToolStripMenuItem, toolStripMenuBGSStarfield, toolStripMenuBGSX, steamDBToolStripMenuItem, toolStripSeparator45, iNaraToolStripMenuItem, toolStripSeparator62, webPageToolStripMenuItem, toolStripMenuGitHub });
+            toolStripMenuLinks.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuCreations, toolStripMenuNexus, nexusTrackingToolStripMenuItem, toolStripMenuBGSStarfield, toolStripMenuBGSX, steamDBToolStripMenuItem, toolStripSeparator45, iNaraToolStripMenuItem, toolStripSeparator62, webPageToolStripMenuItem, toolStripMenuGitHub });
             toolStripMenuLinks.Name = "toolStripMenuLinks";
             toolStripMenuLinks.Size = new System.Drawing.Size(87, 38);
             toolStripMenuLinks.Text = "Links";
@@ -2312,13 +2311,6 @@
             toolStripMenuNexus.Size = new System.Drawing.Size(553, 44);
             toolStripMenuNexus.Text = "Nexus Latest Mods";
             toolStripMenuNexus.Click += toolStripMenuNexus_Click;
-            // 
-            // nexusUpdatedModsToolStripMenuItem
-            // 
-            nexusUpdatedModsToolStripMenuItem.Name = "nexusUpdatedModsToolStripMenuItem";
-            nexusUpdatedModsToolStripMenuItem.Size = new System.Drawing.Size(553, 44);
-            nexusUpdatedModsToolStripMenuItem.Text = "Nexus Updated Mods";
-            nexusUpdatedModsToolStripMenuItem.Click += nexusUpdatedModsToolStripMenuItem_Click;
             // 
             // nexusTrackingToolStripMenuItem
             // 
@@ -3064,7 +3056,6 @@
         private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem viewLogToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem nexusTrackingToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem nexusUpdatedModsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem appAppDataToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator45;
         private System.Windows.Forms.ToolStripMenuItem convertLooseFilesModToolStripMenuItem;
