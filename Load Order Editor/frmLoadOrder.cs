@@ -1106,6 +1106,8 @@ namespace hstCMM
                         toDelete.Add(Path.Combine(GamePath, "Data", archive) + ".bsa");
                     if (archive.EndsWith("_xbox"))
                         toDelete.Add(Path.Combine(GamePath, "Data", archive) + ".ba2");
+                    if (archive.EndsWith("_ps"))
+                        toDelete.Add(Path.Combine(GamePath, "Data", archive) + ".ba2");
                 }
 
                 if (toDelete.Count > 0)
