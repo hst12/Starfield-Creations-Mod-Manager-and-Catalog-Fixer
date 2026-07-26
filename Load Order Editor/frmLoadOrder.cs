@@ -4574,6 +4574,8 @@ namespace hstCMM
             string searchQuery = txtSearchBox.Text.ToLowerInvariant();
 
             int currentIndex;
+            if (dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible) == 0) // Return if no visible rows
+                return;
             try
             {
                 currentIndex = dataGridView1.CurrentCell.RowIndex;
