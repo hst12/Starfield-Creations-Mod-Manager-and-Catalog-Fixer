@@ -2333,7 +2333,7 @@ namespace hstCMM
             if (File.Exists(Tools.GetCatalogPath()))
                 json = File.ReadAllText(Tools.GetCatalogPath()); // Read Catalog
             var bethFilesSet = new HashSet<string>(tools.BethFiles); // Read files to exclude
-            
+
             string[] lines;
 
             if (File.Exists(loText))  // Read Plugins.txt
@@ -5202,7 +5202,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             // Populate sets with bulk operations
             foreach (var file in pluginFiles) onDisk.Add(file);
             /*foreach (var file in pluginFiles) onDisk[file] = file;   // key is case-insensitive, value preserves disk case*/
-            
+
             foreach (var file in tools.BethFiles) bethFilesSet.Add(file);
 
             // Single pass using unsafe array access patterns
@@ -5250,7 +5250,6 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 {
                     inGrid.Add(pluginName);
                 }*/
-
                 else
                 {
                     string diskName = pluginFiles.FirstOrDefault(
@@ -7284,6 +7283,32 @@ This function is only meant to be used on mods with empty .esm files",
                 }
             }
             Tools.OpenFolder(destDirectory);
+        }
+
+        private void chkShowOnly_CheckedChanged(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(txtSearchBox.Text))
+            {
+                chkShowOnly.Checked = false;
+                return;
+            }
+            if (chkShowOnly.Checked)
+            {
+                string modName = "";
+                List<string> modList = new(), modFilter = new();
+
+                foreach (DataGridViewRow row in dataGridView1.Rows)
+                {
+                    modName = row.Cells["PluginName"].Value as string ?? "";
+                    if (modName.Contains(txtSearchBox.Text,StringComparison.OrdinalIgnoreCase))
+                        row.Visible = true;
+                    else
+                        row.Visible = false;
+                }
+                sbar("Mod filter applied.");
+            }
+            else
+                RefreshDisplay();
         }
     }
 }
