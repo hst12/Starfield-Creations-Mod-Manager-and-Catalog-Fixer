@@ -23,6 +23,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Documents;
 using System.Windows.Forms;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
@@ -177,6 +178,15 @@ namespace hstCMM
                     this.WindowState = FormWindowState.Minimized;
                     Application.Exit();
                 }
+
+                if (arg.Equals("-runsfse", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    SFSEswitch();
+                    RunGame();
+                    this.WindowState = FormWindowState.Minimized;
+                    Application.Exit();
+                }
+
             }
 
             // Creations update
@@ -296,6 +306,14 @@ namespace hstCMM
                     Title = "Run Game"
                 };
 
+                JumpListLink runGameSFSETask = new JumpListLink(Application.ExecutablePath, "Run Game - SFSE")
+                {
+                    Arguments = "-runsfse",
+                    IconReference = new IconReference(Application.ExecutablePath, 0),
+                    WorkingDirectory = Path.GetDirectoryName(Application.ExecutablePath),
+                    Title = "Run Game - SFSE"
+                };
+
                 JumpListLink devModeTask = new JumpListLink(Application.ExecutablePath, "Dev Mode")
                 {
                     Arguments = "-dev",
@@ -336,7 +354,7 @@ namespace hstCMM
                     Title = "Demo Profile"
                 };*/
 
-                jumpList.AddUserTasks(runGameTask, devModeTask, disableSettings, disableCatalogRestore, installMod);
+                jumpList.AddUserTasks(runGameTask, runGameSFSETask,devModeTask, disableSettings, disableCatalogRestore, installMod);
                 jumpList.Refresh();
             }
             catch (Exception ex)
@@ -2040,7 +2058,7 @@ namespace hstCMM
             sbar2(version);
         }
 
-        private void gameVersionSFSEToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SFSEswitch()
         {
             if (GameVersion == MS)
                 if (GameSwitchWarning())
@@ -2066,6 +2084,10 @@ namespace hstCMM
                 toolStripMenuCustom.Checked = false;
                 gameVersionSFSEToolStripMenuItem.Checked = false;
             }
+        }
+        private void gameVersionSFSEToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SFSEswitch();
         }
 
         private Dictionary<string, object?> GatherSettings()
@@ -7302,7 +7324,7 @@ This function is only meant to be used on mods with empty .esm files",
                 foreach (DataGridViewRow row in dataGridView1.Rows)
                 {
                     modName = row.Cells["PluginName"].Value as string ?? "";
-                    if (modName.Contains(txtSearchBox.Text,StringComparison.OrdinalIgnoreCase))
+                    if (modName.Contains(txtSearchBox.Text, StringComparison.OrdinalIgnoreCase))
                         row.Visible = true;
                     else
                         row.Visible = false;
@@ -7311,6 +7333,12 @@ This function is only meant to be used on mods with empty .esm files",
             }
             else
                 RefreshDisplay();
+        }
+
+        private void profileManagementToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmProfiles fp= new frmProfiles();
+            fp.Show();
         }
     }
 }
