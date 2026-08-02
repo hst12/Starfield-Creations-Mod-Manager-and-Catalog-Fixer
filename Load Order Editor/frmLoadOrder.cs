@@ -568,7 +568,7 @@ namespace hstCMM
 
         private void appAppDataToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Tools.OpenFolder(Tools.LocalAppDataPath);
+            Tools.OpenDirectory(Tools.LocalAppDataPath);
         }
 
         private void ApplySettings(Dictionary<string, object?> imported)
@@ -1764,7 +1764,7 @@ namespace hstCMM
         {
             string downloadsDirectory = Properties.Settings.Default.DownloadsDirectory;
             if (!string.IsNullOrEmpty(downloadsDirectory))
-                Tools.OpenFolder(downloadsDirectory);
+                Tools.OpenDirectory(downloadsDirectory);
             else
                 MessageBox.Show("It will be set after a mod has been installed.", "Downloads directory not set.",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -3305,7 +3305,7 @@ namespace hstCMM
         private void modBackupsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (!string.IsNullOrEmpty(Properties.Settings.Default.BackupDirectory))
-                Tools.OpenFolder(Properties.Settings.Default.BackupDirectory);
+                Tools.OpenDirectory(Properties.Settings.Default.BackupDirectory);
             else
                 MessageBox.Show("Backup directory will be set after backing up a mod", "Backup Directory Not Set",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -3632,7 +3632,7 @@ namespace hstCMM
         {
             try
             {
-                Tools.OpenFolder(Properties.Settings.Default.ProfileFolder);
+                Tools.OpenDirectory(Properties.Settings.Default.ProfileFolder);
             }
             catch (Exception ex)
             {
@@ -4394,6 +4394,8 @@ namespace hstCMM
                 activityLog.WriteLog(tempstr);
                 sbar(tempstr);
                 sortResult = 1;
+                isModified = true;
+                SavePlugins();
             }
             else
             {
@@ -4404,8 +4406,6 @@ namespace hstCMM
 
             // Re-enable profiles if previously active
             Profiles = profilesActive;
-            isModified = true;
-            SavePlugins();
             cmbProfile.Enabled = Profiles;
             chkProfile.Checked = Profiles;
             return sortResult;
@@ -4449,7 +4449,7 @@ namespace hstCMM
         {
             string savesPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName, "Saves");
             if (Directory.Exists(savesPath))
-                Tools.OpenFolder(savesPath);
+                Tools.OpenDirectory(savesPath);
             else
                 MessageBox.Show("Save game directory not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
@@ -4580,7 +4580,7 @@ namespace hstCMM
                 MessageBox.Show("Script logs directory not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            Tools.OpenFolder(tempstr);
+            Tools.OpenDirectory(tempstr);
         }
 
         private void FindMod()
@@ -4888,7 +4888,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
         {
             string SFSEPlugins = Path.Combine(GamePath, @"Data\SFSE\Plugins");
             if (Directory.Exists(SFSEPlugins))
-                Tools.OpenFolder(SFSEPlugins);
+                Tools.OpenDirectory(SFSEPlugins);
             else
                 MessageBox.Show("Unable to find SFSE Plugins Directory");
         }
@@ -5654,23 +5654,23 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
         private void toolStripMenuExploreAppData_Click(object sender, EventArgs e)
         {
-            Tools.OpenFolder(Tools.GameAppData);
+            Tools.OpenDirectory(Tools.GameAppData);
         }
 
         private void toolStripMenuExploreCommon_Click(object sender, EventArgs e)
         {
-            Tools.OpenFolder(Tools.CommonFolder);
+            Tools.OpenDirectory(Tools.CommonFolder);
             sbar3("Restart the application for any changes to take effect");
         }
 
         private void toolStripMenuExploreData_Click(object sender, EventArgs e)
         {
-            Tools.OpenFolder(Path.Combine(GamePath, "Data"));
+            Tools.OpenDirectory(Path.Combine(GamePath, "Data"));
         }
 
         private void toolStripMenuExploreGameDocs_Click(object sender, EventArgs e)
         {
-            Tools.OpenFolder(tools.GameDocuments);
+            Tools.OpenDirectory(tools.GameDocuments);
         }
 
         private void toolStripMenuExportCSV_Click(object sender, EventArgs e) // Export DataGridView to CSV file
@@ -6996,7 +6996,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
         private void screenshotsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Tools.OpenFolder(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName, "Data\\Textures\\Photos"));
+            Tools.OpenDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName, "Data\\Textures\\Photos"));
         }
 
         private void undoRowMoveToolStripMenuItem_Click(object sender, EventArgs e)
@@ -7306,7 +7306,7 @@ This function is only meant to be used on mods with empty .esm files",
                     }
                 }
             }
-            Tools.OpenFolder(destDirectory);
+            Tools.OpenDirectory(destDirectory);
         }
 
         private void chkShowOnly_CheckedChanged(object sender, EventArgs e)

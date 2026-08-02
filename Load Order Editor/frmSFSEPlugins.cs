@@ -64,7 +64,7 @@ namespace hstCMM.Load_Order_Editor
 
         private void btnOpenFolder_Click(object sender, EventArgs e)
         {
-            Tools.OpenFolder(Path.Combine(GamePath, @"Data\SFSE\Plugins"));
+            Tools.OpenDirectory(Path.Combine(GamePath, @"Data\SFSE\Plugins"));
         }
 
         private void btnOk_Click(object sender, EventArgs e)

@@ -260,7 +260,7 @@ namespace hstCMM.Shared // Various functions used by the app
             }
         }
 
-        public static void OpenFolder(string folder) // Used to open misc folders in Explorer
+        public static void OpenDirectory(string folder) // Used to open misc folders in Explorer
         {
             try
             {

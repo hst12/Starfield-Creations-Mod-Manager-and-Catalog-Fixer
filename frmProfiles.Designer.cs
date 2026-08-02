@@ -39,6 +39,8 @@
             flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
             btnAdd = new System.Windows.Forms.Button();
             btnDelete = new System.Windows.Forms.Button();
+            btnDuplicate = new System.Windows.Forms.Button();
+            btnOpenDir = new System.Windows.Forms.Button();
             checkedListBox1 = new System.Windows.Forms.CheckedListBox();
             flowLayoutPanel1.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
@@ -54,9 +56,11 @@
             btnOk.TabIndex = 0;
             btnOk.Text = "Ok";
             btnOk.UseVisualStyleBackColor = true;
+            btnOk.Click += btnOk_Click;
             // 
             // btnCancel
             // 
+            btnCancel.Anchor = System.Windows.Forms.AnchorStyles.Left;
             btnCancel.Location = new System.Drawing.Point(159, 3);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new System.Drawing.Size(150, 46);
@@ -129,7 +133,7 @@
             btnSetProfileDirectory.Name = "btnSetProfileDirectory";
             btnSetProfileDirectory.Size = new System.Drawing.Size(150, 46);
             btnSetProfileDirectory.TabIndex = 2;
-            btnSetProfileDirectory.Text = "Browse";
+            btnSetProfileDirectory.Text = "Set";
             btnSetProfileDirectory.UseVisualStyleBackColor = true;
             btnSetProfileDirectory.Click += btnSetProfileDirectory_Click;
             // 
@@ -137,6 +141,8 @@
             // 
             flowLayoutPanel3.Controls.Add(btnAdd);
             flowLayoutPanel3.Controls.Add(btnDelete);
+            flowLayoutPanel3.Controls.Add(btnDuplicate);
+            flowLayoutPanel3.Controls.Add(btnOpenDir);
             flowLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             flowLayoutPanel3.Location = new System.Drawing.Point(3, 432);
             flowLayoutPanel3.Name = "flowLayoutPanel3";
@@ -145,6 +151,7 @@
             // 
             // btnAdd
             // 
+            btnAdd.AutoSize = true;
             btnAdd.Location = new System.Drawing.Point(3, 3);
             btnAdd.Name = "btnAdd";
             btnAdd.Size = new System.Drawing.Size(150, 46);
@@ -154,12 +161,35 @@
             // 
             // btnDelete
             // 
+            btnDelete.AutoSize = true;
             btnDelete.Location = new System.Drawing.Point(159, 3);
             btnDelete.Name = "btnDelete";
             btnDelete.Size = new System.Drawing.Size(150, 46);
             btnDelete.TabIndex = 1;
             btnDelete.Text = "Delete";
             btnDelete.UseVisualStyleBackColor = true;
+            // 
+            // btnDuplicate
+            // 
+            btnDuplicate.AutoSize = true;
+            btnDuplicate.Location = new System.Drawing.Point(315, 3);
+            btnDuplicate.Name = "btnDuplicate";
+            btnDuplicate.Size = new System.Drawing.Size(150, 46);
+            btnDuplicate.TabIndex = 2;
+            btnDuplicate.Text = "Duplicate";
+            btnDuplicate.UseVisualStyleBackColor = true;
+            btnDuplicate.Click += btnDuplicate_Click;
+            // 
+            // btnOpenDir
+            // 
+            btnOpenDir.AutoSize = true;
+            btnOpenDir.Location = new System.Drawing.Point(471, 3);
+            btnOpenDir.Name = "btnOpenDir";
+            btnOpenDir.Size = new System.Drawing.Size(262, 46);
+            btnOpenDir.TabIndex = 3;
+            btnOpenDir.Text = "Open Profile Directory";
+            btnOpenDir.UseVisualStyleBackColor = true;
+            btnOpenDir.Click += btnOpenDir_Click;
             // 
             // checkedListBox1
             // 
@@ -185,6 +215,7 @@
             flowLayoutPanel2.ResumeLayout(false);
             flowLayoutPanel2.PerformLayout();
             flowLayoutPanel3.ResumeLayout(false);
+            flowLayoutPanel3.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -203,5 +234,7 @@
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel3;
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.Button btnDelete;
+        private System.Windows.Forms.Button btnDuplicate;
+        private System.Windows.Forms.Button btnOpenDir;
     }
 }
