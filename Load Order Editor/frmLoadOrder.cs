@@ -23,7 +23,6 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Documents;
 using System.Windows.Forms;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
@@ -186,7 +185,6 @@ namespace hstCMM
                     this.WindowState = FormWindowState.Minimized;
                     Application.Exit();
                 }
-
             }
 
             // Creations update
@@ -354,7 +352,7 @@ namespace hstCMM
                     Title = "Demo Profile"
                 };*/
 
-                jumpList.AddUserTasks(runGameTask, runGameSFSETask,devModeTask, disableSettings, disableCatalogRestore, installMod);
+                jumpList.AddUserTasks(runGameTask, runGameSFSETask, devModeTask, disableSettings, disableCatalogRestore, installMod);
                 jumpList.Refresh();
             }
             catch (Exception ex)
@@ -2085,6 +2083,7 @@ namespace hstCMM
                 gameVersionSFSEToolStripMenuItem.Checked = false;
             }
         }
+
         private void gameVersionSFSEToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SFSEswitch();
@@ -4395,7 +4394,6 @@ namespace hstCMM
                 sbar(tempstr);
                 sortResult = 1;
                 isModified = true;
-                SavePlugins();
             }
             else
             {
@@ -4408,6 +4406,8 @@ namespace hstCMM
             Profiles = profilesActive;
             cmbProfile.Enabled = Profiles;
             chkProfile.Checked = Profiles;
+            if (isModified)
+                SavePlugins();
             return sortResult;
         }
 
@@ -7337,8 +7337,11 @@ This function is only meant to be used on mods with empty .esm files",
 
         private void profileManagementToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            frmProfiles fp= new frmProfiles();
-            fp.Show();
+            returnStatus = 0;
+            frmProfiles fp = new frmProfiles();
+            fp.ShowDialog();
+            if (returnStatus != 0)
+                RefreshDisplay();
         }
     }
 }
