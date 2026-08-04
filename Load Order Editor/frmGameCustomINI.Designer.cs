@@ -39,7 +39,10 @@
             chkSkipIntro = new System.Windows.Forms.CheckBox();
             chkMainMenuDelay = new System.Windows.Forms.CheckBox();
             label1 = new System.Windows.Forms.Label();
+            flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            chkHotkeys = new System.Windows.Forms.CheckBox();
             tableLayoutPanel1.SuspendLayout();
+            flowLayoutPanel1.SuspendLayout();
             SuspendLayout();
             // 
             // btnOK
@@ -69,7 +72,7 @@
             // chkLooseFiles
             // 
             chkLooseFiles.AutoSize = true;
-            chkLooseFiles.Location = new System.Drawing.Point(12, 12);
+            chkLooseFiles.Location = new System.Drawing.Point(3, 45);
             chkLooseFiles.Name = "chkLooseFiles";
             chkLooseFiles.Size = new System.Drawing.Size(162, 36);
             chkLooseFiles.TabIndex = 2;
@@ -79,7 +82,7 @@
             // chkMOTD
             // 
             chkMOTD.AutoSize = true;
-            chkMOTD.Location = new System.Drawing.Point(12, 54);
+            chkMOTD.Location = new System.Drawing.Point(3, 3);
             chkMOTD.Name = "chkMOTD";
             chkMOTD.Size = new System.Drawing.Size(361, 36);
             chkMOTD.TabIndex = 3;
@@ -89,7 +92,7 @@
             // chkPapyrusLogging
             // 
             chkPapyrusLogging.AutoSize = true;
-            chkPapyrusLogging.Location = new System.Drawing.Point(12, 222);
+            chkPapyrusLogging.Location = new System.Drawing.Point(3, 87);
             chkPapyrusLogging.Name = "chkPapyrusLogging";
             chkPapyrusLogging.Size = new System.Drawing.Size(222, 36);
             chkPapyrusLogging.TabIndex = 4;
@@ -99,7 +102,7 @@
             // chkUserPhotos
             // 
             chkUserPhotos.AutoSize = true;
-            chkUserPhotos.Location = new System.Drawing.Point(12, 96);
+            chkUserPhotos.Location = new System.Drawing.Point(3, 129);
             chkUserPhotos.Name = "chkUserPhotos";
             chkUserPhotos.Size = new System.Drawing.Size(334, 36);
             chkUserPhotos.TabIndex = 5;
@@ -117,7 +120,7 @@
             tableLayoutPanel1.Controls.Add(btnCancel, 2, 0);
             tableLayoutPanel1.Controls.Add(btnSuggested, 1, 0);
             tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            tableLayoutPanel1.Location = new System.Drawing.Point(0, 353);
+            tableLayoutPanel1.Location = new System.Drawing.Point(0, 451);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 1;
             tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -139,7 +142,7 @@
             // chkSkipIntro
             // 
             chkSkipIntro.AutoSize = true;
-            chkSkipIntro.Location = new System.Drawing.Point(12, 180);
+            chkSkipIntro.Location = new System.Drawing.Point(3, 171);
             chkSkipIntro.Name = "chkSkipIntro";
             chkSkipIntro.Size = new System.Drawing.Size(148, 36);
             chkSkipIntro.TabIndex = 7;
@@ -149,7 +152,7 @@
             // chkMainMenuDelay
             // 
             chkMainMenuDelay.AutoSize = true;
-            chkMainMenuDelay.Location = new System.Drawing.Point(12, 138);
+            chkMainMenuDelay.Location = new System.Drawing.Point(3, 213);
             chkMainMenuDelay.Name = "chkMainMenuDelay";
             chkMainMenuDelay.Size = new System.Drawing.Size(451, 36);
             chkMainMenuDelay.TabIndex = 8;
@@ -159,32 +162,57 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new System.Drawing.Point(12, 296);
+            label1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            label1.Location = new System.Drawing.Point(0, 419);
             label1.Name = "label1";
             label1.Size = new System.Drawing.Size(703, 32);
             label1.TabIndex = 9;
             label1.Text = "* These options used together will disable all photo load screens";
             // 
-            // frmStarfieldCustomINI
+            // flowLayoutPanel1
+            // 
+            flowLayoutPanel1.AutoSize = true;
+            flowLayoutPanel1.Controls.Add(chkMOTD);
+            flowLayoutPanel1.Controls.Add(chkLooseFiles);
+            flowLayoutPanel1.Controls.Add(chkPapyrusLogging);
+            flowLayoutPanel1.Controls.Add(chkUserPhotos);
+            flowLayoutPanel1.Controls.Add(chkSkipIntro);
+            flowLayoutPanel1.Controls.Add(chkMainMenuDelay);
+            flowLayoutPanel1.Controls.Add(chkHotkeys);
+            flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            flowLayoutPanel1.Name = "flowLayoutPanel1";
+            flowLayoutPanel1.Size = new System.Drawing.Size(744, 419);
+            flowLayoutPanel1.TabIndex = 10;
+            // 
+            // chkHotkeys
+            // 
+            chkHotkeys.AutoSize = true;
+            chkHotkeys.Location = new System.Drawing.Point(3, 255);
+            chkHotkeys.Name = "chkHotkeys";
+            chkHotkeys.Size = new System.Drawing.Size(271, 36);
+            chkHotkeys.TabIndex = 9;
+            chkHotkeys.Text = "Use Console Hotkeys";
+            chkHotkeys.UseVisualStyleBackColor = true;
+            // 
+            // frmGameCustomINI
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(13F, 32F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(744, 418);
+            ClientSize = new System.Drawing.Size(744, 516);
+            Controls.Add(flowLayoutPanel1);
             Controls.Add(label1);
-            Controls.Add(chkMainMenuDelay);
-            Controls.Add(chkSkipIntro);
             Controls.Add(tableLayoutPanel1);
-            Controls.Add(chkUserPhotos);
-            Controls.Add(chkPapyrusLogging);
-            Controls.Add(chkMOTD);
-            Controls.Add(chkLooseFiles);
             MaximizeBox = false;
             MinimizeBox = false;
-            Name = "frmStarfieldCustomINI";
+            Name = "frmGameCustomINI";
             StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             Text = "StarfieldCustom.ini Settings (Caution - Overwrites file)";
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
+            flowLayoutPanel1.ResumeLayout(false);
+            flowLayoutPanel1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -202,5 +230,7 @@
         private System.Windows.Forms.CheckBox chkMainMenuDelay;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnSuggested;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.CheckBox chkHotkeys;
     }
 }

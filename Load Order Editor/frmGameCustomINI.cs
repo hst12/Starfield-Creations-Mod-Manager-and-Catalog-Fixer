@@ -30,6 +30,8 @@ namespace hstCMM.Load_Order_Editor
                         chkUserPhotos.Checked = true;
                     if (lines.Contains("bEnableLogging"))
                         chkPapyrusLogging.Checked = true;
+                    if (lines.Contains("bUseConsoleHotkeys=1"))
+                        chkHotkeys.Checked = true;
                 }
             }
         }
@@ -76,6 +78,14 @@ bLoadDebugInformation=1
 bEnableTrace=1");
             }
 
+            if (chkHotkeys.Checked)
+            {
+                INILines.Add(@"
+[Menu]
+bUseConsoleHotkeys=1");
+
+            }
+
             File.WriteAllLines(filePath, INILines);
             Properties.Settings.Default.LooseFiles = chkLooseFiles.Checked;
             Properties.Settings.Default.Save();
@@ -90,6 +100,11 @@ bEnableTrace=1");
             chkMainMenuDelay.Checked = true;
             chkSkipIntro.Checked = true;
             chkPapyrusLogging.Checked = false;
+        }
+
+        private void chkHotkeys_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

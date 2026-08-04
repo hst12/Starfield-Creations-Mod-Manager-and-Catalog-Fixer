@@ -5163,7 +5163,6 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             try
             {
                 File.Copy(ProfileName, Path.Combine(Tools.GameAppData, "Plugins.txt"), true);
-                //Properties.Settings.Default.LastProfile = ProfileName[(ProfileName.LastIndexOf('\\') + 1)..];
                 Properties.Settings.Default.LastProfile = Path.GetFileName(ProfileName);
                 SaveSettings();
                 isModified = false;
