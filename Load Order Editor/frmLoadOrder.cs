@@ -1796,8 +1796,10 @@ namespace hstCMM
 
         private void editCustominiToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Tools.OpenFile(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                "My Games", GameName, $"{GameName}Custom.ini"));
+            tempstr = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                "My Games", GameName, $"{GameName}Custom.ini");
+            if (File.Exists(tempstr))
+                Tools.OpenFile(tempstr);
         }
 
         private void enableAchievementSafeOnlyToolStripMenuItem_Click(object sender, EventArgs e) // Experimental. Should probably remove
@@ -7341,6 +7343,14 @@ This function is only meant to be used on mods with empty .esm files",
             fp.ShowDialog();
             if (returnStatus != 0)
                 RefreshDisplay();
+        }
+
+        private void editConsoleHotkeys_Click(object sender, EventArgs e)
+        {
+            tempstr = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                "My Games", GameName, $"{GameName}Console.ini");
+            if (File.Exists(tempstr))
+                Tools.OpenFile(tempstr);
         }
     }
 }

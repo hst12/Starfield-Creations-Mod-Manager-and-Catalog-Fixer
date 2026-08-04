@@ -112,6 +112,7 @@
             toolStripMenuEditFiles = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuEditPlugins = new System.Windows.Forms.ToolStripMenuItem();
             editStarfieldCustominiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            editConsoleHotkeys = new System.Windows.Forms.ToolStripMenuItem();
             editContentCatalogtxtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             editBlockedModstxtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             removeMissingModsFromBlockedModstxtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -993,7 +994,7 @@
             // 
             // toolStripMenuEditFiles
             // 
-            toolStripMenuEditFiles.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuEditPlugins, editStarfieldCustominiToolStripMenuItem, editContentCatalogtxtToolStripMenuItem, editBlockedModstxtToolStripMenuItem, removeMissingModsFromBlockedModstxtToolStripMenuItem, editLOOTUserlistyamlToolStripMenuItem, toolStripSeparator41, uIToEditStarfieldCustominiToolStripMenuItem });
+            toolStripMenuEditFiles.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuEditPlugins, editStarfieldCustominiToolStripMenuItem, editConsoleHotkeys, editContentCatalogtxtToolStripMenuItem, editBlockedModstxtToolStripMenuItem, removeMissingModsFromBlockedModstxtToolStripMenuItem, editLOOTUserlistyamlToolStripMenuItem, toolStripSeparator41, uIToEditStarfieldCustominiToolStripMenuItem });
             toolStripMenuEditFiles.Name = "toolStripMenuEditFiles";
             toolStripMenuEditFiles.Size = new System.Drawing.Size(504, 44);
             toolStripMenuEditFiles.Text = "Edit Files";
@@ -1011,6 +1012,13 @@
             editStarfieldCustominiToolStripMenuItem.Size = new System.Drawing.Size(628, 44);
             editStarfieldCustominiToolStripMenuItem.Text = "Edit StarfieldCustom.ini";
             editStarfieldCustominiToolStripMenuItem.Click += editCustominiToolStripMenuItem_Click;
+            // 
+            // editConsoleHotkeys
+            // 
+            editConsoleHotkeys.Name = "editConsoleHotkeys";
+            editConsoleHotkeys.Size = new System.Drawing.Size(628, 44);
+            editConsoleHotkeys.Text = "Edit Console Hotkeys";
+            editConsoleHotkeys.Click += editConsoleHotkeys_Click;
             // 
             // editContentCatalogtxtToolStripMenuItem
             // 
@@ -3227,5 +3235,6 @@
         private System.Windows.Forms.ToolStripMenuItem extractModToolStripMenuItem;
         private System.Windows.Forms.CheckBox chkShowOnly;
         private System.Windows.Forms.ToolStripMenuItem profileManagementToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem editConsoleHotkeys;
     }
 }
