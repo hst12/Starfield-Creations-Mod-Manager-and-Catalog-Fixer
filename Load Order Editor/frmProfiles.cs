@@ -1,5 +1,6 @@
 ﻿using hstCMM.Shared;
 using System;
+using System.Data;
 using System.IO;
 using System.Windows.Forms;
 
@@ -95,6 +96,7 @@ namespace hstCMM
                 foreach (int item in checkedListBox1.CheckedIndices)
                 {
                     File.Delete(profiles[item]);
+                    frmLoadOrder.activityLog.WriteLog($"Deleted profile {item}");
 
                 }
                 checkedListBox1.Items.Clear();
@@ -121,8 +123,7 @@ namespace hstCMM
                 newProfile += ".txt";
             try
             {
-                frmLoadOrder.activityLog.WriteLog($"Will create from: {Path.Combine(Tools.GameAppData,"Plugins.txt")}");
-                frmLoadOrder.activityLog.WriteLog($"Will copy to: {Path.Combine(profileDir, newProfile)}");
+                frmLoadOrder.activityLog.WriteLog($"Created {Path.Combine(profileDir, newProfile)} profile");
                 File.Copy(Path.Combine(Tools.GameAppData, "Plugins.txt"), Path.Combine(profileDir, newProfile));
                 checkedListBox1.Items.Clear();
                 SetupForm();
