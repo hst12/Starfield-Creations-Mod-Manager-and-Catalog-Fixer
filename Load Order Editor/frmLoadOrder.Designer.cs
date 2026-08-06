@@ -385,14 +385,14 @@
             dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { Index, ModEnabled, PluginName, Description, Group, Version, AuthorVersion, TimeStamp, Achievements, Files, CreationsID, FileSize, URL, Blocked });
             dataGridView1.ContextMenuStrip = contextMenuDatagrid;
             dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            dataGridView1.Location = new System.Drawing.Point(2, 42);
+            dataGridView1.Location = new System.Drawing.Point(2, 40);
             dataGridView1.Margin = new System.Windows.Forms.Padding(2);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowHeadersWidth = 82;
             dataGridView1.RowTemplate.Height = 33;
             dataGridView1.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            dataGridView1.Size = new System.Drawing.Size(1993, 886);
+            dataGridView1.Size = new System.Drawing.Size(1993, 888);
             dataGridView1.TabIndex = 0;
             dataGridView1.CellDoubleClick += dataGridView1_CellDoubleClick;
             dataGridView1.DataError += dataGridView1_DataError;
@@ -823,7 +823,7 @@
             menuStrip1.Location = new System.Drawing.Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Padding = new System.Windows.Forms.Padding(3, 1, 0, 1);
-            menuStrip1.Size = new System.Drawing.Size(1997, 40);
+            menuStrip1.Size = new System.Drawing.Size(1997, 38);
             menuStrip1.TabIndex = 7;
             menuStrip1.Text = "menuStrip1";
             // 
@@ -831,7 +831,7 @@
             // 
             fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { newToolStripMenuItem, openToolStripMenuItem, saveToolStripMenuItem, saveAsToolStripMenuItem, profileManagementToolStripMenuItem, toolStripSeparator, updateAllProfilesToolStripMenuItem, toolStripSeparator43, exploreToolStripMenuItem, toolStripSeparator2, toolStripMenuEditFiles, toolStripSeparator3, exportToolStripMenuItem, toolStripSeparator17, convertLooseFilesModToolStripMenuItem, toolStripSeparator19, resetDeleteFilesToolStripMenuItem, toolStripSeparator46, backupToolStripMenuItem, restoreToolStripMenuItem, toolStripSeparator1, exitToolStripMenuItem });
             fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            fileToolStripMenuItem.Size = new System.Drawing.Size(71, 38);
+            fileToolStripMenuItem.Size = new System.Drawing.Size(71, 36);
             fileToolStripMenuItem.Text = "&File";
             // 
             // newToolStripMenuItem
@@ -1388,7 +1388,7 @@
             // 
             editToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuDeleteLine, undoRowMoveToolStripMenuItem });
             editToolStripMenuItem.Name = "editToolStripMenuItem";
-            editToolStripMenuItem.Size = new System.Drawing.Size(74, 38);
+            editToolStripMenuItem.Size = new System.Drawing.Size(74, 36);
             editToolStripMenuItem.Text = "&Edit";
             // 
             // toolStripMenuDeleteLine
@@ -1411,7 +1411,7 @@
             // 
             viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { refreshToolStripMenuItem, toolStripMenuColumns, themeToolStripMenuItem, showTimeToolStripMenuItem, toolStripSeparator25, modStatsToolStripMenuItem, activeOnlyToolStripMenuItem, blockedOnlyToolStripMenuItem, toolStripSeparator53, viewLogToolStripMenuItem, logWindowToolStripMenuItem, toolStripSeparator54, blockedModsToolStripMenuItem, toolStripSeparator20, rowHighlightToolStripMenuItem, toolStripSeparator56, resizeToolStripMenuItem });
             viewToolStripMenuItem.Name = "viewToolStripMenuItem";
-            viewToolStripMenuItem.Size = new System.Drawing.Size(85, 38);
+            viewToolStripMenuItem.Size = new System.Drawing.Size(85, 36);
             viewToolStripMenuItem.Text = "View";
             // 
             // refreshToolStripMenuItem
@@ -1666,7 +1666,7 @@
             // 
             toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuCatalog, toolStripSeparator21, toolStripMenuProfilesOn, compareProfilesToolStripMenuItem, toolStripSeparator23, toolStripMenuAutoDelccc, autoResetToolStripMenuItem, toolStripSeparator22, autoUpdateModsToolStripMenuItem, activateNewModsToolStripMenuItem, toolStripMenuLOOTToggle, autoSortToolStripMenuItem, toolStripSeparator27, enableAllToolStripMenuItem, disableAllToolStripMenuItem, toolStripSeparator5, logToolStripMenuItem, toolStripSeparator40, disableAllWarningToolStripMenuItem, toolStripSeparator14, loadScreenToolStripMenuItem, toolStripSeparator13, workaroundsToolStripMenuItem, toolStripSeparator44, advancedToolStripMenuItem, toolStripSeparator55, OptionsToolStripMenuItem });
             toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-            toolsToolStripMenuItem.Size = new System.Drawing.Size(89, 38);
+            toolsToolStripMenuItem.Size = new System.Drawing.Size(89, 36);
             toolsToolStripMenuItem.Text = "&Tools";
             // 
             // toolStripMenuCatalog
@@ -1992,7 +1992,7 @@
             // 
             toolStripMenuGame.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuRun, toolStripSeparator16, toolStripMenuSteam, toolStripMenuMS, gameVersionSFSEToolStripMenuItem, toolStripSeparator24, toolStripMenuCustom, toolStripSeparator47, gameSelectToolStripMenuItem, toolStripMenuGameLaunchOptions, toolStripSeparator50, detectToolStripMenuItem });
             toolStripMenuGame.Name = "toolStripMenuGame";
-            toolStripMenuGame.Size = new System.Drawing.Size(96, 38);
+            toolStripMenuGame.Size = new System.Drawing.Size(96, 36);
             toolStripMenuGame.Text = "Game";
             // 
             // toolStripMenuRun
@@ -2092,7 +2092,7 @@
             // 
             toolStripMenuMods.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuEnableAll, toolStripMenuDisableAll, enableAchievementSafeOnlyToolStripMenuItem, enableAllCreationsModsOnlyToolStripMenuItem, disableAllCreationsModsToolStripMenuItem, toolStripSeparator6, toolStripMenuDelete, toolStripSeparator8, toolStripMenuAutoClean, toolStripMenuScanMods, toolStripMenuCleanup, removeDuplicatesToolStripMenuItem, toolStripSeparator7, toolStripMenuInstall, toolStripMenuUninstall, toolStripSeparator9, toolStripMenuLoot, toolStripMenuLootSort, toolStripSeparator15, vortexToolStripMenuItem, mO2ToolStripMenuItem, creationKitToolStripMenuItem, xEditToolStripMenuItem, starUIConfiguratorToolStripMenuItem, toolStripSeparator26, openAllActiveModWebPagesToolStripMenuItem, toolStripSeparator29, looseFilesDisabledToolStripMenuItem, toolStripSeparator28, sFSEPluginsEnableDisableToolStripMenuItem, toolStripSeparator61, creationsUpdateToolStripMenuItem });
             toolStripMenuMods.Name = "toolStripMenuMods";
-            toolStripMenuMods.Size = new System.Drawing.Size(94, 38);
+            toolStripMenuMods.Size = new System.Drawing.Size(94, 36);
             toolStripMenuMods.Text = "Mods";
             // 
             // toolStripMenuEnableAll
@@ -2312,7 +2312,7 @@
             // 
             toolStripMenuLinks.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuCreations, toolStripMenuNexus, nexusTrackingToolStripMenuItem, toolStripMenuBGSStarfield, toolStripMenuBGSX, steamDBToolStripMenuItem, toolStripSeparator45, iNaraToolStripMenuItem, toolStripSeparator62, webPageToolStripMenuItem, toolStripMenuGitHub });
             toolStripMenuLinks.Name = "toolStripMenuLinks";
-            toolStripMenuLinks.Size = new System.Drawing.Size(87, 38);
+            toolStripMenuLinks.Size = new System.Drawing.Size(87, 36);
             toolStripMenuLinks.Text = "Links";
             // 
             // toolStripMenuCreations
@@ -2392,7 +2392,7 @@
             // 
             helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuShortcuts, documentationToolStripMenuItem, toolStripSeparator60, githubLatestReleaseToolStripMenuItem, githubAllReleasesToolStripMenuItem, toolStripSeparator59, aboutToolStripMenuItem });
             helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            helpToolStripMenuItem.Size = new System.Drawing.Size(84, 38);
+            helpToolStripMenuItem.Size = new System.Drawing.Size(84, 36);
             helpToolStripMenuItem.Text = "&Help";
             // 
             // toolStripMenuShortcuts
@@ -2446,7 +2446,7 @@
             // 
             testToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { generateBGSArchivestxtToolStripMenuItem, generateExcludeFileToolStripMenuItem, generateTestPluginstxtToolStripMenuItem, toolStripSeparator51, toolStripSeparator52, testToolStripMenuItem1 });
             testToolStripMenuItem.Name = "testToolStripMenuItem";
-            testToolStripMenuItem.Size = new System.Drawing.Size(76, 38);
+            testToolStripMenuItem.Size = new System.Drawing.Size(76, 36);
             testToolStripMenuItem.Text = "Dev";
             testToolStripMenuItem.Visible = false;
             // 
@@ -2612,7 +2612,7 @@
             chkShowOnly.Location = new System.Drawing.Point(325, 3);
             chkShowOnly.Name = "chkShowOnly";
             chkShowOnly.Size = new System.Drawing.Size(106, 36);
-            chkShowOnly.TabIndex = 21;
+            chkShowOnly.TabIndex = 7;
             chkShowOnly.Text = "Mods";
             toolTip1.SetToolTip(chkShowOnly, "Filter mods by search box contents");
             chkShowOnly.UseVisualStyleBackColor = true;
@@ -2625,7 +2625,7 @@
             txtSearchBox.Margin = new System.Windows.Forms.Padding(2);
             txtSearchBox.Name = "txtSearchBox";
             txtSearchBox.Size = new System.Drawing.Size(96, 39);
-            txtSearchBox.TabIndex = 7;
+            txtSearchBox.TabIndex = 8;
             toolTip1.SetToolTip(txtSearchBox, "Search Text (Ctrl-F to focus, Enter - Next match, Esc - Clear), Checkbox - Find in filtered mods only");
             txtSearchBox.KeyDown += txtSearchBox_KeyDown;
             // 
@@ -2637,7 +2637,7 @@
             btnFindNext.Margin = new System.Windows.Forms.Padding(2);
             btnFindNext.Name = "btnFindNext";
             btnFindNext.Size = new System.Drawing.Size(127, 42);
-            btnFindNext.TabIndex = 8;
+            btnFindNext.TabIndex = 9;
             btnFindNext.Text = "Next";
             toolTip1.SetToolTip(btnFindNext, "Find next match in search. Checkbox on the left searches in filtered mods only");
             btnFindNext.UseVisualStyleBackColor = true;
@@ -2651,7 +2651,7 @@
             chkProfile.Margin = new System.Windows.Forms.Padding(2);
             chkProfile.Name = "chkProfile";
             chkProfile.Size = new System.Drawing.Size(114, 36);
-            chkProfile.TabIndex = 9;
+            chkProfile.TabIndex = 10;
             chkProfile.Text = "Profile";
             toolTip1.SetToolTip(chkProfile, "Enable/Disable Profiles");
             chkProfile.UseVisualStyleBackColor = true;
@@ -2667,7 +2667,7 @@
             cmbProfile.Margin = new System.Windows.Forms.Padding(2);
             cmbProfile.Name = "cmbProfile";
             cmbProfile.Size = new System.Drawing.Size(300, 40);
-            cmbProfile.TabIndex = 10;
+            cmbProfile.TabIndex = 11;
             toolTip1.SetToolTip(cmbProfile, "Profile select");
             cmbProfile.SelectedIndexChanged += cmbProfile_SelectedIndexChanged;
             // 
@@ -2680,7 +2680,7 @@
             btnSave.Margin = new System.Windows.Forms.Padding(2);
             btnSave.Name = "btnSave";
             btnSave.Size = new System.Drawing.Size(74, 42);
-            btnSave.TabIndex = 11;
+            btnSave.TabIndex = 12;
             btnSave.Text = "Save";
             toolTip1.SetToolTip(btnSave, "Save Plugins.txt (Ctrl-S)");
             btnSave.UseVisualStyleBackColor = true;
@@ -2695,7 +2695,7 @@
             btnActiveOnly.Margin = new System.Windows.Forms.Padding(2);
             btnActiveOnly.Name = "btnActiveOnly";
             btnActiveOnly.Size = new System.Drawing.Size(77, 42);
-            btnActiveOnly.TabIndex = 12;
+            btnActiveOnly.TabIndex = 13;
             btnActiveOnly.Text = "Filter";
             toolTip1.SetToolTip(btnActiveOnly, "Show all or show active mods only (Q)");
             btnActiveOnly.UseVisualStyleBackColor = true;
@@ -2708,7 +2708,7 @@
             btnGroups.Location = new System.Drawing.Point(1249, 3);
             btnGroups.Name = "btnGroups";
             btnGroups.Size = new System.Drawing.Size(100, 42);
-            btnGroups.TabIndex = 13;
+            btnGroups.TabIndex = 14;
             btnGroups.Text = "Groups";
             toolTip1.SetToolTip(btnGroups, "Group Filter - Refresh to Clear");
             btnGroups.UseVisualStyleBackColor = true;
@@ -2723,7 +2723,7 @@
             btnLog.Margin = new System.Windows.Forms.Padding(2);
             btnLog.Name = "btnLog";
             btnLog.Size = new System.Drawing.Size(63, 42);
-            btnLog.TabIndex = 14;
+            btnLog.TabIndex = 15;
             btnLog.Text = "Log";
             toolTip1.SetToolTip(btnLog, "View Log File");
             btnLog.UseVisualStyleBackColor = true;
@@ -2738,7 +2738,7 @@
             btnRefresh.Margin = new System.Windows.Forms.Padding(2);
             btnRefresh.Name = "btnRefresh";
             btnRefresh.Size = new System.Drawing.Size(103, 42);
-            btnRefresh.TabIndex = 15;
+            btnRefresh.TabIndex = 16;
             btnRefresh.Text = "Refresh";
             toolTip1.SetToolTip(btnRefresh, "Reload Plugins (F5 or C)");
             btnRefresh.UseVisualStyleBackColor = true;
@@ -2753,7 +2753,7 @@
             btnUpdate.Margin = new System.Windows.Forms.Padding(2);
             btnUpdate.Name = "btnUpdate";
             btnUpdate.Size = new System.Drawing.Size(101, 42);
-            btnUpdate.TabIndex = 16;
+            btnUpdate.TabIndex = 17;
             btnUpdate.Text = "Update";
             toolTip1.SetToolTip(btnUpdate, "Add or delete missing mods from Plugins.txt, Check for Duplicates (V)");
             btnUpdate.UseVisualStyleBackColor = true;
@@ -2768,7 +2768,7 @@
             btnLoot.Margin = new System.Windows.Forms.Padding(2);
             btnLoot.Name = "btnLoot";
             btnLoot.Size = new System.Drawing.Size(67, 42);
-            btnLoot.TabIndex = 17;
+            btnLoot.TabIndex = 18;
             btnLoot.Text = "Sort";
             toolTip1.SetToolTip(btnLoot, "LOOT Autosort (Z)");
             btnLoot.UseVisualStyleBackColor = true;
@@ -2783,7 +2783,7 @@
             btnRun.Margin = new System.Windows.Forms.Padding(2);
             btnRun.Name = "btnRun";
             btnRun.Size = new System.Drawing.Size(66, 42);
-            btnRun.TabIndex = 18;
+            btnRun.TabIndex = 19;
             btnRun.Text = "Run";
             toolTip1.SetToolTip(btnRun, "Run the game (R)");
             btnRun.UseVisualStyleBackColor = true;
@@ -2798,7 +2798,7 @@
             btnCancel.Margin = new System.Windows.Forms.Padding(2);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new System.Drawing.Size(95, 42);
-            btnCancel.TabIndex = 19;
+            btnCancel.TabIndex = 20;
             btnCancel.Text = "Cancel";
             toolTip1.SetToolTip(btnCancel, "Exit without saving changes");
             btnCancel.UseVisualStyleBackColor = true;
