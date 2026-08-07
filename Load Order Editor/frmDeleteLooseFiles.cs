@@ -48,8 +48,8 @@ namespace hstCMM.Load_Order_Editor
         {
             bool gameFolder = false, documentsFolder = false;
             string gameFolderPath = Path.Combine(frmLoadOrder.GamePath, "Data", folderPath);
-            string documentsFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"My Games\Starfield\Data", folderPath);
-
+            string documentsFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                "My Games", frmLoadOrder.GameName, "Data",folderPath);
             // Check if the folder exists in the game directory
             try
             {
@@ -97,7 +97,7 @@ namespace hstCMM.Load_Order_Editor
         private void btnDelete_Click(object sender, EventArgs e)
         {
             string gameFolderPath = Path.Combine(frmLoadOrder.GamePath, "Data");
-            string documentsFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"My Games\Starfield\Data");
+            string documentsFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games",frmLoadOrder.GameName,"Data");
 
             if (checkedListBox1.CheckedItems.Count == 0)
             {

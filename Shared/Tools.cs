@@ -24,28 +24,31 @@ namespace hstCMM.Shared // Various functions used by the app
             "scripts",
             "materials",
             "sound"
+
         ];
 
         public static readonly List<string> LooseFolders =
-[ "meshes",
-"interface",
-"textures\\actors",
-"textures\\architecture",
-"textures\\clothes",
-"textures\\common",
-"textures\\displayscreens",
-"textures\\decals",
-"textures\\effects",
-"textures\\interface",
-"textures\\items",
-"textures\\setdressing",
-"textures\\ships",
-"textures\\sky",
-"textures\\weapons",
-"geometries",
-"scripts",
-"materials",
-"sound"
+        [ "meshes",
+        "interface",
+        "textures\\actors",
+        "textures\\architecture",
+        "textures\\clothes",
+        "textures\\common",
+        "textures\\displayscreens",
+        "textures\\decals",
+        "textures\\effects",
+        "textures\\interface",
+        "textures\\items",
+        "textures\\setdressing",
+        "textures\\ships",
+        "textures\\sky",
+        "textures\\weapons",
+         "textures\\water",
+        "geometries",
+        "scripts",
+        "materials",
+        "sound"
+
 ];
 
         public static readonly List<string> Suffixes =
