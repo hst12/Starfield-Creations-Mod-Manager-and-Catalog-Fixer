@@ -2343,29 +2343,35 @@ namespace hstCMM
             bool rowHighlight = Properties.Settings.Default.RowHighlight;
             bool modEnabled;
             string json = "";
-            System.Drawing.Color rowColour = System.Drawing.Color.Empty;
 
+            // Cache colours.
             var colorMode = Properties.Settings.Default.DarkMode switch
             {
                 0 => SystemColorMode.Classic,
                 1 => SystemColorMode.Dark,
                 2 => SystemColorMode.System,
-                _ => SystemColorMode.Classic // Default fallback
+                _ => SystemColorMode.Classic
             };
+
+            bool darkMode =
+                colorMode == SystemColorMode.Dark ||
+                (colorMode == SystemColorMode.System &&
+                 Application.SystemColorMode == SystemColorMode.Dark);
+
+            var rowColour = darkMode
+                ? System.Drawing.Color.SlateGray
+                : System.Drawing.Color.AntiqueWhite;
 
             if (File.Exists(Tools.GetCatalogPath()))
                 json = File.ReadAllText(Tools.GetCatalogPath()); // Read Catalog
             var bethFilesSet = new HashSet<string>(tools.BethFiles); // Read files to exclude
 
-            string[] lines;
-
-            if (File.Exists(loText))  // Read Plugins.txt
-                lines = File.ReadAllLines(loText);
-            else
+            if (!File.Exists(loText))
             {
                 sbar("Plugins.txt not found");
                 return;
             }
+            string[] lines = File.ReadAllLines(loText);  // Read Plugins.txt
 
             sbar("Loading...");
             sbar3("");
@@ -2425,7 +2431,9 @@ namespace hstCMM
             foreach (var line in lines)
             {
                 // Skip empty lines, excluded lines or comments.
-                if (string.IsNullOrEmpty(line) || bethFilesSet.Contains(line) || line[0] == '#')
+                if (string.IsNullOrEmpty(line) || bethFilesSet.Contains(line) ||
+                    line[0] == '#' ||
+                    line.TrimStart('*').StartsWith("blueprintships-", StringComparison.OrdinalIgnoreCase))
                     continue;
 
                 progressBar1.Value++;
@@ -2550,27 +2558,11 @@ namespace hstCMM
                         row.Cells[kvp.Key].Value = kvp.Value.value;
                 }
 
-                rowBuffer.Add(row);
-
-                if (colorMode == SystemColorMode.Dark ||
-                    (colorMode == SystemColorMode.System && System.Windows.Forms.Application.SystemColorMode == SystemColorMode.Dark))
-                    rowColour = System.Drawing.Color.SlateGray;
-                else
-                    rowColour = System.Drawing.Color.AntiqueWhite;
-                if (row.Cells[1].Value is bool enabled && !enabled && rowHighlight) // Highlight rows
+                if (!modEnabled && rowHighlight)
                     row.DefaultCellStyle.BackColor = rowColour;
-                /*else
-                    row.DefaultCellStyle.BackColor = System.Drawing.Color.White;*/
-            } // End of main loop
 
-            foreach (var row in rowBuffer)
-            {
-                if (row.Cells[2].Value.ToString().Contains("blueprintships-", StringComparison.OrdinalIgnoreCase)) // disable mod
-                {
-                    row.Cells[1].Value = false;
-                    activityLog.WriteLog($"Removed {row.Cells[2].Value}");
-                }
-            }
+                rowBuffer.Add(row);
+            } // End of main loop
 
             dataGridView1.Rows.AddRange(rowBuffer.ToArray());
 
