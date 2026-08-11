@@ -1874,13 +1874,7 @@ namespace hstCMM
                 return;
             try
             {
-                if (Tools.BlockedMods().Contains((string)dataGridView1.CurrentRow.Cells["PluginName"].Value))
-                {
-                    sbar("Mod is blocked");
-                    MessageBox.Show("Blocked Mod - Unblock the mod to enable it", "This mod is blocked.", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
+                BlockedCheck();
                 foreach (var row in dataGridView1.SelectedRows)
                 {
                     DataGridViewRow currentRow = (DataGridViewRow)row;
@@ -7143,6 +7137,17 @@ This function is only meant to be used on mods with empty .esm files",
             }
         }
 
+        private bool BlockedCheck()
+        {
+            if (Tools.BlockedMods().Contains((string)dataGridView1.CurrentRow.Cells["PluginName"].Value))
+            {
+                sbar("Mod is blocked");
+                MessageBox.Show("Blocked Mod - Unblock the mod to enable it", "This mod is blocked.", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+            else
+                return true;
+        }
         private void EnableDisableInProfiles(bool addRemove) // false to disable, true to enable
         {
             if (ActiveOnly && dataGridView1.SelectedRows.Count > 1)
@@ -7158,6 +7163,9 @@ This function is only meant to be used on mods with empty .esm files",
                 MessageBox.Show("No valid profiles found");
                 return;
             }
+
+            if (!BlockedCheck())
+                return;
 
             SetCurrentIndex();
 
