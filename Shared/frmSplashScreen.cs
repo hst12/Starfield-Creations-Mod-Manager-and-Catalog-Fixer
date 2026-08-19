@@ -101,9 +101,11 @@ namespace hstCMM
                 }
             }
 
-            if (string.Compare(Properties.Settings.Default.LastProfile, "NSFW.txt", true) == 0)
+            //if (string.Compare(Properties.Settings.Default.LastProfile, "NSFW.txt", true) == 0)
+            if (Properties.Settings.Default.LastProfile.Contains("NSFW", StringComparison.OrdinalIgnoreCase))
             {
-                this.BackgroundImage = Properties.Resources.Sarah;
+                //this.BackgroundImage = Properties.Resources.Sarah;
+                this.BackgroundImage = Properties.Resources.Andreja;
             }
 
             // Ensure the background image is already set in the designer

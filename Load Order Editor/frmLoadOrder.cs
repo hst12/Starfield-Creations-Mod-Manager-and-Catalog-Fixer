@@ -7164,8 +7164,9 @@ This function is only meant to be used on mods with empty .esm files",
                 return;
             }
 
-            if (!BlockedCheck())
-                return;
+            if (addRemove)
+                if (!BlockedCheck())
+                    return;
 
             SetCurrentIndex();
 
