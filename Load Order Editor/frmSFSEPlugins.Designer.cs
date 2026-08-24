@@ -36,6 +36,7 @@
             btnOpenFolder = new System.Windows.Forms.Button();
             btnOk = new System.Windows.Forms.Button();
             btnCancel = new System.Windows.Forms.Button();
+            btnDelete = new System.Windows.Forms.Button();
             tableLayoutPanel1.SuspendLayout();
             flowLayoutPanel1.SuspendLayout();
             SuspendLayout();
@@ -46,7 +47,7 @@
             chkSFSEPlugins.FormattingEnabled = true;
             chkSFSEPlugins.Location = new System.Drawing.Point(3, 3);
             chkSFSEPlugins.Name = "chkSFSEPlugins";
-            chkSFSEPlugins.Size = new System.Drawing.Size(866, 386);
+            chkSFSEPlugins.Size = new System.Drawing.Size(1068, 386);
             chkSFSEPlugins.TabIndex = 0;
             // 
             // tableLayoutPanel1
@@ -61,7 +62,7 @@
             tableLayoutPanel1.RowCount = 2;
             tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            tableLayoutPanel1.Size = new System.Drawing.Size(872, 450);
+            tableLayoutPanel1.Size = new System.Drawing.Size(1074, 450);
             tableLayoutPanel1.TabIndex = 1;
             // 
             // flowLayoutPanel1
@@ -70,12 +71,13 @@
             flowLayoutPanel1.Controls.Add(btnSelectAll);
             flowLayoutPanel1.Controls.Add(btnSelectNone);
             flowLayoutPanel1.Controls.Add(btnOpenFolder);
+            flowLayoutPanel1.Controls.Add(btnDelete);
             flowLayoutPanel1.Controls.Add(btnOk);
             flowLayoutPanel1.Controls.Add(btnCancel);
             flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             flowLayoutPanel1.Location = new System.Drawing.Point(3, 395);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new System.Drawing.Size(866, 52);
+            flowLayoutPanel1.Size = new System.Drawing.Size(1068, 52);
             flowLayoutPanel1.TabIndex = 1;
             // 
             // btnSelectAll
@@ -114,7 +116,7 @@
             // btnOk
             // 
             btnOk.AutoSize = true;
-            btnOk.Location = new System.Drawing.Point(490, 3);
+            btnOk.Location = new System.Drawing.Point(646, 3);
             btnOk.Name = "btnOk";
             btnOk.Size = new System.Drawing.Size(150, 46);
             btnOk.TabIndex = 4;
@@ -125,7 +127,7 @@
             // btnCancel
             // 
             btnCancel.AutoSize = true;
-            btnCancel.Location = new System.Drawing.Point(646, 3);
+            btnCancel.Location = new System.Drawing.Point(802, 3);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new System.Drawing.Size(150, 46);
             btnCancel.TabIndex = 5;
@@ -133,11 +135,21 @@
             btnCancel.UseVisualStyleBackColor = true;
             btnCancel.Click += btnCancel_Click;
             // 
+            // btnDelete
+            // 
+            btnDelete.Location = new System.Drawing.Point(490, 3);
+            btnDelete.Name = "btnDelete";
+            btnDelete.Size = new System.Drawing.Size(150, 46);
+            btnDelete.TabIndex = 6;
+            btnDelete.Text = "Delete";
+            btnDelete.UseVisualStyleBackColor = true;
+            btnDelete.Click += btnDelete_Click;
+            // 
             // frmSFSEPlugins
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(13F, 32F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(872, 450);
+            ClientSize = new System.Drawing.Size(1074, 450);
             Controls.Add(tableLayoutPanel1);
             Name = "frmSFSEPlugins";
             StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -159,5 +171,6 @@
         private System.Windows.Forms.Button btnOk;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnOpenFolder;
+        private System.Windows.Forms.Button btnDelete;
     }
 }

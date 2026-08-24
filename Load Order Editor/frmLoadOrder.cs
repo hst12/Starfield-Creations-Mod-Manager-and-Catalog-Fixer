@@ -2390,7 +2390,10 @@ namespace hstCMM
                     var files = item.Files;
 
                     // Collect detail info for each .esm file. Handles Creation mod packs with multiple plugins.
-                    foreach (var file in files.Where(f => f.EndsWith(".esm", StringComparison.OrdinalIgnoreCase)))
+                    //foreach (var file in files.Where(f => f.EndsWith(".esm", StringComparison.OrdinalIgnoreCase)))
+                    foreach (var file in files.Where(f =>
+                        f.EndsWith(".esm", StringComparison.OrdinalIgnoreCase) ||
+                        f.EndsWith(".esp", StringComparison.OrdinalIgnoreCase)))
                     {
                         CreationsPlugin.Add(file);
                         CreationsTitle.Add(item.Title);
@@ -5062,7 +5065,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             RefreshDataGrid();
         }
 
-        private void ShowSplashScreen()
+        private void ShowSplashScreen(bool fullScreen=false)
         {
             Form SS;
             /*if (devMode)
@@ -5070,7 +5073,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                  SS = new frmSplashScreenVideo();
             }
             else*/
-            SS = new frmSplashScreen();
+            SS = new frmSplashScreen(fullScreen);
             SS.Show();
         }
 
@@ -5176,8 +5179,8 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             // 2) Gather all on-disk plugin filenames
             var pluginFiles = tools.GetPluginList(Game);
             string dataDir = Path.Combine(GamePath, "Data");
-            //string[] patterns = { "*.esp", "*.esm", "*.esl" };
-            string[] patterns = { "*.esm" };
+            string[] patterns = { "*.esp", "*.esm", "*.esl" };
+            //string[] patterns = { "*.esm" };
             foreach (var pattern in patterns)
             {
                 try
@@ -5856,7 +5859,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
         private void toolStripMenuLoadScreenPreview_Click(object sender, EventArgs e)
         {
-            ShowSplashScreen();
+            ShowSplashScreen(false);
         }
 
         private void toolStripMenuLoot_Click(object sender, EventArgs e)
@@ -6791,12 +6794,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
         private void testToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            int index = cmbProfile.Items.IndexOf(Properties.Settings.Default.LastProfile);
-            string loText = Path.Combine(Tools.GameAppData, "Plugins.txt");
-            string profileFolder = Path.Combine(Properties.Settings.Default.ProfileFolder, GameName, cmbProfile.Items[index].ToString());
-            var x = tools.GetPluginList(Game);
-            activityLog.WriteLog(loText + " " + profileFolder);
-            File.Copy(loText, profileFolder, true);
+            activityLog.WriteLog("Nothing currently implemented");
         }
 
         private void sFSEPluginsEnableDisableToolStripMenuItem_Click(object sender, EventArgs e)
@@ -7148,6 +7146,7 @@ This function is only meant to be used on mods with empty .esm files",
             else
                 return true;
         }
+
         private void EnableDisableInProfiles(bool addRemove) // false to disable, true to enable
         {
             if (ActiveOnly && dataGridView1.SelectedRows.Count > 1)

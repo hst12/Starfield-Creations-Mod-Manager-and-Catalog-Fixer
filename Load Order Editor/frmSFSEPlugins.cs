@@ -1,6 +1,8 @@
-﻿using hstCMM.Shared;
+﻿using hstCMM.Common;
+using hstCMM.Shared;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -11,15 +13,21 @@ namespace hstCMM.Load_Order_Editor
     {
         private readonly Tools tools = new();
         private readonly string GamePath = frmLoadOrder.GamePath;
-        
+
         public frmSFSEPlugins()
         {
             InitializeComponent();
-           
+
+            ReadPlugins();
+        }
+
+        private void ReadPlugins()
+        {
             List<string> SFSEPluginList;
             string[] pluginPattern = { "*.dll", "*.disabled" };
             string pluginName;
             string SFSEPluginPath = Path.Combine(GamePath, @"Data\SFSE\Plugins");
+            chkSFSEPlugins.Items.Clear();
 
             if (!Directory.Exists(SFSEPluginPath))
             {
@@ -102,12 +110,61 @@ namespace hstCMM.Load_Order_Editor
                         }
                         catch (Exception ex)
                         {
-                            MessageBox.Show($"Error disabling plugin {pluginName}: {ex.Message}","Error");
+                            MessageBox.Show($"Error disabling plugin {pluginName}: {ex.Message}", "Error");
                         }
                     }
                 }
             }
             Close();
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            if (chkSFSEPlugins.Items.Count == 0)
+                return;
+
+            //List<string> SFSEPluginList;
+            string[] pluginPattern = { "*.dll", "*.disabled" };
+            string pluginName;
+            string SFSEPluginPath = Path.Combine(GamePath, @"Data\SFSE\Plugins");
+
+            if (!Directory.Exists(SFSEPluginPath))
+            {
+                MessageBox.Show("Unable to find SFSE Plugins Directory");
+                return;
+            }
+
+            List<string> checkedItems = new();
+            foreach (var item in chkSFSEPlugins.CheckedItems)
+            {
+                checkedItems.Add(item.ToString());
+            }
+
+            foreach (var pattern in pluginPattern)
+            {
+                foreach (string plugin in Directory.GetFiles(SFSEPluginPath, pattern, SearchOption.TopDirectoryOnly))
+                {
+                    pluginName = Path.GetFileName(plugin);
+                    string baseName = pluginName.Split('.')[0]; // Get name before 1st dot
+                    if (checkedItems.Contains(baseName))
+                    {
+                        // Delete plugin
+                        if (pluginName.EndsWith(pattern[1..]))
+                        {
+                            try
+                            {
+                                File.Delete(plugin);
+                            }
+                            catch(Exception ex)
+                            {
+                                MessageBox.Show($"Unable to delete {plugin}.",ex.Message);
+                            }
+                        }
+                    }
+                }
+            }
+
+            ReadPlugins();
         }
     }
 }
