@@ -345,17 +345,19 @@ namespace hstCMM
                     double versionCheck = dotIndex > 0 ? double.Parse(versionStr[..dotIndex]) : 0;
 
                     // If the version string does not match the expected header and Verbose logging is enabled, log details.
-                    if (versionStr != Tools.CatalogVersion && Verbose)
+                    /*if (versionStr != Tools.CatalogVersion && Verbose)
                     {
                         string versionDetail = (dotIndex >= 0 && dotIndex < versionStr.Length - 1)
                             ? versionStr[(dotIndex + 1)..]
                             : "";
                         richTextBox2.AppendText($"{creation.Title}, date: {Tools.ConvertTime(versionCheck)} version: {versionDetail}\n");
-                    }
+                    }*/
 
                     // If the numeric part of the version is out of range (and not equal to 1), log an error.
+                    
                     if (versionCheck > creation.Timestamp && !versionCheck.Equals(1))
                     {
+                        //MessageBox.Show(versionCheck.ToString());
                         errorCount++;
                         richTextBox2.AppendText($"Out of range version number detected in {creation.Title}: {versionStr}, {Tools.ConvertTime(versionCheck)}\n");
                         if (log)

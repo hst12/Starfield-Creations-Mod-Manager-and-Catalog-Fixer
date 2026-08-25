@@ -26,6 +26,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
+using static System.Net.Mime.MediaTypeNames;
 using File = System.IO.File;
 
 namespace hstCMM
@@ -75,7 +76,7 @@ namespace hstCMM
                 if (arg.Equals("-reset", StringComparison.InvariantCultureIgnoreCase))
                 {
                     ResetPreferences();
-                    Application.Exit();
+                    System.Windows.Forms.Application.Exit();
                 }
 
                 if (arg.Equals("-norestore", StringComparison.InvariantCultureIgnoreCase))
@@ -175,7 +176,7 @@ namespace hstCMM
                 {
                     RunGame();
                     this.WindowState = FormWindowState.Minimized;
-                    Application.Exit();
+                    System.Windows.Forms.Application.Exit();
                 }
 
                 if (arg.Equals("-runsfse", StringComparison.InvariantCultureIgnoreCase))
@@ -183,7 +184,7 @@ namespace hstCMM
                     SFSEswitch();
                     RunGame();
                     this.WindowState = FormWindowState.Minimized;
-                    Application.Exit();
+                    System.Windows.Forms.Application.Exit();
                 }
             }
 
@@ -296,51 +297,51 @@ namespace hstCMM
                 jumpList.KnownCategoryToDisplay = JumpListKnownCategoryType.Recent;
 
                 // Add custom tasks with command-line argument
-                JumpListLink runGameTask = new JumpListLink(Application.ExecutablePath, "Run Game")
+                JumpListLink runGameTask = new JumpListLink(System.Windows.Forms.Application.ExecutablePath, "Run Game")
                 {
                     Arguments = "-run",
-                    IconReference = new IconReference(Application.ExecutablePath, 0),
-                    WorkingDirectory = Path.GetDirectoryName(Application.ExecutablePath),
+                    IconReference = new IconReference(System.Windows.Forms.Application.ExecutablePath, 0),
+                    WorkingDirectory = Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath),
                     Title = "Run Game"
                 };
 
-                JumpListLink runGameSFSETask = new JumpListLink(Application.ExecutablePath, "Run Game - SFSE")
+                JumpListLink runGameSFSETask = new JumpListLink(System.Windows.Forms.Application.ExecutablePath, "Run Game - SFSE")
                 {
                     Arguments = "-runsfse",
-                    IconReference = new IconReference(Application.ExecutablePath, 0),
-                    WorkingDirectory = Path.GetDirectoryName(Application.ExecutablePath),
+                    IconReference = new IconReference(System.Windows.Forms.Application.ExecutablePath, 0),
+                    WorkingDirectory = Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath),
                     Title = "Run Game - SFSE"
                 };
 
-                JumpListLink devModeTask = new JumpListLink(Application.ExecutablePath, "Dev Mode")
+                JumpListLink devModeTask = new JumpListLink(System.Windows.Forms.Application.ExecutablePath, "Dev Mode")
                 {
                     Arguments = "-dev",
-                    IconReference = new IconReference(Application.ExecutablePath, 0),
-                    WorkingDirectory = Path.GetDirectoryName(Application.ExecutablePath),
+                    IconReference = new IconReference(System.Windows.Forms.Application.ExecutablePath, 0),
+                    WorkingDirectory = Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath),
                     Title = "Dev Mode"
                 };
 
-                JumpListLink disableSettings = new JumpListLink(Application.ExecutablePath, "Disable Settings")
+                JumpListLink disableSettings = new JumpListLink(System.Windows.Forms.Application.ExecutablePath, "Disable Settings")
                 {
                     Arguments = "-noauto",
-                    IconReference = new IconReference(Application.ExecutablePath, 0),
-                    WorkingDirectory = Path.GetDirectoryName(Application.ExecutablePath),
+                    IconReference = new IconReference(System.Windows.Forms.Application.ExecutablePath, 0),
+                    WorkingDirectory = Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath),
                     Title = "Disable Settings"
                 };
 
-                JumpListLink disableCatalogRestore = new JumpListLink(Application.ExecutablePath, "Disable Catalog Restore")
+                JumpListLink disableCatalogRestore = new JumpListLink(System.Windows.Forms.Application.ExecutablePath, "Disable Catalog Restore")
                 {
                     Arguments = "-norestore",
-                    IconReference = new IconReference(Application.ExecutablePath, 0),
-                    WorkingDirectory = Path.GetDirectoryName(Application.ExecutablePath),
+                    IconReference = new IconReference(System.Windows.Forms.Application.ExecutablePath, 0),
+                    WorkingDirectory = Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath),
                     Title = "Disable Catalog Restore"
                 };
 
-                JumpListLink installMod = new JumpListLink(Application.ExecutablePath, "Install Mod")
+                JumpListLink installMod = new JumpListLink(System.Windows.Forms.Application.ExecutablePath, "Install Mod")
                 {
                     Arguments = "-installmod",
-                    IconReference = new IconReference(Application.ExecutablePath, 0),
-                    WorkingDirectory = Path.GetDirectoryName(Application.ExecutablePath),
+                    IconReference = new IconReference(System.Windows.Forms.Application.ExecutablePath, 0),
+                    WorkingDirectory = Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath),
                     Title = "Install Mod"
                 };
 
@@ -2350,7 +2351,7 @@ namespace hstCMM
             bool darkMode =
                 colorMode == SystemColorMode.Dark ||
                 (colorMode == SystemColorMode.System &&
-                 Application.SystemColorMode == SystemColorMode.Dark);
+                 System.Windows.Forms.Application.SystemColorMode == SystemColorMode.Dark);
 
             var rowColour = darkMode
                 ? System.Drawing.Color.SlateGray
@@ -2473,8 +2474,9 @@ namespace hstCMM
                         }
                         catch (Exception ex) // Log or handle unexpected exceptions
                         {
-                            modVersion = $"Error: {ex.Message}";
-                            LogError(ex.Message);
+                            //modVersion = $"Error: {ex.Message}";
+                            modVersion = authorVersion;
+                            LogError("Version number for "+description+": "+ex.Message);
                         }
                     }
                     modFiles = CreationsFiles[idx];
@@ -2486,7 +2488,7 @@ namespace hstCMM
                         totalFileSize += modFileSize;
                     url = $"https://creations.bethesda.net/en/{Tools.GameLibrary.GetById(Game).
                         CreationsSite}/details/{(modID.Length > 3 ? modID[webskipchars..] : modID)}/" +
-                        CreationsTitle[idx].Replace(" ", "_").Replace("[", "_").Replace("]", "_");
+                        CreationsTitle[idx].Replace(" ", "_").Replace("[", "_").Replace("]", "_").Replace("&","_amp_").Replace("-", "_").Replace(".","_");
                 }
                 else
                     description = "";
@@ -4673,7 +4675,7 @@ namespace hstCMM
 
             try
             {
-                Application.SetColorMode(colorMode);
+                System.Windows.Forms.Application.SetColorMode(colorMode);
             }
             catch (Exception ex)
             {
@@ -5141,7 +5143,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
                 if (Difference.Count > 0)
                 {
-                    var existingForm = Application.OpenForms.OfType<frmProfileCompare>().FirstOrDefault(); // Check if the form is already open
+                    var existingForm = System.Windows.Forms.Application.OpenForms.OfType<frmProfileCompare>().FirstOrDefault(); // Check if the form is already open
                     existingForm?.Close(); // Close the existing form
                     Form fpc = new frmProfileCompare(Difference);// Create and show a new instance of the form
                     fpc.Show();
@@ -6326,7 +6328,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
         {
             UpdateAllProfiles();
             // Close all instances of frmGenericTextList
-            foreach (Form frm in Application.OpenForms.OfType<frmGenericTextList>().ToList())
+            foreach (Form frm in System.Windows.Forms.Application.OpenForms.OfType<frmGenericTextList>().ToList())
             {
                 frm.Close();
             }
@@ -6382,7 +6384,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                         return;
                     }
 
-                    Application.DoEvents();
+                    System.Windows.Forms.Application.DoEvents();
 
                     if (row.Cells["PluginName"].Value is not string ModNameRaw) continue;
                     string ModName = ModNameRaw[..ModNameRaw.LastIndexOf('.')]; // Get current mod name
