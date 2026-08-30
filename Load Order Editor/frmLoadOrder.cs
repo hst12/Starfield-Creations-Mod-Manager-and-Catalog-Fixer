@@ -2476,7 +2476,7 @@ namespace hstCMM
                         {
                             //modVersion = $"Error: {ex.Message}";
                             modVersion = authorVersion;
-                            LogError("Version number for "+description+": "+ex.Message);
+                            LogError("Version number for " + description + ": " + ex.Message);
                         }
                     }
                     modFiles = CreationsFiles[idx];
@@ -2488,7 +2488,7 @@ namespace hstCMM
                         totalFileSize += modFileSize;
                     url = $"https://creations.bethesda.net/en/{Tools.GameLibrary.GetById(Game).
                         CreationsSite}/details/{(modID.Length > 3 ? modID[webskipchars..] : modID)}/" +
-                        CreationsTitle[idx].Replace(" ", "_").Replace("[", "_").Replace("]", "_").Replace("&","_amp_").Replace("-", "_").Replace(".","_");
+                        CreationsTitle[idx].Replace(" ", "_").Replace("[", "_").Replace("]", "_").Replace("&", "_amp_").Replace("-", "_").Replace(".", "_");
                 }
                 else
                     description = "";
@@ -5067,7 +5067,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             RefreshDataGrid();
         }
 
-        private void ShowSplashScreen(bool fullScreen=false)
+        private void ShowSplashScreen(bool fullScreen = false)
         {
             Form SS;
             /*if (devMode)
@@ -7353,6 +7353,11 @@ This function is only meant to be used on mods with empty .esm files",
                 "My Games", GameName, $"{GameName}Console.ini");
             if (File.Exists(tempstr))
                 Tools.OpenFile(tempstr);
+        }
+
+        private void gameDirectoryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Tools.OpenDirectory(GamePath);
         }
     }
 }
