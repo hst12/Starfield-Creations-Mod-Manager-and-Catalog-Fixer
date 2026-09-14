@@ -4455,6 +4455,7 @@ namespace hstCMM
                 return;
             }
 
+            List<string> blockedMods = Tools.BlockedMods();
             try
             {
                 using (StreamWriter writer = new(PluginFileName))
@@ -4470,7 +4471,7 @@ namespace hstCMM
 
                         // Disable mod if it exists in BlockedMods
                         bool modEnabled = row.Cells["ModEnabled"].Value as bool? ?? false;
-                        modEnabled &= !Tools.BlockedMods().Contains(pluginName);
+                        modEnabled &= !blockedMods.Contains(pluginName);
 
                         writer.Write(modEnabled ? "*" : "");
                         writer.WriteLine(pluginName);
