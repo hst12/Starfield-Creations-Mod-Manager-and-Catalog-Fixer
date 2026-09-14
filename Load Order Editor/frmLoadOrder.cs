@@ -26,7 +26,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
-using static System.Net.Mime.MediaTypeNames;
 using File = System.IO.File;
 
 namespace hstCMM
