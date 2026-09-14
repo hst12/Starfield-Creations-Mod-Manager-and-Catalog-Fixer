@@ -5861,7 +5861,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
         private void toolStripMenuLoadScreenPreview_Click(object sender, EventArgs e)
         {
-            ShowSplashScreen(false);
+            ShowSplashScreen(true);
         }
 
         private void toolStripMenuLoot_Click(object sender, EventArgs e)

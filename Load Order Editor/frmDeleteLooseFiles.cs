@@ -36,6 +36,19 @@ namespace hstCMM.Load_Order_Editor
                     checkedListBox1.Items.Add(item);
                 }
             }
+            if (DeletedFiles.Contains("Materials",StringComparer.OrdinalIgnoreCase))
+            {
+                string materialsPath = Path.Combine(frmLoadOrder.GamePath, "Data", "Materials");
+
+                if (Directory.Exists(materialsPath) &&
+                    !Directory.EnumerateFileSystemEntries(materialsPath).Any())
+                {
+                    DeletedFiles.RemoveAll(x =>
+                        x.Equals("Materials", StringComparison.OrdinalIgnoreCase));
+
+                    checkedListBox1.Items.Remove("Materials");
+                }
+            }
             if (DeletedFiles.Count == 0)
             {
                 if (log)
@@ -49,7 +62,7 @@ namespace hstCMM.Load_Order_Editor
             bool gameFolder = false, documentsFolder = false;
             string gameFolderPath = Path.Combine(frmLoadOrder.GamePath, "Data", folderPath);
             string documentsFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                "My Games", frmLoadOrder.GameName, "Data",folderPath);
+                "My Games", frmLoadOrder.GameName, "Data", folderPath);
             // Check if the folder exists in the game directory
             try
             {
@@ -97,7 +110,7 @@ namespace hstCMM.Load_Order_Editor
         private void btnDelete_Click(object sender, EventArgs e)
         {
             string gameFolderPath = Path.Combine(frmLoadOrder.GamePath, "Data");
-            string documentsFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games",frmLoadOrder.GameName,"Data");
+            string documentsFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", frmLoadOrder.GameName, "Data");
 
             if (checkedListBox1.CheckedItems.Count == 0)
             {

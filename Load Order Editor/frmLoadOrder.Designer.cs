@@ -907,91 +907,91 @@
             // downloadsToolStripMenuItem
             // 
             downloadsToolStripMenuItem.Name = "downloadsToolStripMenuItem";
-            downloadsToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+            downloadsToolStripMenuItem.Size = new System.Drawing.Size(338, 44);
             downloadsToolStripMenuItem.Text = "Downloads";
             downloadsToolStripMenuItem.Click += downloadsToolStripMenuItem_Click;
             // 
             // toolStripMenuExploreAppData
             // 
             toolStripMenuExploreAppData.Name = "toolStripMenuExploreAppData";
-            toolStripMenuExploreAppData.Size = new System.Drawing.Size(359, 44);
+            toolStripMenuExploreAppData.Size = new System.Drawing.Size(338, 44);
             toolStripMenuExploreAppData.Text = "Game AppData";
             toolStripMenuExploreAppData.Click += toolStripMenuExploreAppData_Click;
             // 
             // gameDirectoryToolStripMenuItem
             // 
             gameDirectoryToolStripMenuItem.Name = "gameDirectoryToolStripMenuItem";
-            gameDirectoryToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+            gameDirectoryToolStripMenuItem.Size = new System.Drawing.Size(338, 44);
             gameDirectoryToolStripMenuItem.Text = "Game Directory";
             gameDirectoryToolStripMenuItem.Click += gameDirectoryToolStripMenuItem_Click;
             // 
             // toolStripMenuExploreData
             // 
             toolStripMenuExploreData.Name = "toolStripMenuExploreData";
-            toolStripMenuExploreData.Size = new System.Drawing.Size(359, 44);
+            toolStripMenuExploreData.Size = new System.Drawing.Size(338, 44);
             toolStripMenuExploreData.Text = "Game Data";
             toolStripMenuExploreData.Click += toolStripMenuExploreData_Click;
             // 
             // toolStripMenuExploreGameDocs
             // 
             toolStripMenuExploreGameDocs.Name = "toolStripMenuExploreGameDocs";
-            toolStripMenuExploreGameDocs.Size = new System.Drawing.Size(359, 44);
+            toolStripMenuExploreGameDocs.Size = new System.Drawing.Size(338, 44);
             toolStripMenuExploreGameDocs.Text = "Game Documents";
             toolStripMenuExploreGameDocs.Click += toolStripMenuExploreGameDocs_Click;
             // 
             // savedGameToolStripMenuItem
             // 
             savedGameToolStripMenuItem.Name = "savedGameToolStripMenuItem";
-            savedGameToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+            savedGameToolStripMenuItem.Size = new System.Drawing.Size(338, 44);
             savedGameToolStripMenuItem.Text = "Saved Games";
             savedGameToolStripMenuItem.Click += savedGameToolStripMenuItem_Click;
             // 
             // sFSEPluginsToolStripMenuItem
             // 
             sFSEPluginsToolStripMenuItem.Name = "sFSEPluginsToolStripMenuItem";
-            sFSEPluginsToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+            sFSEPluginsToolStripMenuItem.Size = new System.Drawing.Size(338, 44);
             sFSEPluginsToolStripMenuItem.Text = "SFSE Plugins";
             sFSEPluginsToolStripMenuItem.Click += sFSEPluginsToolStripMenuItem_Click;
             // 
             // profileToolStripMenuItem
             // 
             profileToolStripMenuItem.Name = "profileToolStripMenuItem";
-            profileToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+            profileToolStripMenuItem.Size = new System.Drawing.Size(338, 44);
             profileToolStripMenuItem.Text = "Profiles";
             profileToolStripMenuItem.Click += profileToolStripMenuItem_Click;
             // 
             // modBackupsToolStripMenuItem
             // 
             modBackupsToolStripMenuItem.Name = "modBackupsToolStripMenuItem";
-            modBackupsToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+            modBackupsToolStripMenuItem.Size = new System.Drawing.Size(338, 44);
             modBackupsToolStripMenuItem.Text = "Mod Backups";
             modBackupsToolStripMenuItem.Click += modBackupsToolStripMenuItem_Click;
             // 
             // appAppDataToolStripMenuItem
             // 
             appAppDataToolStripMenuItem.Name = "appAppDataToolStripMenuItem";
-            appAppDataToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+            appAppDataToolStripMenuItem.Size = new System.Drawing.Size(338, 44);
             appAppDataToolStripMenuItem.Text = "App AppData";
             appAppDataToolStripMenuItem.Click += appAppDataToolStripMenuItem_Click;
             // 
             // toolStripMenuExploreCommon
             // 
             toolStripMenuExploreCommon.Name = "toolStripMenuExploreCommon";
-            toolStripMenuExploreCommon.Size = new System.Drawing.Size(359, 44);
+            toolStripMenuExploreCommon.Size = new System.Drawing.Size(338, 44);
             toolStripMenuExploreCommon.Text = "App Common";
             toolStripMenuExploreCommon.Click += toolStripMenuExploreCommon_Click;
             // 
             // screenshotsToolStripMenuItem
             // 
             screenshotsToolStripMenuItem.Name = "screenshotsToolStripMenuItem";
-            screenshotsToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+            screenshotsToolStripMenuItem.Size = new System.Drawing.Size(338, 44);
             screenshotsToolStripMenuItem.Text = "Screenshots";
             screenshotsToolStripMenuItem.Click += screenshotsToolStripMenuItem_Click;
             // 
             // scriptLogsToolStripMenuItem
             // 
             scriptLogsToolStripMenuItem.Name = "scriptLogsToolStripMenuItem";
-            scriptLogsToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+            scriptLogsToolStripMenuItem.Size = new System.Drawing.Size(338, 44);
             scriptLogsToolStripMenuItem.Text = "Script Logs";
             scriptLogsToolStripMenuItem.Click += scriptLogsToolStripMenuItem_Click;
             // 
@@ -1843,47 +1843,47 @@
             // enableSplashScreenToolStripMenuItem
             // 
             enableSplashScreenToolStripMenuItem.Name = "enableSplashScreenToolStripMenuItem";
-            enableSplashScreenToolStripMenuItem.Size = new System.Drawing.Size(252, 44);
+            enableSplashScreenToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
             enableSplashScreenToolStripMenuItem.Text = "Enabled";
             enableSplashScreenToolStripMenuItem.Click += enableSplashScreenToolStripMenuItem_Click;
             // 
             // toolStripMenuLoadScreenPreview
             // 
             toolStripMenuLoadScreenPreview.Name = "toolStripMenuLoadScreenPreview";
-            toolStripMenuLoadScreenPreview.Size = new System.Drawing.Size(252, 44);
+            toolStripMenuLoadScreenPreview.Size = new System.Drawing.Size(359, 44);
             toolStripMenuLoadScreenPreview.Text = "Preview";
             toolStripMenuLoadScreenPreview.Click += toolStripMenuLoadScreenPreview_Click;
             // 
             // toolStripMenuLoadingScreen
             // 
             toolStripMenuLoadingScreen.Name = "toolStripMenuLoadingScreen";
-            toolStripMenuLoadingScreen.Size = new System.Drawing.Size(252, 44);
+            toolStripMenuLoadingScreen.Size = new System.Drawing.Size(359, 44);
             toolStripMenuLoadingScreen.Text = "Set";
             toolStripMenuLoadingScreen.Click += toolStripMenuLoadingScreen_Click;
             // 
             // sequenceToolStripMenuItem
             // 
             sequenceToolStripMenuItem.Name = "sequenceToolStripMenuItem";
-            sequenceToolStripMenuItem.Size = new System.Drawing.Size(252, 44);
+            sequenceToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
             sequenceToolStripMenuItem.Text = "Sequence";
             sequenceToolStripMenuItem.Click += sequenceToolStripMenuItem_Click;
             // 
             // randomToolStripMenuItem
             // 
             randomToolStripMenuItem.Name = "randomToolStripMenuItem";
-            randomToolStripMenuItem.Size = new System.Drawing.Size(252, 44);
+            randomToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
             randomToolStripMenuItem.Text = "Random";
             randomToolStripMenuItem.Click += randomToolStripMenuItem_Click;
             // 
             // toolStripSeparator57
             // 
             toolStripSeparator57.Name = "toolStripSeparator57";
-            toolStripSeparator57.Size = new System.Drawing.Size(249, 6);
+            toolStripSeparator57.Size = new System.Drawing.Size(356, 6);
             // 
             // resetLoadScreenToolStripMenuItem
             // 
             resetLoadScreenToolStripMenuItem.Name = "resetLoadScreenToolStripMenuItem";
-            resetLoadScreenToolStripMenuItem.Size = new System.Drawing.Size(252, 44);
+            resetLoadScreenToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
             resetLoadScreenToolStripMenuItem.Text = "Reset";
             resetLoadScreenToolStripMenuItem.Click += resetLoadScreenToolStripMenuItem_Click;
             // 

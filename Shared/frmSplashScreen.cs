@@ -1,17 +1,11 @@
-﻿using hstCMM.Common;
-using hstCMM.Properties;
+﻿using hstCMM.Properties;
 using hstCMM.Shared;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-
-using System.Reflection;
 
 using System.Windows.Forms;
-using System.Windows.Media.Animation;
 
 namespace hstCMM
 {
@@ -156,6 +150,7 @@ namespace hstCMM
                 {
                     newWidth = screenBounds.Width;
                     newHeight = screenBounds.Height;
+                    this.Text = "Load Screen Preview";
                     //this.FormBorderStyle = FormBorderStyle.None;
                 }
                 this.ClientSize = new Size(newWidth, newHeight);
