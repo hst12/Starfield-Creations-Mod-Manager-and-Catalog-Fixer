@@ -7359,5 +7359,10 @@ This function is only meant to be used on mods with empty .esm files",
         {
             Tools.OpenDirectory(GamePath);
         }
+
+        private void copyModFilenameToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetText(dataGridView1.SelectedCells[2].Value.ToString());
+        }
     }
 }
