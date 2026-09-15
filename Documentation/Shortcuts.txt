@@ -1,7 +1,7 @@
 ﻿Mod enable/disable - Space or  Double-Click anywhere on the mod line - changes saved
 Delete from Plugins.txt - Del - Does not delete the mod files from the Data folder
 
-Mod move order keys:
+Mod move order keys - See at the bottom for a keymap:
 Select a mod by clicking once on it then:
 Move Up - W
 Move Down - S
