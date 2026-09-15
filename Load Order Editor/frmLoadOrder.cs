@@ -1456,6 +1456,41 @@ namespace hstCMM
                     RunGame();
                     break;
 
+                case Keys.T:
+                    if (dataGridView1.Rows.Count > 0)
+                    {
+                        if (ActiveOnly)
+                            ActiveOnlyToggle();
+                        // Clear any previous selections
+                        dataGridView1.ClearSelection();
+
+                        // Select the first row
+                        dataGridView1.Rows[0].Selected = true;
+
+                        // Scroll the view directly to the top row
+                        dataGridView1.FirstDisplayedScrollingRowIndex = 0;
+                    }
+                    break;
+
+                case Keys.G:
+                    if (dataGridView1.Rows.Count > 0)
+                    {
+                        if (ActiveOnly)
+                            ActiveOnlyToggle();
+                        // Clear any previous selections
+                        dataGridView1.ClearSelection();
+
+                        // Get the index of the last row
+                        int lastRowIndex = dataGridView1.Rows.Count - 1;
+
+                        // Select the last row
+                        dataGridView1.Rows[lastRowIndex].Selected = true;
+
+                        // Scroll the view directly to the bottom row
+                        dataGridView1.FirstDisplayedScrollingRowIndex = lastRowIndex;
+                    }
+                    break;
+
                 case Keys.V:
                     DoUpdate();
                     break;

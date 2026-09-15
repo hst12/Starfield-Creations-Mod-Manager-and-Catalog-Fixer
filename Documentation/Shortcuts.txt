@@ -21,6 +21,8 @@ Open Profile - Ctrl-O
 Undo row move - Ctrl-Z
 F, Ctrl-F - Search for mod by name or description
 ESC key clears the search box and sets focus to the mod list.
+Scroll top the top - T
+Scroll to the bottom - G
 
 Exit app - X
 
