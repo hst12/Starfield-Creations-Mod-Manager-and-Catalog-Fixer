@@ -1194,7 +1194,7 @@ namespace hstCMM
             }
 
             // Parse userlist.yaml
-            var deserializer = new YamlDotNet.Serialization.DeserializerBuilder().Build();
+            var deserializer = new YamlDotNet.Serialization.DeserializerBuilder().IgnoreUnmatchedProperties().Build();
             var yamlContent = File.ReadAllText(yamlPath);
             var lootConfig = deserializer.Deserialize<Tools.Configuration>(yamlContent);
 
