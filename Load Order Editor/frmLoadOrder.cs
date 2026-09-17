@@ -1426,7 +1426,11 @@ namespace hstCMM
                 case Keys.A:
                     MoveTop();
                     break;
-
+                case Keys.B:
+                    DoUpdate();
+                    RunLOOT(true);
+                    dataGridView1.Focus();
+                    break;
                 case Keys.C:
                     RefreshDisplay();
                     break;
