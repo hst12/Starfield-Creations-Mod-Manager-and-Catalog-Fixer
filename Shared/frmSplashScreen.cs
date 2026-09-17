@@ -95,8 +95,8 @@ namespace hstCMM
                 }
             }
 
-            //if (string.Compare(Properties.Settings.Default.LastProfile, "NSFW.txt", true) == 0)
-            if (Properties.Settings.Default.LastProfile.Contains("NSFW", StringComparison.OrdinalIgnoreCase))
+            if (Properties.Settings.Default.LastProfile.Contains("NSFW", StringComparison.OrdinalIgnoreCase)
+                && (Properties.Settings.Default.LoadScreenSequence || Properties.Settings.Default.RandomLoadScreen))
             {
                 //this.BackgroundImage = Properties.Resources.Sarah;
                 this.BackgroundImage = Properties.Resources.Andreja;
