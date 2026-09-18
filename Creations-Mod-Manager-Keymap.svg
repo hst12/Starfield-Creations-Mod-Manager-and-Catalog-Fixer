@@ -1,0 +1,508 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="3840" height="2160" viewBox="0 0 1920 1080" role="img" aria-labelledby="title desc">
+<title id="title">Creations Mod Manager — Keyboard Shortcut Keymap</title><desc id="desc">Editable keyboard and mouse reference based on Shortcuts.txt. Tenkeyless keyboard; one function key intentionally unlabelled. All text and shapes are editable vectors.</desc>
+<g font-family="Segoe UI, Arial, sans-serif">
+<rect x="0" y="0" width="1920" height="1080" rx="0" fill="#f0f7fc" stroke="none" stroke-width="1.5"/>
+<text x="40" y="58" font-size="40" font-weight="750" fill="#16334f" text-anchor="start">Creations Mod Manager</text>
+<text x="1880" y="57" font-size="26" font-weight="400" fill="#16334f" text-anchor="end">Keyboard Shortcut Keymap</text>
+<g id="key-6">
+<rect x="40" y="90" width="83" height="53" rx="7" fill="#ffd4d3" stroke="#df7775" stroke-width="1.5"/>
+<text x="81.5" y="114" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">Esc</text>
+<text x="81.5" y="133" font-size="12" font-weight="400" fill="#16334f" text-anchor="middle">Clear search</text>
+</g>
+<g id="key-11">
+<rect x="183" y="90" width="88" height="53" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="227.0" y="122.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">F1</text>
+</g>
+<g id="key-15">
+<rect x="282" y="90" width="88" height="53" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="326.0" y="122.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">F2</text>
+</g>
+<g id="key-19">
+<rect x="381" y="90" width="88" height="53" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="425.0" y="122.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">F3</text>
+</g>
+<g id="key-23">
+<rect x="480" y="90" width="88" height="53" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="524.0" y="122.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">F4</text>
+</g>
+<g id="key-27">
+<rect x="609" y="90" width="88" height="53" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="653.0" y="122.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle"></text>
+</g>
+<g id="key-31">
+<rect x="708" y="90" width="88" height="53" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="752.0" y="122.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">F6</text>
+</g>
+<g id="key-35">
+<rect x="807" y="90" width="88" height="53" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="851.0" y="122.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">F7</text>
+</g>
+<g id="key-39">
+<rect x="906" y="90" width="88" height="53" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="950.0" y="122.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">F8</text>
+</g>
+<g id="key-43">
+<rect x="1035" y="90" width="88" height="53" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="1079.0" y="122.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">F9</text>
+</g>
+<g id="key-47">
+<rect x="1134" y="90" width="88" height="53" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="1178.0" y="122.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">F10</text>
+</g>
+<g id="key-51">
+<rect x="1233" y="90" width="88" height="53" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="1277.0" y="122.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">F11</text>
+</g>
+<g id="key-55">
+<rect x="1332" y="90" width="88" height="53" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="1376.0" y="122.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">F12</text>
+</g>
+<g id="key-59">
+<rect x="1550" y="90" width="105" height="53" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="1602.5" y="122.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">Print Scr</text>
+</g>
+<g id="key-63">
+<rect x="1662" y="90" width="105" height="53" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="1714.5" y="122.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">Scroll Lock</text>
+</g>
+<g id="key-67">
+<rect x="1774" y="90" width="105" height="53" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="1826.5" y="122.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">Pause</text>
+</g>
+<g id="key-71">
+<rect x="40" y="154" width="93.13333333333334" height="59" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="86.56666666666666" y="189.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">` ~</text>
+</g>
+<g id="key-75">
+<rect x="140.13333333333333" y="154" width="93.13333333333334" height="59" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="186.7" y="189.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">1 !</text>
+</g>
+<g id="key-79">
+<rect x="240.26666666666665" y="154" width="93.13333333333334" height="59" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="286.8333333333333" y="189.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">2 @</text>
+</g>
+<g id="key-83">
+<rect x="340.4" y="154" width="93.13333333333334" height="59" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="386.96666666666664" y="189.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">3 #</text>
+</g>
+<g id="key-87">
+<rect x="440.5333333333333" y="154" width="93.13333333333334" height="59" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="487.09999999999997" y="189.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">4 $</text>
+</g>
+<g id="key-91">
+<rect x="540.6666666666666" y="154" width="93.13333333333334" height="59" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="587.2333333333333" y="189.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">5 %</text>
+</g>
+<g id="key-95">
+<rect x="640.8" y="154" width="93.13333333333334" height="59" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="687.3666666666667" y="189.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">6 ^</text>
+</g>
+<g id="key-99">
+<rect x="740.9333333333333" y="154" width="93.13333333333334" height="59" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="787.5" y="189.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">7 &amp;</text>
+</g>
+<g id="key-103">
+<rect x="841.0666666666666" y="154" width="93.13333333333334" height="59" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="887.6333333333333" y="189.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">8 *</text>
+</g>
+<g id="key-107">
+<rect x="941.1999999999999" y="154" width="93.13333333333334" height="59" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="987.7666666666667" y="189.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">9 (</text>
+</g>
+<g id="key-111">
+<rect x="1041.3333333333333" y="154" width="93.13333333333334" height="59" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="1087.8999999999999" y="189.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">0 )</text>
+</g>
+<g id="key-115">
+<rect x="1141.4666666666667" y="154" width="93.13333333333334" height="59" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="1188.0333333333333" y="189.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">- _</text>
+</g>
+<g id="key-119">
+<rect x="1241.6000000000001" y="154" width="93.13333333333334" height="59" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="1288.1666666666667" y="189.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">= +</text>
+</g>
+<g id="key-123">
+<rect x="1341.7333333333336" y="154" width="186.26666666666668" height="59" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="1434.866666666667" y="189.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">Backspace</text>
+</g>
+<g id="key-127">
+<rect x="40" y="220" width="139.70000000000002" height="59" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="109.85000000000001" y="255.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">Tab</text>
+</g>
+<g id="key-131">
+<rect x="186.70000000000002" y="220" width="93.13333333333334" height="59" rx="7" fill="#fff0b0" stroke="#d8b13c" stroke-width="1.5"/>
+<text x="233.26666666666668" y="244" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">Q</text>
+<text x="233.26666666666668" y="263" font-size="12" font-weight="400" fill="#16334f" text-anchor="middle">Active filter</text>
+</g>
+<g id="key-136">
+<rect x="286.83333333333337" y="220" width="93.13333333333334" height="59" rx="7" fill="#ccf0d0" stroke="#4caf69" stroke-width="1.5"/>
+<text x="333.40000000000003" y="244" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">W</text>
+<text x="333.40000000000003" y="263" font-size="12" font-weight="400" fill="#16334f" text-anchor="middle">Move up</text>
+</g>
+<g id="key-141">
+<rect x="386.9666666666667" y="220" width="93.13333333333334" height="59" rx="7" fill="#ffdfb8" stroke="#df9a50" stroke-width="1.5"/>
+<text x="433.53333333333336" y="244" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">E</text>
+<text x="433.53333333333336" y="263" font-size="12" font-weight="400" fill="#16334f" text-anchor="middle">Toggle mod</text>
+</g>
+<g id="key-146">
+<rect x="487.1" y="220" width="93.13333333333334" height="59" rx="7" fill="#c9eaff" stroke="#3296d6" stroke-width="1.5"/>
+<text x="533.6666666666667" y="244" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">R</text>
+<text x="533.6666666666667" y="263" font-size="12" font-weight="400" fill="#16334f" text-anchor="middle">Run game</text>
+</g>
+<g id="key-151">
+<rect x="587.2333333333333" y="220" width="93.13333333333334" height="59" rx="7" fill="#e6d7fa" stroke="#a078ce" stroke-width="1.5"/>
+<text x="633.8000000000001" y="244" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">T</text>
+<text x="633.8000000000001" y="263" font-size="12" font-weight="400" fill="#16334f" text-anchor="middle">Scroll top</text>
+</g>
+<g id="key-156">
+<rect x="687.3666666666667" y="220" width="93.13333333333334" height="59" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="733.9333333333334" y="255.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">Y</text>
+</g>
+<g id="key-160">
+<rect x="787.5" y="220" width="93.13333333333334" height="59" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="834.0666666666667" y="255.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">U</text>
+</g>
+<g id="key-164">
+<rect x="887.6333333333333" y="220" width="93.13333333333334" height="59" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="934.2" y="255.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">I</text>
+</g>
+<g id="key-168">
+<rect x="987.7666666666667" y="220" width="93.13333333333334" height="59" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="1034.3333333333333" y="255.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">O</text>
+</g>
+<g id="key-172">
+<rect x="1087.9" y="220" width="93.13333333333334" height="59" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="1134.4666666666667" y="255.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">P</text>
+</g>
+<g id="key-176">
+<rect x="1188.0333333333335" y="220" width="93.13333333333334" height="59" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="1234.6000000000001" y="255.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">[ {</text>
+</g>
+<g id="key-180">
+<rect x="1288.166666666667" y="220" width="93.13333333333334" height="59" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="1334.7333333333336" y="255.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">] }</text>
+</g>
+<g id="key-184">
+<rect x="1388.3000000000004" y="220" width="139.70000000000002" height="59" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="1458.1500000000003" y="255.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">\ |</text>
+</g>
+<g id="key-188">
+<rect x="40" y="286" width="168.48" height="59" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="124.24" y="321.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">Caps Lock</text>
+</g>
+<g id="key-192">
+<rect x="215.48" y="286" width="93.6" height="59" rx="7" fill="#ccf0d0" stroke="#4caf69" stroke-width="1.5"/>
+<text x="262.28" y="310" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">A</text>
+<text x="262.28" y="329" font-size="12" font-weight="400" fill="#16334f" text-anchor="middle">Move top</text>
+</g>
+<g id="key-197">
+<rect x="316.08" y="286" width="93.6" height="59" rx="7" fill="#ccf0d0" stroke="#4caf69" stroke-width="1.5"/>
+<text x="362.88" y="310" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">S</text>
+<text x="362.88" y="329" font-size="12" font-weight="400" fill="#16334f" text-anchor="middle">Move down</text>
+</g>
+<g id="key-202">
+<rect x="416.67999999999995" y="286" width="93.6" height="59" rx="7" fill="#ccf0d0" stroke="#4caf69" stroke-width="1.5"/>
+<text x="463.47999999999996" y="310" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">D</text>
+<text x="463.47999999999996" y="329" font-size="12" font-weight="400" fill="#16334f" text-anchor="middle">Move bottom</text>
+</g>
+<g id="key-207">
+<rect x="517.28" y="286" width="93.6" height="59" rx="7" fill="#fff0b0" stroke="#d8b13c" stroke-width="1.5"/>
+<text x="564.0799999999999" y="310" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">F</text>
+<text x="564.0799999999999" y="329" font-size="12" font-weight="400" fill="#16334f" text-anchor="middle">Search</text>
+</g>
+<g id="key-212">
+<rect x="617.88" y="286" width="93.6" height="59" rx="7" fill="#e6d7fa" stroke="#a078ce" stroke-width="1.5"/>
+<text x="664.68" y="310" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">G</text>
+<text x="664.68" y="329" font-size="12" font-weight="400" fill="#16334f" text-anchor="middle">Scroll bottom</text>
+</g>
+<g id="key-217">
+<rect x="718.48" y="286" width="93.6" height="59" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="765.28" y="321.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">H</text>
+</g>
+<g id="key-221">
+<rect x="819.08" y="286" width="93.6" height="59" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="865.88" y="321.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">J</text>
+</g>
+<g id="key-225">
+<rect x="919.6800000000001" y="286" width="93.6" height="59" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="966.48" y="321.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">K</text>
+</g>
+<g id="key-229">
+<rect x="1020.2800000000001" y="286" width="93.6" height="59" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="1067.0800000000002" y="321.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">L</text>
+</g>
+<g id="key-233">
+<rect x="1120.88" y="286" width="93.6" height="59" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="1167.68" y="321.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">; :</text>
+</g>
+<g id="key-237">
+<rect x="1221.48" y="286" width="93.6" height="59" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="1268.28" y="321.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">&#x27; &quot;</text>
+</g>
+<g id="key-241">
+<rect x="1322.08" y="286" width="205.92000000000002" height="59" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="1425.04" y="321.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">Enter</text>
+</g>
+<g id="key-245">
+<rect x="40" y="352" width="216.3533333333333" height="59" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="148.17666666666665" y="387.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">Shift</text>
+</g>
+<g id="key-249">
+<rect x="263.3533333333333" y="352" width="94.06666666666666" height="59" rx="7" fill="#c9eaff" stroke="#3296d6" stroke-width="1.5"/>
+<text x="310.38666666666666" y="376" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">Z</text>
+<text x="310.38666666666666" y="395" font-size="12" font-weight="400" fill="#16334f" text-anchor="middle">LOOT sort</text>
+</g>
+<g id="key-254">
+<rect x="364.41999999999996" y="352" width="94.06666666666666" height="59" rx="7" fill="#ffd4d3" stroke="#df7775" stroke-width="1.5"/>
+<text x="411.45333333333326" y="376" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">X</text>
+<text x="411.45333333333326" y="395" font-size="12" font-weight="400" fill="#16334f" text-anchor="middle">Exit app</text>
+</g>
+<g id="key-259">
+<rect x="465.4866666666666" y="352" width="94.06666666666666" height="59" rx="7" fill="#c9eaff" stroke="#3296d6" stroke-width="1.5"/>
+<text x="512.52" y="376" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">C</text>
+<text x="512.52" y="395" font-size="12" font-weight="400" fill="#16334f" text-anchor="middle">Refresh</text>
+</g>
+<g id="key-264">
+<rect x="566.5533333333333" y="352" width="94.06666666666666" height="59" rx="7" fill="#c9eaff" stroke="#3296d6" stroke-width="1.5"/>
+<text x="613.5866666666666" y="376" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">V</text>
+<text x="613.5866666666666" y="395" font-size="12" font-weight="400" fill="#16334f" text-anchor="middle">Update list</text>
+</g>
+<g id="key-269">
+<rect x="667.6199999999999" y="352" width="94.06666666666666" height="59" rx="7" fill="#c9eaff" stroke="#3296d6" stroke-width="1.5"/>
+<text x="714.6533333333332" y="376" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">B</text>
+<text x="714.6533333333332" y="395" font-size="12" font-weight="400" fill="#16334f" text-anchor="middle">Update and Sort</text>
+</g>
+<g id="key-274">
+<rect x="768.6866666666665" y="352" width="94.06666666666666" height="59" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="815.7199999999998" y="387.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">N</text>
+</g>
+<g id="key-278">
+<rect x="869.7533333333331" y="352" width="94.06666666666666" height="59" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="916.7866666666664" y="387.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">M</text>
+</g>
+<g id="key-282">
+<rect x="970.8199999999997" y="352" width="94.06666666666666" height="59" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="1017.853333333333" y="387.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">, &lt;</text>
+</g>
+<g id="key-286">
+<rect x="1071.8866666666663" y="352" width="94.06666666666666" height="59" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="1118.9199999999996" y="387.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">. &gt;</text>
+</g>
+<g id="key-290">
+<rect x="1172.953333333333" y="352" width="94.06666666666666" height="59" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="1219.9866666666662" y="387.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">/ ?</text>
+</g>
+<g id="key-294">
+<rect x="1274.0199999999995" y="352" width="253.98000000000002" height="59" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="1401.0099999999995" y="387.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">Shift</text>
+</g>
+<g id="key-298">
+<rect x="40" y="418" width="129.01379310344828" height="59" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="104.50689655172414" y="453.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">Ctrl</text>
+</g>
+<g id="key-302">
+<rect x="176.01379310344828" y="418" width="109.16551724137932" height="59" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="230.59655172413795" y="453.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">Win</text>
+</g>
+<g id="key-306">
+<rect x="292.1793103448276" y="418" width="109.16551724137932" height="59" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="346.7620689655173" y="453.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">Alt</text>
+</g>
+<g id="key-310">
+<rect x="408.344827586207" y="418" width="635.1448275862069" height="59" rx="7" fill="#ffdfb8" stroke="#df9a50" stroke-width="1.5"/>
+<text x="725.9172413793104" y="442" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">Space</text>
+<text x="725.9172413793104" y="461" font-size="12" font-weight="400" fill="#16334f" text-anchor="middle">Enable / Disable mod</text>
+</g>
+<g id="key-315">
+<rect x="1050.489655172414" y="418" width="109.16551724137932" height="59" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="1105.0724137931036" y="453.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">Alt</text>
+</g>
+<g id="key-319">
+<rect x="1166.6551724137933" y="418" width="109.16551724137932" height="59" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="1221.237931034483" y="453.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">Win</text>
+</g>
+<g id="key-323">
+<rect x="1282.8206896551726" y="418" width="109.16551724137932" height="59" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="1337.4034482758623" y="453.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">Menu</text>
+</g>
+<g id="key-327">
+<rect x="1398.986206896552" y="418" width="129.01379310344828" height="59" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="1463.493103448276" y="453.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">Ctrl</text>
+</g>
+<g id="key-331">
+<rect x="1550" y="154" width="105" height="59" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="1602.5" y="189.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">Insert</text>
+</g>
+<g id="key-335">
+<rect x="1662" y="154" width="105" height="59" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="1714.5" y="189.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">Home</text>
+</g>
+<g id="key-339">
+<rect x="1774" y="154" width="105" height="59" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="1826.5" y="189.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">Page Up</text>
+</g>
+<g id="key-343">
+<rect x="1550" y="220" width="105" height="59" rx="7" fill="#ffd4d3" stroke="#df7775" stroke-width="1.5"/>
+<text x="1602.5" y="244" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">Delete</text>
+<text x="1602.5" y="263" font-size="12" font-weight="400" fill="#16334f" text-anchor="middle">Plugins.txt</text>
+</g>
+<g id="key-348">
+<rect x="1662" y="220" width="105" height="59" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="1714.5" y="255.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">End</text>
+</g>
+<g id="key-352">
+<rect x="1774" y="220" width="105" height="59" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="1826.5" y="255.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">Page Down</text>
+</g>
+<g id="key-356">
+<rect x="1662" y="352" width="105" height="59" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="1714.5" y="387.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">↑</text>
+</g>
+<g id="key-360">
+<rect x="1550" y="418" width="105" height="59" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="1602.5" y="453.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">←</text>
+</g>
+<g id="key-364">
+<rect x="1662" y="418" width="105" height="59" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="1714.5" y="453.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">↓</text>
+</g>
+<g id="key-368">
+<rect x="1774" y="418" width="105" height="59" rx="7" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="1826.5" y="453.5" font-size="19" font-weight="600" fill="#16334f" text-anchor="middle">→</text>
+</g>
+<rect x="40" y="502" width="548" height="538" rx="12" fill="#ffffff" stroke="#cbdce9" stroke-width="1.5"/>
+<rect x="40" y="502" width="548" height="42" rx="10" fill="#1d4668" stroke="none" stroke-width="1.5"/>
+<rect x="40" y="527" width="548" height="17" rx="0" fill="#1d4668" stroke="none" stroke-width="1.5"/>
+<text x="58" y="530" font-size="21" font-weight="650" fill="white" text-anchor="start">Letter keys</text>
+<rect x="58" y="550" width="62" height="30" rx="5" fill="#fff0b0" stroke="#d8b13c" stroke-width="1.5"/>
+<text x="89.0" y="571" font-size="17" font-weight="650" fill="#16334f" text-anchor="middle">Q</text>
+<text x="138" y="571" font-size="17" font-weight="400" fill="#16334f" text-anchor="start">Active mod filter</text>
+<rect x="58" y="582" width="62" height="30" rx="5" fill="#ccf0d0" stroke="#4caf69" stroke-width="1.5"/>
+<text x="89.0" y="603" font-size="17" font-weight="650" fill="#16334f" text-anchor="middle">W</text>
+<text x="138" y="603" font-size="17" font-weight="400" fill="#16334f" text-anchor="start">Move selected mod up</text>
+<rect x="58" y="614" width="62" height="30" rx="5" fill="#ffdfb8" stroke="#df9a50" stroke-width="1.5"/>
+<text x="89.0" y="635" font-size="17" font-weight="650" fill="#16334f" text-anchor="middle">E</text>
+<text x="138" y="635" font-size="17" font-weight="400" fill="#16334f" text-anchor="start">Enable / Disable mod</text>
+<rect x="58" y="646" width="62" height="30" rx="5" fill="#c9eaff" stroke="#3296d6" stroke-width="1.5"/>
+<text x="89.0" y="667" font-size="17" font-weight="650" fill="#16334f" text-anchor="middle">R</text>
+<text x="138" y="667" font-size="17" font-weight="400" fill="#16334f" text-anchor="start">Run game</text>
+<rect x="58" y="678" width="62" height="30" rx="5" fill="#e6d7fa" stroke="#a078ce" stroke-width="1.5"/>
+<text x="89.0" y="699" font-size="17" font-weight="650" fill="#16334f" text-anchor="middle">T</text>
+<text x="138" y="699" font-size="17" font-weight="400" fill="#16334f" text-anchor="start">Scroll to top</text>
+<rect x="58" y="710" width="62" height="30" rx="5" fill="#ccf0d0" stroke="#4caf69" stroke-width="1.5"/>
+<text x="89.0" y="731" font-size="17" font-weight="650" fill="#16334f" text-anchor="middle">A</text>
+<text x="138" y="731" font-size="17" font-weight="400" fill="#16334f" text-anchor="start">Move selected mod to top</text>
+<rect x="58" y="742" width="62" height="30" rx="5" fill="#ccf0d0" stroke="#4caf69" stroke-width="1.5"/>
+<text x="89.0" y="763" font-size="17" font-weight="650" fill="#16334f" text-anchor="middle">S</text>
+<text x="138" y="763" font-size="17" font-weight="400" fill="#16334f" text-anchor="start">Move selected mod down</text>
+<rect x="58" y="774" width="62" height="30" rx="5" fill="#ccf0d0" stroke="#4caf69" stroke-width="1.5"/>
+<text x="89.0" y="795" font-size="17" font-weight="650" fill="#16334f" text-anchor="middle">D</text>
+<text x="138" y="795" font-size="17" font-weight="400" fill="#16334f" text-anchor="start">Move selected mod to bottom</text>
+<rect x="58" y="806" width="62" height="30" rx="5" fill="#fff0b0" stroke="#d8b13c" stroke-width="1.5"/>
+<text x="89.0" y="827" font-size="17" font-weight="650" fill="#16334f" text-anchor="middle">F</text>
+<text x="138" y="827" font-size="17" font-weight="400" fill="#16334f" text-anchor="start">Search by mod name or description</text>
+<rect x="58" y="838" width="62" height="30" rx="5" fill="#e6d7fa" stroke="#a078ce" stroke-width="1.5"/>
+<text x="89.0" y="859" font-size="17" font-weight="650" fill="#16334f" text-anchor="middle">G</text>
+<text x="138" y="859" font-size="17" font-weight="400" fill="#16334f" text-anchor="start">Scroll to bottom</text>
+<rect x="58" y="870" width="62" height="30" rx="5" fill="#c9eaff" stroke="#3296d6" stroke-width="1.5"/>
+<text x="89.0" y="891" font-size="17" font-weight="650" fill="#16334f" text-anchor="middle">Z</text>
+<text x="138" y="891" font-size="17" font-weight="400" fill="#16334f" text-anchor="start">LOOT Autosort</text>
+<rect x="58" y="902" width="62" height="30" rx="5" fill="#ffd4d3" stroke="#df7775" stroke-width="1.5"/>
+<text x="89.0" y="923" font-size="17" font-weight="650" fill="#16334f" text-anchor="middle">X</text>
+<text x="138" y="923" font-size="17" font-weight="400" fill="#16334f" text-anchor="start">Exit application</text>
+<rect x="58" y="934" width="62" height="30" rx="5" fill="#c9eaff" stroke="#3296d6" stroke-width="1.5"/>
+<text x="89.0" y="955" font-size="17" font-weight="650" fill="#16334f" text-anchor="middle">C</text>
+<text x="138" y="955" font-size="17" font-weight="400" fill="#16334f" text-anchor="start">Refresh</text>
+<rect x="58" y="966" width="62" height="30" rx="5" fill="#c9eaff" stroke="#3296d6" stroke-width="1.5"/>
+<text x="89.0" y="987" font-size="17" font-weight="650" fill="#16334f" text-anchor="middle">V</text>
+<text x="138" y="987" font-size="17" font-weight="400" fill="#16334f" text-anchor="start">Update mod list from game folder</text>
+<rect x="58" y="998" width="62" height="30" rx="5" fill="#c9eaff" stroke="#3296d6" stroke-width="1.5"/>
+<text x="89.0" y="1019" font-size="17" font-weight="650" fill="#16334f" text-anchor="middle">B</text>
+<text x="138" y="1019" font-size="17" font-weight="400" fill="#16334f" text-anchor="start">Update and Sort</text>
+<rect x="606" y="502" width="622" height="298" rx="12" fill="#ffffff" stroke="#cbdce9" stroke-width="1.5"/>
+<rect x="606" y="502" width="622" height="42" rx="10" fill="#1d4668" stroke="none" stroke-width="1.5"/>
+<rect x="606" y="527" width="622" height="17" rx="0" fill="#1d4668" stroke="none" stroke-width="1.5"/>
+<text x="624" y="530" font-size="21" font-weight="650" fill="white" text-anchor="start">Other keys &amp; Ctrl shortcuts</text>
+<rect x="624" y="554" width="112" height="30" rx="5" fill="#ffdfb8" stroke="#df9a50" stroke-width="1.5"/>
+<text x="680.0" y="575" font-size="17" font-weight="650" fill="#16334f" text-anchor="middle">Space</text>
+<text x="754" y="575" font-size="17" font-weight="400" fill="#16334f" text-anchor="start">Enable / Disable mod; changes saved</text>
+<rect x="624" y="592" width="112" height="30" rx="5" fill="#ffd4d3" stroke="#df7775" stroke-width="1.5"/>
+<text x="680.0" y="613" font-size="17" font-weight="650" fill="#16334f" text-anchor="middle">Delete</text>
+<text x="754" y="613" font-size="17" font-weight="400" fill="#16334f" text-anchor="start">Remove entry from Plugins.txt</text>
+<text x="754" y="636" font-size="15" font-weight="400" fill="#16334f" text-anchor="start">Mod files in the Data folder are not deleted.</text>
+<rect x="624" y="653" width="112" height="30" rx="5" fill="#ffd4d3" stroke="#df7775" stroke-width="1.5"/>
+<text x="680.0" y="674" font-size="17" font-weight="650" fill="#16334f" text-anchor="middle">Esc</text>
+<text x="754" y="674" font-size="17" font-weight="400" fill="#16334f" text-anchor="start">Clear search; focus the mod list</text>
+<rect x="624" y="691" width="112" height="30" rx="5" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="680.0" y="712" font-size="17" font-weight="650" fill="#16334f" text-anchor="middle">Ctrl + S</text>
+<text x="754" y="712" font-size="17" font-weight="400" fill="#16334f" text-anchor="start">Save Plugins</text>
+<rect x="624" y="729" width="112" height="30" rx="5" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="680.0" y="750" font-size="17" font-weight="650" fill="#16334f" text-anchor="middle">Ctrl + O</text>
+<text x="754" y="750" font-size="17" font-weight="400" fill="#16334f" text-anchor="start">Open Profile</text>
+<rect x="624" y="765" width="112" height="30" rx="5" fill="#f5f7fa" stroke="#b6c1cc" stroke-width="1.5"/>
+<text x="680.0" y="786" font-size="17" font-weight="650" fill="#16334f" text-anchor="middle">Ctrl + Z</text>
+<text x="754" y="786" font-size="17" font-weight="400" fill="#16334f" text-anchor="start">Undo row move</text>
+<rect x="606" y="818" width="622" height="222" rx="12" fill="#ffffff" stroke="#cbdce9" stroke-width="1.5"/>
+<rect x="606" y="818" width="622" height="42" rx="10" fill="#1d4668" stroke="none" stroke-width="1.5"/>
+<rect x="606" y="843" width="622" height="17" rx="0" fill="#1d4668" stroke="none" stroke-width="1.5"/>
+<text x="624" y="846" font-size="21" font-weight="650" fill="white" text-anchor="start">Search</text>
+<rect x="624" y="867" width="132" height="30" rx="5" fill="#fff0b0" stroke="#d8b13c" stroke-width="1.5"/>
+<text x="690.0" y="888" font-size="17" font-weight="650" fill="#16334f" text-anchor="middle">F / Ctrl + F</text>
+<text x="774" y="888" font-size="17" font-weight="400" fill="#16334f" text-anchor="start">Search by mod filename or description</text>
+<text x="624" y="926" font-size="17" font-weight="400" fill="#16334f" text-anchor="start">Type in the search box, then press Enter to find a match.</text>
+<text x="624" y="953" font-size="17" font-weight="400" fill="#16334f" text-anchor="start">Press Enter again to find the next match.</text>
+<text x="624" y="980" font-size="17" font-weight="400" fill="#16334f" text-anchor="start">Search ignores case and matches any part of the text.</text>
+<text x="624" y="1007" font-size="17" font-weight="400" fill="#16334f" text-anchor="start">Press Esc to clear the search and focus the mod list.</text>
+<rect x="1246" y="502" width="634" height="185" rx="12" fill="#ffffff" stroke="#cbdce9" stroke-width="1.5"/>
+<rect x="1246" y="502" width="634" height="42" rx="10" fill="#1d4668" stroke="none" stroke-width="1.5"/>
+<rect x="1246" y="527" width="634" height="17" rx="0" fill="#1d4668" stroke="none" stroke-width="1.5"/>
+<text x="1264" y="530" font-size="21" font-weight="650" fill="white" text-anchor="start">Mod movement</text>
+<text x="1264" y="569" font-size="17" font-weight="400" fill="#16334f" text-anchor="start">Click a mod once to select it, then use:</text>
+<rect x="1519" y="577" width="60" height="30" rx="5" fill="#ccf0d0" stroke="#4caf69" stroke-width="1.5"/>
+<text x="1549.0" y="598" font-size="17" font-weight="650" fill="#16334f" text-anchor="middle">W</text>
+<rect x="1437" y="633" width="60" height="30" rx="5" fill="#ccf0d0" stroke="#4caf69" stroke-width="1.5"/>
+<text x="1467.0" y="654" font-size="17" font-weight="650" fill="#16334f" text-anchor="middle">A</text>
+<rect x="1519" y="633" width="60" height="30" rx="5" fill="#ccf0d0" stroke="#4caf69" stroke-width="1.5"/>
+<text x="1549.0" y="654" font-size="17" font-weight="650" fill="#16334f" text-anchor="middle">S</text>
+<rect x="1601" y="633" width="60" height="30" rx="5" fill="#ccf0d0" stroke="#4caf69" stroke-width="1.5"/>
+<text x="1631.0" y="654" font-size="17" font-weight="650" fill="#16334f" text-anchor="middle">D</text>
+<text x="1595" y="598" font-size="16" font-weight="400" fill="#16334f" text-anchor="start">Up</text>
+<text x="1424" y="654" font-size="16" font-weight="400" fill="#16334f" text-anchor="end">Top</text>
+<text x="1549" y="680" font-size="14" font-weight="400" fill="#16334f" text-anchor="middle">Down</text>
+<text x="1678" y="654" font-size="16" font-weight="400" fill="#16334f" text-anchor="start">Bottom</text>
+<rect x="1246" y="705" width="634" height="335" rx="12" fill="#ffffff" stroke="#cbdce9" stroke-width="1.5"/>
+<rect x="1246" y="705" width="634" height="42" rx="10" fill="#1d4668" stroke="none" stroke-width="1.5"/>
+<rect x="1246" y="730" width="634" height="17" rx="0" fill="#1d4668" stroke="none" stroke-width="1.5"/>
+<text x="1264" y="733" font-size="21" font-weight="650" fill="white" text-anchor="start">Mouse actions</text>
+<g transform="translate(1267 761)">
+<rect x="0" y="0" width="30" height="44" rx="14" fill="#f7fafc" stroke="#1d4668" stroke-width="1.5"/>
+<path d="M 2 21 L 2 15 Q 2 2 14 2 L 14 21 Z" fill="#ef7375"/>
+<path d="M 15 1 V 23 M 1 23 H 29" fill="none" stroke="#1d4668" stroke-width="1.8"/>
+</g>
+<text x="1312" y="778" font-size="15" font-weight="650" fill="#d4545c" text-anchor="start">×2</text>
+<text x="1360" y="778" font-size="17" font-weight="400" fill="#16334f" text-anchor="start">Double-click anywhere on a mod line</text>
+<text x="1360" y="801" font-size="17" font-weight="400" fill="#16334f" text-anchor="start">Enable / Disable mod; changes saved</text>
+<g transform="translate(1267 828)">
+<rect x="0" y="0" width="30" height="44" rx="14" fill="#f7fafc" stroke="#1d4668" stroke-width="1.5"/>
+<path d="M 2 21 L 2 15 Q 2 2 14 2 L 14 21 Z" fill="#ef7375"/>
+<path d="M 15 1 V 23 M 1 23 H 29" fill="none" stroke="#1d4668" stroke-width="1.8"/>
+<path d="M 44 3 V 41 M 39 9 L 44 3 L 49 9 M 39 35 L 44 41 L 49 35" fill="none" stroke="#df6268" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="1360" y="844" font-size="17" font-weight="400" fill="#16334f" text-anchor="start">Drag a mod up or down</text>
+<text x="1360" y="867" font-size="17" font-weight="400" fill="#16334f" text-anchor="start">Change its position in the mod order</text>
+<g transform="translate(1267 895)">
+<rect x="0" y="0" width="30" height="44" rx="14" fill="#f7fafc" stroke="#1d4668" stroke-width="1.5"/>
+<path d="M 2 21 L 2 15 Q 2 2 14 2 L 14 21 Z" fill="#ef7375"/>
+<path d="M 15 1 V 23 M 1 23 H 29" fill="none" stroke="#1d4668" stroke-width="1.8"/>
+</g>
+<text x="1307" y="918" font-size="13" font-weight="700" fill="#16334f" text-anchor="start">ZIP</text>
+<text x="1360" y="910" font-size="17" font-weight="400" fill="#16334f" text-anchor="start">Drop ZIP file(s) onto the mod list</text>
+<text x="1360" y="933" font-size="17" font-weight="400" fill="#16334f" text-anchor="start">Install mods; multiple files supported</text>
+<g transform="translate(1267 962)">
+<rect x="0" y="0" width="30" height="44" rx="14" fill="#f7fafc" stroke="#1d4668" stroke-width="1.5"/>
+<path d="M 16 2 Q 28 2 28 15 L 28 21 L 16 21 Z" fill="#ef7375"/>
+<path d="M 15 1 V 23 M 1 23 H 29" fill="none" stroke="#1d4668" stroke-width="1.8"/>
+</g>
+<text x="1360" y="978" font-size="17" font-weight="400" fill="#16334f" text-anchor="start">Right-click on the mod list</text>
+<text x="1360" y="1001" font-size="17" font-weight="400" fill="#16334f" text-anchor="start">Open the context menu</text>
+</g></svg>

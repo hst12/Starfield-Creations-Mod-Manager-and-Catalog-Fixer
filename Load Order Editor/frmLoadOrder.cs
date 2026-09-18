@@ -232,6 +232,7 @@ namespace hstCMM
             }
 
             this.Text = tools.AppName() + " - " + GameName + " "; // Show selected game in title bar
+            txtSearchBox?.Text = Properties.Settings.Default.SearchText;
         }
 
         private void BackupCustomINI()
@@ -1426,11 +1427,13 @@ namespace hstCMM
                 case Keys.A:
                     MoveTop();
                     break;
+
                 case Keys.B:
                     DoUpdate();
                     RunLOOT(true);
                     dataGridView1.Focus();
                     break;
+
                 case Keys.C:
                     RefreshDisplay();
                     break;
@@ -1959,6 +1962,7 @@ namespace hstCMM
 
             if (isModified)
                 SavePlugins();
+            Properties.Settings.Default.SearchText = txtSearchBox.Text;
             SaveSettings();
             string pathToFile = string.Empty;
             if (log)

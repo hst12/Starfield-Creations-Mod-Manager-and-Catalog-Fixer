@@ -110,6 +110,7 @@
 		<None Remove="Common\Starfield Exclude.txt" />
 		<None Remove="Common\Starfield.ini" />
 		<None Remove="Common\StarFieldCustom.ini" />
+		<None Remove="Creations-Mod-Manager-Keymap.svg" />
 		<None Remove="Documentation\Buttons.htm" />
 		<None Remove="Documentation\Index.htm" />
 		<None Remove="Documentation\Menus.htm" />
