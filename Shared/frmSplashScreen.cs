@@ -78,8 +78,7 @@ namespace hstCMM
             }
 
             Rectangle screen = Screen.PrimaryScreen.Bounds;
-            float screenWidth;
-            float screenHeight;
+            float screenWidth, screenHeight;
 
             if (LoadScreen != null && LoadScreen != "")
             {
