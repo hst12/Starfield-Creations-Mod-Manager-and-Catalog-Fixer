@@ -13,7 +13,7 @@ namespace hstCMM
     {
         private readonly Tools tools = new();
 
-        public frmSplashScreen(bool fullScreen=false)
+        public frmSplashScreen(bool fullScreen = false)
         {
             InitializeComponent();
             string LoadScreen = "";
@@ -69,11 +69,18 @@ namespace hstCMM
                 else
                 {
                     int index = Properties.Settings.Default.LoadScreenIndex;
-                    LoadScreen = files[index]; // Randomly pick a load screen from Photos directory
-                    if (index < files.Length - 1)
-                        Properties.Settings.Default.LoadScreenIndex++; // Select the next load screen for the next time
+                    if (index < files.Length)
+                    {
+                        LoadScreen = files[index]; // Randomly pick a load screen from Photos directory
+                        if (index < files.Length - 1)
+                            Properties.Settings.Default.LoadScreenIndex++; // Select the next load screen for the next time
+                        /*else
+                            Properties.Settings.Default.LoadScreenIndex = 0; // Start over at the beginning of the list*/
+                    }
                     else
+                    {
                         Properties.Settings.Default.LoadScreenIndex = 0; // Start over at the beginning of the list
+                    }
                 }
             }
 
@@ -112,7 +119,7 @@ namespace hstCMM
                 if (!fullScreen)
                 {
                     // Get the screen resolution
-                    
+
                     screenWidth = screenBounds.Width;
                     screenHeight = screenBounds.Height;
 
@@ -121,7 +128,6 @@ namespace hstCMM
 
                     // Calculate the new dimensions while maintaining the aspect ratio
                     float aspectRatio = (float)backgroundImage.Width / backgroundImage.Height;
-                    
 
                     if (backgroundImage.Width > backgroundImage.Height) // Landscape
                     {
