@@ -3989,7 +3989,7 @@ namespace hstCMM
             int actionCount;
 
             if (Tools.ConfirmAction("This will reset all game settings and delete all loose files folders", "Are you sure?", MessageBoxButtons.YesNo,
-                MessageBoxIcon.Exclamation, true) == DialogResult.No)
+                MessageBoxIcon.Exclamation) == DialogResult.No)
                 return;
             activityLog.WriteLog("Starting reset everything.");
             //actionCount = Restore [GameName]INI();
@@ -5784,18 +5784,20 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
-                //if (row.Cells["ModEnabled"].Value is bool enabled && enabled)
-                if (row.Visible)
+                if (row.Cells["ModEnabled"].Value is bool enabled && enabled)
                 {
-                    string group = row.Cells["Group"].Value?.ToString();
-                    if (!string.IsNullOrEmpty(group) && group != currentGroup)
+                    if (row.Visible)
                     {
-                        currentGroup = group;
-                        exportMods.Add("\n# " + currentGroup);
-                    }
+                        string group = row.Cells["Group"].Value?.ToString();
+                        if (!string.IsNullOrEmpty(group) && group != currentGroup)
+                        {
+                            currentGroup = group;
+                            exportMods.Add("\n# " + currentGroup);
+                        }
 
-                    string pluginName = row.Cells["PluginName"].Value?.ToString() ?? string.Empty;
-                    exportMods.Add("*" + pluginName);
+                        string pluginName = row.Cells["PluginName"].Value?.ToString() ?? string.Empty;
+                        exportMods.Add("*" + pluginName);
+                    }
                 }
             }
 
