@@ -2422,6 +2422,7 @@
             // keymapToolStripMenuItem
             // 
             keymapToolStripMenuItem.Name = "keymapToolStripMenuItem";
+            keymapToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F1;
             keymapToolStripMenuItem.Size = new System.Drawing.Size(419, 44);
             keymapToolStripMenuItem.Text = "Keymap";
             keymapToolStripMenuItem.Click += keymapToolStripMenuItem_Click;

@@ -7410,10 +7410,16 @@ This function is only meant to be used on mods with empty .esm files",
             Clipboard.SetText(dataGridView1.SelectedCells[2].Value.ToString());
         }
 
-        private void keymapToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ShowKeyMap()
+
         {
             frmKeymap fkm = new();
             fkm.Show();
+        }
+
+        private void keymapToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ShowKeyMap();
         }
     }
 }
