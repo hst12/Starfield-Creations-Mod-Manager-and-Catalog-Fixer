@@ -233,6 +233,8 @@ namespace hstCMM
 
             this.Text = tools.AppName() + " - " + GameName + " "; // Show selected game in title bar
             txtSearchBox?.Text = Properties.Settings.Default.SearchText;
+            currentIndex = Properties.Settings.Default.LastRow;
+            GetPreviousIndex();
         }
 
         private void BackupCustomINI()
@@ -1963,6 +1965,7 @@ namespace hstCMM
             if (isModified)
                 SavePlugins();
             Properties.Settings.Default.SearchText = txtSearchBox.Text;
+            Properties.Settings.Default.LastRow = SetCurrentIndex();
             SaveSettings();
             string pathToFile = string.Empty;
             if (log)
@@ -7162,9 +7165,10 @@ This function is only meant to be used on mods with empty .esm files",
             Tools.OpenUrl($"https://inara.cz/{GameName.ToLower()}");
         }
 
-        private void SetCurrentIndex()
+        private int SetCurrentIndex()
         {
             currentIndex = dataGridView1.CurrentRow?.Index ?? -1; // Store the current row index
+            return currentIndex;
         }
 
         private void GetPreviousIndex()

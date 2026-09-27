@@ -861,5 +861,17 @@ namespace hstCMM.Properties {
                 this["SearchText"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int LastRow {
+            get {
+                return ((int)(this["LastRow"]));
+            }
+            set {
+                this["LastRow"] = value;
+            }
+        }
     }
 }
