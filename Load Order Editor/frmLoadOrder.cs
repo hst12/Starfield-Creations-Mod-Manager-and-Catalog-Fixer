@@ -1019,7 +1019,7 @@ namespace hstCMM
             System.Windows.Forms.Application.Exit();
         }
 
-        private void RefreshDisplay()
+        private void RefreshDatagrid()
         {
             RefreshDataGrid();
             btnGroups.Font = new System.Drawing.Font(btnGroups.Font, FontStyle.Regular);
@@ -1028,7 +1028,7 @@ namespace hstCMM
 
         private void btnRefresh_Click(object sender, EventArgs e)
         {
-            RefreshDisplay();
+            RefreshDatagrid();
         }
 
         private void btnRun_Click(object sender, EventArgs e)
@@ -1409,6 +1409,13 @@ namespace hstCMM
             e.Effect = DragDropEffects.Move;
         }
 
+        private void UpdateSort()
+        {
+            DoUpdate();
+            RunLOOT(true);
+            dataGridView1.Focus();
+        }
+
         private void dataGridView1_KeyDown(object sender, KeyEventArgs e) // Keyboard shortcuts
         {
             switch (e.KeyCode)
@@ -1431,13 +1438,11 @@ namespace hstCMM
                     break;
 
                 case Keys.B:
-                    DoUpdate();
-                    RunLOOT(true);
-                    dataGridView1.Focus();
+                    UpdateSort();
                     break;
 
                 case Keys.C:
-                    RefreshDisplay();
+                    RefreshDatagrid();
                     break;
 
                 case Keys.D:
@@ -2380,6 +2385,7 @@ namespace hstCMM
             bool isFilesVisible = dataGridView1.Columns["Files"]?.Visible ?? false;
             bool isFileSizeVisible = dataGridView1.Columns["FileSize"]?.Visible ?? false;
             bool isIndexVisible = dataGridView1.Columns["Index"]?.Visible ?? false;
+            bool isModifiedVisible = dataGridView1.Columns["Modified"]?.Visible ?? false;
             bool rowHighlight = Properties.Settings.Default.RowHighlight;
             bool modEnabled;
             string json = "";
@@ -2436,7 +2442,6 @@ namespace hstCMM
                     var files = item.Files;
 
                     // Collect detail info for each .esm file. Handles Creation mod packs with multiple plugins.
-                    //foreach (var file in files.Where(f => f.EndsWith(".esm", StringComparison.OrdinalIgnoreCase)))
                     foreach (var file in files.Where(f =>
                         f.EndsWith(".esm", StringComparison.OrdinalIgnoreCase) ||
                         f.EndsWith(".esp", StringComparison.OrdinalIgnoreCase)))
@@ -2638,7 +2643,8 @@ namespace hstCMM
 
             // Process mod stats if the game path is set
             if (!string.IsNullOrEmpty(GamePath) && Properties.Settings.Default.ModStats)
-                sbar(ShowModStats(CreationsPlugin, enabledCount, totalFileSize));
+                /*Task.Run(() => */
+                sbar(ShowModStats(CreationsPlugin, enabledCount, totalFileSize))/*)*/;
             else
                 sbar("");
         }
@@ -4773,6 +4779,7 @@ namespace hstCMM
             SetColumnVisibility(props.AuthorVersion, toolStripMenuAuthorVersion, dataGridView1.Columns["AuthorVersion"]);
             SetColumnVisibility(props.Description, toolStripMenuDescription, dataGridView1.Columns["Description"]);
             SetColumnVisibility(props.Blocked, blockedToolStripMenuItem, dataGridView1.Columns["Blocked"]);
+            SetColumnVisibility(props.LastModified, lastModifiedToolStripMenuItem, dataGridView1.Columns["Modified"]);
         }
 
         private void SetupGame()
@@ -4981,10 +4988,10 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             string loText = Path.Combine(Tools.GameAppData, "Plugins.txt"), StatText = "",
                 GameFolder = Tools.GameLibrary.GetById(Game).AppData; ;
             int ba2Count, esmCount, espCount, mainCount;
+            var dataDirectory = Path.Combine(GamePath, "Data");
             try
             {
                 // Cache file paths and load BGS archives
-                var dataDirectory = Path.Combine(GamePath, "Data");
                 var bgsArchives = File.ReadLines(Path.Combine(Tools.CommonFolder,
                     Tools.GameLibrary.GetById(Game).ExcludeFile + " Archives.txt"))
                     .Where(line => line.Length > 4)
@@ -5073,6 +5080,31 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             {
                 LogError($"Mod stats: {ex.Message}");
             }
+
+            if (lastModifiedToolStripMenuItem.Checked)
+            {
+                var fileDates = Directory.EnumerateFiles(dataDirectory, "*.*")
+                    .Where(f =>
+                    f.EndsWith(".esm", StringComparison.OrdinalIgnoreCase) ||
+                    f.EndsWith(".esp", StringComparison.OrdinalIgnoreCase))
+                    .ToDictionary(f => Path.GetFileName(f), f => new FileInfo(f).LastWriteTime, StringComparer.OrdinalIgnoreCase);
+
+                foreach (DataGridViewRow row in dataGridView1.Rows)
+                {
+                    if (row.IsNewRow)
+                        continue;
+                    //DebugLog($"Modified ValueType: {dataGridView1.Columns["Modified"].ValueType}");
+                    string? fileName = row.Cells["PluginName"].Value?.ToString();
+
+                    if (fileName != null &&
+                        fileDates.TryGetValue(fileName, out DateTime modified))
+                    {
+                        //row.Cells["Modified"].Value = modified.ToString("yyyy-MM-dd HH:mm");
+                        row.Cells["Modified"].Value = modified;
+                    }
+                }
+            }
+
             return StatText;
         }
 
@@ -7384,7 +7416,7 @@ This function is only meant to be used on mods with empty .esm files",
                 sbar("Mod filter applied.");
             }
             else
-                RefreshDisplay();
+                RefreshDatagrid();
         }
 
         private void profileManagementToolStripMenuItem_Click(object sender, EventArgs e)
@@ -7393,7 +7425,7 @@ This function is only meant to be used on mods with empty .esm files",
             frmProfiles fp = new frmProfiles();
             fp.ShowDialog();
             if (returnStatus != 0)
-                RefreshDisplay();
+                RefreshDatagrid();
         }
 
         private void editConsoleHotkeys_Click(object sender, EventArgs e)
@@ -7415,7 +7447,6 @@ This function is only meant to be used on mods with empty .esm files",
         }
 
         private void ShowKeyMap()
-
         {
             frmKeymap fkm = new();
             fkm.Show();
@@ -7424,6 +7455,19 @@ This function is only meant to be used on mods with empty .esm files",
         private void keymapToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ShowKeyMap();
+        }
+
+        private void updateAndSortToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            UpdateSort();
+        }
+
+        private void lastModifiedToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            lastModifiedToolStripMenuItem.Checked = !lastModifiedToolStripMenuItem.Checked;
+            Properties.Settings.Default.LastModified = lastModifiedToolStripMenuItem.Checked;
+            dataGridView1.Columns["Modified"].Visible = lastModifiedToolStripMenuItem.Checked;
+            RefreshDatagrid();
         }
     }
 }
