@@ -1480,6 +1480,7 @@ namespace hstCMM
 
                         // Select the first row
                         dataGridView1.Rows[0].Selected = true;
+                        dataGridView1.CurrentCell = dataGridView1.Rows[0].Cells[1];
 
                         // Scroll the view directly to the top row
                         dataGridView1.FirstDisplayedScrollingRowIndex = 0;
@@ -1499,9 +1500,11 @@ namespace hstCMM
 
                         // Select the last row
                         dataGridView1.Rows[lastRowIndex].Selected = true;
+                        dataGridView1.CurrentCell = dataGridView1.Rows[lastRowIndex].Cells[1];
 
                         // Scroll the view directly to the bottom row
                         dataGridView1.FirstDisplayedScrollingRowIndex = lastRowIndex;
+                        
                     }
                     break;
 
@@ -3935,7 +3938,7 @@ namespace hstCMM
             matchedFiles = Directory.GetFiles(directoryPath, Path.GetFileName(pattern));
             files.AddRange(matchedFiles);
 
-            string userInput = Interaction.InputBox("New Name:", "Rename Mod", ModName);
+            string userInput = Interaction.InputBox("New Name:", $"Rename Mod {ModName}");
             if (string.IsNullOrWhiteSpace(userInput))
                 return;
             userInput = Path.GetFileNameWithoutExtension(userInput); // Remove any extension from user input
