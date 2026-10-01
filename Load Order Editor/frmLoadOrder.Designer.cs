@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmLoadOrder));
             dataGridView1 = new System.Windows.Forms.DataGridView();
             Index = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -336,9 +336,10 @@
             testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             generateBGSArchivestxtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             generateExcludeFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            generateBothExcludeFilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripSeparator63 = new System.Windows.Forms.ToolStripSeparator();
             generateTestPluginstxtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator51 = new System.Windows.Forms.ToolStripSeparator();
-            toolStripSeparator52 = new System.Windows.Forms.ToolStripSeparator();
             testToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             btnUp = new System.Windows.Forms.Button();
@@ -391,14 +392,14 @@
             dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { Index, ModEnabled, PluginName, Description, Group, Version, AuthorVersion, TimeStamp, Achievements, Files, CreationsID, FileSize, URL, Blocked, Modified });
             dataGridView1.ContextMenuStrip = contextMenuDatagrid;
             dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            dataGridView1.Location = new System.Drawing.Point(2, 40);
+            dataGridView1.Location = new System.Drawing.Point(2, 42);
             dataGridView1.Margin = new System.Windows.Forms.Padding(2);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowHeadersWidth = 82;
             dataGridView1.RowTemplate.Height = 33;
             dataGridView1.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            dataGridView1.Size = new System.Drawing.Size(1993, 804);
+            dataGridView1.Size = new System.Drawing.Size(1993, 802);
             dataGridView1.TabIndex = 0;
             dataGridView1.CellDoubleClick += dataGridView1_CellDoubleClick;
             dataGridView1.DataError += dataGridView1_DataError;
@@ -462,8 +463,8 @@
             // Version
             // 
             Version.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            dataGridViewCellStyle2.NullValue = null;
-            Version.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.NullValue = null;
+            Version.DefaultCellStyle = dataGridViewCellStyle1;
             Version.HeaderText = "Date";
             Version.MinimumWidth = 10;
             Version.Name = "Version";
@@ -837,7 +838,7 @@
             menuStrip1.Location = new System.Drawing.Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Padding = new System.Windows.Forms.Padding(3, 1, 0, 1);
-            menuStrip1.Size = new System.Drawing.Size(1997, 38);
+            menuStrip1.Size = new System.Drawing.Size(1997, 40);
             menuStrip1.TabIndex = 7;
             menuStrip1.Text = "menuStrip1";
             // 
@@ -1591,21 +1592,21 @@
             // lightToolStripMenuItem
             // 
             lightToolStripMenuItem.Name = "lightToolStripMenuItem";
-            lightToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+            lightToolStripMenuItem.Size = new System.Drawing.Size(223, 44);
             lightToolStripMenuItem.Text = "Light";
             lightToolStripMenuItem.Click += lightToolStripMenuItem_Click;
             // 
             // darkToolStripMenuItem
             // 
             darkToolStripMenuItem.Name = "darkToolStripMenuItem";
-            darkToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+            darkToolStripMenuItem.Size = new System.Drawing.Size(223, 44);
             darkToolStripMenuItem.Text = "Dark";
             darkToolStripMenuItem.Click += darkToolStripMenuItem_Click;
             // 
             // systemToolStripMenuItem
             // 
             systemToolStripMenuItem.Name = "systemToolStripMenuItem";
-            systemToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+            systemToolStripMenuItem.Size = new System.Drawing.Size(223, 44);
             systemToolStripMenuItem.Text = "System";
             systemToolStripMenuItem.Click += systemToolStripMenuItem_Click;
             // 
@@ -2496,7 +2497,7 @@
             // 
             // testToolStripMenuItem
             // 
-            testToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { generateBGSArchivestxtToolStripMenuItem, generateExcludeFileToolStripMenuItem, generateTestPluginstxtToolStripMenuItem, toolStripSeparator51, toolStripSeparator52, testToolStripMenuItem1 });
+            testToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { generateBGSArchivestxtToolStripMenuItem, generateExcludeFileToolStripMenuItem, generateBothExcludeFilesToolStripMenuItem, toolStripSeparator63, generateTestPluginstxtToolStripMenuItem, toolStripSeparator51, testToolStripMenuItem1 });
             testToolStripMenuItem.Name = "testToolStripMenuItem";
             testToolStripMenuItem.Size = new System.Drawing.Size(76, 38);
             testToolStripMenuItem.Text = "Dev";
@@ -2505,38 +2506,45 @@
             // generateBGSArchivestxtToolStripMenuItem
             // 
             generateBGSArchivestxtToolStripMenuItem.Name = "generateBGSArchivestxtToolStripMenuItem";
-            generateBGSArchivestxtToolStripMenuItem.Size = new System.Drawing.Size(422, 44);
+            generateBGSArchivestxtToolStripMenuItem.Size = new System.Drawing.Size(443, 44);
             generateBGSArchivestxtToolStripMenuItem.Text = "Generate BGS Archives.txt";
             generateBGSArchivestxtToolStripMenuItem.Click += generateBGSArchivestxtToolStripMenuItem_Click;
             // 
             // generateExcludeFileToolStripMenuItem
             // 
             generateExcludeFileToolStripMenuItem.Name = "generateExcludeFileToolStripMenuItem";
-            generateExcludeFileToolStripMenuItem.Size = new System.Drawing.Size(422, 44);
+            generateExcludeFileToolStripMenuItem.Size = new System.Drawing.Size(443, 44);
             generateExcludeFileToolStripMenuItem.Text = "Generate Exclude File";
             generateExcludeFileToolStripMenuItem.Click += generateExcludeFileToolStripMenuItem_Click;
+            // 
+            // generateBothExcludeFilesToolStripMenuItem
+            // 
+            generateBothExcludeFilesToolStripMenuItem.Name = "generateBothExcludeFilesToolStripMenuItem";
+            generateBothExcludeFilesToolStripMenuItem.Size = new System.Drawing.Size(443, 44);
+            generateBothExcludeFilesToolStripMenuItem.Text = "Generate Both Exclude Files";
+            generateBothExcludeFilesToolStripMenuItem.Click += generateBothExcludeFilesToolStripMenuItem_Click;
+            // 
+            // toolStripSeparator63
+            // 
+            toolStripSeparator63.Name = "toolStripSeparator63";
+            toolStripSeparator63.Size = new System.Drawing.Size(440, 6);
             // 
             // generateTestPluginstxtToolStripMenuItem
             // 
             generateTestPluginstxtToolStripMenuItem.Name = "generateTestPluginstxtToolStripMenuItem";
-            generateTestPluginstxtToolStripMenuItem.Size = new System.Drawing.Size(422, 44);
+            generateTestPluginstxtToolStripMenuItem.Size = new System.Drawing.Size(443, 44);
             generateTestPluginstxtToolStripMenuItem.Text = "Generate test Plugins.txt";
             generateTestPluginstxtToolStripMenuItem.Click += generateTestPluginstxtToolStripMenuItem_Click;
             // 
             // toolStripSeparator51
             // 
             toolStripSeparator51.Name = "toolStripSeparator51";
-            toolStripSeparator51.Size = new System.Drawing.Size(419, 6);
-            // 
-            // toolStripSeparator52
-            // 
-            toolStripSeparator52.Name = "toolStripSeparator52";
-            toolStripSeparator52.Size = new System.Drawing.Size(419, 6);
+            toolStripSeparator51.Size = new System.Drawing.Size(440, 6);
             // 
             // testToolStripMenuItem1
             // 
             testToolStripMenuItem1.Name = "testToolStripMenuItem1";
-            testToolStripMenuItem1.Size = new System.Drawing.Size(422, 44);
+            testToolStripMenuItem1.Size = new System.Drawing.Size(443, 44);
             testToolStripMenuItem1.Text = "Test";
             testToolStripMenuItem1.Click += testToolStripMenuItem1_Click;
             // 
@@ -3215,7 +3223,6 @@
         private System.Windows.Forms.ToolStripMenuItem detectToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem generateExcludeFileToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator51;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator52;
         private System.Windows.Forms.ToolStripMenuItem githubLatestReleaseToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem deleteContentCatalogtxtToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem OptionsToolStripMenuItem;
@@ -3297,5 +3304,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Blocked;
         private System.Windows.Forms.DataGridViewTextBoxColumn Modified;
         private System.Windows.Forms.ToolStripMenuItem lastModifiedToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem generateBothExcludeFilesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator63;
     }
 }

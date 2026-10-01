@@ -3375,12 +3375,16 @@ namespace hstCMM
             }
         }
 
-        private void modStatsToolStripMenuItem_Click(object sender, EventArgs e) // Toggle Mod Stats visibility
+        private void ToggleModStats()
         {
             modStatsToolStripMenuItem.Checked = !modStatsToolStripMenuItem.Checked;
             Properties.Settings.Default.ModStats = modStatsToolStripMenuItem.Checked;
             if (modStatsToolStripMenuItem.Checked)
                 RefreshDataGrid();
+        }
+        private void modStatsToolStripMenuItem_Click(object sender, EventArgs e) // Toggle Mod Stats visibility
+        {
+            ToggleModStats();
         }
 
         private void MoveBottom()
@@ -5093,15 +5097,10 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 {
                     if (row.IsNewRow)
                         continue;
-                    //DebugLog($"Modified ValueType: {dataGridView1.Columns["Modified"].ValueType}");
                     string? fileName = row.Cells["PluginName"].Value?.ToString();
 
-                    if (fileName != null &&
-                        fileDates.TryGetValue(fileName, out DateTime modified))
-                    {
-                        //row.Cells["Modified"].Value = modified.ToString("yyyy-MM-dd HH:mm");
+                    if (fileName != null && fileDates.TryGetValue(fileName, out DateTime modified))
                         row.Cells["Modified"].Value = modified;
-                    }
                 }
             }
 
@@ -6106,8 +6105,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 }
                 else
                 {
-                    //sbar3($"No link for mod in row {selectedRow.Index + 1}");
-                    sbar3($"No link for {selectedRow.Cells["PluginName"].Value}");
+                    sbar($"No link for {selectedRow.Cells["PluginName"].Value}");
                 }
             }
         }
@@ -7467,7 +7465,17 @@ This function is only meant to be used on mods with empty .esm files",
             lastModifiedToolStripMenuItem.Checked = !lastModifiedToolStripMenuItem.Checked;
             Properties.Settings.Default.LastModified = lastModifiedToolStripMenuItem.Checked;
             dataGridView1.Columns["Modified"].Visible = lastModifiedToolStripMenuItem.Checked;
-            RefreshDatagrid();
+
+            if (!modStatsToolStripMenuItem.Checked)
+                ToggleModStats();
+            else
+                RefreshDatagrid();
+        }
+
+        private void generateBothExcludeFilesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ArchivesGen();
+            ExcludeGen();
         }
     }
 }

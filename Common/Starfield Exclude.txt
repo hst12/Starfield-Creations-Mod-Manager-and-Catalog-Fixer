@@ -1,3 +1,4 @@
+BlueprintShips-SFBGS050.esm
 blueprintships-sfta03.esm
 blueprintships-sfta06.esm
 BlueprintShips-Starfield.esm
@@ -8,8 +9,8 @@ SFBGS004.esm
 SFBGS006.esm
 SFBGS007.esm
 SFBGS008.esm
-ShatteredSpace.esm
-Starfield.esm
 SFBGS00D.esm
 SFBGS047.esm
 SFBGS050.esm
+ShatteredSpace.esm
+Starfield.esm

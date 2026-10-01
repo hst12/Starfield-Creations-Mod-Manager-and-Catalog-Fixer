@@ -22,6 +22,18 @@ SFBGS006 - Main.ba2
 SFBGS006 - Textures.ba2
 SFBGS007 - Main.ba2
 SFBGS008 - Main.ba2
+SFBGS00D - Main.ba2
+SFBGS00D - Textures.ba2
+SFBGS00D - Voices_de.ba2
+SFBGS00D - Voices_en.ba2
+SFBGS00D - Voices_es.ba2
+SFBGS00D - Voices_fr.ba2
+SFBGS00D - Voices_ja.ba2
+SFBGS047 - Main.ba2
+SFBGS047 - Textures.ba2
+SFBGS050 - Main.ba2
+SFBGS050 - Textures.ba2
+SFBGS050 - Voices_en.ba2
 ShatteredSpace - Main01.ba2
 ShatteredSpace - Main02.ba2
 ShatteredSpace - Textures.ba2
@@ -76,18 +88,3 @@ Starfield - WwiseSounds03.ba2
 Starfield - WwiseSounds04.ba2
 Starfield - WwiseSounds05.ba2
 Starfield - WwiseSoundsPatch.ba2
-SFBGS00D - Main.ba2
-SFBGS00D - Textures.ba2
-SFBGS00D - Voices_de.ba2
-SFBGS00D - Voices_en.ba2
-SFBGS00D - Voices_es.ba2
-SFBGS00D - Voices_fr.ba2
-SFBGS00D - Voices_ja.ba2
-SFBGS00D.esm
-SFBGS047 - Main.ba2
-SFBGS047 - Textures.ba2
-SFBGS047.esm
-SFBGS050 - Main.ba2
-SFBGS050 - Textures.ba2
-SFBGS050 - Voices_en.ba2
-SFBGS050.esm
