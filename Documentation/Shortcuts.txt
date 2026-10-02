@@ -24,6 +24,7 @@ F, Ctrl-F - Search for mod by name or description
 ESC key clears the search box and sets focus to the mod list.
 Scroll top the top - T
 Scroll to the bottom - G
+Copy mod filename to clipboard - Ctrl-C
 
 F1 - Keymap
 F2 - Update and Sort

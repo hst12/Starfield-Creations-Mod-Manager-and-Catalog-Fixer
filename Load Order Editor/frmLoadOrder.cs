@@ -50,6 +50,10 @@ namespace hstCMM
             AutoSort = false, isModified = false, LooseFiles, GameExists, devMode = false;
 
         private int rowIndexFromMouseDown, rowIndexOfItemUnderMouseToDrop, GameVersion = Steam;
+        private static readonly string[] PluginExtensions = { ".esp", ".esm", ".esl" };
+
+        private static bool IsExcludedPlugin(string name) =>
+            name.Contains("blueprintships-", StringComparison.OrdinalIgnoreCase);
 
         public frmLoadOrder(string parameter)
         {
@@ -180,8 +184,8 @@ namespace hstCMM
 
                 if (arg.Equals("-runsfse", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    SFSEswitch();
-                    RunGame();
+                    if (SFSEswitch())
+                        RunGame();
                     this.WindowState = FormWindowState.Minimized;
                     System.Windows.Forms.Application.Exit();
                 }
@@ -1504,7 +1508,7 @@ namespace hstCMM
 
                         // Scroll the view directly to the bottom row
                         dataGridView1.FirstDisplayedScrollingRowIndex = lastRowIndex;
-                        
+
                     }
                     break;
 
@@ -2106,11 +2110,11 @@ namespace hstCMM
             sbar2(version);
         }
 
-        private void SFSEswitch()
+        private bool SFSEswitch()
         {
             if (GameVersion == MS)
                 if (GameSwitchWarning())
-                    return;
+                    return false;
 
             if (File.Exists(Path.Combine(GamePath, "sfse_loader.exe")))
             {
@@ -2121,6 +2125,7 @@ namespace hstCMM
                 GameVersion = SFSE;
                 GamePath = Properties.Settings.Default.GamePath;
                 UpdateGameVersion();
+                return true;
             }
             else
             {
@@ -2131,6 +2136,7 @@ namespace hstCMM
                 toolStripMenuMS.Checked = false;
                 toolStripMenuCustom.Checked = false;
                 gameVersionSFSEToolStripMenuItem.Checked = false;
+                return false;
             }
         }
 
@@ -2646,8 +2652,9 @@ namespace hstCMM
 
             // Process mod stats if the game path is set
             if (!string.IsNullOrEmpty(GamePath) && Properties.Settings.Default.ModStats)
-                /*Task.Run(() => */
-                sbar(ShowModStats(CreationsPlugin, enabledCount, totalFileSize))/*)*/;
+            {
+                sbar(ShowModStats(CreationsPlugin, enabledCount, totalFileSize));
+            }
             else
                 sbar("");
         }
@@ -3001,8 +3008,8 @@ namespace hstCMM
                     dataGridView1.Focus();
                     break;
             }
-            if (e.Control && e.KeyCode == Keys.F) // Ctrl+F to search
-                txtSearchBox.Focus(); // Focus the search box when Ctrl+F is pressed
+            /*if (e.Control && e.KeyCode == Keys.F) // Ctrl+F to search
+                txtSearchBox.Focus(); // Focus the search box when Ctrl+F is pressed*/
         }
 
         private void lightToolStripMenuItem_Click(object sender, EventArgs e)
@@ -4485,7 +4492,7 @@ namespace hstCMM
                 InitialDirectory = Path.Combine(Properties.Settings.Default.ProfileFolder, GameName) ??
                                    Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                 Filter = "Txt File|*.txt",
-                Title = "Save Profile"
+                Title = "Save Profile As"
             };
 
             if (saveDialog.ShowDialog() != DialogResult.OK || string.IsNullOrEmpty(saveDialog.FileName))
@@ -5106,8 +5113,8 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                         row.Cells["Modified"].Value = modified;
                 }
             }
-
             return StatText;
+
         }
 
         private void ShowRecommendedColumns()
@@ -5256,193 +5263,151 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
             sbar3("Updating...");
             statusStrip1.Refresh();
-            dataGridView1.SuspendLayout();
 
-            // 2) Gather all on-disk plugin filenames
-            var pluginFiles = tools.GetPluginList(Game);
-            string dataDir = Path.Combine(GamePath, "Data");
-            string[] patterns = { "*.esp", "*.esm", "*.esl" };
-            //string[] patterns = { "*.esm" };
-            foreach (var pattern in patterns)
+            // 2) Build the set of valid plugins BEFORE touching the grid.
+            //    Beth files and blueprintships-* are excluded up front, so a single lookup
+            //    answers "should this row exist?" and also gives the canonical on-disk casing.
+            var beth = new HashSet<string>(tools.BethFiles, StringComparer.OrdinalIgnoreCase);
+            var canonical = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            var ordered = new List<string>(); // insertion order, used when appending new rows
+
+            void Consider(string name)
             {
-                try
-                {
-                    // Use parallel enumeration for large directories
-                    var esmFiles = Directory.EnumerateFiles(dataDir, pattern, SearchOption.TopDirectoryOnly)
-                                           .AsParallel()
-                                           .Select(Path.GetFileName)
-                                           .Where(p => !p.Contains("blueprintships-", StringComparison.OrdinalIgnoreCase))
-                                           .ToList();
-                    pluginFiles.AddRange(esmFiles);
-                }
-                catch (Exception ex)
-                {
-                    LogError("Error reading plugins " + ex.Message);
-                    MessageBox.Show(
-                        $"Error reading plugin files: {ex.Message}",
-                        "Error",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Error
-                    );
-                    return 0;
-                }
+                if (beth.Contains(name) || IsExcludedPlugin(name)) return;
+                if (canonical.TryAdd(name, name)) ordered.Add(name); // first occurrence wins
             }
 
-            // Pre-allocate with estimated capacity and use fastest comparer
-            var onDisk = new HashSet<string>(pluginFiles.Count, StringComparer.OrdinalIgnoreCase);
-            /*var onDisk = new Dictionary<string, string>(pluginFiles.Count, StringComparer.OrdinalIgnoreCase);*/
-            var bethFilesSet = new HashSet<string>(tools.BethFiles.Count(), StringComparer.OrdinalIgnoreCase);
-            var inGrid = new HashSet<string>(dataGridView1.Rows.Count, StringComparer.OrdinalIgnoreCase);
-            var seenInGrid = new HashSet<string>(dataGridView1.Rows.Count, StringComparer.OrdinalIgnoreCase);
+            foreach (var name in tools.GetPluginList(Game))
+                Consider(name);
 
-            // Populate sets with bulk operations
-            foreach (var file in pluginFiles) onDisk.Add(file);
-            /*foreach (var file in pluginFiles) onDisk[file] = file;   // key is case-insensitive, value preserves disk case*/
-
-            foreach (var file in tools.BethFiles) bethFilesSet.Add(file);
-
-            // Single pass using unsafe array access patterns
-            var rows = dataGridView1.Rows;
-            var rowCount = rows.Count;
-            var rowsToRemove = new List<DataGridViewRow>(rowCount / 4); // Pre-allocate estimate
-            var logEntries = log ? new List<string>(rowCount / 2) : null; // Batch logging
-
-            int dupRemoved = 0;
-            int removed = 0;
-
-            // Cache frequently used values
-            var pluginNameIndex = dataGridView1.Columns["PluginName"].Index;
-            var pluginNameEnabled = dataGridView1.Columns["ModEnabled"].Index;
-
-            // Process all rows
-            for (int i = 0; i < rowCount; i++)
+            try
             {
-                var row = rows[i];
-                var cellValue = row.Cells[pluginNameIndex].Value;
+                // One directory scan instead of three parallel ones.
+                var buckets = new List<string>[PluginExtensions.Length];
+                for (int i = 0; i < buckets.Length; i++) buckets[i] = new List<string>();
 
-                if (cellValue is null) continue;
-
-                var pluginName = cellValue as string;
-                if (string.IsNullOrEmpty(pluginName)) continue;
-
-                // Duplicate check
-                if (!seenInGrid.Add(pluginName))
+                string dataDir = Path.Combine(GamePath, "Data");
+                foreach (var path in Directory.EnumerateFiles(dataDir, "*.es?", SearchOption.TopDirectoryOnly))
                 {
-                    rowsToRemove.Add(row);
-                    dupRemoved++;
-                    logEntries?.Add($"Removing duplicate entry {pluginName}");
-                    continue;
-                }
-
-                // Removal check (not on disk or is Beth file)
-                if (!onDisk.Contains(pluginName) || bethFilesSet.Contains(pluginName) ||
-                    pluginName.Contains("blueprintships-", StringComparison.OrdinalIgnoreCase))
-                {
-                    rowsToRemove.Add(row);
-                    removed++;
-                    logEntries?.Add($"Removing {pluginName} from Plugins.txt");
-                }
-                /*else
-                {
-                    inGrid.Add(pluginName);
-                }*/
-                else
-                {
-                    string diskName = pluginFiles.FirstOrDefault(
-                        p => p.Equals(pluginName, StringComparison.OrdinalIgnoreCase));
-
-                    if (diskName != null &&
-                        !pluginName.Equals(diskName, StringComparison.Ordinal))
+                    var name = Path.GetFileName(path);
+                    for (int i = 0; i < PluginExtensions.Length; i++)
                     {
-                        row.Cells[pluginNameIndex].Value = diskName;
-                        pluginName = diskName;
+                        if (name.EndsWith(PluginExtensions[i], StringComparison.OrdinalIgnoreCase))
+                        {
+                            buckets[i].Add(name);
+                            break;
+                        }
                     }
-
-                    inGrid.Add(pluginName);
                 }
+
+                // Keep the original esp -> esm -> esl grouping, but deterministic.
+                foreach (var bucket in buckets)
+                    foreach (var name in bucket)
+                        Consider(name);
+            }
+            catch (Exception ex)
+            {
+                LogError("Error reading plugins " + ex.Message);
+                MessageBox.Show(
+                    $"Error reading plugin files: {ex.Message}",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+                return 0;
             }
 
-            List<string> missingMods = new();
-            if (rowsToRemove.Count > 0)
+            // 3) Reconcile with the grid
+            var rows = dataGridView1.Rows;
+            int nameCol = dataGridView1.Columns["PluginName"].Index;
+            int enabledCol = dataGridView1.Columns["ModEnabled"].Index;
+            int colCount = dataGridView1.Columns.Count;
+            bool activateNew = Properties.Settings.Default.ActivateNew;
+
+            var seen = new HashSet<string>(rows.Count, StringComparer.OrdinalIgnoreCase);
+            var removeIdx = new List<int>();
+            var logEntries = log ? new List<string>() : null; // batched, written once
+
+            int dupRemoved = 0, removed = 0, added = 0;
+
+            dataGridView1.SuspendLayout();
+            try
             {
-                foreach (var row in rowsToRemove)
+                // 3a) Single pass over existing rows
+                for (int i = 0; i < rows.Count; i++)
                 {
-                    missingMods.Add(row.Cells[pluginNameIndex].Value.ToString());
+                    var cell = rows[i].Cells[nameCol];
+                    if (cell.Value is not string name || name.Length == 0) continue;
+
+                    if (!seen.Add(name))
+                    {
+                        removeIdx.Add(i);
+                        dupRemoved++;
+                        logEntries?.Add($"Removing duplicate entry {name}");
+                    }
+                    else if (!canonical.TryGetValue(name, out var diskName))
+                    {
+                        removeIdx.Add(i);
+                        removed++;
+                        logEntries?.Add($"Removing {name} from Plugins.txt");
+                    }
+                    else if (!string.Equals(name, diskName, StringComparison.Ordinal))
+                    {
+                        cell.Value = diskName; // fix casing to match disk
+                    }
                 }
-            }
 
-            // Sort indices descending for safe removal
-            rowsToRemove.Sort((r1, r2) => r2.Index.CompareTo(r1.Index));
-
-            var removalCounter = rowsToRemove.Count;
-
-            // Batch UI updates every 10 removals to reduce overhead
-            for (int i = 0; i < rowsToRemove.Count; i++)
-            {
-                if (i % 10 == 0)
+                // 3b) Remove bottom-up by index (already ascending, so no sort / no row search)
+                int total = removeIdx.Count;
+                for (int n = 0; n < total; n++)
                 {
-                    sbar($"Removing {removalCounter}");
-                    statusStrip1.Refresh();
+                    if (n % 10 == 0)
+                    {
+                        sbar($"Removing {total - n}");
+                        statusStrip1.Refresh();
+                    }
+                    rows.RemoveAt(removeIdx[total - 1 - n]);
                 }
-                rows.Remove(rowsToRemove[i]);
-                removalCounter--;
-            }
 
-            // Batch write logs to avoid I/O overhead
-            if (log && logEntries?.Count > 0)
-            {
-                activityLog.WriteLog(string.Join(Environment.NewLine, logEntries));
-            }
-
-            // 8) Addition with pre-computed values
-            int added = 0;
-            var activateNew = Properties.Settings.Default.ActivateNew;
-            var modEnabledIndex = dataGridView1.Columns["ModEnabled"].Index;
-            var addLogEntries = log ? new List<string>() : null;
-
-            // Pre-filter and batch process additions
-            var toAdd = new List<string>(onDisk.Count);
-            foreach (var file in onDisk)
-            {
-                if (!inGrid.Contains(file) && !bethFilesSet.Contains(file))
+                // 3c) Build all new rows, then add them in one call
+                var newRows = new List<DataGridViewRow>();
+                foreach (var file in ordered)
                 {
-                    toAdd.Add(file);
-                }
-            }
+                    if (seen.Contains(file)) continue;
 
-            // Batch add rows
-            if (toAdd.Count > 0)
-            {
-                // Pre-allocate row capacity if supported
-                var currentCapacity = rows.Count;
-
-                foreach (var file in toAdd)
-                {
-                    int idx = rows.Add();
-                    var row = rows[idx];
-
-                    row.Cells[modEnabledIndex].Value =
-                        (file.Length > 4 &&
+                    bool isEsp = file.EndsWith(".esp", StringComparison.OrdinalIgnoreCase);
+                    bool isMasterOrLight = file.Length > 4 &&
                         (file.EndsWith(".esm", StringComparison.OrdinalIgnoreCase) ||
-                        file.EndsWith(".esl", StringComparison.OrdinalIgnoreCase)))
-                        && activateNew;
-                    row.Cells[pluginNameIndex].Value = file;
+                         file.EndsWith(".esl", StringComparison.OrdinalIgnoreCase));
 
-                    if (row.Cells["PluginName"].Value.ToString().EndsWith(".esp", StringComparison.OrdinalIgnoreCase))
-                        addLogEntries?.Add($"Warning .esp file found - not activated: {file}");
-                    else
-                        addLogEntries?.Add($"Adding {file} to Plugins.txt");
-                    added++;
+                    var values = new object[colCount];
+                    values[enabledCol] = isMasterOrLight && activateNew;
+                    values[nameCol] = file;
+
+                    var row = new DataGridViewRow();
+                    row.CreateCells(dataGridView1, values);
+                    newRows.Add(row);
+
+                    logEntries?.Add(isEsp
+                        ? $"Warning .esp file found - not activated: {file}"
+                        : $"Adding {file} to Plugins.txt");
                 }
 
-                // Batch write addition logs
-                if (log && addLogEntries?.Count > 0)
+                if (newRows.Count > 0)
                 {
-                    activityLog.WriteLog(string.Join(Environment.NewLine, addLogEntries));
+                    rows.AddRange(newRows.ToArray());
+                    added = newRows.Count;
                 }
             }
+            finally
+            {
+                dataGridView1.ResumeLayout(); // always runs, even if something above throws
+            }
 
-            // 9) Persist + summary log
+            // 4) Logging + persist
+            if (logEntries?.Count > 0)
+                activityLog.WriteLog(string.Join(Environment.NewLine, logEntries));
+
             int totalChanges = dupRemoved + added + removed;
             if (totalChanges > 0)
             {
@@ -5452,7 +5417,6 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             }
 
             sbar3($"Update: {totalChanges} changes");
-            dataGridView1.ResumeLayout();
             return totalChanges;
         }
 
@@ -7444,7 +7408,12 @@ This function is only meant to be used on mods with empty .esm files",
 
         private void copyModFilenameToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Clipboard.SetText(dataGridView1.SelectedCells[2].Value.ToString());
+            if (dataGridView1.CurrentRow is not null)
+            {
+                sbar($"{dataGridView1.CurrentRow.Cells["PluginName"].Value.ToString()} copied to clipboard");
+                Clipboard.SetText(dataGridView1.SelectedCells[2].Value.ToString());
+            }
+
         }
 
         private void ShowKeyMap()
@@ -7479,6 +7448,11 @@ This function is only meant to be used on mods with empty .esm files",
         {
             ArchivesGen();
             ExcludeGen();
+        }
+
+        private void findToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            txtSearchBox.Focus();
         }
     }
 }
