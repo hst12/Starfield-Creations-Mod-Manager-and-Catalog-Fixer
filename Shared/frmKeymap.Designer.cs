@@ -38,9 +38,11 @@
             BackgroundImage = Properties.Resources.Keymap;
             BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             ClientSize = new System.Drawing.Size(1662, 929);
+            DoubleBuffered = true;
             Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
             Name = "frmKeymap";
             Text = "frmKeymap";
+            KeyDown += frmKeymap_KeyDown;
             ResumeLayout(false);
         }
 

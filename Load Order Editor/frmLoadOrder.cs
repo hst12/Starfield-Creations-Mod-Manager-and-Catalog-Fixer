@@ -4386,6 +4386,11 @@ namespace hstCMM
             int sortResult = 0;
 
             if (isModified) SavePlugins();
+            if (pluginList.Any(x => x.EndsWith(".esp", StringComparison.OrdinalIgnoreCase)))
+            {
+                LogError("Sort aborted - .esp found");
+                return 0;
+            }
 
             // Try detecting LOOT if installed in default location
             if (string.IsNullOrEmpty(lootPath) && File.Exists(@"C:\Program Files\LOOT\LOOT.exe"))
@@ -5907,7 +5912,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
         private void toolStripMenuLoadScreenPreview_Click(object sender, EventArgs e)
         {
-            ShowSplashScreen(true);
+            ShowSplashScreen(false);
         }
 
         private void toolStripMenuLoot_Click(object sender, EventArgs e)

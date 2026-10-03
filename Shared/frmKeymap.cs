@@ -31,5 +31,19 @@ namespace hstCMM.Load_Order_Editor
                 workingArea.Top + (workingArea.Height - this.Height) / 2
             );
         }
+
+        private void frmKeymap_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.F1:
+                    this.Close();
+                    break;
+
+                case Keys.Escape:
+                    this.Close();
+                    break;
+            }
+        }
     }
 }
