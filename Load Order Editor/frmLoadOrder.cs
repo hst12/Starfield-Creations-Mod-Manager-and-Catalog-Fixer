@@ -2394,7 +2394,7 @@ namespace hstCMM
             bool isFilesVisible = dataGridView1.Columns["Files"]?.Visible ?? false;
             bool isFileSizeVisible = dataGridView1.Columns["FileSize"]?.Visible ?? false;
             bool isIndexVisible = dataGridView1.Columns["Index"]?.Visible ?? false;
-            bool isModifiedVisible = dataGridView1.Columns["Modified"]?.Visible ?? false;
+            bool isModifiedVisible = dataGridView1.Columns["LastModified"]?.Visible ?? false;
             bool rowHighlight = Properties.Settings.Default.RowHighlight;
             bool modEnabled;
             string json = "";
@@ -2524,7 +2524,14 @@ namespace hstCMM
                             {
                                 string timePart = rawVersion[..versionDelimiter];
                                 if (double.TryParse(timePart, out double seconds))
+                                {
                                     modVersion = start.AddSeconds(seconds).Date.ToString("yyyy-MM-dd");
+                                    //modTimeStamp = Tools.ConvertTime(TimeStamp[idx]).ToString();
+                                    if (DateTime.TryParse(modVersion, out var parsedModDate))
+                                    {
+                                        modVersion = parsedModDate.ToLongDateString();
+                                    }
+                                }
                                 else // Handle failed parsing
                                     modVersion = "Invalid version format";
                             }
@@ -2541,6 +2548,11 @@ namespace hstCMM
                     modFiles = CreationsFiles[idx];
                     aSafe = AchievementSafe[idx] ? "Yes" : "";
                     modTimeStamp = Tools.ConvertTime(TimeStamp[idx]).ToString();
+                    if (DateTime.TryParse(modTimeStamp, out var parsedDate))
+                    {
+                        modTimeStamp = parsedDate.ToLongDateString();
+                    }
+
                     modID = CreationsID[idx];
                     modFileSize = FileSize[idx] / 1024;
                     if (modEnabled)
@@ -4798,7 +4810,7 @@ namespace hstCMM
             SetColumnVisibility(props.AuthorVersion, toolStripMenuAuthorVersion, dataGridView1.Columns["AuthorVersion"]);
             SetColumnVisibility(props.Description, toolStripMenuDescription, dataGridView1.Columns["Description"]);
             SetColumnVisibility(props.Blocked, blockedToolStripMenuItem, dataGridView1.Columns["Blocked"]);
-            SetColumnVisibility(props.LastModified, lastModifiedToolStripMenuItem, dataGridView1.Columns["Modified"]);
+            SetColumnVisibility(props.LastModified, lastModifiedToolStripMenuItem, dataGridView1.Columns["LastModified"]);
         }
 
         private void SetupGame()
@@ -4979,7 +4991,8 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
     ("Version", toolStripMenuVersion),
     ("AuthorVersion", toolStripMenuAuthorVersion),
     ("Description", toolStripMenuDescription),
-    ("Blocked", blockedToolStripMenuItem)
+    ("Blocked", blockedToolStripMenuItem),
+    ("LastModified",lastModifiedToolStripMenuItem)
 };
 
                 foreach (var (columnName, menuItem) in items)
@@ -5115,7 +5128,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     string? fileName = row.Cells["PluginName"].Value?.ToString();
 
                     if (fileName != null && fileDates.TryGetValue(fileName, out DateTime modified))
-                        row.Cells["Modified"].Value = modified;
+                        row.Cells["LastModified"].Value = modified;
                 }
             }
             return StatText;
@@ -7441,7 +7454,7 @@ This function is only meant to be used on mods with empty .esm files",
         {
             lastModifiedToolStripMenuItem.Checked = !lastModifiedToolStripMenuItem.Checked;
             Properties.Settings.Default.LastModified = lastModifiedToolStripMenuItem.Checked;
-            dataGridView1.Columns["Modified"].Visible = lastModifiedToolStripMenuItem.Checked;
+            dataGridView1.Columns["LastModified"].Visible = lastModifiedToolStripMenuItem.Checked;
 
             if (!modStatsToolStripMenuItem.Checked)
                 ToggleModStats();

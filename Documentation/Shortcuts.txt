@@ -29,6 +29,7 @@ Copy mod filename to clipboard - Ctrl-C
 F1 - Keymap
 F2 - Update and Sort
 F3 - Update all profiles
+F5 - Refresh mod list
 
 Exit app - X
 
