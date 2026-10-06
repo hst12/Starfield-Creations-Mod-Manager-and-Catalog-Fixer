@@ -6859,7 +6859,10 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
         private void testToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            activityLog.WriteLog("Nothing currently implemented");
+            //activityLog.WriteLog("Nothing currently implemented");
+            var pluginsOnDisk = tools.GetPluginList(Game);
+            var pluginsText = File.ReadAllLines(Path.Combine(Tools.GameAppData, "Plugins.txt"));
+            List<string> fixedFileNames = new();
         }
 
         private void sFSEPluginsEnableDisableToolStripMenuItem_Click(object sender, EventArgs e)

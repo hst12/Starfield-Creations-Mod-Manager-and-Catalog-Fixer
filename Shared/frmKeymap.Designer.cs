@@ -35,7 +35,7 @@
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(13F, 32F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            BackgroundImage = Properties.Resources.Keymap;
+            BackgroundImage = Properties.Resources.keymap_light;
             BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             ClientSize = new System.Drawing.Size(1662, 929);
             DoubleBuffered = true;

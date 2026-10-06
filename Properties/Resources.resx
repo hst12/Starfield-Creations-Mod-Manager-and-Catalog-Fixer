@@ -133,4 +133,10 @@
   <data name="Keymap" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Creations-Mod-Manager-Keymap.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="KeymapDark" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\keymap.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="keymap-light" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\keymap-light.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

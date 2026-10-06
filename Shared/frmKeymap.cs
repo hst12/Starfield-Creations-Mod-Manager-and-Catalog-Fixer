@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using Windows.ApplicationModel;
 
 namespace hstCMM.Load_Order_Editor
 {
@@ -13,6 +14,9 @@ namespace hstCMM.Load_Order_Editor
         public frmKeymap()
         {
             InitializeComponent();
+
+            if (Properties.Settings.Default.DarkMode == 1)
+                this.BackgroundImage = Properties.Resources.KeymapDark;
 
             // 1. Get the working area of the screen where the form is currently located.
             // WorkingArea excludes the Windows taskbar, which prevents the form from going behind it.
