@@ -239,6 +239,7 @@ namespace hstCMM
             txtSearchBox?.Text = Properties.Settings.Default.SearchText;
             currentIndex = Properties.Settings.Default.LastRow;
             GetPreviousIndex();
+            ResizeProfileCombobox();
         }
 
         private void BackupCustomINI()
@@ -7474,6 +7475,35 @@ This function is only meant to be used on mods with empty .esm files",
         private void findToolStripMenuItem_Click(object sender, EventArgs e)
         {
             txtSearchBox.Focus();
+        }
+
+        private void ResizeProfileCombobox()
+        {
+            //ComboBox senderComboBox = (ComboBox)sender;
+            ComboBox senderComboBox = cmbProfile;
+            int width = senderComboBox.DropDownWidth;
+            Graphics g = senderComboBox.CreateGraphics();
+            Font font = senderComboBox.Font;
+            int vertScrollBarWidth =
+                (senderComboBox.Items.Count > senderComboBox.MaxDropDownItems)
+                ? SystemInformation.VerticalScrollBarWidth : 0;
+
+            int newWidth;
+            foreach (string s in senderComboBox.Items)
+            {
+                newWidth = (int)g.MeasureString(s, font).Width
+                    + vertScrollBarWidth;
+                if (width < newWidth)
+                {
+                    width = newWidth;
+                }
+            }
+            senderComboBox.DropDownWidth = width;
+            senderComboBox.Width = width; // Adjust the combox width as well.
+        }
+        private void cmbProfile_DropDown(object sender, EventArgs e)
+        {
+            ResizeProfileCombobox();
         }
     }
 }

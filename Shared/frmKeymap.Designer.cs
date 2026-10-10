@@ -41,7 +41,7 @@
             DoubleBuffered = true;
             Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
             Name = "frmKeymap";
-            Text = "frmKeymap";
+            Text = "Keymap";
             KeyDown += frmKeymap_KeyDown;
             ResumeLayout(false);
         }
