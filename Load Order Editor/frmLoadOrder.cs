@@ -6247,7 +6247,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                             continue;
                         }
                     }*/
-                    if (pluginName.EndsWith(".esp"))
+                    if (pluginName.EndsWith(".esp", StringComparison.OrdinalIgnoreCase))
                     {
                         string modFile = modBasePath + Path.GetExtension(pluginName);
                         if (File.Exists(modFile))
@@ -6256,8 +6256,11 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                             activityLog.WriteLog($"Deleted: {modFile}");
                             SavePlugins();
                             sbar3($"{modFile} uninstalled");
-                            return;
+                            //return;
                         }
+                        isModified = true;
+                        //dataGridView1.Rows.Remove(row);
+                        continue;
                     }
                     // Define the file extensions for the mod files to delete.
                     var extensions = new string[]
