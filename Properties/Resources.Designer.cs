@@ -73,9 +73,9 @@ namespace hstCMM.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap Keymap {
+        public static System.Drawing.Bitmap Keymap_Dark {
             get {
-                object obj = ResourceManager.GetObject("Keymap", resourceCulture);
+                object obj = ResourceManager.GetObject("Keymap-Dark", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -83,19 +83,9 @@ namespace hstCMM.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap keymap_light {
+        public static System.Drawing.Bitmap Keymap_Light {
             get {
-                object obj = ResourceManager.GetObject("keymap-light", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        public static System.Drawing.Bitmap KeymapDark {
-            get {
-                object obj = ResourceManager.GetObject("KeymapDark", resourceCulture);
+                object obj = ResourceManager.GetObject("Keymap-Light", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

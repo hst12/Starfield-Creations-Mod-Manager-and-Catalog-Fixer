@@ -16,7 +16,7 @@ namespace hstCMM.Load_Order_Editor
             InitializeComponent();
 
             if (Properties.Settings.Default.DarkMode == 1)
-                this.BackgroundImage = Properties.Resources.KeymapDark;
+                this.BackgroundImage = Properties.Resources.Keymap_Dark;
 
             // 1. Get the working area of the screen where the form is currently located.
             // WorkingArea excludes the Windows taskbar, which prevents the form from going behind it.
