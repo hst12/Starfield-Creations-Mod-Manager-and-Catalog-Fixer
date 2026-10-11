@@ -885,5 +885,17 @@ namespace hstCMM.Properties {
                 this["LastModified"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool StatusStrip {
+            get {
+                return ((bool)(this["StatusStrip"]));
+            }
+            set {
+                this["StatusStrip"] = value;
+            }
+        }
     }
 }

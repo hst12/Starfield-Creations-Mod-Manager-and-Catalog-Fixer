@@ -4136,8 +4136,8 @@ namespace hstCMM
 
             // Desired size
             int desiredWidth = totalWidth + 50;
-            if (desiredWidth < flowLayoutPanel1.Width + 200)
-                desiredWidth = flowLayoutPanel1.Width + 200;
+            if (desiredWidth < flowLayoutPanel1.Width + 100)
+                desiredWidth = flowLayoutPanel1.Width + 100;
             int desiredHeight = totalHeight + menuStrip1.Height + rtbLog.Height + flowLayoutPanel1.Height +
                 statusStrip1.Height + SystemInformation.CaptionHeight + SystemInformation.BorderSize.Height;
 
@@ -4960,6 +4960,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             randomToolStripMenuItem.Checked = Properties.Settings.Default.RandomLoadScreen;
             sequenceToolStripMenuItem.Checked = Properties.Settings.Default.LoadScreenSequence;
             chkFindFiltered.Checked = Properties.Settings.Default.FindActiveOnly;
+            statusStrip1.Visible= statusStripToolStripMenuItem.Checked = Properties.Settings.Default.StatusStrip;
         }
 
         private void sFSEPluginsToolStripMenuItem_Click(object sender, EventArgs e) // Open SFSE Plugins Directory
@@ -7507,6 +7508,14 @@ This function is only meant to be used on mods with empty .esm files",
         private void cmbProfile_DropDown(object sender, EventArgs e)
         {
             ResizeProfileCombobox();
+        }
+
+        private void statusStripToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+             statusStrip1.Visible= statusStripToolStripMenuItem.Checked = Properties.Settings.Default.StatusStrip
+                = !statusStripToolStripMenuItem.Checked;
+
+            //             resizeToolStripMenuItem.Checked = Properties.Settings.Default.Resize = !resizeToolStripMenuItem.Checked;
         }
     }
 }

@@ -74,8 +74,8 @@ namespace hstCMM
                         LoadScreen = files[index]; // Randomly pick a load screen from Photos directory
                         if (index < files.Length - 1)
                             Properties.Settings.Default.LoadScreenIndex++; // Select the next load screen for the next time
-                        /*else
-                            Properties.Settings.Default.LoadScreenIndex = 0; // Start over at the beginning of the list*/
+                        else
+                            Properties.Settings.Default.LoadScreenIndex = 0; // Start over at the beginning of the list
                     }
                     else
                     {
