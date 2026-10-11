@@ -17,6 +17,7 @@ namespace hstCMM.Load_Order_Editor
                 txtGame.Text = settings.GamePath;
             else
                 txtGame.Text = settings.GamePathMS;
+            txtDownloads.Text = settings.DownloadsDirectory;
             txtLOOT.Text = settings.LOOTPath;
             txtMO2.Text = settings.MO2Path;
             txtVortex.Text = settings.VortexPath;
@@ -168,6 +169,29 @@ namespace hstCMM.Load_Order_Editor
         {
             txtxEdit.Text = "";
             Properties.Settings.Default.xEditPath = "";
+        }
+
+        private void lblCK_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnDownloadsClear_Click(object sender, EventArgs e)
+        {
+            txtDownloads.Text = "";
+            Properties.Settings.Default.DownloadsDirectory = "";
+        }
+
+        private void btnDownloads_Click(object sender, EventArgs e)
+        {
+            using FolderBrowserDialog folderBrowserDialog = new();
+            folderBrowserDialog.Description = "Choose downloads directory";
+            folderBrowserDialog.InitialDirectory = Properties.Settings.Default.DownloadsDirectory;
+            if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+            {
+                Properties.Settings.Default.DownloadsDirectory= folderBrowserDialog.SelectedPath;
+                txtDownloads.Text= folderBrowserDialog.SelectedPath; 
+            }
         }
     }
 }

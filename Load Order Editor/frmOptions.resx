@@ -123,7 +123,7 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="btnLOOT.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 87</value>
+    <value>3, 162</value>
   </data>
   <data name="btnLOOT.Size" type="System.Drawing.Size, System.Drawing">
     <value>209, 42</value>
@@ -144,13 +144,13 @@
     <value>tableLayoutPanel1</value>
   </data>
   <data name="&gt;&gt;btnLOOT.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>16</value>
   </data>
   <data name="btnMO2.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="btnMO2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 139</value>
+    <value>3, 215</value>
   </data>
   <data name="btnMO2.Size" type="System.Drawing.Size, System.Drawing">
     <value>209, 42</value>
@@ -171,13 +171,13 @@
     <value>tableLayoutPanel1</value>
   </data>
   <data name="&gt;&gt;btnMO2.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>14</value>
   </data>
   <data name="btnVortex.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="btnVortex.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 191</value>
+    <value>3, 268</value>
   </data>
   <data name="btnVortex.Size" type="System.Drawing.Size, System.Drawing">
     <value>209, 42</value>
@@ -198,13 +198,13 @@
     <value>tableLayoutPanel1</value>
   </data>
   <data name="&gt;&gt;btnVortex.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>12</value>
   </data>
   <data name="btnxEdit.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="btnxEdit.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 243</value>
+    <value>3, 321</value>
   </data>
   <data name="btnxEdit.Size" type="System.Drawing.Size, System.Drawing">
     <value>209, 42</value>
@@ -225,43 +225,16 @@
     <value>tableLayoutPanel1</value>
   </data>
   <data name="&gt;&gt;btnxEdit.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>10</value>
   </data>
   <data name="tableLayoutPanel1.ColumnCount" type="System.Int32, mscorlib">
     <value>3</value>
-  </data>
-  <data name="btnFont.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="btnFont.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 327</value>
-  </data>
-  <data name="btnFont.Size" type="System.Drawing.Size, System.Drawing">
-    <value>209, 42</value>
-  </data>
-  <data name="btnFont.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
-  </data>
-  <data name="btnFont.Text" xml:space="preserve">
-    <value>Font Size</value>
-  </data>
-  <data name="&gt;&gt;btnFont.Name" xml:space="preserve">
-    <value>btnFont</value>
-  </data>
-  <data name="&gt;&gt;btnFont.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnFont.Parent" xml:space="preserve">
-    <value>tableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;btnFont.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <data name="btnGame.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="btnGame.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 35</value>
+    <value>3, 56</value>
   </data>
   <data name="btnGame.Size" type="System.Drawing.Size, System.Drawing">
     <value>209, 42</value>
@@ -282,14 +255,14 @@
     <value>tableLayoutPanel1</value>
   </data>
   <data name="&gt;&gt;btnGame.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>0</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="txtGame.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
   <data name="txtGame.Location" type="System.Drawing.Point, System.Drawing">
-    <value>218, 35</value>
+    <value>218, 56</value>
   </data>
   <data name="txtGame.Size" type="System.Drawing.Size, System.Drawing">
     <value>685, 32</value>
@@ -307,13 +280,13 @@
     <value>tableLayoutPanel1</value>
   </data>
   <data name="&gt;&gt;txtGame.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>1</value>
   </data>
   <data name="txtLOOT.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
   <data name="txtLOOT.Location" type="System.Drawing.Point, System.Drawing">
-    <value>218, 87</value>
+    <value>218, 162</value>
   </data>
   <data name="txtLOOT.Size" type="System.Drawing.Size, System.Drawing">
     <value>685, 32</value>
@@ -331,13 +304,13 @@
     <value>tableLayoutPanel1</value>
   </data>
   <data name="&gt;&gt;txtLOOT.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>2</value>
   </data>
   <data name="txtMO2.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
   <data name="txtMO2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>218, 139</value>
+    <value>218, 215</value>
   </data>
   <data name="txtMO2.Size" type="System.Drawing.Size, System.Drawing">
     <value>685, 32</value>
@@ -355,13 +328,13 @@
     <value>tableLayoutPanel1</value>
   </data>
   <data name="&gt;&gt;txtMO2.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>3</value>
   </data>
   <data name="txtVortex.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
   <data name="txtVortex.Location" type="System.Drawing.Point, System.Drawing">
-    <value>218, 191</value>
+    <value>218, 268</value>
   </data>
   <data name="txtVortex.Size" type="System.Drawing.Size, System.Drawing">
     <value>685, 32</value>
@@ -379,13 +352,13 @@
     <value>tableLayoutPanel1</value>
   </data>
   <data name="&gt;&gt;txtVortex.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>4</value>
   </data>
   <data name="txtxEdit.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
   <data name="txtxEdit.Location" type="System.Drawing.Point, System.Drawing">
-    <value>218, 243</value>
+    <value>218, 321</value>
   </data>
   <data name="txtxEdit.Size" type="System.Drawing.Size, System.Drawing">
     <value>685, 32</value>
@@ -403,7 +376,7 @@
     <value>tableLayoutPanel1</value>
   </data>
   <data name="&gt;&gt;txtxEdit.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>5</value>
   </data>
   <data name="label1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
@@ -415,7 +388,7 @@
     <value>Segoe UI, 9pt, style=Bold</value>
   </data>
   <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 0</value>
+    <value>3, 21</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
     <value>209, 32</value>
@@ -439,7 +412,346 @@
     <value>tableLayoutPanel1</value>
   </data>
   <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="btnClearGame.Location" type="System.Drawing.Point, System.Drawing">
+    <value>909, 56</value>
+  </data>
+  <data name="btnClearGame.Size" type="System.Drawing.Size, System.Drawing">
+    <value>150, 46</value>
+  </data>
+  <data name="btnClearGame.TabIndex" type="System.Int32, mscorlib">
+    <value>17</value>
+  </data>
+  <data name="btnClearGame.Text" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="&gt;&gt;btnClearGame.Name" xml:space="preserve">
+    <value>btnClearGame</value>
+  </data>
+  <data name="&gt;&gt;btnClearGame.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnClearGame.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;btnClearGame.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="btnOk.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 586</value>
+  </data>
+  <data name="btnOk.Size" type="System.Drawing.Size, System.Drawing">
+    <value>209, 46</value>
+  </data>
+  <data name="btnOk.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
+  </data>
+  <data name="btnOk.Text" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="&gt;&gt;btnOk.Name" xml:space="preserve">
+    <value>btnOk</value>
+  </data>
+  <data name="&gt;&gt;btnOk.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnOk.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;btnOk.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="btnCancel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>218, 586</value>
+  </data>
+  <data name="btnCancel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>209, 46</value>
+  </data>
+  <data name="btnCancel.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
+  </data>
+  <data name="btnCancel.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="&gt;&gt;btnCancel.Name" xml:space="preserve">
+    <value>btnCancel</value>
+  </data>
+  <data name="&gt;&gt;btnCancel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnCancel.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;btnCancel.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="btnClearxEdit.Location" type="System.Drawing.Point, System.Drawing">
+    <value>909, 321</value>
+  </data>
+  <data name="btnClearxEdit.Size" type="System.Drawing.Size, System.Drawing">
+    <value>150, 46</value>
+  </data>
+  <data name="btnClearxEdit.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="btnClearxEdit.Text" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="&gt;&gt;btnClearxEdit.Name" xml:space="preserve">
+    <value>btnClearxEdit</value>
+  </data>
+  <data name="&gt;&gt;btnClearxEdit.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnClearxEdit.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;btnClearxEdit.ZOrder" xml:space="preserve">
     <value>11</value>
+  </data>
+  <data name="btnClearVortex.Location" type="System.Drawing.Point, System.Drawing">
+    <value>909, 268</value>
+  </data>
+  <data name="btnClearVortex.Size" type="System.Drawing.Size, System.Drawing">
+    <value>150, 46</value>
+  </data>
+  <data name="btnClearVortex.TabIndex" type="System.Int32, mscorlib">
+    <value>20</value>
+  </data>
+  <data name="btnClearVortex.Text" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="&gt;&gt;btnClearVortex.Name" xml:space="preserve">
+    <value>btnClearVortex</value>
+  </data>
+  <data name="&gt;&gt;btnClearVortex.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnClearVortex.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;btnClearVortex.ZOrder" xml:space="preserve">
+    <value>13</value>
+  </data>
+  <data name="btnClearMO2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>909, 215</value>
+  </data>
+  <data name="btnClearMO2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>150, 46</value>
+  </data>
+  <data name="btnClearMO2.TabIndex" type="System.Int32, mscorlib">
+    <value>19</value>
+  </data>
+  <data name="btnClearMO2.Text" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="&gt;&gt;btnClearMO2.Name" xml:space="preserve">
+    <value>btnClearMO2</value>
+  </data>
+  <data name="&gt;&gt;btnClearMO2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnClearMO2.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;btnClearMO2.ZOrder" xml:space="preserve">
+    <value>15</value>
+  </data>
+  <data name="btnClearLOOT.Location" type="System.Drawing.Point, System.Drawing">
+    <value>909, 162</value>
+  </data>
+  <data name="btnClearLOOT.Size" type="System.Drawing.Size, System.Drawing">
+    <value>150, 46</value>
+  </data>
+  <data name="btnClearLOOT.TabIndex" type="System.Int32, mscorlib">
+    <value>18</value>
+  </data>
+  <data name="btnClearLOOT.Text" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="&gt;&gt;btnClearLOOT.Name" xml:space="preserve">
+    <value>btnClearLOOT</value>
+  </data>
+  <data name="&gt;&gt;btnClearLOOT.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnClearLOOT.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;btnClearLOOT.ZOrder" xml:space="preserve">
+    <value>17</value>
+  </data>
+  <data name="btnDownloads.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="btnDownloads.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 109</value>
+  </data>
+  <data name="btnDownloads.Size" type="System.Drawing.Size, System.Drawing">
+    <value>209, 47</value>
+  </data>
+  <data name="btnDownloads.TabIndex" type="System.Int32, mscorlib">
+    <value>22</value>
+  </data>
+  <data name="btnDownloads.Text" xml:space="preserve">
+    <value>Downloads</value>
+  </data>
+  <data name="&gt;&gt;btnDownloads.Name" xml:space="preserve">
+    <value>btnDownloads</value>
+  </data>
+  <data name="&gt;&gt;btnDownloads.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnDownloads.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;btnDownloads.ZOrder" xml:space="preserve">
+    <value>18</value>
+  </data>
+  <data name="label3.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="label3.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 530</value>
+  </data>
+  <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>209, 53</value>
+  </data>
+  <data name="label3.TabIndex" type="System.Int32, mscorlib">
+    <value>14</value>
+  </data>
+  <data name="label3.Text" xml:space="preserve">
+    <value>Creation Kit</value>
+  </data>
+  <data name="label3.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleCenter</value>
+  </data>
+  <data name="&gt;&gt;label3.Name" xml:space="preserve">
+    <value>label3</value>
+  </data>
+  <data name="&gt;&gt;label3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label3.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
+    <value>19</value>
+  </data>
+  <data name="lblCK.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left</value>
+  </data>
+  <data name="lblCK.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblCK.Location" type="System.Drawing.Point, System.Drawing">
+    <value>218, 530</value>
+  </data>
+  <data name="lblCK.Size" type="System.Drawing.Size, System.Drawing">
+    <value>126, 53</value>
+  </data>
+  <data name="lblCK.TabIndex" type="System.Int32, mscorlib">
+    <value>15</value>
+  </data>
+  <data name="lblCK.Text" xml:space="preserve">
+    <value>Undefined</value>
+  </data>
+  <data name="lblCK.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleCenter</value>
+  </data>
+  <data name="&gt;&gt;lblCK.Name" xml:space="preserve">
+    <value>lblCK</value>
+  </data>
+  <data name="&gt;&gt;lblCK.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblCK.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;lblCK.ZOrder" xml:space="preserve">
+    <value>20</value>
+  </data>
+  <data name="btnFont.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="btnFont.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 480</value>
+  </data>
+  <data name="btnFont.Size" type="System.Drawing.Size, System.Drawing">
+    <value>209, 42</value>
+  </data>
+  <data name="btnFont.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="btnFont.Text" xml:space="preserve">
+    <value>Font Size</value>
+  </data>
+  <data name="&gt;&gt;btnFont.Name" xml:space="preserve">
+    <value>btnFont</value>
+  </data>
+  <data name="&gt;&gt;btnFont.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnFont.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;btnFont.ZOrder" xml:space="preserve">
+    <value>21</value>
+  </data>
+  <data name="btnDetect.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="btnDetect.Location" type="System.Drawing.Point, System.Drawing">
+    <value>218, 480</value>
+  </data>
+  <data name="btnDetect.Size" type="System.Drawing.Size, System.Drawing">
+    <value>363, 42</value>
+  </data>
+  <data name="btnDetect.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="btnDetect.Text" xml:space="preserve">
+    <value>Detect Game Path - Steam Only</value>
+  </data>
+  <data name="&gt;&gt;btnDetect.Name" xml:space="preserve">
+    <value>btnDetect</value>
+  </data>
+  <data name="&gt;&gt;btnDetect.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnDetect.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;btnDetect.ZOrder" xml:space="preserve">
+    <value>22</value>
+  </data>
+  <data name="lblSpacer.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblSpacer.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 371</value>
+  </data>
+  <data name="lblSpacer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>0, 32</value>
+  </data>
+  <data name="lblSpacer.TabIndex" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
+  <data name="&gt;&gt;lblSpacer.Name" xml:space="preserve">
+    <value>lblSpacer</value>
+  </data>
+  <data name="&gt;&gt;lblSpacer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblSpacer.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;lblSpacer.ZOrder" xml:space="preserve">
+    <value>23</value>
   </data>
   <data name="label2.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
@@ -451,7 +763,7 @@
     <value>Segoe UI, 9pt, style=Bold</value>
   </data>
   <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 292</value>
+    <value>3, 445</value>
   </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
     <value>209, 32</value>
@@ -475,292 +787,55 @@
     <value>tableLayoutPanel1</value>
   </data>
   <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>24</value>
   </data>
-  <data name="btnDetect.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="txtDownloads.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
   </data>
-  <data name="btnDetect.Location" type="System.Drawing.Point, System.Drawing">
-    <value>218, 327</value>
+  <data name="txtDownloads.Location" type="System.Drawing.Point, System.Drawing">
+    <value>218, 109</value>
   </data>
-  <data name="btnDetect.Size" type="System.Drawing.Size, System.Drawing">
-    <value>363, 42</value>
+  <data name="txtDownloads.Size" type="System.Drawing.Size, System.Drawing">
+    <value>685, 39</value>
   </data>
-  <data name="btnDetect.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
-  </data>
-  <data name="btnDetect.Text" xml:space="preserve">
-    <value>Detect Game Path - Steam Only</value>
-  </data>
-  <data name="&gt;&gt;btnDetect.Name" xml:space="preserve">
-    <value>btnDetect</value>
-  </data>
-  <data name="&gt;&gt;btnDetect.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnDetect.Parent" xml:space="preserve">
-    <value>tableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;btnDetect.ZOrder" xml:space="preserve">
-    <value>13</value>
-  </data>
-  <data name="btnOk.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 439</value>
-  </data>
-  <data name="btnOk.Size" type="System.Drawing.Size, System.Drawing">
-    <value>209, 46</value>
-  </data>
-  <data name="btnOk.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
-  </data>
-  <data name="btnOk.Text" xml:space="preserve">
-    <value>Ok</value>
-  </data>
-  <data name="&gt;&gt;btnOk.Name" xml:space="preserve">
-    <value>btnOk</value>
-  </data>
-  <data name="&gt;&gt;btnOk.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnOk.Parent" xml:space="preserve">
-    <value>tableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;btnOk.ZOrder" xml:space="preserve">
-    <value>14</value>
-  </data>
-  <data name="btnCancel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>218, 439</value>
-  </data>
-  <data name="btnCancel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>209, 46</value>
-  </data>
-  <data name="btnCancel.TabIndex" type="System.Int32, mscorlib">
-    <value>13</value>
-  </data>
-  <data name="btnCancel.Text" xml:space="preserve">
-    <value>Cancel</value>
-  </data>
-  <data name="&gt;&gt;btnCancel.Name" xml:space="preserve">
-    <value>btnCancel</value>
-  </data>
-  <data name="&gt;&gt;btnCancel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnCancel.Parent" xml:space="preserve">
-    <value>tableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;btnCancel.ZOrder" xml:space="preserve">
-    <value>15</value>
-  </data>
-  <data name="label3.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
-  </data>
-  <data name="label3.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 372</value>
-  </data>
-  <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>209, 32</value>
-  </data>
-  <data name="label3.TabIndex" type="System.Int32, mscorlib">
-    <value>14</value>
-  </data>
-  <data name="label3.Text" xml:space="preserve">
-    <value>Creation Kit</value>
-  </data>
-  <data name="label3.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleCenter</value>
-  </data>
-  <data name="&gt;&gt;label3.Name" xml:space="preserve">
-    <value>label3</value>
-  </data>
-  <data name="&gt;&gt;label3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label3.Parent" xml:space="preserve">
-    <value>tableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
-    <value>16</value>
-  </data>
-  <data name="lblCK.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left</value>
-  </data>
-  <data name="lblCK.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="lblCK.Location" type="System.Drawing.Point, System.Drawing">
-    <value>218, 372</value>
-  </data>
-  <data name="lblCK.Size" type="System.Drawing.Size, System.Drawing">
-    <value>126, 32</value>
-  </data>
-  <data name="lblCK.TabIndex" type="System.Int32, mscorlib">
-    <value>15</value>
-  </data>
-  <data name="lblCK.Text" xml:space="preserve">
-    <value>Undefined</value>
-  </data>
-  <data name="lblCK.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleCenter</value>
-  </data>
-  <data name="&gt;&gt;lblCK.Name" xml:space="preserve">
-    <value>lblCK</value>
-  </data>
-  <data name="&gt;&gt;lblCK.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblCK.Parent" xml:space="preserve">
-    <value>tableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;lblCK.ZOrder" xml:space="preserve">
-    <value>17</value>
-  </data>
-  <data name="lblSpacer.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="lblSpacer.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 404</value>
-  </data>
-  <data name="lblSpacer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>0, 32</value>
-  </data>
-  <data name="lblSpacer.TabIndex" type="System.Int32, mscorlib">
-    <value>16</value>
-  </data>
-  <data name="&gt;&gt;lblSpacer.Name" xml:space="preserve">
-    <value>lblSpacer</value>
-  </data>
-  <data name="&gt;&gt;lblSpacer.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblSpacer.Parent" xml:space="preserve">
-    <value>tableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;lblSpacer.ZOrder" xml:space="preserve">
-    <value>18</value>
-  </data>
-  <data name="btnClearGame.Location" type="System.Drawing.Point, System.Drawing">
-    <value>909, 35</value>
-  </data>
-  <data name="btnClearGame.Size" type="System.Drawing.Size, System.Drawing">
-    <value>150, 46</value>
-  </data>
-  <data name="btnClearGame.TabIndex" type="System.Int32, mscorlib">
-    <value>17</value>
-  </data>
-  <data name="btnClearGame.Text" xml:space="preserve">
-    <value>Clear</value>
-  </data>
-  <data name="&gt;&gt;btnClearGame.Name" xml:space="preserve">
-    <value>btnClearGame</value>
-  </data>
-  <data name="&gt;&gt;btnClearGame.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnClearGame.Parent" xml:space="preserve">
-    <value>tableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;btnClearGame.ZOrder" xml:space="preserve">
-    <value>19</value>
-  </data>
-  <data name="btnClearLOOT.Location" type="System.Drawing.Point, System.Drawing">
-    <value>909, 87</value>
-  </data>
-  <data name="btnClearLOOT.Size" type="System.Drawing.Size, System.Drawing">
-    <value>150, 46</value>
-  </data>
-  <data name="btnClearLOOT.TabIndex" type="System.Int32, mscorlib">
-    <value>18</value>
-  </data>
-  <data name="btnClearLOOT.Text" xml:space="preserve">
-    <value>Clear</value>
-  </data>
-  <data name="&gt;&gt;btnClearLOOT.Name" xml:space="preserve">
-    <value>btnClearLOOT</value>
-  </data>
-  <data name="&gt;&gt;btnClearLOOT.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnClearLOOT.Parent" xml:space="preserve">
-    <value>tableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;btnClearLOOT.ZOrder" xml:space="preserve">
-    <value>20</value>
-  </data>
-  <data name="btnClearMO2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>909, 139</value>
-  </data>
-  <data name="btnClearMO2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>150, 46</value>
-  </data>
-  <data name="btnClearMO2.TabIndex" type="System.Int32, mscorlib">
-    <value>19</value>
-  </data>
-  <data name="btnClearMO2.Text" xml:space="preserve">
-    <value>Clear</value>
-  </data>
-  <data name="&gt;&gt;btnClearMO2.Name" xml:space="preserve">
-    <value>btnClearMO2</value>
-  </data>
-  <data name="&gt;&gt;btnClearMO2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnClearMO2.Parent" xml:space="preserve">
-    <value>tableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;btnClearMO2.ZOrder" xml:space="preserve">
-    <value>21</value>
-  </data>
-  <data name="btnClearVortex.Location" type="System.Drawing.Point, System.Drawing">
-    <value>909, 191</value>
-  </data>
-  <data name="btnClearVortex.Size" type="System.Drawing.Size, System.Drawing">
-    <value>150, 46</value>
-  </data>
-  <data name="btnClearVortex.TabIndex" type="System.Int32, mscorlib">
-    <value>20</value>
-  </data>
-  <data name="btnClearVortex.Text" xml:space="preserve">
-    <value>Clear</value>
-  </data>
-  <data name="&gt;&gt;btnClearVortex.Name" xml:space="preserve">
-    <value>btnClearVortex</value>
-  </data>
-  <data name="&gt;&gt;btnClearVortex.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnClearVortex.Parent" xml:space="preserve">
-    <value>tableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;btnClearVortex.ZOrder" xml:space="preserve">
-    <value>22</value>
-  </data>
-  <data name="btnClearxEdit.Location" type="System.Drawing.Point, System.Drawing">
-    <value>909, 243</value>
-  </data>
-  <data name="btnClearxEdit.Size" type="System.Drawing.Size, System.Drawing">
-    <value>150, 46</value>
-  </data>
-  <data name="btnClearxEdit.TabIndex" type="System.Int32, mscorlib">
-    <value>21</value>
-  </data>
-  <data name="btnClearxEdit.Text" xml:space="preserve">
-    <value>Clear</value>
-  </data>
-  <data name="&gt;&gt;btnClearxEdit.Name" xml:space="preserve">
-    <value>btnClearxEdit</value>
-  </data>
-  <data name="&gt;&gt;btnClearxEdit.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnClearxEdit.Parent" xml:space="preserve">
-    <value>tableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;btnClearxEdit.ZOrder" xml:space="preserve">
+  <data name="txtDownloads.TabIndex" type="System.Int32, mscorlib">
     <value>23</value>
+  </data>
+  <data name="&gt;&gt;txtDownloads.Name" xml:space="preserve">
+    <value>txtDownloads</value>
+  </data>
+  <data name="&gt;&gt;txtDownloads.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;txtDownloads.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;txtDownloads.ZOrder" xml:space="preserve">
+    <value>25</value>
+  </data>
+  <data name="btnDownloadsClear.Location" type="System.Drawing.Point, System.Drawing">
+    <value>909, 109</value>
+  </data>
+  <data name="btnDownloadsClear.Size" type="System.Drawing.Size, System.Drawing">
+    <value>150, 46</value>
+  </data>
+  <data name="btnDownloadsClear.TabIndex" type="System.Int32, mscorlib">
+    <value>24</value>
+  </data>
+  <data name="btnDownloadsClear.Text" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="&gt;&gt;btnDownloadsClear.Name" xml:space="preserve">
+    <value>btnDownloadsClear</value>
+  </data>
+  <data name="&gt;&gt;btnDownloadsClear.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnDownloadsClear.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;btnDownloadsClear.ZOrder" xml:space="preserve">
+    <value>26</value>
   </data>
   <data name="tableLayoutPanel1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -769,10 +844,10 @@
     <value>0, 0</value>
   </data>
   <data name="tableLayoutPanel1.RowCount" type="System.Int32, mscorlib">
-    <value>11</value>
+    <value>12</value>
   </data>
   <data name="tableLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1062, 493</value>
+    <value>1062, 645</value>
   </data>
   <data name="tableLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -790,7 +865,7 @@
     <value>0</value>
   </data>
   <data name="tableLayoutPanel1.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="btnFont" Row="7" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="btnGame" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="txtGame" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="btnxEdit" Row="5" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="btnVortex" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="btnLOOT" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="btnMO2" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="txtLOOT" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="txtMO2" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="txtVortex" Row="4" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="txtxEdit" Row="5" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label1" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="label2" Row="6" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="btnDetect" Row="7" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="btnOk" Row="10" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="btnCancel" Row="10" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label3" Row="8" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="lblCK" Row="8" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="lblSpacer" Row="9" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="btnClearGame" Row="1" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="btnClearLOOT" Row="2" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="btnClearMO2" Row="3" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="btnClearVortex" Row="4" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="btnClearxEdit" Row="5" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,100,AutoSize,0" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="btnGame" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="txtGame" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="txtLOOT" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="txtMO2" Row="4" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="txtVortex" Row="5" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="txtxEdit" Row="6" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label1" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="btnClearGame" Row="1" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="btnOk" Row="11" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="btnCancel" Row="11" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="btnxEdit" Row="6" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="btnClearxEdit" Row="6" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="btnVortex" Row="5" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="btnClearVortex" Row="5" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="btnMO2" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="btnClearMO2" Row="4" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="btnLOOT" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="btnClearLOOT" Row="3" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="btnDownloads" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="label3" Row="10" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="lblCK" Row="10" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="btnFont" Row="9" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="btnDetect" Row="9" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="lblSpacer" Row="7" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="label2" Row="8" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="txtDownloads" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="btnDownloadsClear" Row="2" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,100,AutoSize,0" /&gt;&lt;Rows Styles="Percent,8.333333,Percent,8.333333,Percent,8.333333,Percent,8.333333,Percent,8.333333,Percent,8.333333,Percent,8.333333,Percent,8.333333,Percent,8.333333,Percent,8.333333,Percent,8.333333,Percent,8.333333" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <metadata name="fontDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
@@ -805,7 +880,7 @@
     <value>13, 32</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>1062, 493</value>
+    <value>1062, 645</value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>

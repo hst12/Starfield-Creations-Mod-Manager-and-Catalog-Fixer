@@ -34,7 +34,6 @@
             btnVortex = new System.Windows.Forms.Button();
             btnxEdit = new System.Windows.Forms.Button();
             tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            btnFont = new System.Windows.Forms.Button();
             btnGame = new System.Windows.Forms.Button();
             txtGame = new System.Windows.Forms.TextBox();
             txtLOOT = new System.Windows.Forms.TextBox();
@@ -42,18 +41,22 @@
             txtVortex = new System.Windows.Forms.TextBox();
             txtxEdit = new System.Windows.Forms.TextBox();
             label1 = new System.Windows.Forms.Label();
-            label2 = new System.Windows.Forms.Label();
-            btnDetect = new System.Windows.Forms.Button();
+            btnClearGame = new System.Windows.Forms.Button();
             btnOk = new System.Windows.Forms.Button();
             btnCancel = new System.Windows.Forms.Button();
+            btnClearxEdit = new System.Windows.Forms.Button();
+            btnClearVortex = new System.Windows.Forms.Button();
+            btnClearMO2 = new System.Windows.Forms.Button();
+            btnClearLOOT = new System.Windows.Forms.Button();
+            btnDownloads = new System.Windows.Forms.Button();
             label3 = new System.Windows.Forms.Label();
             lblCK = new System.Windows.Forms.Label();
+            btnFont = new System.Windows.Forms.Button();
+            btnDetect = new System.Windows.Forms.Button();
             lblSpacer = new System.Windows.Forms.Label();
-            btnClearGame = new System.Windows.Forms.Button();
-            btnClearLOOT = new System.Windows.Forms.Button();
-            btnClearMO2 = new System.Windows.Forms.Button();
-            btnClearVortex = new System.Windows.Forms.Button();
-            btnClearxEdit = new System.Windows.Forms.Button();
+            label2 = new System.Windows.Forms.Label();
+            txtDownloads = new System.Windows.Forms.TextBox();
+            btnDownloadsClear = new System.Windows.Forms.Button();
             fontDialog1 = new System.Windows.Forms.FontDialog();
             openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             tableLayoutPanel1.SuspendLayout();
@@ -90,38 +93,34 @@
             // tableLayoutPanel1
             // 
             resources.ApplyResources(tableLayoutPanel1, "tableLayoutPanel1");
-            tableLayoutPanel1.Controls.Add(btnFont, 0, 7);
             tableLayoutPanel1.Controls.Add(btnGame, 0, 1);
             tableLayoutPanel1.Controls.Add(txtGame, 1, 1);
-            tableLayoutPanel1.Controls.Add(btnxEdit, 0, 5);
-            tableLayoutPanel1.Controls.Add(btnVortex, 0, 4);
-            tableLayoutPanel1.Controls.Add(btnLOOT, 0, 2);
-            tableLayoutPanel1.Controls.Add(btnMO2, 0, 3);
-            tableLayoutPanel1.Controls.Add(txtLOOT, 1, 2);
-            tableLayoutPanel1.Controls.Add(txtMO2, 1, 3);
-            tableLayoutPanel1.Controls.Add(txtVortex, 1, 4);
-            tableLayoutPanel1.Controls.Add(txtxEdit, 1, 5);
+            tableLayoutPanel1.Controls.Add(txtLOOT, 1, 3);
+            tableLayoutPanel1.Controls.Add(txtMO2, 1, 4);
+            tableLayoutPanel1.Controls.Add(txtVortex, 1, 5);
+            tableLayoutPanel1.Controls.Add(txtxEdit, 1, 6);
             tableLayoutPanel1.Controls.Add(label1, 0, 0);
-            tableLayoutPanel1.Controls.Add(label2, 0, 6);
-            tableLayoutPanel1.Controls.Add(btnDetect, 1, 7);
-            tableLayoutPanel1.Controls.Add(btnOk, 0, 10);
-            tableLayoutPanel1.Controls.Add(btnCancel, 1, 10);
-            tableLayoutPanel1.Controls.Add(label3, 0, 8);
-            tableLayoutPanel1.Controls.Add(lblCK, 1, 8);
-            tableLayoutPanel1.Controls.Add(lblSpacer, 0, 9);
             tableLayoutPanel1.Controls.Add(btnClearGame, 2, 1);
-            tableLayoutPanel1.Controls.Add(btnClearLOOT, 2, 2);
-            tableLayoutPanel1.Controls.Add(btnClearMO2, 2, 3);
-            tableLayoutPanel1.Controls.Add(btnClearVortex, 2, 4);
-            tableLayoutPanel1.Controls.Add(btnClearxEdit, 2, 5);
+            tableLayoutPanel1.Controls.Add(btnOk, 0, 11);
+            tableLayoutPanel1.Controls.Add(btnCancel, 1, 11);
+            tableLayoutPanel1.Controls.Add(btnxEdit, 0, 6);
+            tableLayoutPanel1.Controls.Add(btnClearxEdit, 2, 6);
+            tableLayoutPanel1.Controls.Add(btnVortex, 0, 5);
+            tableLayoutPanel1.Controls.Add(btnClearVortex, 2, 5);
+            tableLayoutPanel1.Controls.Add(btnMO2, 0, 4);
+            tableLayoutPanel1.Controls.Add(btnClearMO2, 2, 4);
+            tableLayoutPanel1.Controls.Add(btnLOOT, 0, 3);
+            tableLayoutPanel1.Controls.Add(btnClearLOOT, 2, 3);
+            tableLayoutPanel1.Controls.Add(btnDownloads, 0, 2);
+            tableLayoutPanel1.Controls.Add(label3, 0, 10);
+            tableLayoutPanel1.Controls.Add(lblCK, 1, 10);
+            tableLayoutPanel1.Controls.Add(btnFont, 0, 9);
+            tableLayoutPanel1.Controls.Add(btnDetect, 1, 9);
+            tableLayoutPanel1.Controls.Add(lblSpacer, 0, 7);
+            tableLayoutPanel1.Controls.Add(label2, 0, 8);
+            tableLayoutPanel1.Controls.Add(txtDownloads, 1, 2);
+            tableLayoutPanel1.Controls.Add(btnDownloadsClear, 2, 2);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
-            // 
-            // btnFont
-            // 
-            resources.ApplyResources(btnFont, "btnFont");
-            btnFont.Name = "btnFont";
-            btnFont.UseVisualStyleBackColor = true;
-            btnFont.Click += btnFont_Click;
             // 
             // btnGame
             // 
@@ -175,17 +174,12 @@
             resources.ApplyResources(label1, "label1");
             label1.Name = "label1";
             // 
-            // label2
+            // btnClearGame
             // 
-            resources.ApplyResources(label2, "label2");
-            label2.Name = "label2";
-            // 
-            // btnDetect
-            // 
-            resources.ApplyResources(btnDetect, "btnDetect");
-            btnDetect.Name = "btnDetect";
-            btnDetect.UseVisualStyleBackColor = true;
-            btnDetect.Click += btnDetect_Click;
+            resources.ApplyResources(btnClearGame, "btnClearGame");
+            btnClearGame.Name = "btnClearGame";
+            btnClearGame.UseVisualStyleBackColor = true;
+            btnClearGame.Click += btnClearGame_Click;
             // 
             // btnOk
             // 
@@ -201,6 +195,41 @@
             btnCancel.UseVisualStyleBackColor = true;
             btnCancel.Click += btnCancel_Click;
             // 
+            // btnClearxEdit
+            // 
+            resources.ApplyResources(btnClearxEdit, "btnClearxEdit");
+            btnClearxEdit.Name = "btnClearxEdit";
+            btnClearxEdit.UseVisualStyleBackColor = true;
+            btnClearxEdit.Click += btnClearxEdit_Click;
+            // 
+            // btnClearVortex
+            // 
+            resources.ApplyResources(btnClearVortex, "btnClearVortex");
+            btnClearVortex.Name = "btnClearVortex";
+            btnClearVortex.UseVisualStyleBackColor = true;
+            btnClearVortex.Click += btnClearVortex_Click;
+            // 
+            // btnClearMO2
+            // 
+            resources.ApplyResources(btnClearMO2, "btnClearMO2");
+            btnClearMO2.Name = "btnClearMO2";
+            btnClearMO2.UseVisualStyleBackColor = true;
+            btnClearMO2.Click += btnClearMO2_Click;
+            // 
+            // btnClearLOOT
+            // 
+            resources.ApplyResources(btnClearLOOT, "btnClearLOOT");
+            btnClearLOOT.Name = "btnClearLOOT";
+            btnClearLOOT.UseVisualStyleBackColor = true;
+            btnClearLOOT.Click += btnClearLOOT_Click;
+            // 
+            // btnDownloads
+            // 
+            resources.ApplyResources(btnDownloads, "btnDownloads");
+            btnDownloads.Name = "btnDownloads";
+            btnDownloads.UseVisualStyleBackColor = true;
+            btnDownloads.Click += btnDownloads_Click;
+            // 
             // label3
             // 
             resources.ApplyResources(label3, "label3");
@@ -210,46 +239,43 @@
             // 
             resources.ApplyResources(lblCK, "lblCK");
             lblCK.Name = "lblCK";
+            lblCK.Click += lblCK_Click;
+            // 
+            // btnFont
+            // 
+            resources.ApplyResources(btnFont, "btnFont");
+            btnFont.Name = "btnFont";
+            btnFont.UseVisualStyleBackColor = true;
+            btnFont.Click += btnFont_Click;
+            // 
+            // btnDetect
+            // 
+            resources.ApplyResources(btnDetect, "btnDetect");
+            btnDetect.Name = "btnDetect";
+            btnDetect.UseVisualStyleBackColor = true;
+            btnDetect.Click += btnDetect_Click;
             // 
             // lblSpacer
             // 
             resources.ApplyResources(lblSpacer, "lblSpacer");
             lblSpacer.Name = "lblSpacer";
             // 
-            // btnClearGame
+            // label2
             // 
-            resources.ApplyResources(btnClearGame, "btnClearGame");
-            btnClearGame.Name = "btnClearGame";
-            btnClearGame.UseVisualStyleBackColor = true;
-            btnClearGame.Click += btnClearGame_Click;
+            resources.ApplyResources(label2, "label2");
+            label2.Name = "label2";
             // 
-            // btnClearLOOT
+            // txtDownloads
             // 
-            resources.ApplyResources(btnClearLOOT, "btnClearLOOT");
-            btnClearLOOT.Name = "btnClearLOOT";
-            btnClearLOOT.UseVisualStyleBackColor = true;
-            btnClearLOOT.Click += btnClearLOOT_Click;
+            resources.ApplyResources(txtDownloads, "txtDownloads");
+            txtDownloads.Name = "txtDownloads";
             // 
-            // btnClearMO2
+            // btnDownloadsClear
             // 
-            resources.ApplyResources(btnClearMO2, "btnClearMO2");
-            btnClearMO2.Name = "btnClearMO2";
-            btnClearMO2.UseVisualStyleBackColor = true;
-            btnClearMO2.Click += btnClearMO2_Click;
-            // 
-            // btnClearVortex
-            // 
-            resources.ApplyResources(btnClearVortex, "btnClearVortex");
-            btnClearVortex.Name = "btnClearVortex";
-            btnClearVortex.UseVisualStyleBackColor = true;
-            btnClearVortex.Click += btnClearVortex_Click;
-            // 
-            // btnClearxEdit
-            // 
-            resources.ApplyResources(btnClearxEdit, "btnClearxEdit");
-            btnClearxEdit.Name = "btnClearxEdit";
-            btnClearxEdit.UseVisualStyleBackColor = true;
-            btnClearxEdit.Click += btnClearxEdit_Click;
+            resources.ApplyResources(btnDownloadsClear, "btnDownloadsClear");
+            btnDownloadsClear.Name = "btnDownloadsClear";
+            btnDownloadsClear.UseVisualStyleBackColor = true;
+            btnDownloadsClear.Click += btnDownloadsClear_Click;
             // 
             // openFileDialog1
             // 
@@ -295,5 +321,8 @@
         private System.Windows.Forms.Button btnClearMO2;
         private System.Windows.Forms.Button btnClearVortex;
         private System.Windows.Forms.Button btnClearxEdit;
+        private System.Windows.Forms.Button btnDownloads;
+        private System.Windows.Forms.TextBox txtDownloads;
+        private System.Windows.Forms.Button btnDownloadsClear;
     }
 }
