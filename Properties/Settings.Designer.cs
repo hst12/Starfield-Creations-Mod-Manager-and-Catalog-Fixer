@@ -897,5 +897,17 @@ namespace hstCMM.Properties {
                 this["StatusStrip"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool CompactView {
+            get {
+                return ((bool)(this["CompactView"]));
+            }
+            set {
+                this["CompactView"] = value;
+            }
+        }
     }
 }

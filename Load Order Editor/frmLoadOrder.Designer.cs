@@ -199,9 +199,11 @@
             lightToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             darkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             systemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripSeparator52 = new System.Windows.Forms.ToolStripSeparator();
+            statusStripToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             showTimeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            toolStripSeparator25 = new System.Windows.Forms.ToolStripSeparator();
             modStatsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripSeparator25 = new System.Windows.Forms.ToolStripSeparator();
             activeOnlyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             blockedOnlyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator53 = new System.Windows.Forms.ToolStripSeparator();
@@ -213,7 +215,7 @@
             rowHighlightToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator56 = new System.Windows.Forms.ToolStripSeparator();
             resizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            statusStripToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            compactViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuCatalog = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator21 = new System.Windows.Forms.ToolStripSeparator();
@@ -1440,7 +1442,7 @@
             // 
             // viewToolStripMenuItem
             // 
-            viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { refreshToolStripMenuItem, toolStripMenuColumns, themeToolStripMenuItem, showTimeToolStripMenuItem, toolStripSeparator25, modStatsToolStripMenuItem, activeOnlyToolStripMenuItem, blockedOnlyToolStripMenuItem, toolStripSeparator53, viewLogToolStripMenuItem, logWindowToolStripMenuItem, toolStripSeparator54, blockedModsToolStripMenuItem, toolStripSeparator20, rowHighlightToolStripMenuItem, toolStripSeparator56, resizeToolStripMenuItem, statusStripToolStripMenuItem });
+            viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { refreshToolStripMenuItem, toolStripMenuColumns, themeToolStripMenuItem, toolStripSeparator52, statusStripToolStripMenuItem, showTimeToolStripMenuItem, modStatsToolStripMenuItem, toolStripSeparator25, activeOnlyToolStripMenuItem, blockedOnlyToolStripMenuItem, toolStripSeparator53, viewLogToolStripMenuItem, logWindowToolStripMenuItem, toolStripSeparator54, blockedModsToolStripMenuItem, toolStripSeparator20, rowHighlightToolStripMenuItem, toolStripSeparator56, resizeToolStripMenuItem, compactViewToolStripMenuItem });
             viewToolStripMenuItem.Name = "viewToolStripMenuItem";
             viewToolStripMenuItem.Size = new System.Drawing.Size(85, 38);
             viewToolStripMenuItem.Text = "View";
@@ -1448,7 +1450,7 @@
             // refreshToolStripMenuItem
             // 
             refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
-            refreshToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+            refreshToolStripMenuItem.Size = new System.Drawing.Size(345, 44);
             refreshToolStripMenuItem.Text = "Refresh";
             refreshToolStripMenuItem.Click += refreshToolStripMenuItem_Click;
             // 
@@ -1456,7 +1458,7 @@
             // 
             toolStripMenuColumns.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuIndex, toolStripMenuDescription, toolStripMenuGroup, toolStripMenuAchievements, toolStripMenuCreationsID, toolStripMenuFiles, toolStripMenuFileSize, timeStampToolStripMenuItem, uRLToolStripMenuItem, toolStripMenuVersion, toolStripMenuAuthorVersion, blockedToolStripMenuItem, lastModifiedToolStripMenuItem, toolStripSeparator30, toolStripMenuItemHideAll, showAllToolStripMenuItem, toolStripMenuShowRecommended });
             toolStripMenuColumns.Name = "toolStripMenuColumns";
-            toolStripMenuColumns.Size = new System.Drawing.Size(359, 44);
+            toolStripMenuColumns.Size = new System.Drawing.Size(345, 44);
             toolStripMenuColumns.Text = "Columns";
             // 
             // toolStripMenuIndex
@@ -1586,7 +1588,7 @@
             // 
             themeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { lightToolStripMenuItem, darkToolStripMenuItem, systemToolStripMenuItem });
             themeToolStripMenuItem.Name = "themeToolStripMenuItem";
-            themeToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+            themeToolStripMenuItem.Size = new System.Drawing.Size(345, 44);
             themeToolStripMenuItem.Text = "Theme";
             // 
             // lightToolStripMenuItem
@@ -1610,103 +1612,115 @@
             systemToolStripMenuItem.Text = "System";
             systemToolStripMenuItem.Click += systemToolStripMenuItem_Click;
             // 
-            // showTimeToolStripMenuItem
+            // toolStripSeparator52
             // 
-            showTimeToolStripMenuItem.Name = "showTimeToolStripMenuItem";
-            showTimeToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
-            showTimeToolStripMenuItem.Text = "Show Time";
-            showTimeToolStripMenuItem.Click += showTimeToolStripMenuItem_Click_1;
-            // 
-            // toolStripSeparator25
-            // 
-            toolStripSeparator25.Name = "toolStripSeparator25";
-            toolStripSeparator25.Size = new System.Drawing.Size(356, 6);
-            // 
-            // modStatsToolStripMenuItem
-            // 
-            modStatsToolStripMenuItem.Name = "modStatsToolStripMenuItem";
-            modStatsToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
-            modStatsToolStripMenuItem.Text = "Mod Stats";
-            modStatsToolStripMenuItem.Click += modStatsToolStripMenuItem_Click;
-            // 
-            // activeOnlyToolStripMenuItem
-            // 
-            activeOnlyToolStripMenuItem.Name = "activeOnlyToolStripMenuItem";
-            activeOnlyToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
-            activeOnlyToolStripMenuItem.Text = "Active Only";
-            activeOnlyToolStripMenuItem.Click += activeOnlyToolStripMenuItem_Click;
-            // 
-            // blockedOnlyToolStripMenuItem
-            // 
-            blockedOnlyToolStripMenuItem.Name = "blockedOnlyToolStripMenuItem";
-            blockedOnlyToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
-            blockedOnlyToolStripMenuItem.Text = "Blocked Only";
-            blockedOnlyToolStripMenuItem.Click += blockedOnlyToolStripMenuItem_Click;
-            // 
-            // toolStripSeparator53
-            // 
-            toolStripSeparator53.Name = "toolStripSeparator53";
-            toolStripSeparator53.Size = new System.Drawing.Size(356, 6);
-            // 
-            // viewLogToolStripMenuItem
-            // 
-            viewLogToolStripMenuItem.Name = "viewLogToolStripMenuItem";
-            viewLogToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
-            viewLogToolStripMenuItem.Text = "Log File";
-            viewLogToolStripMenuItem.Click += viewLogToolStripMenuItem_Click;
-            // 
-            // logWindowToolStripMenuItem
-            // 
-            logWindowToolStripMenuItem.Name = "logWindowToolStripMenuItem";
-            logWindowToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
-            logWindowToolStripMenuItem.Text = "Log Window";
-            logWindowToolStripMenuItem.Click += logWindowToolStripMenuItem_Click;
-            // 
-            // toolStripSeparator54
-            // 
-            toolStripSeparator54.Name = "toolStripSeparator54";
-            toolStripSeparator54.Size = new System.Drawing.Size(356, 6);
-            // 
-            // blockedModsToolStripMenuItem
-            // 
-            blockedModsToolStripMenuItem.Enabled = false;
-            blockedModsToolStripMenuItem.Name = "blockedModsToolStripMenuItem";
-            blockedModsToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
-            blockedModsToolStripMenuItem.Text = "Blocked Mods";
-            blockedModsToolStripMenuItem.Click += blockedModsToolStripMenuItem_Click;
-            // 
-            // toolStripSeparator20
-            // 
-            toolStripSeparator20.Name = "toolStripSeparator20";
-            toolStripSeparator20.Size = new System.Drawing.Size(356, 6);
-            // 
-            // rowHighlightToolStripMenuItem
-            // 
-            rowHighlightToolStripMenuItem.Name = "rowHighlightToolStripMenuItem";
-            rowHighlightToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
-            rowHighlightToolStripMenuItem.Text = "Row Highlight";
-            rowHighlightToolStripMenuItem.Click += rowHighlightToolStripMenuItem_Click;
-            // 
-            // toolStripSeparator56
-            // 
-            toolStripSeparator56.Name = "toolStripSeparator56";
-            toolStripSeparator56.Size = new System.Drawing.Size(356, 6);
-            // 
-            // resizeToolStripMenuItem
-            // 
-            resizeToolStripMenuItem.Name = "resizeToolStripMenuItem";
-            resizeToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
-            resizeToolStripMenuItem.Text = "Resize to Contents";
-            resizeToolStripMenuItem.Click += resizeToolStripMenuItem_Click;
+            toolStripSeparator52.Name = "toolStripSeparator52";
+            toolStripSeparator52.Size = new System.Drawing.Size(342, 6);
             // 
             // statusStripToolStripMenuItem
             // 
             statusStripToolStripMenuItem.Checked = true;
             statusStripToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             statusStripToolStripMenuItem.Name = "statusStripToolStripMenuItem";
-            statusStripToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+            statusStripToolStripMenuItem.Size = new System.Drawing.Size(345, 44);
             statusStripToolStripMenuItem.Text = "Status Strip";
             statusStripToolStripMenuItem.Click += statusStripToolStripMenuItem_Click;
+            // 
+            // showTimeToolStripMenuItem
+            // 
+            showTimeToolStripMenuItem.Name = "showTimeToolStripMenuItem";
+            showTimeToolStripMenuItem.Size = new System.Drawing.Size(345, 44);
+            showTimeToolStripMenuItem.Text = "Show Time";
+            showTimeToolStripMenuItem.Click += showTimeToolStripMenuItem_Click_1;
+            // 
+            // modStatsToolStripMenuItem
+            // 
+            modStatsToolStripMenuItem.Name = "modStatsToolStripMenuItem";
+            modStatsToolStripMenuItem.Size = new System.Drawing.Size(345, 44);
+            modStatsToolStripMenuItem.Text = "Mod Stats";
+            modStatsToolStripMenuItem.Click += modStatsToolStripMenuItem_Click;
+            // 
+            // toolStripSeparator25
+            // 
+            toolStripSeparator25.Name = "toolStripSeparator25";
+            toolStripSeparator25.Size = new System.Drawing.Size(342, 6);
+            // 
+            // activeOnlyToolStripMenuItem
+            // 
+            activeOnlyToolStripMenuItem.Name = "activeOnlyToolStripMenuItem";
+            activeOnlyToolStripMenuItem.Size = new System.Drawing.Size(345, 44);
+            activeOnlyToolStripMenuItem.Text = "Active Only";
+            activeOnlyToolStripMenuItem.Click += activeOnlyToolStripMenuItem_Click;
+            // 
+            // blockedOnlyToolStripMenuItem
+            // 
+            blockedOnlyToolStripMenuItem.Name = "blockedOnlyToolStripMenuItem";
+            blockedOnlyToolStripMenuItem.Size = new System.Drawing.Size(345, 44);
+            blockedOnlyToolStripMenuItem.Text = "Blocked Only";
+            blockedOnlyToolStripMenuItem.Click += blockedOnlyToolStripMenuItem_Click;
+            // 
+            // toolStripSeparator53
+            // 
+            toolStripSeparator53.Name = "toolStripSeparator53";
+            toolStripSeparator53.Size = new System.Drawing.Size(342, 6);
+            // 
+            // viewLogToolStripMenuItem
+            // 
+            viewLogToolStripMenuItem.Name = "viewLogToolStripMenuItem";
+            viewLogToolStripMenuItem.Size = new System.Drawing.Size(345, 44);
+            viewLogToolStripMenuItem.Text = "Log File";
+            viewLogToolStripMenuItem.Click += viewLogToolStripMenuItem_Click;
+            // 
+            // logWindowToolStripMenuItem
+            // 
+            logWindowToolStripMenuItem.Name = "logWindowToolStripMenuItem";
+            logWindowToolStripMenuItem.Size = new System.Drawing.Size(345, 44);
+            logWindowToolStripMenuItem.Text = "Log Window";
+            logWindowToolStripMenuItem.Click += logWindowToolStripMenuItem_Click;
+            // 
+            // toolStripSeparator54
+            // 
+            toolStripSeparator54.Name = "toolStripSeparator54";
+            toolStripSeparator54.Size = new System.Drawing.Size(342, 6);
+            // 
+            // blockedModsToolStripMenuItem
+            // 
+            blockedModsToolStripMenuItem.Enabled = false;
+            blockedModsToolStripMenuItem.Name = "blockedModsToolStripMenuItem";
+            blockedModsToolStripMenuItem.Size = new System.Drawing.Size(345, 44);
+            blockedModsToolStripMenuItem.Text = "Blocked Mods";
+            blockedModsToolStripMenuItem.Click += blockedModsToolStripMenuItem_Click;
+            // 
+            // toolStripSeparator20
+            // 
+            toolStripSeparator20.Name = "toolStripSeparator20";
+            toolStripSeparator20.Size = new System.Drawing.Size(342, 6);
+            // 
+            // rowHighlightToolStripMenuItem
+            // 
+            rowHighlightToolStripMenuItem.Name = "rowHighlightToolStripMenuItem";
+            rowHighlightToolStripMenuItem.Size = new System.Drawing.Size(345, 44);
+            rowHighlightToolStripMenuItem.Text = "Row Highlight";
+            rowHighlightToolStripMenuItem.Click += rowHighlightToolStripMenuItem_Click;
+            // 
+            // toolStripSeparator56
+            // 
+            toolStripSeparator56.Name = "toolStripSeparator56";
+            toolStripSeparator56.Size = new System.Drawing.Size(342, 6);
+            // 
+            // resizeToolStripMenuItem
+            // 
+            resizeToolStripMenuItem.Name = "resizeToolStripMenuItem";
+            resizeToolStripMenuItem.Size = new System.Drawing.Size(345, 44);
+            resizeToolStripMenuItem.Text = "Resize to Contents";
+            resizeToolStripMenuItem.Click += resizeToolStripMenuItem_Click;
+            // 
+            // compactViewToolStripMenuItem
+            // 
+            compactViewToolStripMenuItem.Name = "compactViewToolStripMenuItem";
+            compactViewToolStripMenuItem.Size = new System.Drawing.Size(345, 44);
+            compactViewToolStripMenuItem.Text = "Compact View";
+            compactViewToolStripMenuItem.Click += compactViewToolStripMenuItem_Click;
             // 
             // toolsToolStripMenuItem
             // 
@@ -2587,7 +2601,7 @@
             flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Left;
             flowLayoutPanel1.Location = new System.Drawing.Point(3, 856);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new System.Drawing.Size(1863, 48);
+            flowLayoutPanel1.Size = new System.Drawing.Size(1741, 48);
             flowLayoutPanel1.TabIndex = 8;
             flowLayoutPanel1.WrapContents = false;
             // 
@@ -2734,13 +2748,13 @@
             // cmbProfile
             // 
             cmbProfile.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            cmbProfile.DropDownWidth = 300;
+            cmbProfile.DropDownWidth = 100;
             cmbProfile.FormattingEnabled = true;
             cmbProfile.ItemHeight = 32;
             cmbProfile.Location = new System.Drawing.Point(780, 4);
             cmbProfile.Margin = new System.Windows.Forms.Padding(2);
             cmbProfile.Name = "cmbProfile";
-            cmbProfile.Size = new System.Drawing.Size(232, 40);
+            cmbProfile.Size = new System.Drawing.Size(110, 40);
             cmbProfile.TabIndex = 11;
             toolTip1.SetToolTip(cmbProfile, "Profile select");
             cmbProfile.DropDown += cmbProfile_DropDown;
@@ -2751,7 +2765,7 @@
             btnSave.Anchor = System.Windows.Forms.AnchorStyles.Left;
             btnSave.AutoSize = true;
             btnSave.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            btnSave.Location = new System.Drawing.Point(1016, 3);
+            btnSave.Location = new System.Drawing.Point(894, 3);
             btnSave.Margin = new System.Windows.Forms.Padding(2);
             btnSave.Name = "btnSave";
             btnSave.Size = new System.Drawing.Size(74, 42);
@@ -2766,7 +2780,7 @@
             btnActiveOnly.Anchor = System.Windows.Forms.AnchorStyles.Left;
             btnActiveOnly.AutoSize = true;
             btnActiveOnly.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            btnActiveOnly.Location = new System.Drawing.Point(1094, 3);
+            btnActiveOnly.Location = new System.Drawing.Point(972, 3);
             btnActiveOnly.Margin = new System.Windows.Forms.Padding(2);
             btnActiveOnly.Name = "btnActiveOnly";
             btnActiveOnly.Size = new System.Drawing.Size(77, 42);
@@ -2780,7 +2794,7 @@
             // 
             btnGroups.Anchor = System.Windows.Forms.AnchorStyles.Left;
             btnGroups.AutoSize = true;
-            btnGroups.Location = new System.Drawing.Point(1176, 3);
+            btnGroups.Location = new System.Drawing.Point(1054, 3);
             btnGroups.Name = "btnGroups";
             btnGroups.Size = new System.Drawing.Size(100, 42);
             btnGroups.TabIndex = 14;
@@ -2794,7 +2808,7 @@
             btnLog.Anchor = System.Windows.Forms.AnchorStyles.Left;
             btnLog.AutoSize = true;
             btnLog.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            btnLog.Location = new System.Drawing.Point(1281, 3);
+            btnLog.Location = new System.Drawing.Point(1159, 3);
             btnLog.Margin = new System.Windows.Forms.Padding(2);
             btnLog.Name = "btnLog";
             btnLog.Size = new System.Drawing.Size(63, 42);
@@ -2809,7 +2823,7 @@
             btnRefresh.Anchor = System.Windows.Forms.AnchorStyles.Left;
             btnRefresh.AutoSize = true;
             btnRefresh.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            btnRefresh.Location = new System.Drawing.Point(1348, 3);
+            btnRefresh.Location = new System.Drawing.Point(1226, 3);
             btnRefresh.Margin = new System.Windows.Forms.Padding(2);
             btnRefresh.Name = "btnRefresh";
             btnRefresh.Size = new System.Drawing.Size(103, 42);
@@ -2824,7 +2838,7 @@
             btnUpdate.Anchor = System.Windows.Forms.AnchorStyles.Left;
             btnUpdate.AutoSize = true;
             btnUpdate.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            btnUpdate.Location = new System.Drawing.Point(1455, 3);
+            btnUpdate.Location = new System.Drawing.Point(1333, 3);
             btnUpdate.Margin = new System.Windows.Forms.Padding(2);
             btnUpdate.Name = "btnUpdate";
             btnUpdate.Size = new System.Drawing.Size(101, 42);
@@ -2839,7 +2853,7 @@
             btnLoot.Anchor = System.Windows.Forms.AnchorStyles.Left;
             btnLoot.AutoSize = true;
             btnLoot.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            btnLoot.Location = new System.Drawing.Point(1560, 3);
+            btnLoot.Location = new System.Drawing.Point(1438, 3);
             btnLoot.Margin = new System.Windows.Forms.Padding(2);
             btnLoot.Name = "btnLoot";
             btnLoot.Size = new System.Drawing.Size(67, 42);
@@ -2854,7 +2868,7 @@
             btnRun.Anchor = System.Windows.Forms.AnchorStyles.Left;
             btnRun.AutoSize = true;
             btnRun.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            btnRun.Location = new System.Drawing.Point(1631, 3);
+            btnRun.Location = new System.Drawing.Point(1509, 3);
             btnRun.Margin = new System.Windows.Forms.Padding(2);
             btnRun.Name = "btnRun";
             btnRun.Size = new System.Drawing.Size(66, 42);
@@ -2869,7 +2883,7 @@
             btnCancel.Anchor = System.Windows.Forms.AnchorStyles.Left;
             btnCancel.AutoSize = true;
             btnCancel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            btnCancel.Location = new System.Drawing.Point(1701, 3);
+            btnCancel.Location = new System.Drawing.Point(1579, 3);
             btnCancel.Margin = new System.Windows.Forms.Padding(2);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new System.Drawing.Size(95, 42);
@@ -2884,7 +2898,7 @@
             btnQuit.Anchor = System.Windows.Forms.AnchorStyles.Left;
             btnQuit.AutoSize = true;
             btnQuit.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            btnQuit.Location = new System.Drawing.Point(1800, 3);
+            btnQuit.Location = new System.Drawing.Point(1678, 3);
             btnQuit.Margin = new System.Windows.Forms.Padding(2);
             btnQuit.Name = "btnQuit";
             btnQuit.Size = new System.Drawing.Size(61, 42);
@@ -3319,5 +3333,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Blocked;
         private System.Windows.Forms.DataGridViewTextBoxColumn LastModified;
         private System.Windows.Forms.ToolStripMenuItem statusStripToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator52;
+        private System.Windows.Forms.ToolStripMenuItem compactViewToolStripMenuItem;
     }
 }

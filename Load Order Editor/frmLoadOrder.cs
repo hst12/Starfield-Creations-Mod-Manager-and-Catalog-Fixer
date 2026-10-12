@@ -227,7 +227,7 @@ namespace hstCMM
                 }
             }
 
-            foreach (var arg in Environment.GetCommandLineArgs()) // Handle run command line argument
+            foreach (var arg in Environment.GetCommandLineArgs()) // Handle command line argument
             {
                 if (arg.Equals("-installmod", StringComparison.InvariantCultureIgnoreCase))
                 {
@@ -1086,6 +1086,7 @@ namespace hstCMM
             props.LOOTEnabled = NewSetting;
             props.ModStats = NewSetting;
             props.RowHighlight = NewSetting;
+            props.StatusStrip = NewSetting;
 
             SaveSettings();
             SetUpMenus();
@@ -1509,7 +1510,6 @@ namespace hstCMM
 
                         // Scroll the view directly to the bottom row
                         dataGridView1.FirstDisplayedScrollingRowIndex = lastRowIndex;
-
                     }
                     break;
 
@@ -1922,6 +1922,12 @@ namespace hstCMM
 
             if (!ActiveOnly)
                 ActiveOnlyToggle();
+
+            if (compactViewToolStripMenuItem.Checked)
+            {
+                compactViewToolStripMenuItem.Checked = Properties.Settings.Default.CompactView = false;
+                CompactView();
+            }
             RefreshDataGrid();
         }
 
@@ -3035,15 +3041,19 @@ namespace hstCMM
             SetThemeMessage();
         }
 
-        private void logWindowToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ToggleLogWindow()
         {
-            logWindowToolStripMenuItem.Checked = !logWindowToolStripMenuItem.Checked;
-            Properties.Settings.Default.LogWindow = logWindowToolStripMenuItem.Checked;
-
             if (logWindowToolStripMenuItem.Checked)
                 SetupLogRow();
             else
                 HideLogRow();
+        }
+
+        private void logWindowToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            logWindowToolStripMenuItem.Checked = !logWindowToolStripMenuItem.Checked;
+            Properties.Settings.Default.LogWindow = logWindowToolStripMenuItem.Checked;
+            ToggleLogWindow();
         }
 
         private void looseFilesDisabledToolStripMenuItem_Click(object sender, EventArgs e)
@@ -3405,6 +3415,7 @@ namespace hstCMM
             if (modStatsToolStripMenuItem.Checked)
                 RefreshDataGrid();
         }
+
         private void modStatsToolStripMenuItem_Click(object sender, EventArgs e) // Toggle Mod Stats visibility
         {
             ToggleModStats();
@@ -4136,8 +4147,8 @@ namespace hstCMM
 
             // Desired size
             int desiredWidth = totalWidth + 50;
-            if (desiredWidth < flowLayoutPanel1.Width + 100)
-                desiredWidth = flowLayoutPanel1.Width + 100;
+            if (desiredWidth < flowLayoutPanel1.Width + 50)
+                desiredWidth = flowLayoutPanel1.Width + 50;
             int desiredHeight = totalHeight + menuStrip1.Height + rtbLog.Height + flowLayoutPanel1.Height +
                 statusStrip1.Height + SystemInformation.CaptionHeight + SystemInformation.BorderSize.Height;
 
@@ -4960,7 +4971,10 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             randomToolStripMenuItem.Checked = Properties.Settings.Default.RandomLoadScreen;
             sequenceToolStripMenuItem.Checked = Properties.Settings.Default.LoadScreenSequence;
             chkFindFiltered.Checked = Properties.Settings.Default.FindActiveOnly;
-            statusStrip1.Visible= statusStripToolStripMenuItem.Checked = Properties.Settings.Default.StatusStrip;
+            statusStrip1.Visible = statusStripToolStripMenuItem.Checked = Properties.Settings.Default.StatusStrip;
+            compactViewToolStripMenuItem.Checked = Properties.Settings.Default.CompactView;
+            if (compactViewToolStripMenuItem.Checked)
+                CompactView();
         }
 
         private void sFSEPluginsToolStripMenuItem_Click(object sender, EventArgs e) // Open SFSE Plugins Directory
@@ -5134,7 +5148,6 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 }
             }
             return StatText;
-
         }
 
         private void ShowRecommendedColumns()
@@ -6099,7 +6112,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
         private void txtSearchBox_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.F3)
+            if (e.KeyCode == Keys.Enter)
                 FindMod();
         }
 
@@ -7439,7 +7452,6 @@ This function is only meant to be used on mods with empty .esm files",
                 sbar($"{dataGridView1.CurrentRow.Cells["PluginName"].Value.ToString()} copied to clipboard");
                 Clipboard.SetText(dataGridView1.SelectedCells[2].Value.ToString());
             }
-
         }
 
         private void ShowKeyMap()
@@ -7483,7 +7495,6 @@ This function is only meant to be used on mods with empty .esm files",
 
         private void ResizeProfileCombobox()
         {
-            //ComboBox senderComboBox = (ComboBox)sender;
             ComboBox senderComboBox = cmbProfile;
             int width = senderComboBox.DropDownWidth;
             Graphics g = senderComboBox.CreateGraphics();
@@ -7503,19 +7514,97 @@ This function is only meant to be used on mods with empty .esm files",
                 }
             }
             senderComboBox.DropDownWidth = width;
-            senderComboBox.Width = width; // Adjust the combox width as well.
+            if (!compactViewToolStripMenuItem.Checked)
+                senderComboBox.Width = width; // Adjust the combox width as well.
         }
+
         private void cmbProfile_DropDown(object sender, EventArgs e)
         {
             ResizeProfileCombobox();
         }
 
+        private void ToggleStatusStrip(bool OnOffState)
+        {
+            statusStrip1.Visible = statusStripToolStripMenuItem.Checked = Properties.Settings.Default.StatusStrip
+                = OnOffState;
+        }
+
         private void statusStripToolStripMenuItem_Click(object sender, EventArgs e)
         {
-             statusStrip1.Visible= statusStripToolStripMenuItem.Checked = Properties.Settings.Default.StatusStrip
-                = !statusStripToolStripMenuItem.Checked;
+            ToggleStatusStrip(!statusStripToolStripMenuItem.Checked);
+        }
 
-            //             resizeToolStripMenuItem.Checked = Properties.Settings.Default.Resize = !resizeToolStripMenuItem.Checked;
+        private void ToggleButtons(bool OnOffState)
+        {
+            btnUp.Visible = OnOffState;
+            btnDown.Visible = OnOffState;
+            btnTop.Visible = OnOffState;
+            btnBottom.Visible = OnOffState;
+            btnToggleMod.Visible = OnOffState;
+
+        }
+        private void CompactView()
+        {
+            ToggleStatusStrip(!compactViewToolStripMenuItem.Checked);
+            if (modStatsToolStripMenuItem.Checked)
+                ToggleModStats();
+            if (logWindowToolStripMenuItem.Checked)
+            {
+                logWindowToolStripMenuItem.Checked = !logWindowToolStripMenuItem.Checked;
+                Properties.Settings.Default.LogWindow = logWindowToolStripMenuItem.Checked;
+                ToggleLogWindow();
+            }
+            // Hide Date, Version and Blocked Columns
+
+            if (compactViewToolStripMenuItem.Checked)
+            {
+                HideAllColumns();
+                var enableItems = new[]
+                {
+                    ("Group", toolStripMenuGroup),
+                    ("Description", toolStripMenuDescription)
+                };
+                var disableItems = new[]
+                {
+                    ("TimeStamp", timeStampToolStripMenuItem),
+                    ("Achievements", toolStripMenuAchievements),
+                    ("CreationsID", toolStripMenuCreationsID),
+                    ("Files", toolStripMenuFiles),
+                    ("Index", toolStripMenuIndex),
+                    ("FileSize", toolStripMenuFileSize),
+                    ("URL", uRLToolStripMenuItem),
+                    ("Version", toolStripMenuVersion),
+                    ("AuthorVersion", toolStripMenuAuthorVersion),
+                    ("Blocked", blockedToolStripMenuItem)
+                };
+
+                foreach (var (columnName, menuItem) in enableItems)
+                {
+                    SetColumnVisibility(true, menuItem, dataGridView1.Columns[columnName]);
+                    Properties.Settings.Default[columnName] = true;
+                }
+
+                foreach (var (columnName, menuItem) in disableItems)
+                {
+                    SetColumnVisibility(false, menuItem, dataGridView1.Columns[columnName]);
+                    Properties.Settings.Default[columnName] = false;
+                }
+                ToggleButtons(false);
+                cmbProfile.Width = 300;
+                RefreshDataGrid();
+            }
+            else
+            {
+                ShowRecommendedColumns();
+                ToggleButtons(true);
+            }
+        }
+
+        private void compactViewToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            compactViewToolStripMenuItem.Checked = Properties.Settings.Default.CompactView
+                = !compactViewToolStripMenuItem.Checked;
+            CompactView();
         }
     }
 }

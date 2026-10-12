@@ -1,7 +1,7 @@
 Creations Mod Manager - Load Order Editor
 
 Important Notes
-- May conflict with mod managers like Vortex or MO2. Running Vortex after using this tool can disrupt your load order.
+- May conflict with mod managers like Vortex. Running Vortex after using this tool will almost certainly ruin your load order. MO2 is okay to use.
 - Works with .esm and .ba2 files but has limited support for loose file mods.
 
 Design Goals
@@ -10,7 +10,7 @@ Design Goals
 - No dependancy on online services. Fast startup and operation.
 - Creations first focus, but also supports mods manually downloaded from Nexus or other sites with some limitations.
 - Use the same technique that the game uses in its Creations inteface menu to handle load order No folder redirection or virtual folders.
-- Encourage the use of .esm and .ba2 archives to simplify load order management.
+- Encourage the use of .esm and .ba2 archives to simplify load order management. The focus is to avoid using loose files at all.
 - Leverage existing tools instead of reinventing the wheel. LOOT (standalone version) for mod sorting and the Creation Kit tools for converting loose file mods to .ba2 archives.
 
 Key Features
