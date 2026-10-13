@@ -1916,6 +1916,8 @@ namespace hstCMM
                 ShowRecommendedColumns();
                 modStatsToolStripMenuItem.Checked = true;
                 Properties.Settings.Default.ModStats = true;
+                if (!timer2.Enabled)
+                    ToggleTime();
             }
             if (Properties.Settings.Default.LOOTEnabled)
                 ReadLOOTGroups();
@@ -5199,13 +5201,17 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             SS.Show();
         }
 
-        private void showTimeToolStripMenuItem_Click_1(object sender, EventArgs e) // Display date and time
+        private void ToggleTime()
         {
             timer2.Enabled = !timer2.Enabled;
             showTimeToolStripMenuItem.Checked = timer2.Enabled;
             Properties.Settings.Default.Showtime = showTimeToolStripMenuItem.Checked;
             if (!timer2.Enabled)
                 sbar5("");
+        }
+        private void showTimeToolStripMenuItem_Click_1(object sender, EventArgs e) // Display date and time
+        {
+            ToggleTime();
         }
 
         private void starUIConfiguratorToolStripMenuItem_Click(object sender, EventArgs e) // Launch StarUI Configurator if installed
@@ -7495,6 +7501,7 @@ This function is only meant to be used on mods with empty .esm files",
 
         private void ResizeProfileCombobox()
         {
+
             ComboBox senderComboBox = cmbProfile;
             int width = senderComboBox.DropDownWidth;
             Graphics g = senderComboBox.CreateGraphics();
@@ -7514,8 +7521,10 @@ This function is only meant to be used on mods with empty .esm files",
                 }
             }
             senderComboBox.DropDownWidth = width;
-            if (!compactViewToolStripMenuItem.Checked)
-                senderComboBox.Width = width; // Adjust the combox width as well.
+            if (compactViewToolStripMenuItem.Checked)
+                senderComboBox.Width = 300; // Adjust the combox width as well.
+            else
+                senderComboBox.Width = width;
         }
 
         private void cmbProfile_DropDown(object sender, EventArgs e)
@@ -7541,8 +7550,8 @@ This function is only meant to be used on mods with empty .esm files",
             btnTop.Visible = OnOffState;
             btnBottom.Visible = OnOffState;
             btnToggleMod.Visible = OnOffState;
-
         }
+
         private void CompactView()
         {
             ToggleStatusStrip(!compactViewToolStripMenuItem.Checked);
@@ -7590,7 +7599,9 @@ This function is only meant to be used on mods with empty .esm files",
                     Properties.Settings.Default[columnName] = false;
                 }
                 ToggleButtons(false);
-                cmbProfile.Width = 300;
+                cmbProfile.Width = 200;
+                if (timer2.Enabled)
+                    ToggleTime();
                 RefreshDataGrid();
             }
             else
