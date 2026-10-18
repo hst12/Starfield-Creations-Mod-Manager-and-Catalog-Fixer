@@ -2,6 +2,7 @@
 using hstCMM.Load_Order_Editor;
 using hstCMM.Shared;
 using Microsoft.VisualBasic;
+using Microsoft.VisualBasic.FileIO;
 using Microsoft.Win32;
 using Microsoft.WindowsAPICodePack.Shell;
 using Microsoft.WindowsAPICodePack.Taskbar;
@@ -26,6 +27,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
+using static hstCMM.Shared.Tools;
 using File = System.IO.File;
 
 namespace hstCMM
@@ -519,7 +521,7 @@ namespace hstCMM
 
             try
             {
-                pluginFiles.AddRange(Directory.EnumerateFiles(directory, "*.esp", SearchOption.TopDirectoryOnly) // Add .esp files
+                pluginFiles.AddRange(Directory.EnumerateFiles(directory, "*.esp", System.IO.SearchOption.TopDirectoryOnly) // Add .esp files
                                               .Select(Path.GetFileName));
             }
             catch (Exception ex)
@@ -910,7 +912,7 @@ namespace hstCMM
                 Directory.CreateDirectory(Path.Combine(profilePath, "Backup"));
             }
             activityLog.WriteLog("Starting profile backup");
-            foreach (var item in Directory.EnumerateFiles(profilePath, "*.txt", SearchOption.TopDirectoryOnly))
+            foreach (var item in Directory.EnumerateFiles(profilePath, "*.txt", System.IO.SearchOption.TopDirectoryOnly))
             {
                 string fileName = Path.GetFileName(item);
                 string destinationPath = Path.Combine(profilePath, "Backup", fileName);
@@ -1104,13 +1106,13 @@ namespace hstCMM
             // Build a list of all plugins excluding base game files
             plugins = pluginList.Select(s => s[..^4]).ToList();
 
-            foreach (string file in Directory.EnumerateFiles(Path.Combine(GamePath, "Data"), "*.ba2", SearchOption.TopDirectoryOnly))
+            foreach (string file in Directory.EnumerateFiles(Path.Combine(GamePath, "Data"), "*.ba2", System.IO.SearchOption.TopDirectoryOnly))
             // Build a list of all .ba2archives
             {
                 archives.Add(Path.GetFileName(file));
             }
 
-            foreach (string file in Directory.EnumerateFiles(Path.Combine(GamePath, "Data"), "*.bsa", SearchOption.TopDirectoryOnly))
+            foreach (string file in Directory.EnumerateFiles(Path.Combine(GamePath, "Data"), "*.bsa", System.IO.SearchOption.TopDirectoryOnly))
             // Build a list of all .bsa archives
             {
                 archives.Add(Path.GetFileName(file));
@@ -2252,7 +2254,7 @@ namespace hstCMM
             List<string> excludefiles = new();
             foreach (var pattern in patterns)
             {
-                var modFiles = Directory.EnumerateFiles(Path.Combine(GamePath, "Data"), pattern, SearchOption.TopDirectoryOnly);
+                var modFiles = Directory.EnumerateFiles(Path.Combine(GamePath, "Data"), pattern, System.IO.SearchOption.TopDirectoryOnly);
                 foreach (var modFile in modFiles)
                 {
                     excludefiles.Add(Path.GetFileName(modFile));
@@ -2338,7 +2340,7 @@ namespace hstCMM
 
             try
             {
-                foreach (var profileName in Directory.EnumerateFiles(ProfileFolder, "*.txt", SearchOption.TopDirectoryOnly))
+                foreach (var profileName in Directory.EnumerateFiles(ProfileFolder, "*.txt", System.IO.SearchOption.TopDirectoryOnly))
                 {
                     cmbProfile.Items.Add(profileName[(profileName.LastIndexOf('\\') + 1)..]);
                 }
@@ -2793,7 +2795,7 @@ namespace hstCMM
                     {
                         foreach (string pattern in searchPatterns)
                         {
-                            string[] archiveFiles = Directory.GetFiles(extractPath, pattern, SearchOption.AllDirectories);
+                            string[] archiveFiles = Directory.GetFiles(extractPath, pattern, System.IO.SearchOption.AllDirectories);
 
                             if (archiveFiles.Length > 0)
                             {
@@ -2823,13 +2825,13 @@ namespace hstCMM
             }
 
             // Check what file types are in the arive
-            if (Directory.EnumerateFiles(extractPath, "*.esm", SearchOption.AllDirectories).Any())
-                esmFile = Directory.GetFiles(extractPath, "*.esm", SearchOption.AllDirectories).FirstOrDefault();
-            if (Directory.EnumerateFiles(extractPath, "*.esp", SearchOption.AllDirectories).Any())
-                esmFile = Directory.GetFiles(extractPath, "*.esp", SearchOption.AllDirectories).FirstOrDefault();
-            if (Directory.EnumerateFiles(extractPath, "*.esl", SearchOption.AllDirectories).Any())
-                esmFile = Directory.GetFiles(extractPath, "*.esl", SearchOption.AllDirectories).FirstOrDefault();
-            if (Directory.EnumerateFiles(extractPath, "*.bk2", SearchOption.AllDirectories).Any())
+            if (Directory.EnumerateFiles(extractPath, "*.esm", System.IO.SearchOption.AllDirectories).Any())
+                esmFile = Directory.GetFiles(extractPath, "*.esm", System.IO.SearchOption.AllDirectories).FirstOrDefault();
+            if (Directory.EnumerateFiles(extractPath, "*.esp", System.IO.SearchOption.AllDirectories).Any())
+                esmFile = Directory.GetFiles(extractPath, "*.esp", System.IO.SearchOption.AllDirectories).FirstOrDefault();
+            if (Directory.EnumerateFiles(extractPath, "*.esl", System.IO.SearchOption.AllDirectories).Any())
+                esmFile = Directory.GetFiles(extractPath, "*.esl", System.IO.SearchOption.AllDirectories).FirstOrDefault();
+            if (Directory.EnumerateFiles(extractPath, "*.bk2", System.IO.SearchOption.AllDirectories).Any())
                 activityLog.WriteLog("Warning: .bk2 files found in mod - these are not currently supported and will be ignored");
 
             // Move .esm and .ba2 files to the game's Data folder.
@@ -2851,7 +2853,7 @@ namespace hstCMM
             // Install SFSE plugin if found.
             try
             {
-                string[] sfseDirs = Directory.GetDirectories(extractPath, "SFSE", SearchOption.AllDirectories);
+                string[] sfseDirs = Directory.GetDirectories(extractPath, "SFSE", System.IO.SearchOption.AllDirectories);
                 if (sfseDirs.Length > 0)
                     SFSEMod = true;
 
@@ -2871,7 +2873,7 @@ namespace hstCMM
             // Install SAF files if found.
             try
             {
-                string[] SAFDirs = Directory.GetDirectories(extractPath, "SAF", SearchOption.AllDirectories);
+                string[] SAFDirs = Directory.GetDirectories(extractPath, "SAF", System.IO.SearchOption.AllDirectories);
                 foreach (string dir in SAFDirs)
                 {
                     tempstr = Path.Combine(GamePath, "Data", "SAF");
@@ -2897,7 +2899,7 @@ namespace hstCMM
             // Recursively search for each directory and copy its contents
             foreach (var dirName in looseFileDirs)
             {
-                var directoriesFound = Directory.GetDirectories(extractPath, dirName, SearchOption.AllDirectories);
+                var directoriesFound = Directory.GetDirectories(extractPath, dirName, System.IO.SearchOption.AllDirectories);
 
                 foreach (var sourceDir in directoriesFound)
                 {
@@ -2952,7 +2954,7 @@ namespace hstCMM
             int MoveExtractedFiles(string searchPattern, string fileTypeLabel)
             {
                 int count = 0;
-                foreach (string modFile in Directory.EnumerateFiles(extractPath, searchPattern, SearchOption.AllDirectories))
+                foreach (string modFile in Directory.EnumerateFiles(extractPath, searchPattern, System.IO.SearchOption.AllDirectories))
                 {
                     string fileName = Path.GetFileName(modFile);
                     string destinationPath = Path.Combine(GamePath, "Data", fileName);
@@ -3844,7 +3846,7 @@ namespace hstCMM
 
             try
             {
-                pluginFiles.AddRange(Directory.EnumerateFiles(directory, "*.esp", SearchOption.TopDirectoryOnly)
+                pluginFiles.AddRange(Directory.EnumerateFiles(directory, "*.esp", System.IO.SearchOption.TopDirectoryOnly)
                                               .Select(Path.GetFileName));
             }
             catch (Exception ex)
@@ -3913,7 +3915,7 @@ namespace hstCMM
 
         private void removeSFSEToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string[] files = Directory.GetFiles(GamePath, "sfse_*.dll", SearchOption.TopDirectoryOnly); // Delete the dll files as well
+            string[] files = Directory.GetFiles(GamePath, "sfse_*.dll", System.IO.SearchOption.TopDirectoryOnly); // Delete the dll files as well
             foreach (var file in files)
             {
                 if (File.Exists(file))
@@ -4280,7 +4282,7 @@ namespace hstCMM
             if (Directory.Exists(Path.Combine(Properties.Settings.Default.ProfileFolder, GameName, "Backup")))
             {
                 foreach (var item in Directory.EnumerateFiles(Path.Combine(Properties.Settings.Default.ProfileFolder, GameName, "Backup"), "*.txt",
-                    SearchOption.TopDirectoryOnly))
+                    System.IO.SearchOption.TopDirectoryOnly))
                 {
                     string fileName = Path.GetFileName(item);
                     string destinationPath = Path.Combine(Properties.Settings.Default.ProfileFolder, GameName, fileName);
@@ -5058,7 +5060,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     .ToHashSet(StringComparer.OrdinalIgnoreCase);
 
                 // Process all BA2 files
-                var allBa2Files = Directory.EnumerateFiles(dataDirectory, "*.ba2", SearchOption.TopDirectoryOnly);
+                var allBa2Files = Directory.EnumerateFiles(dataDirectory, "*.ba2", System.IO.SearchOption.TopDirectoryOnly);
                 var archives = new List<string>();
                 var mainArchivePlugins = new List<string>();
                 var textureArchivePlugins = new List<string>();
@@ -5093,10 +5095,10 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 }
 
                 // Calculate all counts
-                ba2Count = Directory.EnumerateFiles(dataDirectory, "*.ba2", SearchOption.TopDirectoryOnly).Count();
-                esmCount = Directory.EnumerateFiles(dataDirectory, "*.esm", SearchOption.TopDirectoryOnly).Count();
+                ba2Count = Directory.EnumerateFiles(dataDirectory, "*.ba2", System.IO.SearchOption.TopDirectoryOnly).Count();
+                esmCount = Directory.EnumerateFiles(dataDirectory, "*.esm", System.IO.SearchOption.TopDirectoryOnly).Count();
 
-                espCount = Directory.EnumerateFiles(dataDirectory, "*.esp", SearchOption.TopDirectoryOnly)
+                espCount = Directory.EnumerateFiles(dataDirectory, "*.esp", System.IO.SearchOption.TopDirectoryOnly)
                     .Select(file => Path.GetFileNameWithoutExtension(file))
                     .Where(plugin => !string.IsNullOrEmpty(plugin))
                     .Count(plugin => enabledPlugins.Contains(plugin.ToLowerInvariant()));
@@ -5326,7 +5328,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 for (int i = 0; i < buckets.Length; i++) buckets[i] = new List<string>();
 
                 string dataDir = Path.Combine(GamePath, "Data");
-                foreach (var path in Directory.EnumerateFiles(dataDir, "*.es?", SearchOption.TopDirectoryOnly))
+                foreach (var path in Directory.EnumerateFiles(dataDir, "*.es?", System.IO.SearchOption.TopDirectoryOnly))
                 {
                     var name = Path.GetFileName(path);
                     for (int i = 0; i < PluginExtensions.Length; i++)
@@ -6272,7 +6274,22 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                         string modFile = modBasePath + Path.GetExtension(pluginName);
                         if (File.Exists(modFile))
                         {
-                            File.Delete(modFile);
+                            //File.Delete(modFile);
+                            try
+                            {
+                                // Delete to Recycle Bin
+                                Microsoft.VisualBasic.FileIO.FileSystem.DeleteFile(
+                                    modFile,
+                                    UIOption.OnlyErrorDialogs,
+                                    RecycleOption.SendToRecycleBin
+                                );
+
+                                activityLog.WriteLog($"{modFile} successfully sent to the Recycle Bin.");
+                            }
+                            catch (Exception ex)
+                            {
+                                LogError($"Error deleting {modFile}: {ex.Message}");
+                            }
                             activityLog.WriteLog($"Deleted: {modFile}");
                             SavePlugins();
                             sbar3($"{modFile} uninstalled");
@@ -6303,7 +6320,22 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                         string filePath = modBasePath + ext;
                         if (File.Exists(filePath))
                         {
-                            File.Delete(filePath);
+                            //File.Delete(filePath);
+                            try
+                            {
+                                // Delete to Recycle Bin
+                                Microsoft.VisualBasic.FileIO.FileSystem.DeleteFile(
+                                    filePath,
+                                    UIOption.OnlyErrorDialogs,
+                                    RecycleOption.SendToRecycleBin
+                                );
+
+                                activityLog.WriteLog($"{filePath} successfully sent to the Recycle Bin.");
+                            }
+                            catch (Exception ex)
+                            {
+                                LogError($"Error deleting {filePath}: {ex.Message}");
+                            }
                             activityLog.WriteLog($"Deleted: {filePath}");
                         }
                     }
@@ -6314,7 +6346,23 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
                     foreach (string file in textureFiles)
                     {
-                        File.Delete(file);
+                        //File.Delete(file);
+                        try
+                        {
+                            // Delete to Recycle Bin
+                            Microsoft.VisualBasic.FileIO.FileSystem.DeleteFile(
+                                file,
+                                UIOption.OnlyErrorDialogs,
+                                RecycleOption.SendToRecycleBin
+                            );
+
+                            activityLog.WriteLog($"{file} successfully sent to the Recycle Bin.");
+                        }
+                        catch (Exception ex)
+                        {
+                            LogError($"Error deleting {file}: {ex.Message}");
+                        }
+
                         activityLog.WriteLog($"Deleted: {file}");
                     }
 
@@ -6323,7 +6371,23 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
                     foreach (string file in mainFiles)
                     {
-                        File.Delete(file);
+                        //File.Delete(file);
+                        try
+                        {
+                            // Delete to Recycle Bin
+                            Microsoft.VisualBasic.FileIO.FileSystem.DeleteFile(
+                                file,
+                                UIOption.OnlyErrorDialogs,
+                                RecycleOption.SendToRecycleBin
+                            );
+
+                            activityLog.WriteLog($"{file} successfully sent to the Recycle Bin.");
+                        }
+                        catch (Exception ex)
+                        {
+                            LogError($"Error deleting {file}: {ex.Message}");
+                        }
+
                         activityLog.WriteLog($"Deleted: {file}");
                     }
 
@@ -6941,7 +7005,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 return;
 
             // Continue if folder selected
-            var sourceFiles = Directory.GetFiles(openFolderDialog.FolderName, "*.esm", SearchOption.TopDirectoryOnly);
+            var sourceFiles = Directory.GetFiles(openFolderDialog.FolderName, "*.esm", System.IO.SearchOption.TopDirectoryOnly);
             var filesToCopy = sourceFiles.
                 Select(fileName => Path.GetFileName(fileName)).Except(pluginList, StringComparer.OrdinalIgnoreCase);
 
