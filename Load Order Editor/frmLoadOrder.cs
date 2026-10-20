@@ -7615,7 +7615,6 @@ This function is only meant to be used on mods with empty .esm files",
                     ToggleTime();
                     ResizeForm();
                 }
-
             }
         }
 
