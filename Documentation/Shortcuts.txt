@@ -31,8 +31,10 @@ F2 - Update and Sort
 F3 - Update all profiles
 F5 - Refresh mod list
 
-Ctrl-F11 - Enable all settings in Tools menu
-Ctrl-F12 - Reset all game settings and delete loose files
+Ctrl-F1 - Toggle Compact View
+Ctrl-F10 - Enable all settings in Tools menu
+Ctrl-F11 - Reset all game settings and delete loose files
+Ctrl-F12 - Enable all settings in Tools menu, Reset all game settings and delete loose files with no warnings
 
 Exit app - X
 

@@ -25,7 +25,6 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Windows.Shapes;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 using File = System.IO.File;
@@ -1244,6 +1243,7 @@ namespace hstCMM
             ResizeForm();
             GetPreviousIndex();
             dataGridView1.Focus();
+            ResizeForm();
         }
 
         private void CompareProfiles()
@@ -1908,20 +1908,21 @@ namespace hstCMM
             activityLog.WriteLog("All mods enabled");
         }
 
-        private void enableAllToolStripMenuItem_Click(object sender, EventArgs e)
+        private void EnableAllSettings(bool silent = false)
         {
-            if (Tools.ConfirmAction("Enable All settings?", "This will turn on a most of the Tools menu settings and reset ini settings",
-                MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes)
-            {
-                ChangeSettings(true);
-                activityLog.WriteLog("Enabling all settings");
-                ResetDefaults();
-                ShowRecommendedColumns();
-                modStatsToolStripMenuItem.Checked = true;
-                Properties.Settings.Default.ModStats = true;
-                if (!timer2.Enabled)
-                    ToggleTime();
-            }
+            if (!silent)
+                if (Tools.ConfirmAction("Enable All settings?", "This will turn on a most of the Tools menu settings and reset ini settings",
+        MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes)
+                {
+                    ChangeSettings(true);
+                    activityLog.WriteLog("Enabling all settings");
+                    ResetDefaults();
+                    ShowRecommendedColumns();
+                    modStatsToolStripMenuItem.Checked = true;
+                    Properties.Settings.Default.ModStats = true;
+                    if (!timer2.Enabled)
+                        ToggleTime();
+                }
             if (Properties.Settings.Default.LOOTEnabled)
                 ReadLOOTGroups();
 
@@ -1934,6 +1935,10 @@ namespace hstCMM
                 CompactView();
             }
             RefreshDataGrid();
+        }
+        private void enableAllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            EnableAllSettings();
         }
 
         private void EnableDisable()
@@ -4038,13 +4043,14 @@ namespace hstCMM
             return ChangeCount;
         }
 
-        private void resetEverythingToolStripMenuItem_Click(object sender, EventArgs e) // Reset all game settings and delete loose file folders, preserves app settings.
+        private void ResetEverything(bool silent = false)
         {
             int actionCount;
 
-            if (Tools.ConfirmAction("This will reset all game settings and delete all loose files folders", "Are you sure?", MessageBoxButtons.YesNo,
-                MessageBoxIcon.Exclamation) == DialogResult.No)
-                return;
+            if (!silent)
+                if (Tools.ConfirmAction("This will reset all game settings and delete all loose files folders", "Are you sure?", MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Exclamation) == DialogResult.No)
+                    return;
             activityLog.WriteLog("Starting reset everything.");
             //actionCount = Restore [GameName]INI();
             actionCount = DeleteLooseFileFolders();
@@ -4053,6 +4059,10 @@ namespace hstCMM
 
             sbar3(actionCount.ToString() + " Change(s) made");
             activityLog.WriteLog("Reset everything: " + actionCount.ToString() + " Change(s) made");
+        }
+        private void resetEverythingToolStripMenuItem_Click(object sender, EventArgs e) // Reset all game settings and delete loose file folders, preserves app settings.
+        {
+            ResetEverything();
         }
 
         private int ResetGameCustomINI(bool ConfirmOverwrite)  // true for confirmation
@@ -7623,6 +7633,12 @@ This function is only meant to be used on mods with empty .esm files",
             compactViewToolStripMenuItem.Checked = Properties.Settings.Default.CompactView
                 = !compactViewToolStripMenuItem.Checked;
             CompactView();
+        }
+
+        private void resetAllGameSettingsAndSetToolsMenuDefaultsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ResetEverything(true);
+            EnableAllSettings(true);
         }
     }
 }
