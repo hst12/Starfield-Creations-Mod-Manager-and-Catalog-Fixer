@@ -1,4 +1,5 @@
 ﻿using hstCMM.Properties;
+using Microsoft.VisualBasic.FileIO;
 using Microsoft.Win32;
 using Narod.SteamGameFinder;
 using System;
@@ -468,7 +469,7 @@ namespace hstCMM.Shared // Various functions used by the app
                 //patterns = GameLibrary.GetById(Game).ModFormats;
                 foreach (var pattern in patterns)
                 {
-                    var modFiles = Directory.EnumerateFiles(dataPath, pattern, SearchOption.TopDirectoryOnly)
+                    var modFiles = Directory.EnumerateFiles(dataPath, pattern, System.IO.SearchOption.TopDirectoryOnly)
                                     .Select(Path.GetFileName)
                                     .Where(fileName => !BethFiles.Contains(fileName, StringComparer.OrdinalIgnoreCase)
                                         && !fileName.Contains("blueprintships-", StringComparison.OrdinalIgnoreCase))
@@ -790,6 +791,32 @@ namespace hstCMM.Shared // Various functions used by the app
             {
                 CopyDirectory(subDir.FullName, Path.Combine(destinationDir, subDir.Name));
             }
+        }
+        public bool DeleteFileToBin(string path)
+        {
+            bool returnCode = false;
+            if (File.Exists(path))
+            {
+                try
+                {
+                    // Delete to Recycle Bin
+                    Microsoft.VisualBasic.FileIO.FileSystem.DeleteFile(
+                        path,
+                        UIOption.OnlyErrorDialogs,
+                        RecycleOption.SendToRecycleBin
+                    );
+                    activityLog.WriteLog($"{path} sent to the Recycle Bin.");
+                    returnCode = true;
+                }
+                catch (Exception ex)
+                {
+                    activityLog.WriteLog($"Error deleting {path}: {ex.Message}");
+                    return false;
+                }
+                return returnCode;
+            }
+            else
+                return returnCode;
         }
     }
 }

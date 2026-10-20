@@ -25,9 +25,9 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Shapes;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
-using static hstCMM.Shared.Tools;
 using File = System.IO.File;
 
 namespace hstCMM
@@ -42,7 +42,7 @@ namespace hstCMM
         public int Game = Properties.Settings.Default.Game;
         private readonly Tools tools = new();
         private CancellationTokenSource cancellationTokenSource;
-        private Rectangle dragBoxFromMouseDown;
+        private System.Drawing.Rectangle dragBoxFromMouseDown;
         private Tools.Configuration Groups = new();
         private string LastProfile, tempstr;
         private List<string> pluginList;
@@ -115,8 +115,8 @@ namespace hstCMM
             {
                 if (!Directory.Exists(Tools.LocalAppDataPath))
                     Directory.CreateDirectory(Tools.LocalAppDataPath);
-                if (!File.Exists(Path.Combine(Tools.LocalAppDataPath, "BlockedMods.txt")))
-                    File.Create(Path.Combine(Tools.LocalAppDataPath, "BlockedMods.txt")).Close();
+                if (!File.Exists(System.IO.Path.Combine(Tools.LocalAppDataPath, "BlockedMods.txt")))
+                    File.Create(System.IO.Path.Combine(Tools.LocalAppDataPath, "BlockedMods.txt")).Close();
             }
             catch (Exception ex)
             {
@@ -152,7 +152,7 @@ namespace hstCMM
             {
                 if (arg.StartsWith("-profile", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    tempstr = Path.Combine(Properties.Settings.Default.ProfileFolder, GameName, Environment.GetCommandLineArgs()[2]);
+                    tempstr = System.IO.Path.Combine(Properties.Settings.Default.ProfileFolder, GameName, Environment.GetCommandLineArgs()[2]);
                     //LastProfile = Environment.GetCommandLineArgs()[2];
                     SwitchProfile(tempstr);
                 }
@@ -167,7 +167,7 @@ namespace hstCMM
             cmbProfile.Enabled = Profiles;
             if (Profiles)
             {
-                tempstr = Path.Combine(Properties.Settings.Default.ProfileFolder, GameName);
+                tempstr = System.IO.Path.Combine(Properties.Settings.Default.ProfileFolder, GameName);
                 if (!Directory.Exists(tempstr))
                     Directory.CreateDirectory(tempstr);
                 GetProfiles();
@@ -246,8 +246,8 @@ namespace hstCMM
 
         private void BackupCustomINI()
         {
-            tempstr = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                Path.Combine("My Games", GameName, GameName + "Custom.ini"));
+            tempstr = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                System.IO.Path.Combine("My Games", GameName, GameName + "Custom.ini"));
             if (!File.Exists(tempstr + ".bak") && File.Exists(tempstr))
             {
                 sbar2($"{GameName}Custom.ini backed up to {GameName}Custom.ini.bak");
@@ -257,8 +257,8 @@ namespace hstCMM
 
         private void LooseFilesCheck()
         {
-            string LooseFilesDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName),
-             filePath = Path.Combine(LooseFilesDir, GameName + "Custom.ini");
+            string LooseFilesDir = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName),
+             filePath = System.IO.Path.Combine(LooseFilesDir, GameName + "Custom.ini");
             try
             {
                 if (File.Exists(filePath))
@@ -289,7 +289,7 @@ namespace hstCMM
                 if (tempstr == "")
                     tempstr = Tools.LocalAppDataPath;
                 log = true;
-                activityLog.LoadLog(Path.Combine(tempstr, "Activity Log.txt"));
+                activityLog.LoadLog(System.IO.Path.Combine(tempstr, "Activity Log.txt"));
                 btnLog.Font = new System.Drawing.Font(btnLog.Font, log ? FontStyle.Bold : FontStyle.Regular);
                 SetupLogRow();
             }
@@ -310,7 +310,7 @@ namespace hstCMM
                 {
                     Arguments = "-run",
                     IconReference = new IconReference(System.Windows.Forms.Application.ExecutablePath, 0),
-                    WorkingDirectory = Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath),
+                    WorkingDirectory = System.IO.Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath),
                     Title = "Run Game"
                 };
 
@@ -318,7 +318,7 @@ namespace hstCMM
                 {
                     Arguments = "-runsfse",
                     IconReference = new IconReference(System.Windows.Forms.Application.ExecutablePath, 0),
-                    WorkingDirectory = Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath),
+                    WorkingDirectory = System.IO.Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath),
                     Title = "Run Game - SFSE"
                 };
 
@@ -326,7 +326,7 @@ namespace hstCMM
                 {
                     Arguments = "-dev",
                     IconReference = new IconReference(System.Windows.Forms.Application.ExecutablePath, 0),
-                    WorkingDirectory = Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath),
+                    WorkingDirectory = System.IO.Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath),
                     Title = "Dev Mode"
                 };
 
@@ -334,7 +334,7 @@ namespace hstCMM
                 {
                     Arguments = "-noauto",
                     IconReference = new IconReference(System.Windows.Forms.Application.ExecutablePath, 0),
-                    WorkingDirectory = Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath),
+                    WorkingDirectory = System.IO.Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath),
                     Title = "Disable Settings"
                 };
 
@@ -342,7 +342,7 @@ namespace hstCMM
                 {
                     Arguments = "-norestore",
                     IconReference = new IconReference(System.Windows.Forms.Application.ExecutablePath, 0),
-                    WorkingDirectory = Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath),
+                    WorkingDirectory = System.IO.Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath),
                     Title = "Disable Catalog Restore"
                 };
 
@@ -350,7 +350,7 @@ namespace hstCMM
                 {
                     Arguments = "-installmod",
                     IconReference = new IconReference(System.Windows.Forms.Application.ExecutablePath, 0),
-                    WorkingDirectory = Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath),
+                    WorkingDirectory = System.IO.Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath),
                     Title = "Install Mod"
                 };
 
@@ -380,7 +380,7 @@ namespace hstCMM
         public void ResetPreferences() // Reset user preferences
         {
             string localAppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            string appPreferencesPath = Path.Combine(localAppDataPath, "hstCMM");
+            string appPreferencesPath = System.IO.Path.Combine(localAppDataPath, "hstCMM");
 
             if (Tools.ConfirmAction("Are you sure you want to reset user preferences?", "This will delete all user settings and preferences",
                 MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, true) == DialogResult.No) // Override Nowarn
@@ -398,12 +398,13 @@ namespace hstCMM
             }
         }
 
-        private static int CheckAndDeleteINI(string FileName)
+        private int CheckAndDeleteINI(string FileName)
         {
-            string FolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", Tools.GameName);
-            if (File.Exists(Path.Combine(FolderPath, FileName)))
+            string FolderPath = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", Tools.GameName);
+            tempstr = System.IO.Path.Combine(FolderPath, FileName);
+            if (File.Exists(tempstr))
             {
-                File.Delete(Path.Combine(FolderPath, FileName));
+                tools.DeleteFileToBin(tempstr);
                 return 1;
             }
             else
@@ -412,8 +413,8 @@ namespace hstCMM
 
         private static bool CheckGameCustom()
         {
-            return Tools.FileCompare(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                     "My Games", GameName, $"{GameName}Custom.ini"), Path.Combine(Tools.CommonFolder, $"{GameName}Custom.ini"));
+            return Tools.FileCompare(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                     "My Games", GameName, $"{GameName}Custom.ini"), System.IO.Path.Combine(Tools.CommonFolder, $"{GameName}Custom.ini"));
         }
 
         private static void CreateZipFromFiles(List<string> files, string zipPath)
@@ -424,7 +425,7 @@ namespace hstCMM
                 {
                     foreach (string file in files)
                     {
-                        ZipArchiveEntry entry = archive.CreateEntryFromFile(file, Path.GetFileName(file), CompressionLevel.Fastest);
+                        ZipArchiveEntry entry = archive.CreateEntryFromFile(file, System.IO.Path.GetFileName(file), CompressionLevel.Fastest);
                     }
                 }
             }
@@ -516,13 +517,13 @@ namespace hstCMM
             if (!CheckGamePath() || string.IsNullOrEmpty(GamePath))
                 return 0;
 
-            string directory = Path.Combine(GamePath, "Data");
+            string directory = System.IO.Path.Combine(GamePath, "Data");
             List<string> pluginFiles = tools.GetPluginList(Game); // Add .esm files
 
             try
             {
                 pluginFiles.AddRange(Directory.EnumerateFiles(directory, "*.esp", System.IO.SearchOption.TopDirectoryOnly) // Add .esp files
-                                              .Select(Path.GetFileName));
+                                              .Select(System.IO.Path.GetFileName));
             }
             catch (Exception ex)
             {
@@ -641,7 +642,7 @@ namespace hstCMM
             if (!CheckGamePath()) // Abort if game path not set
                 return;
 
-            string directoryPath = Path.Combine(GamePath, "Data");
+            string directoryPath = System.IO.Path.Combine(GamePath, "Data");
 
             using FolderBrowserDialog folderBrowserDialog = new();
             folderBrowserDialog.Description = "Choose folder to archive the mods to";
@@ -657,7 +658,7 @@ namespace hstCMM
                 {
                     if (row.Cells["PluginName"].Value is not string ModNameRaw) continue;
                     string ModName = ModNameRaw[..ModNameRaw.IndexOf('.')]; // Get current mod name
-                    string ModFile = Path.Combine(directoryPath, ModName); // Add esp, esm, and archives to files list
+                    string ModFile = System.IO.Path.Combine(directoryPath, ModName); // Add esp, esm, and archives to files list
 
                     if (File.Exists(ModFile + ".esp"))
                         files.Add(ModFile + ".esp");
@@ -680,7 +681,7 @@ namespace hstCMM
                     if (File.Exists(ModFile + " - voices_en.ba2"))
                         files.Add(ModFile + " - voices_en.ba2");
 
-                    string zipPath = Path.Combine(selectedFolderPath, ModName) + ".zip"; // Choose path to Zip it
+                    string zipPath = System.IO.Path.Combine(selectedFolderPath, ModName) + ".zip"; // Choose path to Zip it
 
                     void makeArchive()
                     {
@@ -785,7 +786,7 @@ namespace hstCMM
                 fileName = sfd.FileName;
             }
             else
-                fileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "hstCMMsettings.json");
+                fileName = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "hstCMMsettings.json");
 
             SaveSettings();
             try
@@ -806,13 +807,13 @@ namespace hstCMM
 
         private void BackupBlockedMods(bool UseDocuments = false)
         {
-            string blockedModsFilePath = Path.Combine(Tools.LocalAppDataPath, "BlockedMods.txt");
+            string blockedModsFilePath = System.IO.Path.Combine(Tools.LocalAppDataPath, "BlockedMods.txt");
             BackupFile(blockedModsFilePath, UseDocuments);
         }
 
         private void BackupContentCatalog(bool useDocuments = false)
         {
-            string selectedFolderPath = string.Empty, filePath = Path.Combine(Tools.GameAppData, "ContentCatalog.txt");
+            string selectedFolderPath = string.Empty, filePath = System.IO.Path.Combine(Tools.GameAppData, "ContentCatalog.txt");
             BackupFile(filePath, useDocuments);
         }
 
@@ -825,14 +826,14 @@ namespace hstCMM
         {
             string destinationPath = string.Empty, selectedFolderPath = string.Empty;
             using FolderBrowserDialog folderBrowserDialog = new();
-            folderBrowserDialog.Description = $"Choose folder to use to backup {Path.GetFileName(file)}";
+            folderBrowserDialog.Description = $"Choose folder to use to backup {System.IO.Path.GetFileName(file)}";
             folderBrowserDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments); // Set initial directory to Documents Directory
             if (!UseDocuments)
             {
                 if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
                 {
                     selectedFolderPath = folderBrowserDialog.SelectedPath;
-                    destinationPath = Path.Combine(selectedFolderPath, Path.GetFileName(file));
+                    destinationPath = System.IO.Path.Combine(selectedFolderPath, System.IO.Path.GetFileName(file));
                     if (!File.Exists(file))
                     {
                         MessageBox.Show($"{file} not found", "Source file not found", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -842,7 +843,7 @@ namespace hstCMM
                 }
             }
             else
-                destinationPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), Path.GetFileName(file));
+                destinationPath = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), System.IO.Path.GetFileName(file));
             try
             {
                 if (destinationPath != string.Empty)
@@ -864,18 +865,18 @@ namespace hstCMM
         {
             if (Properties.Settings.Default.LOOTPath == "")
                 return;
-            string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            string filePath = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                 $"LOOT\\games\\{GameName}\\userlist.yaml");
 
             BackupFile(filePath, UseDocuments);
-            filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            filePath = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                 $"LOOT\\games\\{GameName}\\group_node_positions.bin");
             BackupFile(filePath, UseDocuments);
         }
 
         private void BackupPlugins()
         {
-            string sourceFileName = Path.Combine(Tools.GameAppData, "Plugins.txt");
+            string sourceFileName = System.IO.Path.Combine(Tools.GameAppData, "Plugins.txt");
             string destFileName = sourceFileName + ".bak";
 
             if (isModified)
@@ -888,7 +889,7 @@ namespace hstCMM
             {
                 File.Copy(sourceFileName, destFileName, true); // overwrite
                 sbar("Plugins.txt backed up");
-                activityLog.WriteLog($"Backup of {Path.GetFileName(sourceFileName)} done to {Path.GetFileName(destFileName)}");
+                activityLog.WriteLog($"Backup of {System.IO.Path.GetFileName(sourceFileName)} done to {System.IO.Path.GetFileName(destFileName)}");
             }
             catch (Exception ex)
             {
@@ -899,7 +900,7 @@ namespace hstCMM
 
         private void BackupProfiles()
         {
-            string profilePath = Path.Combine(Properties.Settings.Default.ProfileFolder, GameName);
+            string profilePath = System.IO.Path.Combine(Properties.Settings.Default.ProfileFolder, GameName);
 
             if (Properties.Settings.Default.ProfileFolder == "")
             {
@@ -907,15 +908,15 @@ namespace hstCMM
                 return;
             }
 
-            if (!Directory.Exists(Path.Combine(profilePath, "Backup")))
+            if (!Directory.Exists(System.IO.Path.Combine(profilePath, "Backup")))
             {
-                Directory.CreateDirectory(Path.Combine(profilePath, "Backup"));
+                Directory.CreateDirectory(System.IO.Path.Combine(profilePath, "Backup"));
             }
             activityLog.WriteLog("Starting profile backup");
             foreach (var item in Directory.EnumerateFiles(profilePath, "*.txt", System.IO.SearchOption.TopDirectoryOnly))
             {
-                string fileName = Path.GetFileName(item);
-                string destinationPath = Path.Combine(profilePath, "Backup", fileName);
+                string fileName = System.IO.Path.GetFileName(item);
+                string destinationPath = System.IO.Path.Combine(profilePath, "Backup", fileName);
                 File.Copy(item, destinationPath, true);
                 activityLog.WriteLog($"Backed up {item} to backup folder {destinationPath}.");
             }
@@ -972,7 +973,7 @@ namespace hstCMM
             }
 
             // Write to BlockedMods.txt and update isModified flag. No blank lines.
-            File.WriteAllLines(Path.Combine(Tools.LocalAppDataPath, "BlockedMods.txt"), blockedMods.Distinct().Where(s => !string.IsNullOrEmpty(s)));
+            File.WriteAllLines(System.IO.Path.Combine(Tools.LocalAppDataPath, "BlockedMods.txt"), blockedMods.Distinct().Where(s => !string.IsNullOrEmpty(s)));
             isModified = true;
             SavePlugins();
         }
@@ -1002,7 +1003,7 @@ namespace hstCMM
         {
             string pathToFile = "";
             if (Properties.Settings.Default.SaveLog)
-                pathToFile = Path.Combine(string.IsNullOrEmpty(Properties.Settings.Default.LogFileDirectory)
+                pathToFile = System.IO.Path.Combine(string.IsNullOrEmpty(Properties.Settings.Default.LogFileDirectory)
                ? Tools.LocalAppDataPath : Properties.Settings.Default.LogFileDirectory, "Activity Log.txt");
             if (!String.IsNullOrEmpty(pathToFile))
                 activityLog.PersistLog(pathToFile);
@@ -1106,16 +1107,16 @@ namespace hstCMM
             // Build a list of all plugins excluding base game files
             plugins = pluginList.Select(s => s[..^4]).ToList();
 
-            foreach (string file in Directory.EnumerateFiles(Path.Combine(GamePath, "Data"), "*.ba2", System.IO.SearchOption.TopDirectoryOnly))
+            foreach (string file in Directory.EnumerateFiles(System.IO.Path.Combine(GamePath, "Data"), "*.ba2", System.IO.SearchOption.TopDirectoryOnly))
             // Build a list of all .ba2archives
             {
-                archives.Add(Path.GetFileName(file));
+                archives.Add(System.IO.Path.GetFileName(file));
             }
 
-            foreach (string file in Directory.EnumerateFiles(Path.Combine(GamePath, "Data"), "*.bsa", System.IO.SearchOption.TopDirectoryOnly))
+            foreach (string file in Directory.EnumerateFiles(System.IO.Path.Combine(GamePath, "Data"), "*.bsa", System.IO.SearchOption.TopDirectoryOnly))
             // Build a list of all .bsa archives
             {
-                archives.Add(Path.GetFileName(file));
+                archives.Add(System.IO.Path.GetFileName(file));
             }
 
             try
@@ -1128,13 +1129,13 @@ namespace hstCMM
                 foreach (var archive in modArchives) // Check if archive is orphaned
                 {
                     if (!plugins.Any(plugin => archive.StartsWith(plugin))) // If no plugin starts with the archive name
-                        toDelete.Add(Path.Combine(GamePath, "Data", archive) + ".ba2");
+                        toDelete.Add(System.IO.Path.Combine(GamePath, "Data", archive) + ".ba2");
                     if (!plugins.Any(plugin => archive.StartsWith(plugin))) // If no plugin starts with the archive name
-                        toDelete.Add(Path.Combine(GamePath, "Data", archive) + ".bsa");
+                        toDelete.Add(System.IO.Path.Combine(GamePath, "Data", archive) + ".bsa");
                     if (archive.EndsWith("_xbox"))
-                        toDelete.Add(Path.Combine(GamePath, "Data", archive) + ".ba2");
+                        toDelete.Add(System.IO.Path.Combine(GamePath, "Data", archive) + ".ba2");
                     if (archive.EndsWith("_ps"))
-                        toDelete.Add(Path.Combine(GamePath, "Data", archive) + ".ba2");
+                        toDelete.Add(System.IO.Path.Combine(GamePath, "Data", archive) + ".ba2");
                 }
 
                 if (toDelete.Count > 0)
@@ -1193,7 +1194,7 @@ namespace hstCMM
         private void CheckUnusedUserlistPlugins()
         {
             // Path to userlist.yaml
-            string yamlPath = Path.Combine(
+            string yamlPath = System.IO.Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                 $"LOOT\\games\\{GameName}\\userlist.yaml"
             );
@@ -1239,7 +1240,7 @@ namespace hstCMM
         private void cmbProfile_SelectedIndexChanged(object sender, EventArgs e)
         {
             SetCurrentIndex();
-            SwitchProfile(Path.Combine(Properties.Settings.Default.ProfileFolder, GameName, (string)cmbProfile.SelectedItem));
+            SwitchProfile(System.IO.Path.Combine(Properties.Settings.Default.ProfileFolder, GameName, (string)cmbProfile.SelectedItem));
             ResizeForm();
             GetPreviousIndex();
             dataGridView1.Focus();
@@ -1552,11 +1553,11 @@ namespace hstCMM
             {
                 // Remember the point where the mouse down occurred
                 System.Drawing.Size dragSize = SystemInformation.DragSize;
-                dragBoxFromMouseDown = new Rectangle(new Point(e.X - (dragSize.Width / 2), e.Y - (dragSize.Height / 2)), dragSize);
+                dragBoxFromMouseDown = new System.Drawing.Rectangle(new Point(e.X - (dragSize.Width / 2), e.Y - (dragSize.Height / 2)), dragSize);
             }
             else
             {
-                dragBoxFromMouseDown = Rectangle.Empty;
+                dragBoxFromMouseDown = System.Drawing.Rectangle.Empty;
             }
         }
 
@@ -1567,7 +1568,7 @@ namespace hstCMM
                 // If the mouse moves outside the rectangle, start the drag
                 try
                 {
-                    if (dragBoxFromMouseDown != Rectangle.Empty && !dragBoxFromMouseDown.Contains(e.X, e.Y))
+                    if (dragBoxFromMouseDown != System.Drawing.Rectangle.Empty && !dragBoxFromMouseDown.Contains(e.X, e.Y))
                     {
                         DragDropEffects dropEffect = dataGridView1.DoDragDrop(dataGridView1.Rows[rowIndexFromMouseDown], DragDropEffects.Move);
                     }
@@ -1592,10 +1593,10 @@ namespace hstCMM
         {
             try
             {
-                string ccc = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName, $"{GameName}.ccc");
+                string ccc = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName, $"{GameName}.ccc");
                 if (File.Exists(ccc))
                 {
-                    File.Delete(ccc);
+                    tools.DeleteFileToBin(ccc);
                     sbar3($"{GameName}.ccc deleted");
                     activityLog.WriteLog($"GameName.ccc deleted");
                     return true;
@@ -1619,7 +1620,7 @@ namespace hstCMM
         {
             try
             {
-                File.Delete(Path.Combine(Tools.LocalAppDataPath, "BlockedMods.txt"));
+                tools.DeleteFileToBin(System.IO.Path.Combine(Tools.LocalAppDataPath, "BlockedMods.txt"));
                 Tools.BlockedMods(); // Refresh blocked mods list
                 InitDataGrid();
             }
@@ -1635,7 +1636,7 @@ namespace hstCMM
             if (Tools.ConfirmAction("Are you sure you want to delete ContentCatalog.txt?",
                 "This will delete ContentCatalog.txt", MessageBoxButtons.YesNo) == DialogResult.No)
                 return;
-            File.Delete(Path.Combine(Tools.GameAppData, "ContentCatalog.txt"));
+            tools.DeleteFileToBin(System.IO.Path.Combine(Tools.GameAppData, "ContentCatalog.txt"));
         }
 
         private void DeleteLines()
@@ -1662,11 +1663,11 @@ namespace hstCMM
         {
             try
             {
-                var GameCustomINIPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                var GameCustomINIPath = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                     "My Games", GameName, $"{GameName}Custom.ini");
                 if (File.Exists(GameCustomINIPath))
                 {
-                    File.Delete(GameCustomINIPath);
+                    tools.DeleteFileToBin(GameCustomINIPath);
                     sbar3($"{GameName}Custom.ini deleted");
                 }
                 else
@@ -1695,7 +1696,7 @@ namespace hstCMM
             /*if (!File.Exists(Path.Combine(GamePath, "CreationKit.exe"))) // Hide option to launch CK if not found
                 creationKitToolStripMenuItem.Visible = false;*/
 
-            if (!File.Exists(Path.Combine(GamePath, "sfse_loader.exe")))
+            if (!File.Exists(System.IO.Path.Combine(GamePath, "sfse_loader.exe")))
             {
                 gameVersionSFSEToolStripMenuItem.Visible = false;
                 sFSEPluginsEnableDisableToolStripMenuItem.Visible = false;
@@ -1720,7 +1721,7 @@ namespace hstCMM
             toolStripMenuLootSort.Visible = !lootPathIsEmpty;
 
             // Unhide Star UI Configurator menu if found
-            if (!File.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName, "Data",
+            if (!File.Exists(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName, "Data",
                 "StarUI Configurator.bat")))
                 starUIConfiguratorToolStripMenuItem.Visible = false;
         }
@@ -1829,7 +1830,7 @@ namespace hstCMM
 
         private void editBlockedModstxtToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Tools.OpenFile(Path.Combine(Tools.LocalAppDataPath, "BlockedMods.txt"));
+            Tools.OpenFile(System.IO.Path.Combine(Tools.LocalAppDataPath, "BlockedMods.txt"));
             MessageBox.Show("Click OK to refresh");
             isModified = true;
             RefreshDataGrid();
@@ -1846,8 +1847,8 @@ namespace hstCMM
             if (string.IsNullOrEmpty(LOOTPath)) // Check if LOOT path is set
                 return;
             CheckUnusedUserlistPlugins();
-            Tools.OpenFile(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                Path.Combine("LOOT", "games", GameName, "Userlist.yaml")));
+            Tools.OpenFile(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                System.IO.Path.Combine("LOOT", "games", GameName, "Userlist.yaml")));
             MessageBox.Show("Click OK to refresh");
             ReadLOOTGroups();
             RefreshDataGrid();
@@ -1855,7 +1856,7 @@ namespace hstCMM
 
         private void editCustominiToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            tempstr = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+            tempstr = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                 "My Games", GameName, $"{GameName}Custom.ini");
             if (File.Exists(tempstr))
                 Tools.OpenFile(tempstr);
@@ -1995,7 +1996,7 @@ namespace hstCMM
             {
                 activityLog.WriteLog("Shutting down");
                 if (Properties.Settings.Default.SaveLog)
-                    pathToFile = Path.Combine(string.IsNullOrEmpty(Properties.Settings.Default.LogFileDirectory)
+                    pathToFile = System.IO.Path.Combine(string.IsNullOrEmpty(Properties.Settings.Default.LogFileDirectory)
                    ? Tools.LocalAppDataPath : Properties.Settings.Default.LogFileDirectory, "Activity Log.txt");
                 if (!String.IsNullOrEmpty(pathToFile))
                     activityLog.PersistLog(pathToFile);
@@ -2028,7 +2029,7 @@ namespace hstCMM
             {
                 if (!screen.WorkingArea.Contains(this.Bounds))
                 {
-                    Rectangle screenBounds = Screen.FromControl(this).WorkingArea;
+                    System.Drawing.Rectangle screenBounds = Screen.FromControl(this).WorkingArea;
 
                     // Adjust the form's position to ensure it stays within the screen bounds
                     int newX = Math.Max(screenBounds.Left, Math.Min(this.Left, screenBounds.Right - this.Width));
@@ -2127,7 +2128,7 @@ namespace hstCMM
                 if (GameSwitchWarning())
                     return false;
 
-            if (File.Exists(Path.Combine(GamePath, "sfse_loader.exe")))
+            if (File.Exists(System.IO.Path.Combine(GamePath, "sfse_loader.exe")))
             {
                 gameVersionSFSEToolStripMenuItem.Checked = true;
                 toolStripMenuSteam.Checked = false;
@@ -2187,17 +2188,17 @@ namespace hstCMM
         {
             //List<string> plugins = tools.GetPluginList(Game).Select(p => Path.GetFileNameWithoutExtension(p)).ToList();
 
-            List<string> ba2Archives = Directory.EnumerateFiles(Path.Combine(GamePath, "Data"), "*.ba2")
-                .Select(p => Path.GetFileNameWithoutExtension(p)).ToList();
-            List<string> bsaArchives = Directory.EnumerateFiles(Path.Combine(GamePath, "Data"), "*.bsa")
-                .Select(p => Path.GetFileNameWithoutExtension(p)).ToList();
+            List<string> ba2Archives = Directory.EnumerateFiles(System.IO.Path.Combine(GamePath, "Data"), "*.ba2")
+                .Select(p => System.IO.Path.GetFileNameWithoutExtension(p)).ToList();
+            List<string> bsaArchives = Directory.EnumerateFiles(System.IO.Path.Combine(GamePath, "Data"), "*.bsa")
+                .Select(p => System.IO.Path.GetFileNameWithoutExtension(p)).ToList();
             List<string> bgsArchives = new List<string>();
             List<string> allArchives = ba2Archives.Concat(bsaArchives).ToList();
             string GameFolder = Tools.GameLibrary.GetById(Game).ExcludeFile;
 
             foreach (string fileName in allArchives)
             {
-                foreach (string plugin in pluginList.Select(s => Path.GetFileNameWithoutExtension(s)))
+                foreach (string plugin in pluginList.Select(s => System.IO.Path.GetFileNameWithoutExtension(s)))
                 {
                     if (fileName.StartsWith(plugin))
                         bgsArchives.Add(fileName);
@@ -2217,7 +2218,7 @@ namespace hstCMM
             };
 
             if (saveToCommon)
-                saveDialog.FileName = Path.Combine(Tools.CommonFolder, saveDialog.FileName);
+                saveDialog.FileName = System.IO.Path.Combine(Tools.CommonFolder, saveDialog.FileName);
             else
             {
                 if (saveDialog.ShowDialog() != DialogResult.OK || string.IsNullOrEmpty(saveDialog.FileName))
@@ -2254,10 +2255,10 @@ namespace hstCMM
             List<string> excludefiles = new();
             foreach (var pattern in patterns)
             {
-                var modFiles = Directory.EnumerateFiles(Path.Combine(GamePath, "Data"), pattern, System.IO.SearchOption.TopDirectoryOnly);
+                var modFiles = Directory.EnumerateFiles(System.IO.Path.Combine(GamePath, "Data"), pattern, System.IO.SearchOption.TopDirectoryOnly);
                 foreach (var modFile in modFiles)
                 {
-                    excludefiles.Add(Path.GetFileName(modFile));
+                    excludefiles.Add(System.IO.Path.GetFileName(modFile));
                 }
             }
             foreach (var row in dataGridView1.Rows) // Remove installed mods from the list
@@ -2274,7 +2275,7 @@ namespace hstCMM
             };
 
             if (saveToCommon)
-                saveDialog.FileName = Path.Combine(Tools.CommonFolder, saveDialog.FileName);
+                saveDialog.FileName = System.IO.Path.Combine(Tools.CommonFolder, saveDialog.FileName);
             else
             {
                 if (saveDialog.ShowDialog() != DialogResult.OK || string.IsNullOrEmpty(saveDialog.FileName))
@@ -2287,7 +2288,7 @@ namespace hstCMM
                 {
                     foreach (var item in excludefiles)
                     {
-                        writer.WriteLine(Path.GetFileName(item));
+                        writer.WriteLine(System.IO.Path.GetFileName(item));
                     }
                 }
                 activityLog.WriteLog($"Exclude file generated with {excludefiles.Count} entries");
@@ -2313,7 +2314,7 @@ namespace hstCMM
             var rand = new Random();
             var set = new HashSet<string>();
             var chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            using var writer = new StreamWriter(Path.Combine(Properties.Settings.Default.ProfileFolder, GameName, "unique_plugins.txt"));
+            using var writer = new StreamWriter(System.IO.Path.Combine(Properties.Settings.Default.ProfileFolder, GameName, "unique_plugins.txt"));
 
             while (set.Count < Count)
             {
@@ -2336,7 +2337,7 @@ namespace hstCMM
                 return;
             cmbProfile.Items.Clear();
             ProfileFolder = string.IsNullOrEmpty(ProfileFolder)
-                ? Path.Combine(Properties.Settings.Default.ProfileFolder, GameName) : Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                ? System.IO.Path.Combine(Properties.Settings.Default.ProfileFolder, GameName) : Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
             try
             {
@@ -2386,7 +2387,7 @@ namespace hstCMM
 
             double totalFileSize = 0;
 
-            string loText = Path.Combine(Tools.GameAppData, "Plugins.txt"),
+            string loText = System.IO.Path.Combine(Tools.GameAppData, "Plugins.txt"),
                    LOOTPath = Properties.Settings.Default.LOOTPath, pluginName, rawVersion;
 
             List<string> CreationsPlugin = [], CreationsTitle = [], CreationsFiles = [], CreationsVersion = new();
@@ -2685,7 +2686,7 @@ namespace hstCMM
         private bool InstallMod(string InstallMod = "")
         {
             string esmFile = "";
-            string extractPath = Path.Combine(Path.GetTempPath(), "hstCMM");
+            string extractPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "hstCMM");
             bool SFSEMod = false, looseFileMod = false;
             int filesInstalled = 0;
 
@@ -2723,20 +2724,20 @@ namespace hstCMM
 
             string[] modFileTypes = { ".esp", ".esm", ".esl", ".ba2", ".bsa" }; // Install unzipped files directly
 
-            if (modFileTypes.Contains(Path.GetExtension(modFilePath), StringComparer.OrdinalIgnoreCase))
+            if (modFileTypes.Contains(System.IO.Path.GetExtension(modFilePath), StringComparer.OrdinalIgnoreCase))
             {
                 try
                 {
-                    if (File.Exists(Path.Combine(GamePath, "Data", Path.GetFileName(modFilePath))))
+                    if (File.Exists(System.IO.Path.Combine(GamePath, "Data", System.IO.Path.GetFileName(modFilePath))))
                     {
                         if (!NoWarn)
-                            if (Tools.ConfirmAction($"Overwrite existing file {Path.GetFileName(modFilePath)} in Data folder?",
+                            if (Tools.ConfirmAction($"Overwrite existing file {System.IO.Path.GetFileName(modFilePath)} in Data folder?",
                                 "File exists", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
                                 return false;
                     }
-                    File.Copy(modFilePath, Path.Combine(GamePath, "Data", Path.GetFileName(modFilePath)), true);
-                    sbar2($"Copied {Path.GetFileName(modFilePath)} to Data folder");
-                    activityLog.WriteLog($"Copied {modFilePath} to {Path.Combine(GamePath, "Data", Path.GetFileName(modFilePath))}");
+                    File.Copy(modFilePath, System.IO.Path.Combine(GamePath, "Data", System.IO.Path.GetFileName(modFilePath)), true);
+                    sbar2($"Copied {System.IO.Path.GetFileName(modFilePath)} to Data folder");
+                    activityLog.WriteLog($"Copied {modFilePath} to {System.IO.Path.Combine(GamePath, "Data", System.IO.Path.GetFileName(modFilePath))}");
                 }
                 catch (Exception ex)
                 {
@@ -2777,7 +2778,7 @@ namespace hstCMM
                         return false;
                     }
 
-                    if (Directory.Exists(Path.Combine(extractPath, "fomod")))
+                    if (Directory.Exists(System.IO.Path.Combine(extractPath, "fomod")))
                     {
                         if (Tools.ConfirmAction("Attempt installation anyway?", "Fomod detected - mod will probably not install correctly",
                             MessageBoxButtons.YesNo,
@@ -2813,7 +2814,7 @@ namespace hstCMM
                 }
 
                 // Update the downloads directory setting for future use.
-                Properties.Settings.Default.DownloadsDirectory = Path.GetDirectoryName(modFilePath);
+                Properties.Settings.Default.DownloadsDirectory = System.IO.Path.GetDirectoryName(modFilePath);
                 SaveSettings();
             }
             catch (Exception ex)
@@ -2859,7 +2860,7 @@ namespace hstCMM
 
                 foreach (string dir in sfseDirs)
                 {
-                    tempstr = Path.Combine(GamePath, "Data", "SFSE");
+                    tempstr = System.IO.Path.Combine(GamePath, "Data", "SFSE");
                     tools.CopyDirectory(dir, tempstr);
                     filesInstalled++;
                 }
@@ -2876,7 +2877,7 @@ namespace hstCMM
                 string[] SAFDirs = Directory.GetDirectories(extractPath, "SAF", System.IO.SearchOption.AllDirectories);
                 foreach (string dir in SAFDirs)
                 {
-                    tempstr = Path.Combine(GamePath, "Data", "SAF");
+                    tempstr = System.IO.Path.Combine(GamePath, "Data", "SAF");
                     tools.CopyDirectory(dir, tempstr);
                     filesInstalled++;
                 }
@@ -2891,7 +2892,7 @@ namespace hstCMM
             List<string> looseFileDirs = Tools.LooseFolderDirsOnly; // Get the list of loose file directories from the Tools class
 
             // Define the target directory
-            var targetDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), Path.Combine("My Games", GameName, "Data"));
+            var targetDir = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), System.IO.Path.Combine("My Games", GameName, "Data"));
 
             // Ensure the target directory exists
             Directory.CreateDirectory(targetDir);
@@ -2903,8 +2904,8 @@ namespace hstCMM
 
                 foreach (var sourceDir in directoriesFound)
                 {
-                    tools.CopyDirectory(sourceDir, Path.Combine(targetDir, dirName));
-                    activityLog.WriteLog($"Copying {sourceDir} to {Path.Combine(targetDir, dirName)}");
+                    tools.CopyDirectory(sourceDir, System.IO.Path.Combine(targetDir, dirName));
+                    activityLog.WriteLog($"Copying {sourceDir} to {System.IO.Path.Combine(targetDir, dirName)}");
                     filesInstalled++;
                 }
                 if (directoriesFound.Length > 0)
@@ -2928,7 +2929,7 @@ namespace hstCMM
                     MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     if (esmFile != "")
-                        ConvertLooseFiles(Path.GetFileNameWithoutExtension(esmFile));
+                        ConvertLooseFiles(System.IO.Path.GetFileNameWithoutExtension(esmFile));
                     else
                         ConvertLooseFiles();
                     sbar3("Converted loose files to archives");
@@ -2956,8 +2957,8 @@ namespace hstCMM
                 int count = 0;
                 foreach (string modFile in Directory.EnumerateFiles(extractPath, searchPattern, System.IO.SearchOption.AllDirectories))
                 {
-                    string fileName = Path.GetFileName(modFile);
-                    string destinationPath = Path.Combine(GamePath, "Data", fileName);
+                    string fileName = System.IO.Path.GetFileName(modFile);
+                    string destinationPath = System.IO.Path.Combine(GamePath, "Data", fileName);
 
                     if (File.Exists(destinationPath))
                     {
@@ -3058,6 +3059,8 @@ namespace hstCMM
             logWindowToolStripMenuItem.Checked = !logWindowToolStripMenuItem.Checked;
             Properties.Settings.Default.LogWindow = logWindowToolStripMenuItem.Checked;
             ToggleLogWindow();
+            if (logWindowToolStripMenuItem.Checked)
+                ResizeForm();
         }
 
         private void looseFilesDisabledToolStripMenuItem_Click(object sender, EventArgs e)
@@ -3075,10 +3078,10 @@ namespace hstCMM
 
         private void LooseFilesOnOff(bool enable)
         {
-            string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+            string filePath = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                 "My Games", Tools.GameName, GameName + "Custom.ini");
 
-            if (Tools.FileCompare(filePath, Path.Combine(Tools.CommonFolder,
+            if (Tools.FileCompare(filePath, System.IO.Path.Combine(Tools.CommonFolder,
                 GameName + "Custom.ini")) && enable == false) // Return if loose files are already disabled
                 return;
 
@@ -3332,8 +3335,8 @@ namespace hstCMM
             {
                 string selectedFolderPath = folderBrowserDialog.SelectedPath;
 
-                string backupFilePath = Path.Combine(selectedFolderPath, "BlockedMods.txt");
-                string destinationPath = Path.Combine(Tools.LocalAppDataPath, "BlockedMods.txt");
+                string backupFilePath = System.IO.Path.Combine(selectedFolderPath, "BlockedMods.txt");
+                string destinationPath = System.IO.Path.Combine(Tools.LocalAppDataPath, "BlockedMods.txt");
 
                 if (!File.Exists(backupFilePath))
                 {
@@ -3560,35 +3563,35 @@ namespace hstCMM
             folderBrowserDialog.ShowDialog();
             if (string.IsNullOrEmpty(folderBrowserDialog.SelectedPath))
                 return;
-            string destDir = Path.Combine(folderBrowserDialog.SelectedPath, "Inactive Mods");
+            string destDir = System.IO.Path.Combine(folderBrowserDialog.SelectedPath, "Inactive Mods");
             foreach (var mod in modsToMove)
             {
                 string[] patterns = { mod[..mod.LastIndexOf('.')] + ".*", mod[..mod.LastIndexOf('.')] + " - *.ba2" }; // Strip extension
                 foreach (var pattern in patterns)
                 {
-                    var files = Directory.GetFiles(Path.Combine(GamePath, "Data"), pattern);
+                    var files = Directory.GetFiles(System.IO.Path.Combine(GamePath, "Data"), pattern);
                     foreach (var file in files)
                     {
                         if (!Directory.Exists(destDir))
                             Directory.CreateDirectory(destDir);
-                        string destPath = Path.Combine(destDir, Path.GetFileName(file));
+                        string destPath = System.IO.Path.Combine(destDir, System.IO.Path.GetFileName(file));
                         try
                         {
-                            sbar($"Moving {Path.GetFileName(file)}...");
+                            sbar($"Moving {System.IO.Path.GetFileName(file)}...");
                             statusStrip1.Refresh();
                             if (!File.Exists(destPath))
                             {
                                 File.Move(file, destPath);
-                                activityLog.WriteLog($"Moved inactive mod file {Path.GetFileName(file)} to Inactive Mods folder.");
+                                activityLog.WriteLog($"Moved inactive mod file {System.IO.Path.GetFileName(file)} to Inactive Mods folder.");
                                 moveCount++;
                             }
                             else
-                                activityLog.WriteLog($"Skipped {Path.GetFileName(file)}. File exists.");
+                                activityLog.WriteLog($"Skipped {System.IO.Path.GetFileName(file)}. File exists.");
                         }
                         catch (Exception ex)
                         {
                             LogError(ex.Message);
-                            sbar($"Failed to move {Path.GetFileName(file)}:\n{ex.Message}");
+                            sbar($"Failed to move {System.IO.Path.GetFileName(file)}:\n{ex.Message}");
                         }
                     }
                 }
@@ -3653,7 +3656,7 @@ namespace hstCMM
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string profileFolder = Path.Combine(Properties.Settings.Default.ProfileFolder, GameName)
+            string profileFolder = System.IO.Path.Combine(Properties.Settings.Default.ProfileFolder, GameName)
                                    ?? Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
             System.Windows.Forms.OpenFileDialog openPlugins = new()
@@ -3667,7 +3670,7 @@ namespace hstCMM
             {
                 if (Profiles)
                 {
-                    Properties.Settings.Default.ProfileFolder = Path.GetDirectoryName(openPlugins.FileName).Replace(GameName, "") ?? profileFolder;
+                    Properties.Settings.Default.ProfileFolder = System.IO.Path.GetDirectoryName(openPlugins.FileName).Replace(GameName, "") ?? profileFolder;
                     SwitchProfile(openPlugins.FileName);
                     GetProfiles();
                     SaveSettings();
@@ -3731,8 +3734,8 @@ namespace hstCMM
             openFileDialog1.Title = "Select the program to run";
             if (!string.IsNullOrEmpty(Properties.Settings.Default.RunProgramPath))
             {
-                openFileDialog1.InitialDirectory = Path.GetDirectoryName(Properties.Settings.Default.RunProgramPath);
-                openFileDialog1.FileName = Path.GetFileName(Properties.Settings.Default.RunProgramPath);
+                openFileDialog1.InitialDirectory = System.IO.Path.GetDirectoryName(Properties.Settings.Default.RunProgramPath);
+                openFileDialog1.FileName = System.IO.Path.GetFileName(Properties.Settings.Default.RunProgramPath);
             }
             openFileDialog1.ShowDialog();
             if (!string.IsNullOrEmpty(openFileDialog1.FileName))
@@ -3759,7 +3762,7 @@ namespace hstCMM
 
         private void ReadLOOTGroups() // Read LOOT Groups
         {
-            string yamlPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            string yamlPath = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                 $"LOOT\\games\\{GameName}\\userlist.yaml");
             if (!File.Exists(yamlPath))
                 return;
@@ -3806,7 +3809,7 @@ namespace hstCMM
 
         private int RemoveDuplicates()
         {
-            string loText = Path.Combine(Tools.GameAppData, "Plugins.txt");
+            string loText = System.IO.Path.Combine(Tools.GameAppData, "Plugins.txt");
             if (!File.Exists(loText)) return 0;
 
             var plugins = new HashSet<string>(
@@ -3841,13 +3844,13 @@ namespace hstCMM
             if (!CheckGamePath() || string.IsNullOrEmpty(GamePath))
                 return 0; // Can't proceed without game path
 
-            string directory = Path.Combine(GamePath, "Data");
+            string directory = System.IO.Path.Combine(GamePath, "Data");
             List<string> pluginFiles = tools.GetPluginList(Game); // Get existing plugin files
 
             try
             {
                 pluginFiles.AddRange(Directory.EnumerateFiles(directory, "*.esp", System.IO.SearchOption.TopDirectoryOnly)
-                                              .Select(Path.GetFileName));
+                                              .Select(System.IO.Path.GetFileName));
             }
             catch (Exception ex)
             {
@@ -3899,9 +3902,9 @@ namespace hstCMM
 
             try
             {
-                if (File.Exists(Path.Combine(Tools.LocalAppDataPath, "BlockedMods.txt")))
+                if (File.Exists(System.IO.Path.Combine(Tools.LocalAppDataPath, "BlockedMods.txt")))
                 {
-                    File.WriteAllLines(Path.Combine(Tools.LocalAppDataPath, "BlockedMods.txt"), missingMods);
+                    File.WriteAllLines(System.IO.Path.Combine(Tools.LocalAppDataPath, "BlockedMods.txt"), missingMods);
                     sbar3("Removed missing mods from BlockedMods.txt");
                     activityLog.WriteLog("Removed missing mods from BlockedMods.txt");
                 }
@@ -3921,17 +3924,17 @@ namespace hstCMM
                 if (File.Exists(file))
                 {
                     activityLog.WriteLog("Deleting " + tempstr);
-                    File.Delete(file);
+                    tools.DeleteFileToBin(file);
                 }
                 else
                     activityLog.WriteLog($"{tempstr} not found");
             }
 
-            tempstr = Path.Combine(GamePath, "sfse_loader.exe");
+            tempstr = System.IO.Path.Combine(GamePath, "sfse_loader.exe");
             if (File.Exists(tempstr))
             {
                 activityLog.WriteLog("Deleting " + tempstr);
-                File.Delete(tempstr);
+                tools.DeleteFileToBin(tempstr);
             }
             else
                 activityLog.WriteLog($"{tempstr} not found");
@@ -3947,11 +3950,11 @@ namespace hstCMM
                 MessageBoxIcon.Exclamation) != DialogResult.Yes)
                 return;
 
-            string directoryPath = Path.Combine(GamePath, "Data");
+            string directoryPath = System.IO.Path.Combine(GamePath, "Data");
             var row = dataGridView1.CurrentRow;
             string ModName = row.Cells["PluginName"].Value.ToString();
             ModName = ModName[..ModName.LastIndexOf('.')]; // Strip extension
-            string ModFile = Path.Combine(directoryPath, ModName);
+            string ModFile = System.IO.Path.Combine(directoryPath, ModName);
 
             // Collect existing mod-related files
             string[] fixedExtensions = { ".esp", ".esm", " - voices_en.ba2" };
@@ -3965,29 +3968,29 @@ namespace hstCMM
             // Handle texture files like " - textures*.ba2"
             string pattern = ModName + " - textures*.ba2";
 
-            string[] matchedFiles = Directory.GetFiles(directoryPath, Path.GetFileName(pattern));
+            string[] matchedFiles = Directory.GetFiles(directoryPath, System.IO.Path.GetFileName(pattern));
             files.AddRange(matchedFiles);
 
             // Handle texture files like " - main*.ba2"
             pattern = ModName + " - main*.ba2";
-            matchedFiles = Directory.GetFiles(directoryPath, Path.GetFileName(pattern));
+            matchedFiles = Directory.GetFiles(directoryPath, System.IO.Path.GetFileName(pattern));
             files.AddRange(matchedFiles);
 
             string userInput = Interaction.InputBox("New Name:", $"Rename Mod {ModName}");
             if (string.IsNullOrWhiteSpace(userInput))
                 return;
-            userInput = Path.GetFileNameWithoutExtension(userInput); // Remove any extension from user input
+            userInput = System.IO.Path.GetFileNameWithoutExtension(userInput); // Remove any extension from user input
 
             // Rename each file
             foreach (var oldPath in files)
             {
                 string extensionPart = oldPath.Substring(ModFile.Length); // Get suffix like ".esp" or " - textures01.ba2"
-                string newPath = Path.Combine(directoryPath, userInput + extensionPart);
+                string newPath = System.IO.Path.Combine(directoryPath, userInput + extensionPart);
 
                 try
                 {
                     File.Move(oldPath, newPath);
-                    activityLog.WriteLog($"Renamed: {Path.GetFileName(oldPath)} to {Path.GetFileName(newPath)}");
+                    activityLog.WriteLog($"Renamed: {System.IO.Path.GetFileName(oldPath)} to {System.IO.Path.GetFileName(newPath)}");
                 }
                 catch (Exception ex)
                 {
@@ -4007,9 +4010,9 @@ namespace hstCMM
 
         private int ResetDefaults()
         {
-            string LooseFilesDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+            string LooseFilesDir = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                 "My Games", GameName), // Check if loose files are enabled
-        filePath = Path.Combine(LooseFilesDir, $"{GameName}Custom.ini");
+        filePath = System.IO.Path.Combine(LooseFilesDir, $"{GameName}Custom.ini");
             int ChangeCount = 0;
 
             if (File.Exists(filePath)) // Disable loose files
@@ -4064,12 +4067,12 @@ namespace hstCMM
 
             try
             {
-                if (!Tools.FileCompare(Path.Combine(Tools.CommonFolder, $"{GameName}Custom.ini"),
-                    Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                if (!Tools.FileCompare(System.IO.Path.Combine(Tools.CommonFolder, $"{GameName}Custom.ini"),
+                    System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                     "My Games", GameName, $"{GameName}Custom.ini"))) // Check if game Custom.ini needs resetting
                 {
-                    File.Copy(Path.Combine(Tools.CommonFolder, $"{GameName}Custom.ini"),
-                        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                    File.Copy(System.IO.Path.Combine(Tools.CommonFolder, $"{GameName}Custom.ini"),
+                        System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                         "My Games", GameName, $"{GameName}Custom.ini"), true);
                     sbar3($"{GameName}Custom.ini restored");
                     activityLog.WriteLog($"{GameName} Custom.ini restored");
@@ -4110,7 +4113,7 @@ namespace hstCMM
 
         private void ResetWindowSize()
         {
-            Rectangle resolution = Screen.PrimaryScreen.Bounds; // Resize window to 85% of screen width
+            System.Drawing.Rectangle resolution = Screen.PrimaryScreen.Bounds; // Resize window to 85% of screen width
             double screenWidth = resolution.Width;
             double screenHeight = resolution.Height;
             this.Width = (int)(screenWidth * 0.85);
@@ -4157,7 +4160,7 @@ namespace hstCMM
                 statusStrip1.Height + SystemInformation.CaptionHeight + SystemInformation.BorderSize.Height;
 
             // Clamp to screen working area
-            Rectangle screenBounds = Screen.FromControl(this).WorkingArea;
+            System.Drawing.Rectangle screenBounds = Screen.FromControl(this).WorkingArea;
             int finalWidth = Math.Min(desiredWidth, screenBounds.Width);
             int finalHeight = Math.Min(desiredHeight, screenBounds.Height);
             finalHeight = Math.Max(finalHeight, 600); // Minimum height
@@ -4216,8 +4219,8 @@ namespace hstCMM
             {
                 string selectedFolderPath = folderBrowserDialog.SelectedPath;
 
-                string backupFilePath = Path.Combine(selectedFolderPath, "ContentCatalog.txt");
-                string destinationPath = Path.Combine(Tools.GameAppData, "ContentCatalog.txt");
+                string backupFilePath = System.IO.Path.Combine(selectedFolderPath, "ContentCatalog.txt");
+                string destinationPath = System.IO.Path.Combine(Tools.GameAppData, "ContentCatalog.txt");
 
                 if (!File.Exists(backupFilePath))
                 {
@@ -4243,8 +4246,8 @@ namespace hstCMM
 
         private void RestorePlugins()
         {
-            string sourceFileName = Path.Combine(Tools.GameAppData, "Plugins.txt.bak");
-            string destFileName = Path.Combine(Tools.GameAppData, "Plugins.txt");
+            string sourceFileName = System.IO.Path.Combine(Tools.GameAppData, "Plugins.txt.bak");
+            string destFileName = System.IO.Path.Combine(Tools.GameAppData, "Plugins.txt");
 
             try
             {
@@ -4255,7 +4258,7 @@ namespace hstCMM
                 toolStripStatusStats.ForeColor = DefaultForeColor;
                 SavePlugins();
                 sbar("Restore done");
-                activityLog.WriteLog($"Restore of {Path.GetFileName(sourceFileName)} done to {Path.GetFileName(destFileName)}");
+                activityLog.WriteLog($"Restore of {System.IO.Path.GetFileName(sourceFileName)} done to {System.IO.Path.GetFileName(destFileName)}");
             }
             catch (Exception ex)
             {
@@ -4267,7 +4270,7 @@ namespace hstCMM
         private void restoreProfilesToolStripMenuItem_Click(object sender, EventArgs e) // Restore profiles from Backup folder
         {
             if (Properties.Settings.Default.ProfileFolder == "" ||
-                !Directory.Exists(Path.Combine(Properties.Settings.Default.ProfileFolder, GameName, "Backup")))
+                !Directory.Exists(System.IO.Path.Combine(Properties.Settings.Default.ProfileFolder, GameName, "Backup")))
             {
                 MessageBox.Show("No profile or backup folder set");
                 return;
@@ -4279,13 +4282,13 @@ namespace hstCMM
                 return;
             }
 
-            if (Directory.Exists(Path.Combine(Properties.Settings.Default.ProfileFolder, GameName, "Backup")))
+            if (Directory.Exists(System.IO.Path.Combine(Properties.Settings.Default.ProfileFolder, GameName, "Backup")))
             {
-                foreach (var item in Directory.EnumerateFiles(Path.Combine(Properties.Settings.Default.ProfileFolder, GameName, "Backup"), "*.txt",
+                foreach (var item in Directory.EnumerateFiles(System.IO.Path.Combine(Properties.Settings.Default.ProfileFolder, GameName, "Backup"), "*.txt",
                     System.IO.SearchOption.TopDirectoryOnly))
                 {
-                    string fileName = Path.GetFileName(item);
-                    string destinationPath = Path.Combine(Properties.Settings.Default.ProfileFolder, GameName, fileName);
+                    string fileName = System.IO.Path.GetFileName(item);
+                    string destinationPath = System.IO.Path.Combine(Properties.Settings.Default.ProfileFolder, GameName, fileName);
                     File.Copy(item, destinationPath, true);
                     activityLog.WriteLog($"Restored {item} from backup folder {destinationPath}.");
                 }
@@ -4300,13 +4303,13 @@ namespace hstCMM
 
         private int RestoreGameINI()
         {
-            string iniPath = Path.Combine(GamePath, $"{GameName}.ini");
+            string iniPath = System.IO.Path.Combine(GamePath, $"{GameName}.ini");
 
-            if (!Tools.FileCompare(iniPath, Path.Combine(Tools.CommonFolder, $"{GameName}.ini")))
+            if (!Tools.FileCompare(iniPath, System.IO.Path.Combine(Tools.CommonFolder, $"{GameName}.ini")))
             {
                 try
                 {
-                    File.Copy(Path.Combine(Tools.CommonFolder, $"{GameName}.ini"), Path.Combine(GamePath, $"{GameName}.ini"), true); // Restore game.ini
+                    File.Copy(System.IO.Path.Combine(Tools.CommonFolder, $"{GameName}.ini"), System.IO.Path.Combine(GamePath, $"{GameName}.ini"), true); // Restore game.ini
                     sbar3($"{GameName}.ini restored");
                     activityLog.WriteLog($"{GameName}.ini restored to default settings");
                     return 1;
@@ -4363,7 +4366,7 @@ namespace hstCMM
             {
                 if (File.Exists(tempstr))
                 {
-                    if (Process.GetProcessesByName(Path.GetFileNameWithoutExtension(tempstr)).Length == 0)
+                    if (Process.GetProcessesByName(System.IO.Path.GetFileNameWithoutExtension(tempstr)).Length == 0)
                         Process.Start(tempstr); // Start the configured program before running the game.
                 }
                 else
@@ -4440,7 +4443,7 @@ namespace hstCMM
             if (LOOTMode) cmdLine += " --auto-sort";
 
             // Store current Plugins.txt
-            var currentPlugins = File.ReadAllText(Path.Combine(Tools.GameAppData, "Plugins.txt"));
+            var currentPlugins = File.ReadAllText(System.IO.Path.Combine(Tools.GameAppData, "Plugins.txt"));
 
             // Temporarily disable profiles
             Profiles = cmbProfile.Enabled = chkProfile.Checked = false;
@@ -4450,7 +4453,7 @@ namespace hstCMM
             {
                 FileName = lootPath,
                 Arguments = cmdLine,
-                WorkingDirectory = Path.GetDirectoryName(lootPath) ?? string.Empty
+                WorkingDirectory = System.IO.Path.GetDirectoryName(lootPath) ?? string.Empty
             };
 
             activityLog.WriteLog($"Starting LOOT with arguments: {cmdLine}");
@@ -4477,7 +4480,7 @@ namespace hstCMM
                 if (rowToRemove != null) dataGridView1.Rows.Remove(rowToRemove);
             });
 
-            var newPlugins = File.ReadAllText(Path.Combine(Tools.GameAppData, "Plugins.txt")); // Get new plugin list after LOOT changes
+            var newPlugins = File.ReadAllText(System.IO.Path.Combine(Tools.GameAppData, "Plugins.txt")); // Get new plugin list after LOOT changes
             if (!currentPlugins.SequenceEqual(newPlugins))
             {
                 tempstr = "LOOT sorting complete";
@@ -4510,19 +4513,19 @@ namespace hstCMM
 
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!Directory.Exists(Path.Combine(Properties.Settings.Default.ProfileFolder, GameName)))
+            if (!Directory.Exists(System.IO.Path.Combine(Properties.Settings.Default.ProfileFolder, GameName)))
             {
                 if (Tools.ConfirmAction($"{GameName} Directory does not exist. Create it?", "Create Directory?",
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "hst Mod Manager", GameName));
-                    Properties.Settings.Default.ProfileFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "hst Mod Manager");
+                    Directory.CreateDirectory(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "hst Mod Manager", GameName));
+                    Properties.Settings.Default.ProfileFolder = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "hst Mod Manager");
                 }
             }
 
             System.Windows.Forms.SaveFileDialog saveDialog = new()
             {
-                InitialDirectory = Path.Combine(Properties.Settings.Default.ProfileFolder, GameName) ??
+                InitialDirectory = System.IO.Path.Combine(Properties.Settings.Default.ProfileFolder, GameName) ??
                                    Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                 Filter = "Txt File|*.txt",
                 Title = "Save Profile As"
@@ -4538,7 +4541,7 @@ namespace hstCMM
 
         private void savedGameToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string savesPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName, "Saves");
+            string savesPath = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName, "Saves");
             if (Directory.Exists(savesPath))
                 Tools.OpenDirectory(savesPath);
             else
@@ -4588,13 +4591,13 @@ namespace hstCMM
                 }
                 else
                 {
-                    LogError($"Error saving {Path.GetFileName(PluginFileName)}: {ex.Message}");
+                    LogError($"Error saving {System.IO.Path.GetFileName(PluginFileName)}: {ex.Message}");
                 }
             }
 
-            sbar2($"{Path.GetFileName(PluginFileName)} saved");
+            sbar2($"{System.IO.Path.GetFileName(PluginFileName)} saved");
             isModified = false;
-            activityLog.WriteLog($"{Path.GetFileName(PluginFileName)} saved");
+            activityLog.WriteLog($"{System.IO.Path.GetFileName(PluginFileName)} saved");
         }
 
         private void saveOnExitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -4604,12 +4607,12 @@ namespace hstCMM
 
         private void SavePlugins()
         {
-            string pluginPath = Path.Combine(Tools.GameAppData, "Plugins.txt");
+            string pluginPath = System.IO.Path.Combine(Tools.GameAppData, "Plugins.txt");
             SaveLO(pluginPath);
 
             if (Profiles && !string.IsNullOrEmpty(cmbProfile.Text))
             {
-                string profilePath = Path.Combine(Properties.Settings.Default.ProfileFolder, GameName, cmbProfile.Text);
+                string profilePath = System.IO.Path.Combine(Properties.Settings.Default.ProfileFolder, GameName, cmbProfile.Text);
 
                 if (!Tools.FileCompare(pluginPath, profilePath))
                 {
@@ -4621,7 +4624,7 @@ namespace hstCMM
 
         private void SaveProfileSettings(string fileName)
         {
-            Properties.Settings.Default.ProfileFolder = Path.GetDirectoryName(fileName).Replace(GameName, "");
+            Properties.Settings.Default.ProfileFolder = System.IO.Path.GetDirectoryName(fileName).Replace(GameName, "");
             SaveSettings();
             SwitchProfile(fileName);
             GetProfiles();
@@ -4666,7 +4669,7 @@ namespace hstCMM
 
         private void scriptLogsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            tempstr = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName, "Logs\\Script");
+            tempstr = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName, "Logs\\Script");
             if (!Directory.Exists(tempstr))
             {
                 MessageBox.Show("Script logs directory not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -4840,7 +4843,7 @@ namespace hstCMM
             activityLog.WriteLog($"Game set to {GameName}");
             GameExists = Tools.CheckGame(); // Check if game appdata folder exists
 
-            string PluginsPath = Path.Combine(Tools.GameAppData, "Plugins.txt");
+            string PluginsPath = System.IO.Path.Combine(Tools.GameAppData, "Plugins.txt");
             if (!File.Exists(PluginsPath) && GameExists)
             {
                 MessageBox.Show(@"Missing Plugins.txt file
@@ -4863,7 +4866,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             // Do a 1-time backup of Plugins.txt if it doesn't exist
             try
             {
-                if (!File.Exists(Path.Combine(Tools.GameAppData, "Plugins.txt.bak")) && File.Exists(PluginsPath))
+                if (!File.Exists(System.IO.Path.Combine(Tools.GameAppData, "Plugins.txt.bak")) && File.Exists(PluginsPath))
                 {
                     File.Copy(PluginsPath, Tools.GameAppData + @"\Plugins.txt.bak");
                     sbar2("Plugins.txt backed up to Plugins.txt.bak");
@@ -4983,7 +4986,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
         private void sFSEPluginsToolStripMenuItem_Click(object sender, EventArgs e) // Open SFSE Plugins Directory
         {
-            string SFSEPlugins = Path.Combine(GamePath, @"Data\SFSE\Plugins");
+            string SFSEPlugins = System.IO.Path.Combine(GamePath, @"Data\SFSE\Plugins");
             if (Directory.Exists(SFSEPlugins))
                 Tools.OpenDirectory(SFSEPlugins);
             else
@@ -5028,7 +5031,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             tempstr = Properties.Settings.Default.LogFileDirectory;
             if (tempstr == "")
                 tempstr = Tools.LocalAppDataPath;
-            string pathToFile = Path.Combine(tempstr, "Activity Log.txt");
+            string pathToFile = System.IO.Path.Combine(tempstr, "Activity Log.txt");
             if (File.Exists(pathToFile))
                 Process.Start("explorer", pathToFile);
             else
@@ -5037,14 +5040,14 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
         private string ShowModStats(List<string> CreationsPlugin, int enabledCount, double totalFileSize)
         {
-            string loText = Path.Combine(Tools.GameAppData, "Plugins.txt"), StatText = "",
+            string loText = System.IO.Path.Combine(Tools.GameAppData, "Plugins.txt"), StatText = "",
                 GameFolder = Tools.GameLibrary.GetById(Game).AppData; ;
             int ba2Count, esmCount, espCount, mainCount;
-            var dataDirectory = Path.Combine(GamePath, "Data");
+            var dataDirectory = System.IO.Path.Combine(GamePath, "Data");
             try
             {
                 // Cache file paths and load BGS archives
-                var bgsArchives = File.ReadLines(Path.Combine(Tools.CommonFolder,
+                var bgsArchives = File.ReadLines(System.IO.Path.Combine(Tools.CommonFolder,
                     Tools.GameLibrary.GetById(Game).ExcludeFile + " Archives.txt"))
                     .Where(line => line.Length > 4)
                     .Select(line => line[..^4].ToLowerInvariant())
@@ -5067,7 +5070,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
                 foreach (var file in allBa2Files)
                 {
-                    var fileNameWithoutExt = Path.GetFileNameWithoutExtension(file);
+                    var fileNameWithoutExt = System.IO.Path.GetFileNameWithoutExtension(file);
                     if (string.IsNullOrEmpty(fileNameWithoutExt))
                         continue;
 
@@ -5099,7 +5102,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 esmCount = Directory.EnumerateFiles(dataDirectory, "*.esm", System.IO.SearchOption.TopDirectoryOnly).Count();
 
                 espCount = Directory.EnumerateFiles(dataDirectory, "*.esp", System.IO.SearchOption.TopDirectoryOnly)
-                    .Select(file => Path.GetFileNameWithoutExtension(file))
+                    .Select(file => System.IO.Path.GetFileNameWithoutExtension(file))
                     .Where(plugin => !string.IsNullOrEmpty(plugin))
                     .Count(plugin => enabledPlugins.Contains(plugin.ToLowerInvariant()));
 
@@ -5139,7 +5142,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     .Where(f =>
                     f.EndsWith(".esm", StringComparison.OrdinalIgnoreCase) ||
                     f.EndsWith(".esp", StringComparison.OrdinalIgnoreCase))
-                    .ToDictionary(f => Path.GetFileName(f), f => new FileInfo(f).LastWriteTime, StringComparer.OrdinalIgnoreCase);
+                    .ToDictionary(f => System.IO.Path.GetFileName(f), f => new FileInfo(f).LastWriteTime, StringComparer.OrdinalIgnoreCase);
 
                 foreach (DataGridViewRow row in dataGridView1.Rows)
                 {
@@ -5211,6 +5214,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             if (!timer2.Enabled)
                 sbar5("");
         }
+
         private void showTimeToolStripMenuItem_Click_1(object sender, EventArgs e) // Display date and time
         {
             ToggleTime();
@@ -5218,8 +5222,8 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
         private void starUIConfiguratorToolStripMenuItem_Click(object sender, EventArgs e) // Launch StarUI Configurator if installed
         {
-            string workingDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName, "Data");
-            string StarUI = Path.Combine(workingDirectory, @"StarUI Configurator.bat");
+            string workingDirectory = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName, "Data");
+            string StarUI = System.IO.Path.Combine(workingDirectory, @"StarUI Configurator.bat");
             if (!String.IsNullOrEmpty(StarUI))
             {
                 try
@@ -5258,7 +5262,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
             if (Properties.Settings.Default.CompareProfiles)
             {
-                var currentProfile = File.ReadAllLines(Path.Combine(Tools.GameAppData, "Plugins.txt")).ToList();
+                var currentProfile = File.ReadAllLines(System.IO.Path.Combine(Tools.GameAppData, "Plugins.txt")).ToList();
                 var newProfile = File.ReadAllLines(ProfileName).ToList();
 
                 var Difference = newProfile.Except(currentProfile)
@@ -5283,8 +5287,8 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
             try
             {
-                File.Copy(ProfileName, Path.Combine(Tools.GameAppData, "Plugins.txt"), true);
-                Properties.Settings.Default.LastProfile = Path.GetFileName(ProfileName);
+                File.Copy(ProfileName, System.IO.Path.Combine(Tools.GameAppData, "Plugins.txt"), true);
+                Properties.Settings.Default.LastProfile = System.IO.Path.GetFileName(ProfileName);
                 SaveSettings();
                 isModified = false;
                 InitDataGrid();
@@ -5327,10 +5331,10 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 var buckets = new List<string>[PluginExtensions.Length];
                 for (int i = 0; i < buckets.Length; i++) buckets[i] = new List<string>();
 
-                string dataDir = Path.Combine(GamePath, "Data");
+                string dataDir = System.IO.Path.Combine(GamePath, "Data");
                 foreach (var path in Directory.EnumerateFiles(dataDir, "*.es?", System.IO.SearchOption.TopDirectoryOnly))
                 {
-                    var name = Path.GetFileName(path);
+                    var name = System.IO.Path.GetFileName(path);
                     for (int i = 0; i < PluginExtensions.Length; i++)
                     {
                         if (name.EndsWith(PluginExtensions[i], StringComparison.OrdinalIgnoreCase))
@@ -5714,7 +5718,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
         private void toolStripMenuEditPlugins_Click(object sender, EventArgs e)
         {
-            Tools.OpenFile(Path.Combine(Tools.GameAppData, "Plugins.txt"));
+            Tools.OpenFile(System.IO.Path.Combine(Tools.GameAppData, "Plugins.txt"));
         }
 
         private void toolStripMenuEnableAll_Click(object sender, EventArgs e)
@@ -5742,7 +5746,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
         private void toolStripMenuExploreData_Click(object sender, EventArgs e)
         {
-            Tools.OpenDirectory(Path.Combine(GamePath, "Data"));
+            Tools.OpenDirectory(System.IO.Path.Combine(GamePath, "Data"));
         }
 
         private void toolStripMenuExploreGameDocs_Click(object sender, EventArgs e)
@@ -5919,7 +5923,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
         {
             if (Tools.ConfirmAction("Are you sure you want to delete Plugins.txt?", "This will delete Plugins.txt", MessageBoxButtons.YesNo) == DialogResult.No)
                 return;
-            File.Delete(Path.Combine(Tools.GameAppData, "Plugins.txt"));
+            tools.DeleteFileToBin(System.IO.Path.Combine(Tools.GameAppData, "Plugins.txt"));
         }
 
         private void toolStripMenuItemHideAll_Click(object sender, EventArgs e) // Hide all columns in the DataGridView except active status and plugin name
@@ -6045,7 +6049,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
         {
             try
             {
-                Process.Start("explorer.exe", Path.Combine(Tools.DocumentationFolder, "Shortcuts.txt"));
+                Process.Start("explorer.exe", System.IO.Path.Combine(Tools.DocumentationFolder, "Shortcuts.txt"));
             }
             catch (Exception ex)
             {
@@ -6128,9 +6132,9 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
         {
             frmGameCustomINI fci = new();
             fci.ShowDialog();
-            string PluginsPath = Path.Combine(Tools.GameAppData, "Plugins.txt"),
-        LooseFilesDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName), // Check if loose files are enabled
-        filePath = Path.Combine(LooseFilesDir, GameName + "Custom.ini");
+            string PluginsPath = System.IO.Path.Combine(Tools.GameAppData, "Plugins.txt"),
+        LooseFilesDir = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName), // Check if loose files are enabled
+        filePath = System.IO.Path.Combine(LooseFilesDir, GameName + "Custom.ini");
             LooseFiles = false;
             try
             {
@@ -6169,17 +6173,17 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     return 0;
             }
 
-            string FolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", Tools.GameName);
-            if (File.Exists(Path.Combine(FolderPath, GameName + "Custom.ini.base")))
+            string FolderPath = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", Tools.GameName);
+            if (File.Exists(System.IO.Path.Combine(FolderPath, GameName + "Custom.ini.base")))
             {
-                File.Copy(Path.Combine(FolderPath, GameName + "Custom.ini.base"), Path.Combine(FolderPath, GameName + "Custom.ini"), true);
-                File.Delete(Path.Combine(FolderPath, GameName + "Custom.ini.base"));
+                File.Copy(System.IO.Path.Combine(FolderPath, GameName + "Custom.ini.base"), System.IO.Path.Combine(FolderPath, GameName + "Custom.ini"), true);
+                tools.DeleteFileToBin(System.IO.Path.Combine(FolderPath, GameName + "Custom.ini.base"));
                 ChangeCount++;
             }
-            if (File.Exists(Path.Combine(FolderPath, GameName + "Prefs.ini.base")))
+            if (File.Exists(System.IO.Path.Combine(FolderPath, GameName + "Prefs.ini.base")))
             {
-                File.Copy(Path.Combine(FolderPath, GameName + "Prefs.ini.base"), Path.Combine(FolderPath, GameName + "Prefs.ini"), true);
-                File.Delete(Path.Combine(FolderPath, GameName + "Prefs.ini.base"));
+                File.Copy(System.IO.Path.Combine(FolderPath, GameName + "Prefs.ini.base"), System.IO.Path.Combine(FolderPath, GameName + "Prefs.ini"), true);
+                tools.DeleteFileToBin(System.IO.Path.Combine(FolderPath, GameName + "Prefs.ini.base"));
                 ChangeCount++;
             }
             ChangeCount += CheckAndDeleteINI($"{GameName}.ini");
@@ -6221,7 +6225,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
             // Create a copy of selected rows to avoid collection-modification issues.
             var selectedRows = dataGridView1.SelectedRows.Cast<DataGridViewRow>().ToList();
-            string dataDirectory = Path.Combine(GamePath, "Data");
+            string dataDirectory = System.IO.Path.Combine(GamePath, "Data");
 
             var dlg = DialogResult.None;
             foreach (var row in selectedRows)
@@ -6229,7 +6233,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 // Get the mod name from the PluginName cell (before the first dot).
                 string pluginName = row.Cells["PluginName"].Value?.ToString() ?? string.Empty;
 
-                List<string> similarFiles = Directory.GetFiles(directoryPath, Path.GetFileNameWithoutExtension(pluginName) + "*.esm").ToList();
+                List<string> similarFiles = Directory.GetFiles(directoryPath, System.IO.Path.GetFileNameWithoutExtension(pluginName) + "*.esm").ToList();
                 if (similarFiles.Count > 1)
                 {
                     frmGenericTextList frmsimilarMods = new frmGenericTextList("Warning: Similar named mods. Uninstall aborted", similarFiles);
@@ -6254,7 +6258,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     dataGridView1.Rows.Remove(row);
 
                     // Build the base file path.
-                    string modBasePath = Path.Combine(dataDirectory, modName);
+                    string modBasePath = System.IO.Path.Combine(dataDirectory, modName);
 
                     /*string[] patterns = { ".esp",".esl" }; // Delete .esp and .esl files
                     foreach (var pattern in patterns)
@@ -6271,31 +6275,12 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     }*/
                     if (pluginName.EndsWith(".esp", StringComparison.OrdinalIgnoreCase))
                     {
-                        string modFile = modBasePath + Path.GetExtension(pluginName);
+                        string modFile = modBasePath + System.IO.Path.GetExtension(pluginName);
                         if (File.Exists(modFile))
                         {
-                            //File.Delete(modFile);
-                            try
-                            {
-                                // Delete to Recycle Bin
-                                Microsoft.VisualBasic.FileIO.FileSystem.DeleteFile(
-                                    modFile,
-                                    UIOption.OnlyErrorDialogs,
-                                    RecycleOption.SendToRecycleBin
-                                );
-
-                                activityLog.WriteLog($"{modFile} successfully sent to the Recycle Bin.");
-                            }
-                            catch (Exception ex)
-                            {
-                                LogError($"Error deleting {modFile}: {ex.Message}");
-                            }
-                            activityLog.WriteLog($"Deleted: {modFile}");
-                            SavePlugins();
-                            sbar3($"{modFile} uninstalled");
-                            //return;
+                            tools.DeleteFileToBin(modFile);
+                            isModified = true;
                         }
-                        isModified = true;
                         //dataGridView1.Rows.Remove(row);
                         continue;
                     }
@@ -6319,25 +6304,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     {
                         string filePath = modBasePath + ext;
                         if (File.Exists(filePath))
-                        {
-                            //File.Delete(filePath);
-                            try
-                            {
-                                // Delete to Recycle Bin
-                                Microsoft.VisualBasic.FileIO.FileSystem.DeleteFile(
-                                    filePath,
-                                    UIOption.OnlyErrorDialogs,
-                                    RecycleOption.SendToRecycleBin
-                                );
-
-                                activityLog.WriteLog($"{filePath} successfully sent to the Recycle Bin.");
-                            }
-                            catch (Exception ex)
-                            {
-                                LogError($"Error deleting {filePath}: {ex.Message}");
-                            }
-                            activityLog.WriteLog($"Deleted: {filePath}");
-                        }
+                            tools.DeleteFileToBin(filePath);
                     }
 
                     // match files like 'modname - textures.ba2', 'modname - textures01.ba2', 'modname - textures02.ba2', etc.
@@ -6346,24 +6313,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
                     foreach (string file in textureFiles)
                     {
-                        //File.Delete(file);
-                        try
-                        {
-                            // Delete to Recycle Bin
-                            Microsoft.VisualBasic.FileIO.FileSystem.DeleteFile(
-                                file,
-                                UIOption.OnlyErrorDialogs,
-                                RecycleOption.SendToRecycleBin
-                            );
-
-                            activityLog.WriteLog($"{file} successfully sent to the Recycle Bin.");
-                        }
-                        catch (Exception ex)
-                        {
-                            LogError($"Error deleting {file}: {ex.Message}");
-                        }
-
-                        activityLog.WriteLog($"Deleted: {file}");
+                        tools.DeleteFileToBin(file);
                     }
 
                     // match files like 'modname - main.ba2', 'modname - main01.ba2', 'modname - main02.ba2', etc.
@@ -6371,24 +6321,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
                     foreach (string file in mainFiles)
                     {
-                        //File.Delete(file);
-                        try
-                        {
-                            // Delete to Recycle Bin
-                            Microsoft.VisualBasic.FileIO.FileSystem.DeleteFile(
-                                file,
-                                UIOption.OnlyErrorDialogs,
-                                RecycleOption.SendToRecycleBin
-                            );
-
-                            activityLog.WriteLog($"{file} successfully sent to the Recycle Bin.");
-                        }
-                        catch (Exception ex)
-                        {
-                            LogError($"Error deleting {file}: {ex.Message}");
-                        }
-
-                        activityLog.WriteLog($"Deleted: {file}");
+                        tools.DeleteFileToBin(file);
                     }
 
                     SavePlugins();
@@ -6441,12 +6374,12 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             }
 
             // Profile folder path
-            string profileFolder = Path.Combine(Properties.Settings.Default.ProfileFolder, GameName);
+            string profileFolder = System.IO.Path.Combine(Properties.Settings.Default.ProfileFolder, GameName);
 
             // Iterate once per profile
             foreach (var name in profiles)
             {
-                string path = Path.Combine(profileFolder, name);
+                string path = System.IO.Path.Combine(profileFolder, name);
                 SwitchProfile(path);
                 RefreshDataGrid();
                 totalChanges += SyncPlugins();
@@ -6459,7 +6392,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             }
 
             // Restore the original profile & UI state
-            SwitchProfile(Path.Combine(profileFolder, activeProfile));
+            SwitchProfile(System.IO.Path.Combine(profileFolder, activeProfile));
             RefreshDataGrid();
 
             if (wasActiveOnly)
@@ -6515,7 +6448,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             if (!CheckGamePath()) // Abort if game path not set
                 return;
 
-            string directoryPath = Path.Combine(GamePath, "Data");
+            string directoryPath = System.IO.Path.Combine(GamePath, "Data");
 
             using FolderBrowserDialog folderBrowserDialog = new();
             folderBrowserDialog.Description = "Choose folder to archive the mods to";
@@ -6539,7 +6472,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
                     if (row.Cells["PluginName"].Value is not string ModNameRaw) continue;
                     string ModName = ModNameRaw[..ModNameRaw.LastIndexOf('.')]; // Get current mod name
-                    string ModFile = Path.Combine(directoryPath, ModName); // Add esp, esm, and archives to files list
+                    string ModFile = System.IO.Path.Combine(directoryPath, ModName); // Add esp, esm, and archives to files list
 
                     if (File.Exists(ModFile + ".esp"))
                         files.Add(ModFile + ".esp");
@@ -6562,7 +6495,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                     if (File.Exists(ModFile + " - voices_en.ba2"))
                         files.Add(ModFile + " - voices_en.ba2");
 
-                    string zipPath = Path.Combine(selectedFolderPath, ModName) + ".zip"; // Choose path to Zip it
+                    string zipPath = System.IO.Path.Combine(selectedFolderPath, ModName) + ".zip"; // Choose path to Zip it
 
                     // Check if archive already exists, bail out on user cancel
                     if (!File.Exists(zipPath))
@@ -6723,11 +6656,15 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             {
                 try
                 {
-                    string logFilePath = Path.Combine(string.IsNullOrEmpty(Properties.Settings.Default.LogFileDirectory)
+                    string logFilePath = System.IO.Path.Combine(string.IsNullOrEmpty(Properties.Settings.Default.LogFileDirectory)
                         ? Tools.LocalAppDataPath : Properties.Settings.Default.LogFileDirectory, "Activity Log.txt");
                     if (File.Exists(logFilePath))
                     {
-                        File.Delete(logFilePath);
+                        Microsoft.VisualBasic.FileIO.FileSystem.DeleteFile(
+                        logFilePath,
+                        UIOption.OnlyErrorDialogs,
+                        RecycleOption.SendToRecycleBin
+                    );
                     }
                 }
                 catch (Exception ex)
@@ -6892,11 +6829,11 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             if (!CheckGamePath()) // Abort if game path not set
                 return;
 
-            string directoryPath = Path.Combine(GamePath, "Data");
+            string directoryPath = System.IO.Path.Combine(GamePath, "Data");
             var row = dataGridView1.CurrentRow;
             string ModName = row.Cells["PluginName"].Value.ToString();
             ModName = ModName[..ModName.LastIndexOf('.')]; // Strip extension
-            string ModFile = Path.Combine(directoryPath, ModName);
+            string ModFile = System.IO.Path.Combine(directoryPath, ModName);
 
             // Collect existing mod-related files
             string[] fixedExtensions = { ".esp", ".esm", " - voices_en.ba2" };
@@ -6910,29 +6847,29 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             // Handle texture files like " - textures*.ba2"
             string pattern = ModName + " - textures*.ba2";
 
-            string[] matchedFiles = Directory.GetFiles(directoryPath, Path.GetFileName(pattern));
+            string[] matchedFiles = Directory.GetFiles(directoryPath, System.IO.Path.GetFileName(pattern));
             files.AddRange(matchedFiles);
 
             // Handle texture files like " - main*.ba2"
             pattern = ModName + " - main*.ba2";
-            matchedFiles = Directory.GetFiles(directoryPath, Path.GetFileName(pattern));
+            matchedFiles = Directory.GetFiles(directoryPath, System.IO.Path.GetFileName(pattern));
             files.AddRange(matchedFiles);
 
             string userInput = Interaction.InputBox("New Name:", "Duplicate Mod", ModName + " (2)");
             if (string.IsNullOrWhiteSpace(userInput) || userInput == ModName)
                 return;
-            userInput = Path.GetFileNameWithoutExtension(userInput); // Remove any extension from user input
+            userInput = System.IO.Path.GetFileNameWithoutExtension(userInput); // Remove any extension from user input
 
             // Copy each file
             foreach (var oldPath in files)
             {
                 string extensionPart = oldPath.Substring(ModFile.Length); // Get suffix like ".esp" or " - textures01.ba2"
-                string newPath = Path.Combine(directoryPath, userInput + extensionPart);
+                string newPath = System.IO.Path.Combine(directoryPath, userInput + extensionPart);
 
                 try
                 {
                     File.Copy(oldPath, newPath);
-                    activityLog.WriteLog($"Copied: {Path.GetFileName(oldPath)} to {Path.GetFileName(newPath)}");
+                    activityLog.WriteLog($"Copied: {System.IO.Path.GetFileName(oldPath)} to {System.IO.Path.GetFileName(newPath)}");
                 }
                 catch (Exception ex)
                 {
@@ -6949,7 +6886,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
         {
             //activityLog.WriteLog("Nothing currently implemented");
             var pluginsOnDisk = tools.GetPluginList(Game);
-            var pluginsText = File.ReadAllLines(Path.Combine(Tools.GameAppData, "Plugins.txt"));
+            var pluginsText = File.ReadAllLines(System.IO.Path.Combine(Tools.GameAppData, "Plugins.txt"));
             List<string> fixedFileNames = new();
         }
 
@@ -7007,7 +6944,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             // Continue if folder selected
             var sourceFiles = Directory.GetFiles(openFolderDialog.FolderName, "*.esm", System.IO.SearchOption.TopDirectoryOnly);
             var filesToCopy = sourceFiles.
-                Select(fileName => Path.GetFileName(fileName)).Except(pluginList, StringComparer.OrdinalIgnoreCase);
+                Select(fileName => System.IO.Path.GetFileName(fileName)).Except(pluginList, StringComparer.OrdinalIgnoreCase);
 
             if (filesToCopy.Count() == 0)
             {
@@ -7021,19 +6958,19 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             if (MessageBox.Show("Do you want to copy these files back to the Data directory?", "Confirm Copy",
                 MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                string dataDirectory = Path.Combine(GamePath, "Data");
+                string dataDirectory = System.IO.Path.Combine(GamePath, "Data");
                 string sourceFilePath = openFolderDialog.FolderName;
                 foreach (var fileName in filesToCopy)
                 {
-                    string destFilePath = Path.Combine(dataDirectory, fileName);
+                    string destFilePath = System.IO.Path.Combine(dataDirectory, fileName);
                     try
                     {
                         if (!File.Exists(destFilePath))
                         {
-                            var modFiles = Directory.GetFiles(sourceFilePath, Path.GetFileNameWithoutExtension(fileName) + "*");
+                            var modFiles = Directory.GetFiles(sourceFilePath, System.IO.Path.GetFileNameWithoutExtension(fileName) + "*");
                             foreach (var modFile in modFiles)
                             {
-                                tempstr = Path.Combine(dataDirectory, Path.GetFileName(modFile));
+                                tempstr = System.IO.Path.Combine(dataDirectory, System.IO.Path.GetFileName(modFile));
                                 if (!File.Exists(tempstr))
                                 {
                                     File.Copy(modFile, tempstr, false);
@@ -7137,7 +7074,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
         private void screenshotsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Tools.OpenDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName, "Data\\Textures\\Photos"));
+            Tools.OpenDirectory(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName, "Data\\Textures\\Photos"));
         }
 
         private void undoRowMoveToolStripMenuItem_Click(object sender, EventArgs e)
@@ -7167,7 +7104,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
                 return;
             }
 
-            if (!File.Exists(Path.Combine(frmLoadOrder.GamePath, @"Tools\Archive2", "Archive2.exe"))) // Check if Archive2.exe exists
+            if (!File.Exists(System.IO.Path.Combine(frmLoadOrder.GamePath, @"Tools\Archive2", "Archive2.exe"))) // Check if Archive2.exe exists
             {
                 MessageBox.Show("Install the Creation Kit.", "Archive2.exe not found", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -7199,9 +7136,9 @@ This function is only meant to be used on mods with empty .esm files",
                 return;
 
             string cmdLine = "";
-            string archive2Path = Path.Combine(GamePath, "Tools", "Archive2", "Archive2.exe");
+            string archive2Path = System.IO.Path.Combine(GamePath, "Tools", "Archive2", "Archive2.exe");
             string workingDirectory = $"{GamePath}\\Data";
-            string extactDirectory = Path.Combine(Path.GetTempPath(), "hstCMMExtract");
+            string extactDirectory = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "hstCMMExtract");
 
             CleanUpTempFiles(extactDirectory);
 
@@ -7227,7 +7164,7 @@ This function is only meant to be used on mods with empty .esm files",
                 }
             }
             // Move extracted files to Documents folder
-            string destDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName, "Data");
+            string destDirectory = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName, "Data");
             tools.CopyDirectory(extactDirectory, destDirectory);
             CleanUpTempFiles(extactDirectory);
 
@@ -7347,7 +7284,7 @@ This function is only meant to be used on mods with empty .esm files",
                         {
                             foreach (var item in profiles)
                             {
-                                filePath = Path.Combine(Properties.Settings.Default.ProfileFolder, GameName, item.ToString());
+                                filePath = System.IO.Path.Combine(Properties.Settings.Default.ProfileFolder, GameName, item.ToString());
                                 fileContents = File.ReadAllLines(filePath).ToList();
                                 fileContents.Remove(ModName);
                                 fileContents.Remove("*" + ModName);
@@ -7362,7 +7299,7 @@ This function is only meant to be used on mods with empty .esm files",
                                     activityLog.WriteLog("Disabled " + ModName + " in " + item.ToString() + " profile.");
                                 }
                                 fileContents = fileContents.Distinct().ToList(); // Avoid adding a duplicate
-                                File.WriteAllLines(Path.Combine(Properties.Settings.Default.ProfileFolder, GameName, item.ToString()), fileContents);
+                                File.WriteAllLines(System.IO.Path.Combine(Properties.Settings.Default.ProfileFolder, GameName, item.ToString()), fileContents);
                             }
                         }
                         else
@@ -7409,7 +7346,7 @@ This function is only meant to be used on mods with empty .esm files",
 
         private void extractModToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!File.Exists(Path.Combine(frmLoadOrder.GamePath, @"Tools\Archive2", "Archive2.exe"))) // Check if Archive2.exe exists
+            if (!File.Exists(System.IO.Path.Combine(frmLoadOrder.GamePath, @"Tools\Archive2", "Archive2.exe"))) // Check if Archive2.exe exists
             {
                 MessageBox.Show("Install the Creation Kit.", "Archive2.exe not found", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -7420,11 +7357,11 @@ This function is only meant to be used on mods with empty .esm files",
                 MessageBoxButtons.YesNo, MessageBoxIcon.Hand) != DialogResult.Yes)
                 return;
 
-            string selectedModName = Path.GetFileNameWithoutExtension(dataGridView1.SelectedCells[2].Value.ToString());
+            string selectedModName = System.IO.Path.GetFileNameWithoutExtension(dataGridView1.SelectedCells[2].Value.ToString());
             string cmdLine = "";
-            string archive2Path = Path.Combine(GamePath, "Tools", "Archive2", "Archive2.exe");
+            string archive2Path = System.IO.Path.Combine(GamePath, "Tools", "Archive2", "Archive2.exe");
             string workingDirectory = $"{GamePath}\\Data";
-            string extactDirectory = Path.Combine(Path.GetTempPath(), "hstCMMExtract");
+            string extactDirectory = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "hstCMMExtract");
 
             CleanUpTempFiles(extactDirectory);
 
@@ -7448,7 +7385,7 @@ This function is only meant to be used on mods with empty .esm files",
             }
 
             // Move extracted files to Documents folder
-            string destDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName, "Data");
+            string destDirectory = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName, "Data");
             tools.CopyDirectory(extactDirectory, destDirectory);
             CleanUpTempFiles(extactDirectory);
 
@@ -7504,7 +7441,7 @@ This function is only meant to be used on mods with empty .esm files",
 
         private void editConsoleHotkeys_Click(object sender, EventArgs e)
         {
-            tempstr = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+            tempstr = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                 "My Games", GameName, $"{GameName}Console.ini");
             if (File.Exists(tempstr))
                 Tools.OpenFile(tempstr);
@@ -7565,7 +7502,6 @@ This function is only meant to be used on mods with empty .esm files",
 
         private void ResizeProfileCombobox()
         {
-
             ComboBox senderComboBox = cmbProfile;
             int width = senderComboBox.DropDownWidth;
             Graphics g = senderComboBox.CreateGraphics();
@@ -7672,6 +7608,14 @@ This function is only meant to be used on mods with empty .esm files",
             {
                 ShowRecommendedColumns();
                 ToggleButtons(true);
+                if (log)
+                {
+                    Properties.Settings.Default.LogWindow = logWindowToolStripMenuItem.Checked = true;
+                    SetupLogRow();
+                    ToggleTime();
+                    ResizeForm();
+                }
+
             }
         }
 

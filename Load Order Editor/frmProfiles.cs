@@ -95,7 +95,7 @@ namespace hstCMM
             {
                 foreach (int item in checkedListBox1.CheckedIndices)
                 {
-                    File.Delete(profiles[item]);
+                    tools.DeleteFileToBin(profiles[item]);
                     frmLoadOrder.activityLog.WriteLog($"Deleted profile {item}");
 
                 }

@@ -200,7 +200,7 @@ namespace hstCMM
             if (Tools.ConfirmAction("Are you Sure?", "Delete ContentCatalog.txt", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 try
                 {
-                    File.Delete(Tools.GetCatalogPath());
+                    tools.DeleteFileToBin(Tools.GetCatalogPath());
                 }
                 catch (Exception ex)
                 {

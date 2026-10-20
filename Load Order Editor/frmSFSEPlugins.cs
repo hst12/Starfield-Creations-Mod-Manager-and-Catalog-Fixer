@@ -153,7 +153,7 @@ namespace hstCMM.Load_Order_Editor
                         {
                             try
                             {
-                                File.Delete(plugin);
+                                tools.DeleteFileToBin(plugin);
                             }
                             catch(Exception ex)
                             {

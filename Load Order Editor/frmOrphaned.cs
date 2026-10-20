@@ -55,7 +55,7 @@ namespace hstCMM.Load_Order_Editor
             {
                 foreach (var item in checkedListBox1.CheckedItems)
                 {
-                    File.Delete(Path.Combine(frmLoadOrder.GamePath, "Data", item.ToString()));
+                    tools.DeleteFileToBin(Path.Combine(frmLoadOrder.GamePath, "Data", item.ToString()));
                     if (log)
                         activityLog.WriteLog($"Deleted orphaned archive {item} from Data folder.");
                 }
