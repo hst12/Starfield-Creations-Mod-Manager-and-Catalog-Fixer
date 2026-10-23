@@ -416,7 +416,7 @@ namespace hstCMM
                      "My Games", GameName, $"{GameName}Custom.ini"), System.IO.Path.Combine(Tools.CommonFolder, $"{GameName}Custom.ini"));
         }
 
-        private static void CreateZipFromFiles(List<string> files, string zipPath)
+        private void CreateZipFromFiles(List<string> files, string zipPath)
         {
             using (FileStream zipToOpen = new FileStream(zipPath, FileMode.Create))
             {
@@ -684,14 +684,12 @@ namespace hstCMM
 
                     void makeArchive()
                     {
-                        sbar3($"Creating archive for {ModName}...");
+                        toolStripStatusStats.ForeColor = System.Drawing.Color.Red;
+                        sbar($"Creating archive for {ModName}");
                         statusStrip1.Refresh();
                         CreateZipFromFiles(files, zipPath); // Make zip
-                        if (log)
-                        {
                             foreach (var file in files)
                                 activityLog.WriteLog($"Archived {file}");
-                        }
                         sbar3($"{ModName} archived");
                         activityLog.WriteLog($"Created archive for {ModName} at {zipPath}");
                         statusStrip1.Refresh();
@@ -721,7 +719,8 @@ namespace hstCMM
                 }
 
                 LoadScreen.Close();
-                sbar3($"{modCounter} Mods archived");
+                toolStripStatusStats.ForeColor = DefaultForeColor;
+                sbar($"Archiving complete. {modCounter} Mods archived");
             }
         }
 
@@ -1089,6 +1088,7 @@ namespace hstCMM
             props.ModStats = NewSetting;
             props.RowHighlight = NewSetting;
             props.StatusStrip = NewSetting;
+            props.Resize = NewSetting;
 
             SaveSettings();
             SetUpMenus();
@@ -1934,6 +1934,9 @@ namespace hstCMM
                 compactViewToolStripMenuItem.Checked = Properties.Settings.Default.CompactView = false;
                 CompactView();
             }
+
+            if (!Properties.Settings.Default.ModStats)
+                ToggleModStats();
             RefreshDataGrid();
         }
         private void enableAllToolStripMenuItem_Click(object sender, EventArgs e)
@@ -7639,6 +7642,7 @@ This function is only meant to be used on mods with empty .esm files",
         {
             ResetEverything(true);
             EnableAllSettings(true);
+            ShowRecommendedColumns();
         }
     }
 }
