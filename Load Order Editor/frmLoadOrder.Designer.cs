@@ -303,9 +303,9 @@
             toolStripMenuLoot = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuLootSort = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator15 = new System.Windows.Forms.ToolStripSeparator();
+            creationKitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             vortexToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             mO2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            creationKitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             xEditToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             starUIConfiguratorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator26 = new System.Windows.Forms.ToolStripSeparator();
@@ -2161,7 +2161,7 @@
             // 
             // toolStripMenuMods
             // 
-            toolStripMenuMods.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuEnableAll, toolStripMenuDisableAll, enableAchievementSafeOnlyToolStripMenuItem, enableAllCreationsModsOnlyToolStripMenuItem, disableAllCreationsModsToolStripMenuItem, toolStripSeparator6, toolStripMenuDelete, toolStripSeparator8, toolStripMenuAutoClean, toolStripMenuScanMods, toolStripMenuCleanup, removeDuplicatesToolStripMenuItem, updateAndSortToolStripMenuItem, toolStripSeparator7, toolStripMenuInstall, toolStripMenuUninstall, toolStripSeparator9, toolStripMenuLoot, toolStripMenuLootSort, toolStripSeparator15, vortexToolStripMenuItem, mO2ToolStripMenuItem, creationKitToolStripMenuItem, xEditToolStripMenuItem, starUIConfiguratorToolStripMenuItem, toolStripSeparator26, openAllActiveModWebPagesToolStripMenuItem, toolStripSeparator29, looseFilesDisabledToolStripMenuItem, toolStripSeparator28, sFSEPluginsEnableDisableToolStripMenuItem, toolStripSeparator61, creationsUpdateToolStripMenuItem });
+            toolStripMenuMods.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuEnableAll, toolStripMenuDisableAll, enableAchievementSafeOnlyToolStripMenuItem, enableAllCreationsModsOnlyToolStripMenuItem, disableAllCreationsModsToolStripMenuItem, toolStripSeparator6, toolStripMenuDelete, toolStripSeparator8, toolStripMenuAutoClean, toolStripMenuScanMods, toolStripMenuCleanup, removeDuplicatesToolStripMenuItem, updateAndSortToolStripMenuItem, toolStripSeparator7, toolStripMenuInstall, toolStripMenuUninstall, toolStripSeparator9, toolStripMenuLoot, toolStripMenuLootSort, toolStripSeparator15, creationKitToolStripMenuItem, vortexToolStripMenuItem, mO2ToolStripMenuItem, xEditToolStripMenuItem, starUIConfiguratorToolStripMenuItem, toolStripSeparator26, openAllActiveModWebPagesToolStripMenuItem, toolStripSeparator29, looseFilesDisabledToolStripMenuItem, toolStripSeparator28, sFSEPluginsEnableDisableToolStripMenuItem, toolStripSeparator61, creationsUpdateToolStripMenuItem });
             toolStripMenuMods.Name = "toolStripMenuMods";
             toolStripMenuMods.Size = new System.Drawing.Size(94, 38);
             toolStripMenuMods.Text = "Mods";
@@ -2300,6 +2300,14 @@
             toolStripSeparator15.Name = "toolStripSeparator15";
             toolStripSeparator15.Size = new System.Drawing.Size(495, 6);
             // 
+            // creationKitToolStripMenuItem
+            // 
+            creationKitToolStripMenuItem.Image = (System.Drawing.Image)resources.GetObject("creationKitToolStripMenuItem.Image");
+            creationKitToolStripMenuItem.Name = "creationKitToolStripMenuItem";
+            creationKitToolStripMenuItem.Size = new System.Drawing.Size(498, 44);
+            creationKitToolStripMenuItem.Text = "Creation Kit";
+            creationKitToolStripMenuItem.Click += creationKitToolStripMenuItem_Click;
+            // 
             // vortexToolStripMenuItem
             // 
             vortexToolStripMenuItem.Image = (System.Drawing.Image)resources.GetObject("vortexToolStripMenuItem.Image");
@@ -2316,14 +2324,6 @@
             mO2ToolStripMenuItem.Size = new System.Drawing.Size(498, 44);
             mO2ToolStripMenuItem.Text = "MO2";
             mO2ToolStripMenuItem.Click += mO2ToolStripMenuItem_Click;
-            // 
-            // creationKitToolStripMenuItem
-            // 
-            creationKitToolStripMenuItem.Image = (System.Drawing.Image)resources.GetObject("creationKitToolStripMenuItem.Image");
-            creationKitToolStripMenuItem.Name = "creationKitToolStripMenuItem";
-            creationKitToolStripMenuItem.Size = new System.Drawing.Size(498, 44);
-            creationKitToolStripMenuItem.Text = "Creation Kit";
-            creationKitToolStripMenuItem.Click += creationKitToolStripMenuItem_Click;
             // 
             // xEditToolStripMenuItem
             // 
