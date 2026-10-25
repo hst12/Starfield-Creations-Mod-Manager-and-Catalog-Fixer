@@ -688,8 +688,8 @@ namespace hstCMM
                         sbar($"Creating archive for {ModName}");
                         statusStrip1.Refresh();
                         CreateZipFromFiles(files, zipPath); // Make zip
-                            foreach (var file in files)
-                                activityLog.WriteLog($"Archived {file}");
+                        foreach (var file in files)
+                            activityLog.WriteLog($"Archived {file}");
                         sbar3($"{ModName} archived");
                         activityLog.WriteLog($"Created archive for {ModName} at {zipPath}");
                         statusStrip1.Refresh();
@@ -1935,9 +1935,9 @@ namespace hstCMM
                 CompactView();
             }
 
-            if (!Properties.Settings.Default.ModStats)
+            /*if (!Properties.Settings.Default.ModStats)
                 ToggleModStats();
-            RefreshDataGrid();
+            RefreshDataGrid();*/
         }
         private void enableAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -4430,7 +4430,7 @@ namespace hstCMM
             int sortResult = 0;
 
             if (isModified) SavePlugins();
-            if (pluginList.Any(x => x.EndsWith(".esp", StringComparison.OrdinalIgnoreCase)))
+            if (LOOTMode && pluginList.Any(x => x.EndsWith(".esp", StringComparison.OrdinalIgnoreCase)))
             {
                 LogError("Sort aborted - .esp found");
                 return 0;
@@ -5920,6 +5920,8 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             toolStripMenuIndex.Checked = !toolStripMenuIndex.Checked;
             dataGridView1.Columns["Index"].Visible = toolStripMenuIndex.Checked;
             Properties.Settings.Default.Index = toolStripMenuIndex.Checked;
+            if (toolStripMenuIndex.Checked)
+                RefreshDataGrid();
         }
 
         private void toolStripMenuInstall_Click(object sender, EventArgs e)
@@ -7565,6 +7567,40 @@ This function is only meant to be used on mods with empty .esm files",
             btnToggleMod.Visible = OnOffState;
         }
 
+        private void CompactColumns()
+        {
+            HideAllColumns();
+            var enableItems = new[]
+            {
+                    ("Group", toolStripMenuGroup),
+                    ("Description", toolStripMenuDescription)
+                };
+            var disableItems = new[]
+            {
+                    ("TimeStamp", timeStampToolStripMenuItem),
+                    ("Achievements", toolStripMenuAchievements),
+                    ("CreationsID", toolStripMenuCreationsID),
+                    ("Files", toolStripMenuFiles),
+                    ("Index", toolStripMenuIndex),
+                    ("FileSize", toolStripMenuFileSize),
+                    ("URL", uRLToolStripMenuItem),
+                    ("Version", toolStripMenuVersion),
+                    ("AuthorVersion", toolStripMenuAuthorVersion),
+                    ("Blocked", blockedToolStripMenuItem)
+                };
+
+            foreach (var (columnName, menuItem) in enableItems)
+            {
+                SetColumnVisibility(true, menuItem, dataGridView1.Columns[columnName]);
+                Properties.Settings.Default[columnName] = true;
+            }
+
+            foreach (var (columnName, menuItem) in disableItems)
+            {
+                SetColumnVisibility(false, menuItem, dataGridView1.Columns[columnName]);
+                Properties.Settings.Default[columnName] = false;
+            }
+        }
         private void CompactView()
         {
             ToggleStatusStrip(!compactViewToolStripMenuItem.Checked);
@@ -7580,37 +7616,7 @@ This function is only meant to be used on mods with empty .esm files",
 
             if (compactViewToolStripMenuItem.Checked)
             {
-                HideAllColumns();
-                var enableItems = new[]
-                {
-                    ("Group", toolStripMenuGroup),
-                    ("Description", toolStripMenuDescription)
-                };
-                var disableItems = new[]
-                {
-                    ("TimeStamp", timeStampToolStripMenuItem),
-                    ("Achievements", toolStripMenuAchievements),
-                    ("CreationsID", toolStripMenuCreationsID),
-                    ("Files", toolStripMenuFiles),
-                    ("Index", toolStripMenuIndex),
-                    ("FileSize", toolStripMenuFileSize),
-                    ("URL", uRLToolStripMenuItem),
-                    ("Version", toolStripMenuVersion),
-                    ("AuthorVersion", toolStripMenuAuthorVersion),
-                    ("Blocked", blockedToolStripMenuItem)
-                };
-
-                foreach (var (columnName, menuItem) in enableItems)
-                {
-                    SetColumnVisibility(true, menuItem, dataGridView1.Columns[columnName]);
-                    Properties.Settings.Default[columnName] = true;
-                }
-
-                foreach (var (columnName, menuItem) in disableItems)
-                {
-                    SetColumnVisibility(false, menuItem, dataGridView1.Columns[columnName]);
-                    Properties.Settings.Default[columnName] = false;
-                }
+                CompactColumns();
                 ToggleButtons(false);
                 cmbProfile.Width = 200;
                 if (timer2.Enabled)
@@ -7643,6 +7649,12 @@ This function is only meant to be used on mods with empty .esm files",
             ResetEverything(true);
             EnableAllSettings(true);
             ShowRecommendedColumns();
+        }
+
+        private void compactToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CompactColumns();
+            ResizeForm();
         }
     }
 }

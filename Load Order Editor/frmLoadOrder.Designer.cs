@@ -194,8 +194,9 @@
             lastModifiedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator30 = new System.Windows.Forms.ToolStripSeparator();
             toolStripMenuItemHideAll = new System.Windows.Forms.ToolStripMenuItem();
-            showAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            compactToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuShowRecommended = new System.Windows.Forms.ToolStripMenuItem();
+            showAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             themeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             lightToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             darkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -1465,7 +1466,7 @@
             // 
             // toolStripMenuColumns
             // 
-            toolStripMenuColumns.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuIndex, toolStripMenuDescription, toolStripMenuGroup, toolStripMenuAchievements, toolStripMenuCreationsID, toolStripMenuFiles, toolStripMenuFileSize, timeStampToolStripMenuItem, uRLToolStripMenuItem, toolStripMenuVersion, toolStripMenuAuthorVersion, blockedToolStripMenuItem, lastModifiedToolStripMenuItem, toolStripSeparator30, toolStripMenuItemHideAll, showAllToolStripMenuItem, toolStripMenuShowRecommended });
+            toolStripMenuColumns.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuIndex, toolStripMenuDescription, toolStripMenuGroup, toolStripMenuAchievements, toolStripMenuCreationsID, toolStripMenuFiles, toolStripMenuFileSize, timeStampToolStripMenuItem, uRLToolStripMenuItem, toolStripMenuVersion, toolStripMenuAuthorVersion, blockedToolStripMenuItem, lastModifiedToolStripMenuItem, toolStripSeparator30, toolStripMenuItemHideAll, compactToolStripMenuItem, toolStripMenuShowRecommended, showAllToolStripMenuItem });
             toolStripMenuColumns.Name = "toolStripMenuColumns";
             toolStripMenuColumns.Size = new System.Drawing.Size(392, 44);
             toolStripMenuColumns.Text = "Columns";
@@ -1579,12 +1580,12 @@
             toolStripMenuItemHideAll.Text = "Show Minimum";
             toolStripMenuItemHideAll.Click += toolStripMenuItemHideAll_Click;
             // 
-            // showAllToolStripMenuItem
+            // compactToolStripMenuItem
             // 
-            showAllToolStripMenuItem.Name = "showAllToolStripMenuItem";
-            showAllToolStripMenuItem.Size = new System.Drawing.Size(373, 44);
-            showAllToolStripMenuItem.Text = "Show All";
-            showAllToolStripMenuItem.Click += showAllToolStripMenuItem_Click;
+            compactToolStripMenuItem.Name = "compactToolStripMenuItem";
+            compactToolStripMenuItem.Size = new System.Drawing.Size(373, 44);
+            compactToolStripMenuItem.Text = "Compact";
+            compactToolStripMenuItem.Click += compactToolStripMenuItem_Click;
             // 
             // toolStripMenuShowRecommended
             // 
@@ -1592,6 +1593,13 @@
             toolStripMenuShowRecommended.Size = new System.Drawing.Size(373, 44);
             toolStripMenuShowRecommended.Text = "Show Recommended";
             toolStripMenuShowRecommended.Click += toolStripMenuShowRecommended_Click;
+            // 
+            // showAllToolStripMenuItem
+            // 
+            showAllToolStripMenuItem.Name = "showAllToolStripMenuItem";
+            showAllToolStripMenuItem.Size = new System.Drawing.Size(373, 44);
+            showAllToolStripMenuItem.Text = "Show All";
+            showAllToolStripMenuItem.Click += showAllToolStripMenuItem_Click;
             // 
             // themeToolStripMenuItem
             // 
@@ -3352,5 +3360,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator52;
         private System.Windows.Forms.ToolStripMenuItem compactViewToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem resetAllGameSettingsAndSetToolsMenuDefaultsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem compactToolStripMenuItem;
     }
 }
