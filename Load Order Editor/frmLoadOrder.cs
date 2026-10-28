@@ -1939,6 +1939,7 @@ namespace hstCMM
                 ToggleModStats();
             RefreshDataGrid();*/
         }
+
         private void enableAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
             EnableAllSettings();
@@ -4063,6 +4064,7 @@ namespace hstCMM
             sbar3(actionCount.ToString() + " Change(s) made");
             activityLog.WriteLog("Reset everything: " + actionCount.ToString() + " Change(s) made");
         }
+
         private void resetEverythingToolStripMenuItem_Click(object sender, EventArgs e) // Reset all game settings and delete loose file folders, preserves app settings.
         {
             ResetEverything();
@@ -5936,13 +5938,15 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
         private void toolStripMenuItemDeletePlugins_Click(object sender, EventArgs e)
         {
-            if (Tools.ConfirmAction("Are you sure you want to delete Plugins.txt?", "This will delete Plugins.txt", MessageBoxButtons.YesNo) == DialogResult.No)
+            if (Tools.ConfirmAction("Are you sure you want to delete Plugins.txt?", "This will delete Plugins.txt",
+                MessageBoxButtons.YesNo) == DialogResult.No)
                 return;
             tools.DeleteFileToBin(System.IO.Path.Combine(Tools.GameAppData, "Plugins.txt"));
         }
 
-        private void toolStripMenuItemHideAll_Click(object sender, EventArgs e) // Hide all columns in the DataGridView except active status and plugin name
+        private void toolStripMenuItemHideAll_Click(object sender, EventArgs e)
         {
+            // Hide all columns in the DataGridView except active status and plugin name
             HideAllColumns();
         }
 
@@ -6148,7 +6152,8 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             frmGameCustomINI fci = new();
             fci.ShowDialog();
             string PluginsPath = System.IO.Path.Combine(Tools.GameAppData, "Plugins.txt"),
-        LooseFilesDir = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName), // Check if loose files are enabled
+        // Check if loose files are enabled
+        LooseFilesDir = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName), 
         filePath = System.IO.Path.Combine(LooseFilesDir, GameName + "Custom.ini");
             LooseFiles = false;
             try
@@ -7601,6 +7606,7 @@ This function is only meant to be used on mods with empty .esm files",
                 Properties.Settings.Default[columnName] = false;
             }
         }
+
         private void CompactView()
         {
             ToggleStatusStrip(!compactViewToolStripMenuItem.Checked);
