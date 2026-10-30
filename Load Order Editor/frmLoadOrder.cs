@@ -1860,6 +1860,13 @@ namespace hstCMM
                 "My Games", GameName, $"{GameName}Custom.ini");
             if (File.Exists(tempstr))
                 Tools.OpenFile(tempstr);
+            else
+                if (Tools.ConfirmAction($"Create File?", $"{GameName}Custom.ini not found", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    File.Create(tempstr).Close();
+                    if (File.Exists(tempstr))
+                        Tools.OpenFile(tempstr);
+                }
         }
 
         private void enableAchievementSafeOnlyToolStripMenuItem_Click(object sender, EventArgs e) // Experimental. Should probably remove
