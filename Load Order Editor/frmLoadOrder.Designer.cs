@@ -218,6 +218,7 @@
             toolStripSeparator56 = new System.Windows.Forms.ToolStripSeparator();
             resizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             compactViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            fullScreenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuCatalog = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator21 = new System.Windows.Forms.ToolStripSeparator();
@@ -467,7 +468,7 @@
             // 
             // Version
             // 
-            Version.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            Version.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
             dataGridViewCellStyle1.NullValue = null;
             Version.DefaultCellStyle = dataGridViewCellStyle1;
             Version.HeaderText = "Date";
@@ -515,7 +516,7 @@
             // 
             // CreationsID
             // 
-            CreationsID.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            CreationsID.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
             CreationsID.FillWeight = 10F;
             CreationsID.HeaderText = "Creations ID";
             CreationsID.MinimumWidth = 10;
@@ -1452,7 +1453,7 @@
             // 
             // viewToolStripMenuItem
             // 
-            viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { refreshToolStripMenuItem, toolStripMenuColumns, themeToolStripMenuItem, toolStripSeparator52, statusStripToolStripMenuItem, showTimeToolStripMenuItem, modStatsToolStripMenuItem, toolStripSeparator25, activeOnlyToolStripMenuItem, blockedOnlyToolStripMenuItem, toolStripSeparator53, viewLogToolStripMenuItem, logWindowToolStripMenuItem, toolStripSeparator54, blockedModsToolStripMenuItem, toolStripSeparator20, rowHighlightToolStripMenuItem, toolStripSeparator56, resizeToolStripMenuItem, compactViewToolStripMenuItem });
+            viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { refreshToolStripMenuItem, toolStripMenuColumns, themeToolStripMenuItem, toolStripSeparator52, statusStripToolStripMenuItem, showTimeToolStripMenuItem, modStatsToolStripMenuItem, toolStripSeparator25, activeOnlyToolStripMenuItem, blockedOnlyToolStripMenuItem, toolStripSeparator53, viewLogToolStripMenuItem, logWindowToolStripMenuItem, toolStripSeparator54, blockedModsToolStripMenuItem, toolStripSeparator20, rowHighlightToolStripMenuItem, toolStripSeparator56, resizeToolStripMenuItem, compactViewToolStripMenuItem, fullScreenToolStripMenuItem });
             viewToolStripMenuItem.Name = "viewToolStripMenuItem";
             viewToolStripMenuItem.Size = new System.Drawing.Size(85, 38);
             viewToolStripMenuItem.Text = "View";
@@ -1739,6 +1740,14 @@
             compactViewToolStripMenuItem.Size = new System.Drawing.Size(392, 44);
             compactViewToolStripMenuItem.Text = "Compact View";
             compactViewToolStripMenuItem.Click += compactViewToolStripMenuItem_Click;
+            // 
+            // fullScreenToolStripMenuItem
+            // 
+            fullScreenToolStripMenuItem.Name = "fullScreenToolStripMenuItem";
+            fullScreenToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F11;
+            fullScreenToolStripMenuItem.Size = new System.Drawing.Size(392, 44);
+            fullScreenToolStripMenuItem.Text = "Full Screen";
+            fullScreenToolStripMenuItem.Click += fullScreenToolStripMenuItem_Click;
             // 
             // toolsToolStripMenuItem
             // 
@@ -3341,6 +3350,11 @@
         private System.Windows.Forms.ToolStripMenuItem generateBothExcludeFilesToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator63;
         private System.Windows.Forms.ToolStripMenuItem findToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem statusStripToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator52;
+        private System.Windows.Forms.ToolStripMenuItem compactViewToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem resetAllGameSettingsAndSetToolsMenuDefaultsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem compactToolStripMenuItem;
         private System.Windows.Forms.DataGridViewTextBoxColumn Index;
         private System.Windows.Forms.DataGridViewCheckBoxColumn ModEnabled;
         private System.Windows.Forms.DataGridViewTextBoxColumn PluginName;
@@ -3356,10 +3370,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn URL;
         private System.Windows.Forms.DataGridViewTextBoxColumn Blocked;
         private System.Windows.Forms.DataGridViewTextBoxColumn LastModified;
-        private System.Windows.Forms.ToolStripMenuItem statusStripToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator52;
-        private System.Windows.Forms.ToolStripMenuItem compactViewToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem resetAllGameSettingsAndSetToolsMenuDefaultsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem compactToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem fullScreenToolStripMenuItem;
     }
 }

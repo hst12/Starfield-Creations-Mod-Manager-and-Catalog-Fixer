@@ -71,7 +71,7 @@ namespace hstCMM
                     int index = Properties.Settings.Default.LoadScreenIndex;
                     if (index < files.Length)
                     {
-                        LoadScreen = files[index]; // Randomly pick a load screen from Photos directory
+                        LoadScreen = files[index]; // Pick the next load screen from Photos directory
                         if (index < files.Length - 1)
                             Properties.Settings.Default.LoadScreenIndex++; // Select the next load screen for the next time
                         else
@@ -82,6 +82,11 @@ namespace hstCMM
                         Properties.Settings.Default.LoadScreenIndex = 0; // Start over at the beginning of the list
                     }
                 }
+            }
+
+            if (Properties.Settings.Default.SlideShow)
+            {
+                MessageBox.Show("Not implemented yet");
             }
 
             Rectangle screen = Screen.PrimaryScreen.Bounds;
@@ -103,7 +108,7 @@ namespace hstCMM
 
             if (Properties.Settings.Default.LoadScreenSequence || Properties.Settings.Default.RandomLoadScreen)
             {
-                if (Properties.Settings.Default.LastProfile=="NSFW.txt")
+                if (Properties.Settings.Default.LastProfile == "NSFW.txt")
                     this.BackgroundImage = Properties.Resources.Andreja;
             }
 

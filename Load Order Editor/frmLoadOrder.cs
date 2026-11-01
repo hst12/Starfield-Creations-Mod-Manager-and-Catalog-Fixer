@@ -5004,6 +5004,9 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             compactViewToolStripMenuItem.Checked = Properties.Settings.Default.CompactView;
             if (compactViewToolStripMenuItem.Checked)
                 CompactView();
+            fullScreenToolStripMenuItem.Checked = Properties.Settings.Default.FullScreen;
+            if (fullScreenToolStripMenuItem.Checked)
+                FullScreen();
         }
 
         private void sFSEPluginsToolStripMenuItem_Click(object sender, EventArgs e) // Open SFSE Plugins Directory
@@ -6160,7 +6163,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             fci.ShowDialog();
             string PluginsPath = System.IO.Path.Combine(Tools.GameAppData, "Plugins.txt"),
         // Check if loose files are enabled
-        LooseFilesDir = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName), 
+        LooseFilesDir = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", GameName),
         filePath = System.IO.Path.Combine(LooseFilesDir, GameName + "Custom.ini");
             LooseFiles = false;
             try
@@ -6911,10 +6914,16 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
         private void testToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            //activityLog.WriteLog("Nothing currently implemented");
-            var pluginsOnDisk = tools.GetPluginList(Game);
-            var pluginsText = File.ReadAllLines(System.IO.Path.Combine(Tools.GameAppData, "Plugins.txt"));
+            /*activityLog.WriteLog("Nothing currently implemented");
+            List<string> pluginsOnDisk = tools.GetPluginList(Game);
+            List<string> pluginsText = File.ReadAllLines(System.IO.Path.Combine(Tools.GameAppData, "Plugins.txt")).ToList();
             List<string> fixedFileNames = new();
+            foreach (var mod in pluginsOnDisk.Intersect(pluginsOnDisk))
+            {
+                activityLog.WriteLog(mod);
+            }
+            var fixedFileNames = pluginsOnDisk.Except(pluginsText);
+            MessageBox.Show("Dummy");*/
         }
 
         private void sFSEPluginsEnableDisableToolStripMenuItem_Click(object sender, EventArgs e)
@@ -7668,6 +7677,26 @@ This function is only meant to be used on mods with empty .esm files",
         {
             CompactColumns();
             ResizeForm();
+        }
+
+        private void FullScreen()
+        {
+            if (Properties.Settings.Default.FullScreen)
+            {
+                this.WindowState = FormWindowState.Maximized;
+                this.FormBorderStyle = FormBorderStyle.None;
+            }
+            else
+            {
+                this.WindowState = FormWindowState.Normal;
+                this.FormBorderStyle = FormBorderStyle.Sizable;
+                ResizeForm();
+            }
+        }
+        private void fullScreenToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.FullScreen = fullScreenToolStripMenuItem.Checked = !fullScreenToolStripMenuItem.Checked;
+            FullScreen();
         }
     }
 }
