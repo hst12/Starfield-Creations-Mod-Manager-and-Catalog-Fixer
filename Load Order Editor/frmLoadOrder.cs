@@ -2073,6 +2073,12 @@ namespace hstCMM
             progressBar1.Width = 400; // Set the width of the progress bar
             progressBar1.Height = 50; // Set the height of the progress bar
             progressBar1.Location = new Point((this.ClientSize.Width - progressBar1.Width) / 2, (this.ClientSize.Height - progressBar1.Height) / 2);
+
+            // Enable double buffering for DataGridView
+            typeof(DataGridView)
+                .GetProperty("DoubleBuffered", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+                ?.SetValue(dataGridView1, true, null);
+
         }
 
         private void frmLoadOrder_Resize(object sender, EventArgs e)
@@ -5004,9 +5010,9 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
             compactViewToolStripMenuItem.Checked = Properties.Settings.Default.CompactView;
             if (compactViewToolStripMenuItem.Checked)
                 CompactView();
-            fullScreenToolStripMenuItem.Checked = Properties.Settings.Default.FullScreen;
+            /*fullScreenToolStripMenuItem.Checked = Properties.Settings.Default.FullScreen;
             if (fullScreenToolStripMenuItem.Checked)
-                FullScreen();
+                FullScreen();*/
         }
 
         private void sFSEPluginsToolStripMenuItem_Click(object sender, EventArgs e) // Open SFSE Plugins Directory
