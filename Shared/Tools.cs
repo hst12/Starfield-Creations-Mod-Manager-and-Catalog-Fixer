@@ -459,7 +459,7 @@ namespace hstCMM.Shared // Various functions used by the app
             return false;
         }
 
-        public List<string> GetPluginList(int Game) // Get list of plugins from game Data folder
+        public List<string> GetPluginList(int Game,bool caseInsensitive=true) // Get list of plugins from game Data folder
         {
             string dataPath = Path.Combine(frmLoadOrder.GamePath, "Data");
             List<string> plugins = new();
@@ -469,11 +469,23 @@ namespace hstCMM.Shared // Various functions used by the app
                 //patterns = GameLibrary.GetById(Game).ModFormats;
                 foreach (var pattern in patterns)
                 {
-                    var modFiles = Directory.EnumerateFiles(dataPath, pattern, System.IO.SearchOption.TopDirectoryOnly)
-                                    .Select(Path.GetFileName)
-                                    .Where(fileName => !BethFiles.Contains(fileName, StringComparer.OrdinalIgnoreCase)
-                                        && !fileName.Contains("blueprintships-", StringComparison.OrdinalIgnoreCase))
-                                    .ToList();
+                    List<string> modFiles;
+                    if (caseInsensitive)
+                    {
+                        modFiles = Directory.EnumerateFiles(dataPath, pattern, System.IO.SearchOption.TopDirectoryOnly)
+                                       .Select(Path.GetFileName)
+                                       .Where(fileName => !BethFiles.Contains(fileName, StringComparer.OrdinalIgnoreCase)
+                                           && !fileName.Contains("blueprintships-", StringComparison.OrdinalIgnoreCase))
+                                       .ToList();
+                    }
+                    else
+                    {
+                        modFiles = Directory.EnumerateFiles(dataPath, pattern, System.IO.SearchOption.TopDirectoryOnly)
+                                       .Select(Path.GetFileName)
+                                       .Where(fileName => !BethFiles.Contains(fileName)
+                                           && !fileName.Contains("blueprintships-", StringComparison.OrdinalIgnoreCase))
+                                       .ToList();
+                    }
                     foreach (var item in modFiles)
                         plugins.Add(item);
                 }

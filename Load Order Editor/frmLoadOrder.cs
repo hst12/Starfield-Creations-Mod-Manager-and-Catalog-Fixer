@@ -24,6 +24,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Documents;
 using System.Windows.Forms;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
@@ -133,7 +134,7 @@ namespace hstCMM
             if (Properties.Settings.Default.LOOTEnabled) // Cache LOOT groups
                 ReadLOOTGroups();
 
-            pluginList = tools.GetPluginList(Game); // Cache plugins
+            pluginList = tools.GetPluginList(Game,false); // Cache plugins <-- Check this in case of problems
 
             // Initialise profiles
             if (Properties.Settings.Default.ProfileOn)
@@ -2809,6 +2810,8 @@ namespace hstCMM
                             if (Directory.Exists(extractPath))
                                 Directory.Delete(extractPath, true);
                             loadScreen.Close();
+                            sbar("Install cancelled");
+                            sbar2("");
                             return false;
                         }
                     }
@@ -6920,16 +6923,22 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
         private void testToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            /*activityLog.WriteLog("Nothing currently implemented");
-            List<string> pluginsOnDisk = tools.GetPluginList(Game);
+            //activityLog.WriteLog("Nothing currently implemented");
+            List<string> pluginsOnDisk = tools.GetPluginList(Game,false);
             List<string> pluginsText = File.ReadAllLines(System.IO.Path.Combine(Tools.GameAppData, "Plugins.txt")).ToList();
-            List<string> fixedFileNames = new();
-            foreach (var mod in pluginsOnDisk.Intersect(pluginsOnDisk))
+            //List<string> fixedFileNames = new();
+            var commonPlugins = pluginsOnDisk.Intersect(pluginsText, StringComparer.OrdinalIgnoreCase);
+
+            // 2. Remove the ones that already match perfectly
+            var mismatches = commonPlugins.Except(pluginsText).ToList();
+
+            foreach (var item in mismatches)
             {
-                activityLog.WriteLog(mod);
+                activityLog.WriteLog(item);
             }
-            var fixedFileNames = pluginsOnDisk.Except(pluginsText);
-            MessageBox.Show("Dummy");*/
+
+            //fixedFileNames = pluginsOnDisk.Except(pluginsText);
+            MessageBox.Show("Dummy");
         }
 
         private void sFSEPluginsEnableDisableToolStripMenuItem_Click(object sender, EventArgs e)
