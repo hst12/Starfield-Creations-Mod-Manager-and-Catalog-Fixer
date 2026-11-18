@@ -128,6 +128,7 @@
             toolStripSeparator17 = new System.Windows.Forms.ToolStripSeparator();
             convertLooseFilesModToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator19 = new System.Windows.Forms.ToolStripSeparator();
+            createEmptyESMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             resetDeleteFilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuDeleteCCC = new System.Windows.Forms.ToolStripMenuItem();
             deleteStarfieldCustominiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -850,7 +851,7 @@
             // 
             // fileToolStripMenuItem
             // 
-            fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { openToolStripMenuItem, saveToolStripMenuItem, saveAsToolStripMenuItem, profileManagementToolStripMenuItem, toolStripSeparator, updateAllProfilesToolStripMenuItem, toolStripSeparator43, exploreToolStripMenuItem, toolStripSeparator2, toolStripMenuEditFiles, toolStripSeparator3, exportToolStripMenuItem, toolStripSeparator17, convertLooseFilesModToolStripMenuItem, toolStripSeparator19, resetDeleteFilesToolStripMenuItem, toolStripSeparator46, backupToolStripMenuItem, restoreToolStripMenuItem, toolStripSeparator1, exitToolStripMenuItem });
+            fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { openToolStripMenuItem, saveToolStripMenuItem, saveAsToolStripMenuItem, profileManagementToolStripMenuItem, toolStripSeparator, updateAllProfilesToolStripMenuItem, toolStripSeparator43, exploreToolStripMenuItem, toolStripSeparator2, toolStripMenuEditFiles, toolStripSeparator3, exportToolStripMenuItem, toolStripSeparator17, convertLooseFilesModToolStripMenuItem, toolStripSeparator19, createEmptyESMToolStripMenuItem, resetDeleteFilesToolStripMenuItem, toolStripSeparator46, backupToolStripMenuItem, restoreToolStripMenuItem, toolStripSeparator1, exitToolStripMenuItem });
             fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             fileToolStripMenuItem.Size = new System.Drawing.Size(71, 38);
             fileToolStripMenuItem.Text = "&File";
@@ -1128,6 +1129,13 @@
             // 
             toolStripSeparator19.Name = "toolStripSeparator19";
             toolStripSeparator19.Size = new System.Drawing.Size(646, 6);
+            // 
+            // createEmptyESMToolStripMenuItem
+            // 
+            createEmptyESMToolStripMenuItem.Name = "createEmptyESMToolStripMenuItem";
+            createEmptyESMToolStripMenuItem.Size = new System.Drawing.Size(649, 44);
+            createEmptyESMToolStripMenuItem.Text = "Create Empty ESM";
+            createEmptyESMToolStripMenuItem.Click += createEmptyESMToolStripMenuItem_Click;
             // 
             // resetDeleteFilesToolStripMenuItem
             // 
@@ -3371,5 +3379,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Blocked;
         private System.Windows.Forms.DataGridViewTextBoxColumn LastModified;
         private System.Windows.Forms.ToolStripMenuItem fullScreenToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem createEmptyESMToolStripMenuItem;
     }
 }

@@ -24,7 +24,6 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Documents;
 using System.Windows.Forms;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
@@ -134,7 +133,7 @@ namespace hstCMM
             if (Properties.Settings.Default.LOOTEnabled) // Cache LOOT groups
                 ReadLOOTGroups();
 
-            pluginList = tools.GetPluginList(Game,false); // Cache plugins <-- Check this in case of problems
+            pluginList = tools.GetPluginList(Game, false); // Cache plugins <-- Check this in case of problems
 
             // Initialise profiles
             if (Properties.Settings.Default.ProfileOn)
@@ -1128,15 +1127,19 @@ namespace hstCMM
 
                 foreach (var archive in modArchives) // Check if archive is orphaned
                 {
-                    if (!plugins.Any(plugin => archive.StartsWith(plugin))) // If no plugin starts with the archive name
+                    if (!plugins.Any(plugin => archive.StartsWith(plugin, StringComparison.OrdinalIgnoreCase))) // If no plugin starts with the archive name
+                    {
                         toDelete.Add(System.IO.Path.Combine(GamePath, "Data", archive) + ".ba2");
-                    if (!plugins.Any(plugin => archive.StartsWith(plugin))) // If no plugin starts with the archive name
                         toDelete.Add(System.IO.Path.Combine(GamePath, "Data", archive) + ".bsa");
-                    if (archive.EndsWith("_xbox"))
+                    }
+
+                    if (archive.EndsWith("_xbox", StringComparison.OrdinalIgnoreCase) ||
+                        archive.EndsWith("_ps", StringComparison.OrdinalIgnoreCase))
+                    {
                         toDelete.Add(System.IO.Path.Combine(GamePath, "Data", archive) + ".ba2");
-                    if (archive.EndsWith("_ps"))
-                        toDelete.Add(System.IO.Path.Combine(GamePath, "Data", archive) + ".ba2");
+                    }
                 }
+
 
                 if (toDelete.Count > 0)
                 {
@@ -2079,7 +2082,6 @@ namespace hstCMM
             typeof(DataGridView)
                 .GetProperty("DoubleBuffered", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
                 ?.SetValue(dataGridView1, true, null);
-
         }
 
         private void frmLoadOrder_Resize(object sender, EventArgs e)
@@ -5352,7 +5354,9 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
 
             void Consider(string name)
             {
-                if (beth.Contains(name) || IsExcludedPlugin(name)) return;
+                if (beth.Contains(name) || IsExcludedPlugin(name))
+                    return;
+
                 if (canonical.TryAdd(name, name)) ordered.Add(name); // first occurrence wins
             }
 
@@ -6924,7 +6928,7 @@ The game will delete your Plugins.txt file if it doesn't find any mods", "Plugin
         private void testToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             //activityLog.WriteLog("Nothing currently implemented");
-            List<string> pluginsOnDisk = tools.GetPluginList(Game,false);
+            List<string> pluginsOnDisk = tools.GetPluginList(Game, false);
             List<string> pluginsText = File.ReadAllLines(System.IO.Path.Combine(Tools.GameAppData, "Plugins.txt")).ToList();
             //List<string> fixedFileNames = new();
             var commonPlugins = pluginsOnDisk.Intersect(pluginsText, StringComparer.OrdinalIgnoreCase);
@@ -7708,10 +7712,16 @@ This function is only meant to be used on mods with empty .esm files",
                 ResizeForm();
             }
         }
+
         private void fullScreenToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Properties.Settings.Default.FullScreen = fullScreenToolStripMenuItem.Checked = !fullScreenToolStripMenuItem.Checked;
             FullScreen();
+        }
+
+        private void createEmptyESMToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //File.Copy(Path.Combine(Tools.CommonFolder, "dummy.esm"), Path.Combine(frmLoadOrder.GamePath, "Data", esm + ".esm"));
         }
     }
 }
