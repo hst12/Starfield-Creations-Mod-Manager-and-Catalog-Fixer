@@ -7721,7 +7721,9 @@ This function is only meant to be used on mods with empty .esm files",
 
         private void createEmptyESMToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //File.Copy(Path.Combine(Tools.CommonFolder, "dummy.esm"), Path.Combine(frmLoadOrder.GamePath, "Data", esm + ".esm"));
+            string esm = Interaction.InputBox("ESM Name:", "Create ESM");
+            if (!string.IsNullOrEmpty(esm))
+                File.Copy(Path.Combine(Tools.CommonFolder, "dummy.esm"), Path.Combine(frmLoadOrder.GamePath, "Data", esm + ".esm"));
         }
     }
 }
