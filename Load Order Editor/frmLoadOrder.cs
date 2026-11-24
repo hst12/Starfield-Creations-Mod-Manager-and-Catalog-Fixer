@@ -7702,8 +7702,8 @@ This function is only meant to be used on mods with empty .esm files",
         {
             if (Properties.Settings.Default.FullScreen)
             {
-                this.WindowState = FormWindowState.Maximized;
                 this.FormBorderStyle = FormBorderStyle.None;
+                this.WindowState = FormWindowState.Maximized;
             }
             else
             {
