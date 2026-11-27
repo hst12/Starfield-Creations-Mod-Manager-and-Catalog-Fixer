@@ -76,10 +76,10 @@
             // richTextBox2
             // 
             richTextBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-            richTextBox2.Location = new System.Drawing.Point(3, 348);
+            richTextBox2.Location = new System.Drawing.Point(3, 303);
             richTextBox2.Name = "richTextBox2";
             richTextBox2.ReadOnly = true;
-            richTextBox2.Size = new System.Drawing.Size(1636, 339);
+            richTextBox2.Size = new System.Drawing.Size(1636, 294);
             richTextBox2.TabIndex = 1;
             richTextBox2.TabStop = false;
             richTextBox2.Text = "";
@@ -91,7 +91,7 @@
             richTextBox1.Margin = new System.Windows.Forms.Padding(6);
             richTextBox1.Name = "richTextBox1";
             richTextBox1.ReadOnly = true;
-            richTextBox1.Size = new System.Drawing.Size(1630, 333);
+            richTextBox1.Size = new System.Drawing.Size(1630, 288);
             richTextBox1.TabIndex = 0;
             richTextBox1.TabStop = false;
             richTextBox1.Text = "";
@@ -99,9 +99,10 @@
             // btnClose
             // 
             btnClose.AutoSize = true;
+            btnClose.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             btnClose.Location = new System.Drawing.Point(3, 3);
             btnClose.Name = "btnClose";
-            btnClose.Size = new System.Drawing.Size(223, 50);
+            btnClose.Size = new System.Drawing.Size(104, 64);
             btnClose.TabIndex = 20;
             btnClose.Text = "Close";
             toolTip1.SetToolTip(btnClose, "Quit");
@@ -111,9 +112,10 @@
             // cmdClean
             // 
             cmdClean.AutoSize = true;
-            cmdClean.Location = new System.Drawing.Point(159, 3);
+            cmdClean.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            cmdClean.Location = new System.Drawing.Point(120, 3);
             cmdClean.Name = "cmdClean";
-            cmdClean.Size = new System.Drawing.Size(150, 50);
+            cmdClean.Size = new System.Drawing.Size(106, 64);
             cmdClean.TabIndex = 1;
             cmdClean.Text = "Clean";
             toolTip1.SetToolTip(cmdClean, "Strip out corrupt characters");
@@ -123,9 +125,10 @@
             // btnLoad
             // 
             btnLoad.AutoSize = true;
+            btnLoad.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             btnLoad.Location = new System.Drawing.Point(3, 3);
             btnLoad.Name = "btnLoad";
-            btnLoad.Size = new System.Drawing.Size(223, 50);
+            btnLoad.Size = new System.Drawing.Size(245, 64);
             btnLoad.TabIndex = 6;
             btnLoad.Text = "ContentCatalog.txt";
             toolTip1.SetToolTip(btnLoad, "Edit with default text editor");
@@ -135,9 +138,10 @@
             // btnCheck
             // 
             btnCheck.AutoSize = true;
+            btnCheck.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             btnCheck.Location = new System.Drawing.Point(3, 3);
             btnCheck.Name = "btnCheck";
-            btnCheck.Size = new System.Drawing.Size(150, 50);
+            btnCheck.Size = new System.Drawing.Size(111, 64);
             btnCheck.TabIndex = 0;
             btnCheck.Text = "Check";
             toolTip1.SetToolTip(btnCheck, "Check for corruption");
@@ -147,9 +151,10 @@
             // btnBackup
             // 
             btnBackup.AutoSize = true;
-            btnBackup.Location = new System.Drawing.Point(735, 3);
+            btnBackup.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            btnBackup.Location = new System.Drawing.Point(696, 3);
             btnBackup.Name = "btnBackup";
-            btnBackup.Size = new System.Drawing.Size(150, 50);
+            btnBackup.Size = new System.Drawing.Size(123, 64);
             btnBackup.TabIndex = 4;
             btnBackup.Text = "Backup";
             toolTip1.SetToolTip(btnBackup, "Backup ContentCatalog.txt to ContentCatalog.txt.bak");
@@ -159,9 +164,10 @@
             // btnRestore
             // 
             btnRestore.AutoSize = true;
-            btnRestore.Location = new System.Drawing.Point(891, 3);
+            btnRestore.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            btnRestore.Location = new System.Drawing.Point(825, 3);
             btnRestore.Name = "btnRestore";
-            btnRestore.Size = new System.Drawing.Size(150, 50);
+            btnRestore.Size = new System.Drawing.Size(125, 64);
             btnRestore.TabIndex = 5;
             btnRestore.Text = "Restore";
             toolTip1.SetToolTip(btnRestore, "Restore ContentCatlog.txt.bak to ContextCatlog.txt");
@@ -170,10 +176,11 @@
             // 
             // chkForceClean
             // 
+            chkForceClean.Appearance = System.Windows.Forms.Appearance.ToggleSwitch;
             chkForceClean.AutoSize = true;
-            chkForceClean.Location = new System.Drawing.Point(724, 3);
+            chkForceClean.Location = new System.Drawing.Point(856, 3);
             chkForceClean.Name = "chkForceClean";
-            chkForceClean.Size = new System.Drawing.Size(171, 36);
+            chkForceClean.Size = new System.Drawing.Size(204, 32);
             chkForceClean.TabIndex = 14;
             chkForceClean.Text = "Force Clean";
             toolTip1.SetToolTip(chkForceClean, "Not normally needed");
@@ -183,9 +190,10 @@
             // btnResetAll
             // 
             btnResetAll.AutoSize = true;
-            btnResetAll.Location = new System.Drawing.Point(519, 3);
+            btnResetAll.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            btnResetAll.Location = new System.Drawing.Point(458, 3);
             btnResetAll.Name = "btnResetAll";
-            btnResetAll.Size = new System.Drawing.Size(210, 50);
+            btnResetAll.Size = new System.Drawing.Size(232, 64);
             btnResetAll.TabIndex = 3;
             btnResetAll.Text = "Reset All Versions";
             toolTip1.SetToolTip(btnResetAll, "Resets all version numbers to 1704067200.0. Should enable updates");
@@ -195,9 +203,10 @@
             // cmdDeleteStale
             // 
             cmdDeleteStale.AutoSize = true;
-            cmdDeleteStale.Location = new System.Drawing.Point(315, 3);
+            cmdDeleteStale.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            cmdDeleteStale.Location = new System.Drawing.Point(232, 3);
             cmdDeleteStale.Name = "cmdDeleteStale";
-            cmdDeleteStale.Size = new System.Drawing.Size(198, 50);
+            cmdDeleteStale.Size = new System.Drawing.Size(220, 64);
             cmdDeleteStale.TabIndex = 2;
             cmdDeleteStale.Text = "Remove Unused";
             toolTip1.SetToolTip(cmdDeleteStale, "Remove missing mods from ContentCatalog.txt");
@@ -206,10 +215,11 @@
             // 
             // chkVerbose
             // 
+            chkVerbose.Appearance = System.Windows.Forms.Appearance.ToggleSwitch;
             chkVerbose.AutoSize = true;
-            chkVerbose.Location = new System.Drawing.Point(901, 3);
+            chkVerbose.Location = new System.Drawing.Point(1066, 3);
             chkVerbose.Name = "chkVerbose";
-            chkVerbose.Size = new System.Drawing.Size(242, 36);
+            chkVerbose.Size = new System.Drawing.Size(275, 32);
             chkVerbose.TabIndex = 15;
             chkVerbose.Text = "Verbose Messages";
             toolTip1.SetToolTip(chkVerbose, "Display Info for Files Checked");
@@ -238,11 +248,11 @@
             grpActions.AutoSize = true;
             grpActions.Controls.Add(flowLayoutPanel3);
             grpActions.Dock = System.Windows.Forms.DockStyle.Fill;
-            grpActions.Location = new System.Drawing.Point(6, 696);
+            grpActions.Location = new System.Drawing.Point(6, 606);
             grpActions.Margin = new System.Windows.Forms.Padding(6);
             grpActions.Name = "grpActions";
             grpActions.Padding = new System.Windows.Forms.Padding(6);
-            grpActions.Size = new System.Drawing.Size(1630, 100);
+            grpActions.Size = new System.Drawing.Size(1630, 127);
             grpActions.TabIndex = 0;
             grpActions.TabStop = false;
             grpActions.Text = "Actions";
@@ -260,17 +270,18 @@
             flowLayoutPanel3.Controls.Add(btnDelete);
             flowLayoutPanel3.Controls.Add(btnClearLog);
             flowLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            flowLayoutPanel3.Location = new System.Drawing.Point(6, 38);
+            flowLayoutPanel3.Location = new System.Drawing.Point(6, 51);
             flowLayoutPanel3.Name = "flowLayoutPanel3";
-            flowLayoutPanel3.Size = new System.Drawing.Size(1618, 56);
+            flowLayoutPanel3.Size = new System.Drawing.Size(1618, 70);
             flowLayoutPanel3.TabIndex = 7;
             // 
             // btnAchievemnts
             // 
             btnAchievemnts.AutoSize = true;
-            btnAchievemnts.Location = new System.Drawing.Point(1047, 3);
+            btnAchievemnts.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            btnAchievemnts.Location = new System.Drawing.Point(956, 3);
             btnAchievemnts.Name = "btnAchievemnts";
-            btnAchievemnts.Size = new System.Drawing.Size(174, 50);
+            btnAchievemnts.Size = new System.Drawing.Size(196, 64);
             btnAchievemnts.TabIndex = 7;
             btnAchievemnts.Text = "Achievements";
             btnAchievemnts.UseVisualStyleBackColor = true;
@@ -278,9 +289,11 @@
             // 
             // btnDelete
             // 
-            btnDelete.Location = new System.Drawing.Point(1227, 3);
+            btnDelete.AutoSize = true;
+            btnDelete.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            btnDelete.Location = new System.Drawing.Point(1158, 3);
             btnDelete.Name = "btnDelete";
-            btnDelete.Size = new System.Drawing.Size(150, 46);
+            btnDelete.Size = new System.Drawing.Size(116, 64);
             btnDelete.TabIndex = 8;
             btnDelete.Text = "Delete";
             btnDelete.UseVisualStyleBackColor = true;
@@ -289,9 +302,10 @@
             // btnClearLog
             // 
             btnClearLog.AutoSize = true;
-            btnClearLog.Location = new System.Drawing.Point(1383, 3);
+            btnClearLog.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            btnClearLog.Location = new System.Drawing.Point(1280, 3);
             btnClearLog.Name = "btnClearLog";
-            btnClearLog.Size = new System.Drawing.Size(150, 50);
+            btnClearLog.Size = new System.Drawing.Size(146, 64);
             btnClearLog.TabIndex = 6;
             btnClearLog.Text = "Clear Log";
             btnClearLog.UseVisualStyleBackColor = true;
@@ -303,11 +317,11 @@
             groupBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             groupBox1.Controls.Add(flowLayoutPanel4);
             groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            groupBox1.Location = new System.Drawing.Point(6, 994);
+            groupBox1.Location = new System.Drawing.Point(6, 967);
             groupBox1.Margin = new System.Windows.Forms.Padding(6);
             groupBox1.Name = "groupBox1";
             groupBox1.Padding = new System.Windows.Forms.Padding(6);
-            groupBox1.Size = new System.Drawing.Size(1630, 100);
+            groupBox1.Size = new System.Drawing.Size(1630, 127);
             groupBox1.TabIndex = 0;
             groupBox1.TabStop = false;
             groupBox1.Text = "Other";
@@ -317,9 +331,9 @@
             flowLayoutPanel4.AutoSize = true;
             flowLayoutPanel4.Controls.Add(btnClose);
             flowLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            flowLayoutPanel4.Location = new System.Drawing.Point(6, 38);
+            flowLayoutPanel4.Location = new System.Drawing.Point(6, 51);
             flowLayoutPanel4.Name = "flowLayoutPanel4";
-            flowLayoutPanel4.Size = new System.Drawing.Size(1618, 56);
+            flowLayoutPanel4.Size = new System.Drawing.Size(1618, 70);
             flowLayoutPanel4.TabIndex = 22;
             // 
             // groupBox2
@@ -327,9 +341,9 @@
             groupBox2.AutoSize = true;
             groupBox2.Controls.Add(flowLayoutPanel1);
             groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-            groupBox2.Location = new System.Drawing.Point(3, 805);
+            groupBox2.Location = new System.Drawing.Point(3, 742);
             groupBox2.Name = "groupBox2";
-            groupBox2.Size = new System.Drawing.Size(1636, 94);
+            groupBox2.Size = new System.Drawing.Size(1636, 121);
             groupBox2.TabIndex = 0;
             groupBox2.TabStop = false;
             groupBox2.Text = "Edit";
@@ -339,9 +353,9 @@
             flowLayoutPanel1.AutoSize = true;
             flowLayoutPanel1.Controls.Add(btnLoad);
             flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            flowLayoutPanel1.Location = new System.Drawing.Point(3, 35);
+            flowLayoutPanel1.Location = new System.Drawing.Point(3, 48);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new System.Drawing.Size(1630, 56);
+            flowLayoutPanel1.Size = new System.Drawing.Size(1630, 70);
             flowLayoutPanel1.TabIndex = 10;
             // 
             // grpAuto
@@ -349,9 +363,9 @@
             grpAuto.AutoSize = true;
             grpAuto.Controls.Add(flowLayoutPanel2);
             grpAuto.Dock = System.Windows.Forms.DockStyle.Fill;
-            grpAuto.Location = new System.Drawing.Point(3, 905);
+            grpAuto.Location = new System.Drawing.Point(3, 869);
             grpAuto.Name = "grpAuto";
-            grpAuto.Size = new System.Drawing.Size(1636, 80);
+            grpAuto.Size = new System.Drawing.Size(1636, 89);
             grpAuto.TabIndex = 0;
             grpAuto.TabStop = false;
             grpAuto.Text = "Auto Functions";
@@ -366,17 +380,18 @@
             flowLayoutPanel2.Controls.Add(chkForceClean);
             flowLayoutPanel2.Controls.Add(chkVerbose);
             flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            flowLayoutPanel2.Location = new System.Drawing.Point(3, 35);
+            flowLayoutPanel2.Location = new System.Drawing.Point(3, 48);
             flowLayoutPanel2.Name = "flowLayoutPanel2";
-            flowLayoutPanel2.Size = new System.Drawing.Size(1630, 42);
+            flowLayoutPanel2.Size = new System.Drawing.Size(1630, 38);
             flowLayoutPanel2.TabIndex = 15;
             // 
             // chkAutoCheck
             // 
+            chkAutoCheck.Appearance = System.Windows.Forms.Appearance.ToggleSwitch;
             chkAutoCheck.AutoSize = true;
             chkAutoCheck.Location = new System.Drawing.Point(3, 3);
             chkAutoCheck.Name = "chkAutoCheck";
-            chkAutoCheck.Size = new System.Drawing.Size(169, 36);
+            chkAutoCheck.Size = new System.Drawing.Size(202, 32);
             chkAutoCheck.TabIndex = 10;
             chkAutoCheck.Text = "Auto Check";
             chkAutoCheck.UseVisualStyleBackColor = true;
@@ -384,10 +399,11 @@
             // 
             // chkAutoClean
             // 
+            chkAutoClean.Appearance = System.Windows.Forms.Appearance.ToggleSwitch;
             chkAutoClean.AutoSize = true;
-            chkAutoClean.Location = new System.Drawing.Point(178, 3);
+            chkAutoClean.Location = new System.Drawing.Point(211, 3);
             chkAutoClean.Name = "chkAutoClean";
-            chkAutoClean.Size = new System.Drawing.Size(164, 36);
+            chkAutoClean.Size = new System.Drawing.Size(197, 32);
             chkAutoClean.TabIndex = 11;
             chkAutoClean.Text = "Auto Clean";
             chkAutoClean.UseVisualStyleBackColor = true;
@@ -395,10 +411,11 @@
             // 
             // chkAutoBackup
             // 
+            chkAutoBackup.Appearance = System.Windows.Forms.Appearance.ToggleSwitch;
             chkAutoBackup.AutoSize = true;
-            chkAutoBackup.Location = new System.Drawing.Point(348, 3);
+            chkAutoBackup.Location = new System.Drawing.Point(414, 3);
             chkAutoBackup.Name = "chkAutoBackup";
-            chkAutoBackup.Size = new System.Drawing.Size(181, 36);
+            chkAutoBackup.Size = new System.Drawing.Size(214, 32);
             chkAutoBackup.TabIndex = 12;
             chkAutoBackup.Text = "Auto Backup";
             chkAutoBackup.UseVisualStyleBackColor = true;
@@ -406,10 +423,11 @@
             // 
             // chkAutoRestore
             // 
+            chkAutoRestore.Appearance = System.Windows.Forms.Appearance.ToggleSwitch;
             chkAutoRestore.AutoSize = true;
-            chkAutoRestore.Location = new System.Drawing.Point(535, 3);
+            chkAutoRestore.Location = new System.Drawing.Point(634, 3);
             chkAutoRestore.Name = "chkAutoRestore";
-            chkAutoRestore.Size = new System.Drawing.Size(183, 36);
+            chkAutoRestore.Size = new System.Drawing.Size(216, 32);
             chkAutoRestore.TabIndex = 13;
             chkAutoRestore.Text = "Auto Restore";
             chkAutoRestore.UseVisualStyleBackColor = true;
@@ -451,6 +469,7 @@
             Name = "frmCatalogFixer";
             StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             Text = "Creations Mod Manager - Catalog Checker";
+            VisualStylesMode = System.Windows.Forms.VisualStylesMode.Net11;
             FormClosing += frmStarfieldTools_FormClosing;
             Shown += frmStarfieldTools_Shown;
             statusStrip1.ResumeLayout(false);

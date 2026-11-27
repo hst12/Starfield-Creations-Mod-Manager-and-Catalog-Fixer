@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
-		<TargetFramework>net10.0-windows10.0.17763.0</TargetFramework>
+		<TargetFramework>net11.0-windows10.0.17763.0</TargetFramework>
 		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
 		<OutputType>WinExe</OutputType>
 		<RootNamespace>hstCMM</RootNamespace>
@@ -28,7 +28,7 @@
 		<ExcludeDeploymentUrl>true</ExcludeDeploymentUrl>
 		<PublishWizardCompleted>true</PublishWizardCompleted>
 		<BootstrapperEnabled>true</BootstrapperEnabled>
-		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<GenerateAssemblyInfo>true</GenerateAssemblyInfo>
 		<UseWindowsForms>true</UseWindowsForms>
 		<ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
 		<Configurations>Debug;Release</Configurations>
@@ -47,9 +47,9 @@
 		<SignAssembly>False</SignAssembly>
 		<Description>Creations Mod Manager</Description>
 		<PackageTags>Starfield;Bethesda</PackageTags>
-		<FileVersion>1.21.0</FileVersion>
-		<AssemblyVersion>1.21.0</AssemblyVersion>
-		<Version>1.21.0</Version>
+		<FileVersion>1.3.0</FileVersion>
+		<AssemblyVersion>1.3.0</AssemblyVersion>
+		<Version>1.3.0</Version>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
 		<OutputPath>bin\x64\Debug\</OutputPath>

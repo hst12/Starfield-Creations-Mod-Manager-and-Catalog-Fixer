@@ -14,8 +14,10 @@ namespace hstCMM
         {
 
             Application.EnableVisualStyles();
+            Application.SetDefaultVisualStylesMode(VisualStylesMode.Latest);
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.SetHighDpiMode(HighDpiMode.PerMonitorV2);
+            Application.SetHighDpiMode(HighDpiMode.SystemAware);
+            
             Process currentProcess = Process.GetCurrentProcess();
             var runningProcesses = Process.GetProcessesByName(currentProcess.ProcessName);
 

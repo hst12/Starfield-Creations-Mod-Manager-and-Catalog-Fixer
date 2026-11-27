@@ -406,7 +406,7 @@
             dataGridView1.RowTemplate.Height = 33;
             dataGridView1.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            dataGridView1.Size = new System.Drawing.Size(1993, 802);
+            dataGridView1.Size = new System.Drawing.Size(2088, 802);
             dataGridView1.TabIndex = 0;
             dataGridView1.CellDoubleClick += dataGridView1_CellDoubleClick;
             dataGridView1.DataError += dataGridView1_DataError;
@@ -845,7 +845,7 @@
             menuStrip1.Location = new System.Drawing.Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Padding = new System.Windows.Forms.Padding(3, 1, 0, 1);
-            menuStrip1.Size = new System.Drawing.Size(1997, 40);
+            menuStrip1.Size = new System.Drawing.Size(2092, 40);
             menuStrip1.TabIndex = 7;
             menuStrip1.Text = "menuStrip1";
             // 
@@ -2633,7 +2633,7 @@
             flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Left;
             flowLayoutPanel1.Location = new System.Drawing.Point(3, 856);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new System.Drawing.Size(1741, 48);
+            flowLayoutPanel1.Size = new System.Drawing.Size(1668, 48);
             flowLayoutPanel1.TabIndex = 8;
             flowLayoutPanel1.WrapContents = false;
             // 
@@ -2642,11 +2642,12 @@
             btnUp.Anchor = System.Windows.Forms.AnchorStyles.Left;
             btnUp.AutoSize = true;
             btnUp.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            btnUp.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             btnUp.ForeColor = System.Drawing.SystemColors.ControlText;
-            btnUp.Location = new System.Drawing.Point(2, 3);
+            btnUp.Location = new System.Drawing.Point(2, 5);
             btnUp.Margin = new System.Windows.Forms.Padding(2);
             btnUp.Name = "btnUp";
-            btnUp.Size = new System.Drawing.Size(46, 42);
+            btnUp.Size = new System.Drawing.Size(42, 38);
             btnUp.TabIndex = 1;
             btnUp.Text = "W";
             toolTip1.SetToolTip(btnUp, "Move mod up (W)");
@@ -2658,11 +2659,12 @@
             btnDown.Anchor = System.Windows.Forms.AnchorStyles.Left;
             btnDown.AutoSize = true;
             btnDown.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            btnDown.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             btnDown.ForeColor = System.Drawing.SystemColors.ControlText;
-            btnDown.Location = new System.Drawing.Point(52, 3);
+            btnDown.Location = new System.Drawing.Point(48, 5);
             btnDown.Margin = new System.Windows.Forms.Padding(2);
             btnDown.Name = "btnDown";
-            btnDown.Size = new System.Drawing.Size(37, 42);
+            btnDown.Size = new System.Drawing.Size(33, 38);
             btnDown.TabIndex = 2;
             btnDown.Text = "S";
             toolTip1.SetToolTip(btnDown, "Move mod down (S)");
@@ -2674,11 +2676,12 @@
             btnTop.Anchor = System.Windows.Forms.AnchorStyles.Left;
             btnTop.AutoSize = true;
             btnTop.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            btnTop.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             btnTop.ForeColor = System.Drawing.SystemColors.ControlText;
-            btnTop.Location = new System.Drawing.Point(93, 3);
+            btnTop.Location = new System.Drawing.Point(85, 5);
             btnTop.Margin = new System.Windows.Forms.Padding(2);
             btnTop.Name = "btnTop";
-            btnTop.Size = new System.Drawing.Size(39, 42);
+            btnTop.Size = new System.Drawing.Size(35, 38);
             btnTop.TabIndex = 3;
             btnTop.Text = "A";
             toolTip1.SetToolTip(btnTop, "Move mod to the top (A)");
@@ -2690,11 +2693,12 @@
             btnBottom.Anchor = System.Windows.Forms.AnchorStyles.Left;
             btnBottom.AutoSize = true;
             btnBottom.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            btnBottom.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             btnBottom.ForeColor = System.Drawing.SystemColors.ControlText;
-            btnBottom.Location = new System.Drawing.Point(136, 3);
+            btnBottom.Location = new System.Drawing.Point(124, 5);
             btnBottom.Margin = new System.Windows.Forms.Padding(2);
             btnBottom.Name = "btnBottom";
-            btnBottom.Size = new System.Drawing.Size(41, 42);
+            btnBottom.Size = new System.Drawing.Size(37, 38);
             btnBottom.TabIndex = 4;
             btnBottom.Text = "D";
             toolTip1.SetToolTip(btnBottom, "Move mod to the bottom (D)");
@@ -2706,11 +2710,12 @@
             btnToggleMod.Anchor = System.Windows.Forms.AnchorStyles.Left;
             btnToggleMod.AutoSize = true;
             btnToggleMod.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            btnToggleMod.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             btnToggleMod.ForeColor = System.Drawing.SystemColors.ControlText;
-            btnToggleMod.Location = new System.Drawing.Point(181, 3);
+            btnToggleMod.Location = new System.Drawing.Point(165, 5);
             btnToggleMod.Margin = new System.Windows.Forms.Padding(2);
             btnToggleMod.Name = "btnToggleMod";
-            btnToggleMod.Size = new System.Drawing.Size(36, 42);
+            btnToggleMod.Size = new System.Drawing.Size(32, 38);
             btnToggleMod.TabIndex = 5;
             btnToggleMod.Text = "E";
             toolTip1.SetToolTip(btnToggleMod, "Mod Enable/Disable (Space, E or double-click)");
@@ -2721,7 +2726,7 @@
             // 
             chkFindFiltered.Anchor = System.Windows.Forms.AnchorStyles.Left;
             chkFindFiltered.AutoSize = true;
-            chkFindFiltered.Location = new System.Drawing.Point(222, 6);
+            chkFindFiltered.Location = new System.Drawing.Point(202, 6);
             chkFindFiltered.Name = "chkFindFiltered";
             chkFindFiltered.Size = new System.Drawing.Size(92, 36);
             chkFindFiltered.TabIndex = 6;
@@ -2734,7 +2739,7 @@
             // 
             chkShowOnly.Anchor = System.Windows.Forms.AnchorStyles.Left;
             chkShowOnly.AutoSize = true;
-            chkShowOnly.Location = new System.Drawing.Point(320, 6);
+            chkShowOnly.Location = new System.Drawing.Point(300, 6);
             chkShowOnly.Name = "chkShowOnly";
             chkShowOnly.Size = new System.Drawing.Size(106, 36);
             chkShowOnly.TabIndex = 7;
@@ -2746,7 +2751,7 @@
             // txtSearchBox
             // 
             txtSearchBox.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            txtSearchBox.Location = new System.Drawing.Point(431, 4);
+            txtSearchBox.Location = new System.Drawing.Point(411, 4);
             txtSearchBox.Margin = new System.Windows.Forms.Padding(2);
             txtSearchBox.Name = "txtSearchBox";
             txtSearchBox.Size = new System.Drawing.Size(96, 39);
@@ -2758,10 +2763,11 @@
             // 
             btnFindNext.Anchor = System.Windows.Forms.AnchorStyles.Left;
             btnFindNext.AutoSize = true;
-            btnFindNext.Location = new System.Drawing.Point(531, 3);
+            btnFindNext.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            btnFindNext.Location = new System.Drawing.Point(511, 3);
             btnFindNext.Margin = new System.Windows.Forms.Padding(2);
             btnFindNext.Name = "btnFindNext";
-            btnFindNext.Size = new System.Drawing.Size(127, 42);
+            btnFindNext.Size = new System.Drawing.Size(74, 42);
             btnFindNext.TabIndex = 9;
             btnFindNext.Text = "Next";
             toolTip1.SetToolTip(btnFindNext, "Find next match in search. Checkbox on the left searches in filtered mods only");
@@ -2772,7 +2778,7 @@
             // 
             chkProfile.Anchor = System.Windows.Forms.AnchorStyles.Left;
             chkProfile.AutoSize = true;
-            chkProfile.Location = new System.Drawing.Point(662, 6);
+            chkProfile.Location = new System.Drawing.Point(589, 6);
             chkProfile.Margin = new System.Windows.Forms.Padding(2);
             chkProfile.Name = "chkProfile";
             chkProfile.Size = new System.Drawing.Size(114, 36);
@@ -2789,7 +2795,7 @@
             cmbProfile.DropDownWidth = 100;
             cmbProfile.FormattingEnabled = true;
             cmbProfile.ItemHeight = 32;
-            cmbProfile.Location = new System.Drawing.Point(780, 4);
+            cmbProfile.Location = new System.Drawing.Point(707, 4);
             cmbProfile.Margin = new System.Windows.Forms.Padding(2);
             cmbProfile.Name = "cmbProfile";
             cmbProfile.Size = new System.Drawing.Size(110, 40);
@@ -2803,7 +2809,7 @@
             btnSave.Anchor = System.Windows.Forms.AnchorStyles.Left;
             btnSave.AutoSize = true;
             btnSave.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            btnSave.Location = new System.Drawing.Point(894, 3);
+            btnSave.Location = new System.Drawing.Point(821, 3);
             btnSave.Margin = new System.Windows.Forms.Padding(2);
             btnSave.Name = "btnSave";
             btnSave.Size = new System.Drawing.Size(74, 42);
@@ -2818,7 +2824,7 @@
             btnActiveOnly.Anchor = System.Windows.Forms.AnchorStyles.Left;
             btnActiveOnly.AutoSize = true;
             btnActiveOnly.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            btnActiveOnly.Location = new System.Drawing.Point(972, 3);
+            btnActiveOnly.Location = new System.Drawing.Point(899, 3);
             btnActiveOnly.Margin = new System.Windows.Forms.Padding(2);
             btnActiveOnly.Name = "btnActiveOnly";
             btnActiveOnly.Size = new System.Drawing.Size(77, 42);
@@ -2832,7 +2838,8 @@
             // 
             btnGroups.Anchor = System.Windows.Forms.AnchorStyles.Left;
             btnGroups.AutoSize = true;
-            btnGroups.Location = new System.Drawing.Point(1054, 3);
+            btnGroups.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            btnGroups.Location = new System.Drawing.Point(981, 3);
             btnGroups.Name = "btnGroups";
             btnGroups.Size = new System.Drawing.Size(100, 42);
             btnGroups.TabIndex = 14;
@@ -2846,7 +2853,7 @@
             btnLog.Anchor = System.Windows.Forms.AnchorStyles.Left;
             btnLog.AutoSize = true;
             btnLog.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            btnLog.Location = new System.Drawing.Point(1159, 3);
+            btnLog.Location = new System.Drawing.Point(1086, 3);
             btnLog.Margin = new System.Windows.Forms.Padding(2);
             btnLog.Name = "btnLog";
             btnLog.Size = new System.Drawing.Size(63, 42);
@@ -2861,7 +2868,7 @@
             btnRefresh.Anchor = System.Windows.Forms.AnchorStyles.Left;
             btnRefresh.AutoSize = true;
             btnRefresh.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            btnRefresh.Location = new System.Drawing.Point(1226, 3);
+            btnRefresh.Location = new System.Drawing.Point(1153, 3);
             btnRefresh.Margin = new System.Windows.Forms.Padding(2);
             btnRefresh.Name = "btnRefresh";
             btnRefresh.Size = new System.Drawing.Size(103, 42);
@@ -2876,7 +2883,7 @@
             btnUpdate.Anchor = System.Windows.Forms.AnchorStyles.Left;
             btnUpdate.AutoSize = true;
             btnUpdate.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            btnUpdate.Location = new System.Drawing.Point(1333, 3);
+            btnUpdate.Location = new System.Drawing.Point(1260, 3);
             btnUpdate.Margin = new System.Windows.Forms.Padding(2);
             btnUpdate.Name = "btnUpdate";
             btnUpdate.Size = new System.Drawing.Size(101, 42);
@@ -2891,7 +2898,7 @@
             btnLoot.Anchor = System.Windows.Forms.AnchorStyles.Left;
             btnLoot.AutoSize = true;
             btnLoot.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            btnLoot.Location = new System.Drawing.Point(1438, 3);
+            btnLoot.Location = new System.Drawing.Point(1365, 3);
             btnLoot.Margin = new System.Windows.Forms.Padding(2);
             btnLoot.Name = "btnLoot";
             btnLoot.Size = new System.Drawing.Size(67, 42);
@@ -2906,7 +2913,7 @@
             btnRun.Anchor = System.Windows.Forms.AnchorStyles.Left;
             btnRun.AutoSize = true;
             btnRun.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            btnRun.Location = new System.Drawing.Point(1509, 3);
+            btnRun.Location = new System.Drawing.Point(1436, 3);
             btnRun.Margin = new System.Windows.Forms.Padding(2);
             btnRun.Name = "btnRun";
             btnRun.Size = new System.Drawing.Size(66, 42);
@@ -2921,7 +2928,7 @@
             btnCancel.Anchor = System.Windows.Forms.AnchorStyles.Left;
             btnCancel.AutoSize = true;
             btnCancel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            btnCancel.Location = new System.Drawing.Point(1579, 3);
+            btnCancel.Location = new System.Drawing.Point(1506, 3);
             btnCancel.Margin = new System.Windows.Forms.Padding(2);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new System.Drawing.Size(95, 42);
@@ -2936,7 +2943,7 @@
             btnQuit.Anchor = System.Windows.Forms.AnchorStyles.Left;
             btnQuit.AutoSize = true;
             btnQuit.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            btnQuit.Location = new System.Drawing.Point(1678, 3);
+            btnQuit.Location = new System.Drawing.Point(1605, 3);
             btnQuit.Margin = new System.Windows.Forms.Padding(2);
             btnQuit.Name = "btnQuit";
             btnQuit.Size = new System.Drawing.Size(61, 42);

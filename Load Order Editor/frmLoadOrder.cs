@@ -1140,7 +1140,6 @@ namespace hstCMM
                     }
                 }
 
-
                 if (toDelete.Count > 0)
                 {
                     activityLog.WriteLog($"Checked for orphaned archives - {toDelete.Count} found");
