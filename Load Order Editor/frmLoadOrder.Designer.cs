@@ -2093,7 +2093,6 @@
             // 
             // toolStripMenuRun
             // 
-            toolStripMenuRun.Image = (System.Drawing.Image)resources.GetObject("toolStripMenuRun.Image");
             toolStripMenuRun.Name = "toolStripMenuRun";
             toolStripMenuRun.Size = new System.Drawing.Size(483, 44);
             toolStripMenuRun.Text = "Launch Game";
@@ -2106,7 +2105,6 @@
             // 
             // toolStripMenuSteam
             // 
-            toolStripMenuSteam.Image = (System.Drawing.Image)resources.GetObject("toolStripMenuSteam.Image");
             toolStripMenuSteam.Name = "toolStripMenuSteam";
             toolStripMenuSteam.Size = new System.Drawing.Size(483, 44);
             toolStripMenuSteam.Text = "Game Version - Steam";
@@ -2114,7 +2112,6 @@
             // 
             // toolStripMenuMS
             // 
-            toolStripMenuMS.Image = (System.Drawing.Image)resources.GetObject("toolStripMenuMS.Image");
             toolStripMenuMS.Name = "toolStripMenuMS";
             toolStripMenuMS.Size = new System.Drawing.Size(483, 44);
             toolStripMenuMS.Text = "Game Version - MS";
