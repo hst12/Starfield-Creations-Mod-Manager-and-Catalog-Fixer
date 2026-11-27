@@ -10,14 +10,14 @@ namespace hstCMM
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-
             Application.EnableVisualStyles();
             Application.SetDefaultVisualStylesMode(VisualStylesMode.Latest);
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.SetHighDpiMode(HighDpiMode.SystemAware);
-            
+            Application.SetHighDpiMode(HighDpiMode.PerMonitorV2);
+            Application.SetDefaultFormRevealMode(FormRevealMode.Deferred);
+
             Process currentProcess = Process.GetCurrentProcess();
             var runningProcesses = Process.GetProcessesByName(currentProcess.ProcessName);
 
